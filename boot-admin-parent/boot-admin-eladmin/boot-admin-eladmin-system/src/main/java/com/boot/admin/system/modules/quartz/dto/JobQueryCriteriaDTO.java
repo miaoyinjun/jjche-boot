@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class JobQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
-    @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
+    @QueryCriteria(type = QueryCriteria.Type.LIKE)
     private String jobName;
 
     @QueryCriteria

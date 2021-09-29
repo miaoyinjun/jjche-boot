@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class DictDetailQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
-    @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
+    @QueryCriteria(type = QueryCriteria.Type.LIKE)
     private String label;
 
     @QueryCriteria
