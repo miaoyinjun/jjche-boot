@@ -19,7 +19,7 @@ public class DeployQueryCriteriaDTO extends BaseQueryCriteriaDTO {
     /**
      * 模糊
      */
-    @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE, propName = "name")
+    @QueryCriteria(type = QueryCriteria.Type.LIKE, propName = "name")
     private String appName;
 
     @QueryCriteria(type = QueryCriteria.Type.BETWEEN)

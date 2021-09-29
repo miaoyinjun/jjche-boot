@@ -16,10 +16,10 @@ import java.util.List;
 @Data
 public class AppQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
-	/**
-	 * 模糊
-	 */
-    @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
+    /**
+     * 模糊
+     */
+    @QueryCriteria(type = QueryCriteria.Type.LIKE)
     private String name;
 
     @QueryCriteria(type = QueryCriteria.Type.BETWEEN)

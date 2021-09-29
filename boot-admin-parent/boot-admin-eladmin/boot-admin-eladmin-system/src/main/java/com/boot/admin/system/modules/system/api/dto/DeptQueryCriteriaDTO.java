@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class DeptQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
-    @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
+    @QueryCriteria(type = QueryCriteria.Type.LIKE)
     private String name;
 
     @QueryCriteria

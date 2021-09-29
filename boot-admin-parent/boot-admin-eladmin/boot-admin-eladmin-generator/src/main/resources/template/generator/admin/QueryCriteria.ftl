@@ -42,7 +42,7 @@ public class ${className}QueryCriteriaDTO extends BaseQueryCriteriaDTO{
     * 模糊
     */
     @ApiModelProperty(value = "${column.remark}", required = false)
-    @QueryCriteria(propName = "${column.columnName}", type = QueryCriteria.Type.INNER_LIKE)
+    @QueryCriteria(propName = "${column.columnName}", type = QueryCriteria.Type.LIKE)
     private ${column.columnType} ${column.changeColumnName};
 </#if>
 <#if column.queryType = '!='>
