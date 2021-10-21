@@ -1,0 +1,3 @@
+logging:
+  level:
+    com.boot.*.*.modules.*.feign: debug

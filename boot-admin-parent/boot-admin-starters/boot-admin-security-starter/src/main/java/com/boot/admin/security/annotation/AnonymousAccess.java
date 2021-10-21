@@ -1,0 +1,18 @@
+package com.boot.admin.security.annotation;
+
+import java.lang.annotation.*;
+
+/**
+ * <p>AnonymousAccess class.</p>
+ *
+ * @author jacky
+ *  用于标记匿名访问方法
+ * @version 1.0.8-SNAPSHOT
+ */
+@Inherited
+@Documented
+@Target({ElementType.METHOD,ElementType.ANNOTATION_TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface AnonymousAccess {
+
+}
