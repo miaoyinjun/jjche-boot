@@ -1,0 +1,22 @@
+# Maven #
+target/
+
+# IDEA #
+.idea/
+*.iml
+.flattened-pom.xml
+# Eclipse #
+.settings/
+.classpath
+.project
+
+# jrebel #
+rebel.xml
+node_modules/
+dist/
+static/
+logs/
+
+avatar/
+file/
+volumes/

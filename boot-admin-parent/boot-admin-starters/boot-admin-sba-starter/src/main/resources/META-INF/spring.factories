@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.boot.admin.sba.conf.SbaEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.boot.admin.sba.SbaAutoConfiguration

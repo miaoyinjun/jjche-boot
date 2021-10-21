@@ -1,0 +1,24 @@
+{
+  "title": "boot-admin开发文档",
+  "author": "miaoyj",
+  "description": "boot-admin",
+  "language": "zh-hans",
+  "structure": {
+    "readme": "README.md"
+  },
+  "plugins": [
+    "search-pro",
+    "chapter-fold",
+    "splitter",
+    "back-to-top-button",
+    "copy-code-button",
+    "cuav-chapters",
+    "heading-anchors",
+    "-sharing","-lunr", "-search", "-fontsettings"
+  ],
+  "variables": {
+  },
+  "pluginsConfig": {
+
+  }
+}

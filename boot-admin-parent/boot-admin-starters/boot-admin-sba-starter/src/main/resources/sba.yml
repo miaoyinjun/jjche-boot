@@ -1,0 +1,68 @@
+spring:
+  security:
+    # 登陆所需的账号密码
+    user:
+      name: admin
+      password: ${BOOT_ADMIN_SBA_PASSWORD:3nxnn4mtLyzn}
+  boot:
+    admin:
+      #server端的访问路径
+      context-path: /sba
+      ui:
+        # 修改网页显示的tab标题
+        title: "应用监控管理"
+        # 修改网页的brand的图标和标题
+        #        brand: "<img src='assets/img/icon-spring-boot-admin.svg'><span>应用监控管理</span>"
+        external-views:
+          - label: "API"
+            url: ${spring.boot.admin.context-path}/api/doc.html
+            order: 2000
+            iframe: true
+          - label: "Druid"
+            url: ${spring.boot.admin.context-path}/druid/index.html
+            order: 2001
+            iframe: true
+      client:
+        url: ${BOOT_ADMIN_SBA_SERVER_URL:http://localhost:${server.port}}${spring.boot.admin.context-path}
+        instance:
+          prefer-ip: true
+          metadata:
+            tags:
+              ENV: ${spring.profiles.active}
+            # 配置发送到SBA Server的SBA Client的端点安全密码
+            user:
+              name: ${spring.security.user.name}
+              password: ${spring.security.user.password}
+        # 配置连接到监测管理平台的Security安全密码
+        username: ${spring.security.user.name}
+        password: ${spring.security.user.password}
+  datasource:
+    druid:
+      stat-view-servlet:
+        allow:
+        enabled: true
+        url-pattern: ${spring.boot.admin.context-path}/druid/*
+
+management:
+  #  server:
+  #    port: ${random.int[10000,19999]}
+  endpoint:
+    shutdown:
+      enabled: false
+    # 健康详情
+    health:
+      show-details: always
+    logfile:
+      enabled: true
+      external-file: ${logging.file.path}/${logging.file.name}
+    #加载所有的端点
+  endpoints:
+    web:
+      #修改actuator暴露路径
+      base-path: ${spring.boot.admin.context-path}/monitor
+      exposure:
+        include: '*'
+  #git-commit-id
+  info:
+    git:
+      mode: full
