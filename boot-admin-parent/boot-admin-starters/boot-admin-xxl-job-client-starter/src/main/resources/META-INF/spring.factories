@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.boot.admin.xxl.job.client.env.XxlJobClientEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.boot.admin.xxl.job.client.XxlJobClientAutoConfiguration

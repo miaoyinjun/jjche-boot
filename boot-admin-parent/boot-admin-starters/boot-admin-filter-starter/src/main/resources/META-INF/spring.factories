@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.boot.admin.filter.env.FilterEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.boot.admin.filter.FilterAutoConfiguration

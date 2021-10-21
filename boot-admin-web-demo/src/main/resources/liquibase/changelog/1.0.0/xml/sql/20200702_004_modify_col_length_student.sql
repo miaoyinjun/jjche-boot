@@ -1,0 +1,1 @@
+ALTER TABLE `student` MODIFY `name` varchar(55) NOT NULL COMMENT '姓名';

@@ -1,0 +1,10 @@
+boot:
+  admin:
+    filter:
+      encryption:
+        api:
+          enabled: false
+          filter-urls:
+            - ${boot.admin.core.api.path.global-prefix}/**
+        field:
+          secret-key: ${BOOT_ADMIN_FILTER_ENCRYPTION_FIELD_SECRET-KEY:YgnE7hAjiifYFibD}
