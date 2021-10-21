@@ -15,7 +15,7 @@
     <groupId>com.boot.admin.demo</groupId>
     <artifactId>boot-admin-web-demo</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
