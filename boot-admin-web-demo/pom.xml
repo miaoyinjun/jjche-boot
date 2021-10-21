@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -17,9 +18,6 @@
     <version>1.0.1-SNAPSHOT</version>
 
     <properties>
-        <maven.server.snapshots>maven-snapshots</maven.server.snapshots>
-        <maven.server.releases>maven-releases</maven.server.releases>
-
         <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
         <docker.namespace>boot-admin</docker.namespace>
     </properties>
@@ -84,12 +82,12 @@
     <!--     远程nexus仓库 -->
     <repositories>
         <repository>
-            <id>${maven.server.releases}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.releases}</url>
+            <id>maven-releases</id>
+            <url>http://x.x.x.x:8081/repository/maven-releases</url>
         </repository>
         <repository>
-            <id>${maven.server.snapshots}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.snapshots}</url>
+            <id>maven-snapshots</id>
+            <url>http://x.x.x.x:8081/repository/maven-snapshots</url>
             <snapshots>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
@@ -97,12 +95,12 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>${maven.server.releases}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.releases}</url>
+            <id>maven-releases</id>
+            <url>http://x.x.x.x:8081/repository/maven-releases</url>
         </pluginRepository>
         <pluginRepository>
-            <id>${maven.server.snapshots}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.snapshots}</url>
+            <id>maven-snapshots</id>
+            <url>http://x.x.x.x.129:8081/repository/maven-snapshots</url>
             <snapshots>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
