@@ -5,7 +5,7 @@
     <groupId>com.boot.admin</groupId>
     <artifactId>boot-admin-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -54,49 +54,49 @@
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-common</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-core-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-sba-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-swagger-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-log-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-mybatis-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-cache-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-filter-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-security-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>com.boot.admin</groupId>-->
@@ -106,12 +106,12 @@
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-jackson-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-system</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1-SNAPSHOT</version>
             </dependency>
 
             <dependency>
