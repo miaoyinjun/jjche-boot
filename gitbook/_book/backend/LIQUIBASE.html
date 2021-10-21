@@ -1,0 +1,925 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>数据库版本控制 · boot-admin开发文档</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="miaoyj">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-pro/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-back-to-top-button/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-cuav-chapters/cuav-chapters.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="MYBATIS.html" />
+    
+    
+    <link rel="prev" href="LIMIT.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    项目介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../directory/UNDERSTAND.html">
+            
+                <a href="../directory/UNDERSTAND.html">
+            
+                    
+                    快速了解
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../directory/START.html">
+            
+                <a href="../directory/START.html">
+            
+                    
+                    快速开始
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../directory/HTTP.html">
+            
+                <a href="../directory/HTTP.html">
+            
+                    
+                    接口定义
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="../directory/GIT.html">
+            
+                <a href="../directory/GIT.html">
+            
+                    
+                    分支管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="../directory/SERVER.html">
+            
+                <a href="../directory/SERVER.html">
+            
+                    
+                    服务器环境配置
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="../directory/BEST-PRACTICES.html">
+            
+                <a href="../directory/BEST-PRACTICES.html">
+            
+                    
+                    最佳实践
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="../directory/FAQ.html">
+            
+                <a href="../directory/FAQ.html">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="../frontend/vue-element-admin.html">
+            
+                <a href="../frontend/vue-element-admin.html">
+            
+                    
+                    前端开发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    后端开发
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="PROJECT.html">
+            
+                <a href="PROJECT.html">
+            
+                    
+                    代码规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="COMMENT.html">
+            
+                <a href="COMMENT.html">
+            
+                    
+                    注释规范
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="HOTDEPLOY.html">
+            
+                <a href="HOTDEPLOY.html">
+            
+                    
+                    热加载
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="CACHE.html">
+            
+                <a href="CACHE.html">
+            
+                    
+                    缓存操作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="CONVERT.html">
+            
+                <a href="CONVERT.html">
+            
+                    
+                    类型转换
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="ENUM.html">
+            
+                <a href="ENUM.html">
+            
+                    
+                    枚举定义
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.7" data-path="DATA-PERMISSION.html">
+            
+                <a href="DATA-PERMISSION.html">
+            
+                    
+                    数据权限
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.8" data-path="FILTER.html">
+            
+                <a href="FILTER.html">
+            
+                    
+                    接口/字段加密
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.9" data-path="HUTOOL.html">
+            
+                <a href="HUTOOL.html">
+            
+                    
+                    工具类库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.10" data-path="LOG.html">
+            
+                <a href="LOG.html">
+            
+                    
+                    日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.11" data-path="JASYPT.html">
+            
+                <a href="JASYPT.html">
+            
+                    
+                    配置文件加密
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.12" data-path="LIMIT.html">
+            
+                <a href="LIMIT.html">
+            
+                    
+                    限流
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.10.13" data-path="LIQUIBASE.html">
+            
+                <a href="LIQUIBASE.html">
+            
+                    
+                    数据库版本控制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.14" data-path="MYBATIS.html">
+            
+                <a href="MYBATIS.html">
+            
+                    
+                    mybatis
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.15" data-path="SECURITY.html">
+            
+                <a href="SECURITY.html">
+            
+                    
+                    权限验证
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.16" data-path="SWAGGER.html">
+            
+                <a href="SWAGGER.html">
+            
+                    
+                    接口文档
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.17" data-path="VALIDATE.html">
+            
+                <a href="VALIDATE.html">
+            
+                    
+                    接口验证
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.18" data-path="ENV.html">
+            
+                <a href="ENV.html">
+            
+                    
+                    系统环境变量
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.19" data-path="SBA.html">
+            
+                <a href="SBA.html">
+            
+                    
+                    服务监控
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.20" data-path="CODE-GENERATOR.html">
+            
+                <a href="CODE-GENERATOR.html">
+            
+                    
+                    代码生成
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.21" data-path="XXL-JOB-CLIENT.html">
+            
+                <a href="XXL-JOB-CLIENT.html">
+            
+                    
+                    xxl-job-client
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >数据库版本控制</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="liquibase">liquibase</h1>
+<h2 id="&#x7B80;&#x4ECB;">&#x7B80;&#x4ECB;</h2>
+<p>Liquibase&#x662F;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x8DDF;&#x8E2A;&#x3001;&#x7BA1;&#x7406;&#x548C;&#x5E94;&#x7528;&#x6570;&#x636E;&#x5E93;&#x53D8;&#x5316;&#x7684;&#x5F00;&#x6E90;&#x6570;&#x636E;&#x5E93;&#x91CD;&#x6784;&#x5DE5;&#x5177;&#x3002;&#x5B83;&#x5C06;&#x6240;&#x6709;&#x6570;&#x636E;&#x5E93;&#x7684;&#x53D8;&#x5316;&#x4FDD;&#x5B58;&#x5728;XML&#x6587;&#x4EF6;&#x4E2D;&#xFF0C;&#x4FBF;&#x4E8E;&#x7248;&#x672C;&#x63A7;&#x5236;&#x548C;&#x9879;&#x76EE;&#x90E8;&#x7F72;&#x5347;&#x7EA7;&#x3002;&#x4F7F;&#x7528;&#x8BE5;&#x5DE5;&#x5177;&#x53EF;&#x4EE5;&#x7A33;&#x5B9A;&#x3001;&#x9AD8;&#x6548;&#x7387;&#x5730;&#x5B9E;&#x73B0;&#x4EE3;&#x7801;&#x8FC1;&#x79FB;&#x4E0E;&#x56DE;&#x6EDA;&#x3002;</p>
+<h2 id="&#x6570;&#x636E;&#x5E93;">&#x6570;&#x636E;&#x5E93;</h2>
+<blockquote>
+<ul>
+<li>&#x7248;&#x672C;&#xFF1A; mysql5.7.8+</li>
+<li>&#x9ED8;&#x8BA4;&#x5B57;&#x7B26;&#x96C6;: utf8mb4</li>
+<li>&#x9ED8;&#x8BA4;&#x6392;&#x5E8F;&#x89C4;&#x5219;: utf8mb4_general_ci</li>
+</ul>
+<p>&#x521B;&#x5EFA;&#x6570;&#x636E;&#x5E93;SQL    </p>
+</blockquote>
+<pre><code class="lang-sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">DATABASE</span> <span class="hljs-keyword">IF</span> <span class="hljs-keyword">NOT</span> <span class="hljs-keyword">EXISTS</span> <span class="hljs-string">`boot-admin`</span> <span class="hljs-built_in">CHARACTER</span> <span class="hljs-keyword">SET</span> utf8mb4 <span class="hljs-keyword">COLLATE</span> utf8mb4_general_ci;
+</code></pre>
+<h3 id="&#x5EFA;&#x8868;&#x89C4;&#x7EA6;---&#x963F;&#x91CC;&#x4EE3;&#x7801;&#x89C4;&#x8303;">&#x5EFA;&#x8868;&#x89C4;&#x7EA6; --&#x963F;&#x91CC;&#x4EE3;&#x7801;&#x89C4;&#x8303;</h3>
+<p>1.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>&#x8868;&#x5FC5;&#x5907;&#x4E09;&#x5B57;&#x6BB5;: id,gmt_create,gmt_modified</p>
+<p>2.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>&#x903B;&#x8F91;&#x5220;&#x9664;&#x5B57;&#x6BB5;: is_deleted, created_by, updated_by</p>
+<p>3.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>&#x8868;&#x5B57;&#x6BB5;&#x6CE8;&#x91CA;</p>
+<p>4.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>&#x8868;&#x8FBE;&#x662F;&#x4E0E;&#x5426;&#x6982;&#x5FF5;&#x7684;&#x5B57;&#x6BB5;</p>
+<blockquote>
+<ul>
+<li>&#x5FC5;&#x987B;&#x4F7F;&#x7528;is_xxx &#x7684;&#x65B9;&#x5F0F;&#x547D;&#x540D;&#xFF0C;&#x6570;&#x636E;&#x7C7B;&#x578B;&#x662F; unsigned tinyint(1 &#x8868;&#x793A;&#x662F;&#xFF0C;0 &#x8868;&#x793A;&#x5426;)&#x3002;</li>
+<li>&#x8BF4;&#x660E;:&#x4EFB;&#x4F55;&#x5B57;&#x6BB5;&#x5982;&#x679C;&#x4E3A;&#x975E;&#x8D1F;&#x6570;&#xFF0C;&#x5FC5;&#x987B;&#x662F;unsigned&#x3002;</li>
+<li>&#x6CE8;&#x610F;:POJO&#x7C7B;&#x4E2D;&#x7684;&#x4EFB;&#x4F55;&#x5E03;&#x5C14;&#x7C7B;&#x578B;&#x7684;&#x53D8;&#x91CF;&#xFF0C;&#x90FD;&#x4E0D;&#x8981;&#x52A0;is&#x524D;&#x7F00;&#xFF0C;&#x9700;&#x8981;&#x5728;resultMap&#x8BBE;&#x7F6E;&#x4ECE;is_xxx&#x5230;Xxx&#x7684;&#x6620;&#x5C04;&#x5173;&#x7CFB;&#x3002;</li>
+<li>&#x6570;&#x636E;&#x5E93;&#x8868;&#x793A;&#x662F;&#x4E0E;&#x5426;&#x7684;&#x503C;&#xFF0C;&#x4F7F;&#x7528;tinyint&#x7C7B;&#x578B;&#xFF0C;&#x575A;&#x6301;is_xxx&#x7684;&#x547D;&#x540D;&#x65B9;&#x5F0F;&#x662F;&#x4E3A;&#x4E86;&#x660E;&#x786E;&#x5176;&#x53D6;&#x503C;&#x542B;&#x4E49;&#x4E0E;&#x53D6;&#x503C;&#x8303;&#x56F4;&#x3002;</li>
+<li>&#x6B63;&#x4F8B;:&#x8868;&#x8FBE;&#x903B;&#x8F91;&#x5220;&#x9664;&#x7684;&#x5B57;&#x6BB5;&#x540D;is_deleted&#xFF0C;1 &#x8868;&#x793A;&#x5220;&#x9664;&#xFF0C;0 &#x8868;&#x793A;&#x672A;&#x5220;&#x9664;&#x3002;</li>
+</ul>
+</blockquote>
+<p>5.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>&#x7D22;&#x5F15;&#x547D;&#x540D;&#x3002;</p>
+<blockquote>
+<ul>
+<li>&#x4E3B;&#x952E;&#x7D22;&#x5F15;&#x540D;&#x4E3A;pk<em>&#x5B57;&#x6BB5;&#x540D;;&#x552F;&#x4E00;&#x7D22;&#x5F15;&#x540D;&#x4E3A;uk</em>&#x5B57;&#x6BB5;&#x540D;;&#x666E;&#x901A;&#x7D22;&#x5F15;&#x540D;&#x5219;&#x4E3A;idx_&#x5B57;&#x6BB5;&#x540D;&#x3002;</li>
+<li>&#x8BF4;&#x660E;:pk<em> &#x5373; primary key;uk</em> &#x5373; unique key;idx_ &#x5373; index &#x7684;&#x7B80;&#x79F0;&#x3002;</li>
+</ul>
+</blockquote>
+<p>6.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>&#x5C0F;&#x6570;&#x7C7B;&#x578B;&#x4E3A;decimal&#xFF0C;&#x7981;&#x6B62;&#x4F7F;&#x7528;float&#x548C;double&#x3002;</p>
+<blockquote>
+<ul>
+<li>&#x8BF4;&#x660E;:&#x5728;&#x5B58;&#x50A8;&#x7684;&#x65F6;&#x5019;&#xFF0C;float &#x548C; double &#x90FD;&#x5B58;&#x5728;&#x7CBE;&#x5EA6;&#x635F;&#x5931;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x5F88;&#x53EF;&#x80FD;&#x5728;&#x6BD4;&#x8F83;&#x503C;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5F97;&#x5230;&#x4E0D;&#x6B63;&#x786E;&#x7684; &#x7ED3;&#x679C;&#x3002;&#x5982;&#x679C;&#x5B58;&#x50A8;&#x7684;&#x6570;&#x636E;&#x8303;&#x56F4;&#x8D85;&#x8FC7; decimal &#x7684;&#x8303;&#x56F4;&#xFF0C;&#x5EFA;&#x8BAE;&#x5C06;&#x6570;&#x636E;&#x62C6;&#x6210;&#x6574;&#x6570;&#x548C;&#x5C0F;&#x6570;&#x5E76;&#x5206;&#x5F00;&#x5B58;&#x50A8;&#x3002;</li>
+<li>&#x8FD0;&#x7B97;&#xFF1A;<a href="https://hutool.cn/docs/#/core/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E6%95%B0%E5%AD%97%E5%B7%A5%E5%85%B7-NumberUtil" target="_blank">https://hutool.cn/docs/#/core/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E6%95%B0%E5%AD%97%E5%B7%A5%E5%85%B7-NumberUtil</a></li>
+</ul>
+</blockquote>
+<p>7.<strong>&#x3010;&#x5F3A;&#x5236;&#x3011;</strong>varchar</p>
+<blockquote>
+<ul>
+<li>&#x662F;&#x53EF;&#x53D8;&#x957F;&#x5B57;&#x7B26;&#x4E32;&#x4E0D;&#x9884;&#x5148;&#x5206;&#x914D;&#x5B58;&#x50A8;&#x7A7A;&#x95F4;&#xFF0C;&#x957F;&#x5EA6;&#x4E0D;&#x8981;&#x8D85;&#x8FC7;5000&#xFF0C;&#x5982;&#x679C;&#x5B58;&#x50A8;&#x957F;&#x5EA6; &#x5927;&#x4E8E;&#x6B64;&#x503C;&#xFF0C;&#x5B9A;&#x4E49;&#x5B57;&#x6BB5;&#x7C7B;&#x578B;&#x4E3A; text&#xFF0C;&#x72EC;&#x7ACB;&#x51FA;&#x6765;&#x4E00;&#x5F20;&#x8868;&#xFF0C;&#x7528;&#x4E3B;&#x952E;&#x6765;&#x5BF9;&#x5E94;&#xFF0C;&#x907F;&#x514D;&#x5F71;&#x54CD;&#x5176;&#x5B83;&#x5B57;&#x6BB5;&#x7D22;&#x5F15;&#x6548;&#x7387;&#x3002;</li>
+</ul>
+</blockquote>
+<p>8.<strong>&#x3010;&#x63A8;&#x8350;&#x3011;</strong>&#x8868;&#x7684;&#x547D;&#x540D;&#x6700;&#x597D;&#x662F;&#x9075;&#x5FAA;&#x201C;&#x4E1A;&#x52A1;&#x540D;&#x79F0;_&#x8868;&#x7684;&#x4F5C;&#x7528;&#x201D;&#x3002;</p>
+<blockquote>
+<ul>
+<li>&#x6B63;&#x4F8B;:alipay_task / force_project / trade_config</li>
+</ul>
+</blockquote>
+<h3 id="&#x8868;&#x64CD;&#x4F5C;">&#x8868;&#x64CD;&#x4F5C;</h3>
+<ol>
+<li><p><em>&#x5B9E;&#x9645;&#x64CD;&#x4F5C;&#x53EF;&#x53C2;&#x8003;<strong>resources/liquibase/1.0.0</strong>&#x5185;&#x7684;&#x5B9A;&#x4E49;</em></p>
+</li>
+<li><p><em>&#x591A;&#x4EBA;&#x5F00;&#x53D1;&#x65F6;&#x4E0D;&#x63A8;&#x8350;&#x4F7F;&#x7528;&#x5171;&#x4EAB;&#x6570;&#x636E;&#x5E93;&#xFF0C;sql&#x7248;&#x672C;&#x4E0D;&#x597D;&#x63A7;&#x5236;</em>&#xFF0C;&#x63A8;&#x8350;&#x5728;&#x5F00;&#x53D1;&#x4EBA;&#x5458;&#x672C;&#x673A;&#x5B89;&#x88C5;&#x6570;&#x636E;&#x5E93;</p>
+</li>
+<li><p><em>&#x63A8;&#x8350;&#x4F7F;&#x7528;<strong>&#x7EAF;sql</strong>&#x505A;&#x8868;&#x64CD;&#x4F5C;&#xFF0C;&#x4EE5;&#x540E;&#x8FC1;&#x79FB;&#x6BD4;&#x8F83;&#x65B9;&#x4FBF;</em></p>
+</li>
+<li><p><em>&#x4E00;<strong>&#x5B9A;&#x8981;&#x5199;&#x56DE;&#x6EDA;&#x7684;&#x8BED;&#x53E5;</strong>&#xFF0C;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x5F00;&#x542F;&#x4E86;test-rollback-on-update&#x5C5E;&#x6027;</em>&#xFF0C;&#x8FD9;&#x6837;&#x505A;&#x662F;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;sql&#x66F4;&#x65B0;&#x53EF;&#x63A7;&#xFF0C;&#x53EF;&#x56DE;&#x6EDA;</p>
+</li>
+<li><p><em>dev&#x3001;qa&#x3001;demo&#x3001;prod&#x73AF;&#x5883;&#xFF0C;update&#x64CD;&#x4F5C;&#x9ED8;&#x8BA4;&#x901A;&#x8FC7;spring-liquibase&#x65B9;&#x5F0F;&#x6267;&#x884C;&#xFF0C;&#x60F3;&#x624B;&#x52A8;&#x63A7;&#x5236;sql&#xFF0C;&#x53EF;&#x4FEE;&#x6539;spring.liquibase.enabled&#x5C5E;&#x6027;&#x7981;&#x7528;</em>
+XML&#x6587;&#x4EF6;&#x6240;&#x5728;&#x76EE;&#x5F55;&#xFF1A;resources/liquibase/changelog/[maven.project.version]</p>
+</li>
+</ol>
+<h2 id="&#x6DFB;&#x52A0;&#x987A;&#x5E8F;">&#x6DFB;&#x52A0;&#x987A;&#x5E8F;</h2>
+<ol>
+<li>resources/liquibase/changelog&#x4E0B;&#x6DFB;&#x52A0;&#x7248;&#x672C;&#x76EE;&#x5F55;&#xFF0C;&#x5982;1.0.0</li>
+<li>&#x5728;&#x7248;&#x672C;&#x76EE;&#x5F55;&#x4E0B;&#x589E;&#x52A0;xml&#x76EE;&#x5F55;&#x4E0E;master.xml</li>
+<li>&#x5728;xml&#x76EE;&#x5F55;&#x589E;&#x52A0;todoxxxx.xml&#x548C;sql&#x76EE;&#x5F55;</li>
+<li>master.xml&#x5F15;&#x5165;&#x65B0;&#x6DFB;&#x52A0;&#x7684;todoxxxx.xml</li>
+</ol>
+<p>&#x793A;&#x4F8B;</p>
+<blockquote>
+<p>resources</p>
+<blockquote>
+<p>liquibase</p>
+<blockquote>
+<p>changelog</p>
+<blockquote>
+<p>1.0.0</p>
+<blockquote>
+<p>xml</p>
+<blockquote>
+<p>sql
+20200702_001_add_tb_student.xml -- &#x6DFB;&#x52A0;&#x5B66;&#x751F;&#x8868;</p>
+</blockquote>
+</blockquote>
+<p>master.xml --&#x5F15;&#x5165;20200702_001_add_tb_student.xml&#xFF0C;&#x5E76;&#x6DFB;&#x52A0;tag</p>
+<p>1.1.0</p>
+<blockquote>
+<p>xml</p>
+<blockquote>
+<p>sql
+20200703_001_init_data_student.xml -- &#x521D;&#x59CB;&#x5316;&#x5B66;&#x751F;&#x8868;&#x6570;&#x636E;</p>
+</blockquote>
+</blockquote>
+<p>master.xml --&#x5F15;&#x5165;20200703_001_init_data_student.xml&#xFF0C;&#x5E76;&#x6DFB;&#x52A0;tag</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="&#x65B0;&#x589E;&#x8868;">&#x65B0;&#x589E;&#x8868;</h3>
+<blockquote>
+<p>XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_add_tb</em>[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200702_001_add_tb_student.xml</p>
+</blockquote>
+<h3 id="&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;">&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;</h3>
+<blockquote>
+<p>XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_init_data</em>[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200703_001_init_data_student.xml</p>
+</blockquote>
+<h3 id="&#x589E;&#x52A0;&#x5B57;&#x6BB5;">&#x589E;&#x52A0;&#x5B57;&#x6BB5;</h3>
+<blockquote>
+<p>XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_add_col</em>[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200703_002_add_col_student.xml</p>
+</blockquote>
+<h3 id="&#x5220;&#x9664;&#x5B57;&#x6BB5;">&#x5220;&#x9664;&#x5B57;&#x6BB5;</h3>
+<blockquote>
+<p>XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_del_col</em>[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200703_003_del_col_student.xml</p>
+</blockquote>
+<h3 id="&#x4FEE;&#x6539;&#x5B57;&#x6BB5;">&#x4FEE;&#x6539;&#x5B57;&#x6BB5;</h3>
+<blockquote>
+<p>XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_modify_col</em>[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200703_004_modify_col_student.xml</p>
+</blockquote>
+<h3 id="&#x6DFB;&#x52A0;&#x7D22;&#x5F15;">&#x6DFB;&#x52A0;&#x7D22;&#x5F15;</h3>
+<blockquote>
+<p>uk:&#x552F;&#x4E00;&#x7D22;&#x5F15;, idx:&#x666E;&#x901A;&#x7D22;&#x5F15;
+XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_add</em>[uk/idx]_[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200703_005_add_idx_student.xml</p>
+</blockquote>
+<h3 id="&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;csv&#xFF0C;&#x4E0D;&#x63A8;&#x8350;">&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;CSV&#xFF0C;&#x4E0D;&#x63A8;&#x8350;</h3>
+<blockquote>
+<p>XML&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_init_data</em>[&#x8868;&#x540D;].xml
+&#x793A;&#x4F8B;&#xFF1A;20200702_003_init_data_student.xml</p>
+<p>CSV&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;[&#x65E5;&#x671F;]<em>[&#x5E8F;&#x53F7;]_init_data</em>[&#x8868;&#x540D;].csv
+&#x793A;&#x4F8B;&#xFF1A;20200703_001_init_data_student.csv</p>
+<pre><code class="lang-CSV">  name,age,good_id
+  &#x738B;,1,1
+  &#x5927;,2,3
+  &#x529B;,3,4
+</code></pre>
+</blockquote>
+<h3 id="&#x6570;&#x636E;&#x5E93;&#x6587;&#x6863;&#x751F;&#x6210;">&#x6570;&#x636E;&#x5E93;&#x6587;&#x6863;&#x751F;&#x6210;</h3>
+<ol>
+<li>screw<blockquote>
+<p>&#x6587;&#x6863;&#x4F4D;&#x7F6E;&#xFF1A;target/db/doc/*.html</p>
+<pre><code class="lang-shell"> $ mvn clean package screw:run
+</code></pre>
+</blockquote>
+</li>
+<li>liquibase<blockquote>
+<p>&#x6587;&#x6863;&#x4F4D;&#x7F6E;&#xFF1A;target/liquibase/dbDoc/index.html</p>
+<pre><code class="lang-shell"> $ mvn clean package liquibase:dbDoc -Dprofiles.active=${profiles.active} -Dliquibase.password=${liquibase.password}
+</code></pre>
+</blockquote>
+</li>
+</ol>
+<h3 id="&#x56DE;&#x6EDA;">&#x56DE;&#x6EDA;</h3>
+<blockquote>
+<p>&#x56DE;&#x6EDA;&#x64CD;&#x4F5C;&#x7684;&#x524D;&#x63D0;&#x5FC5;&#x987B;&#x6709;&#x4E2A;&#x6807;&#x8BB0;&#x4F4D;&#xFF0C;&#x8FD9;&#x91CC;&#x4F7F;&#x7528;tag</p>
+<ul>
+<li>&#x6253;tag&#x65B9;&#x6CD5;1&#xFF0C;<strong><em>&#x63A8;&#x8350;</em></strong></li>
+</ul>
+<blockquote>
+<p>&#x9700;&#x8981;&#x5728;&#x786E;&#x8BA4;&#x4E0D;&#x4F1A;&#x5728;&#x6539;&#x52A8;&#x6570;&#x636E;&#x5E93;&#x8868;&#x540E;&#xFF0C;&#x5728;&#x7248;&#x672C;/master.xml&#x91CC;&#x624B;&#x52A8;&#x4FEE;&#x6539;&#x7248;&#x672C;&#x53F7;</p>
+<pre><code class="lang-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">changeSet</span>  <span class="hljs-attr">author</span>=<span class="hljs-string">&quot;miaoyj&quot;</span>  <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;add tag&quot;</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">tagDatabase</span>  <span class="hljs-attr">tag</span>=<span class="hljs-string">&quot;1.2.0&quot;</span>/&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">changeSet</span>&gt;</span>
+</code></pre>
+</blockquote>
+<ul>
+<li>&#x6253;tag&#x65B9;&#x6CD5;2</li>
+</ul>
+<pre><code class="lang-shell">$ liquibase tag ${version}
+</code></pre>
+</blockquote>
+<p><del>&gt; maven &#x6253;tag&#x65B9;&#x6CD5;3</del>
+<del>&gt; &#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;CI&#x5DE5;&#x5177;&#x8981;&#x5F97;&#x5230;&#x4E0A;&#x6B21;&#x7684;&#x7248;&#x672C;&#x53F7;&#xFF0C;&#x7528;&#x4EE5;&#x83B7;&#x53D6;&#x5BF9;&#x5E94;&#x7684;jar&#x4E0E;liqubase&#x7684;tag</del>
+<del>&gt; &#x975E;dev&#x73AF;&#x5883;&#xFF0C;&#x9700;&#x8981;&#x6267;&#x884C;liquibase&#x5347;&#x7EA7;&#x3001;&#x589E;&#x52A0;&#x6807;&#x7B7E;&#x547D;&#x4EE4;&#xFF1A;</del>
+<del>&gt; &#x53C2;&#x6570;profiles.active&#x6307;&#x5B9A;&#x4E86;&#x6570;&#x636E;&#x5E93;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#x4E0E;context&#x7684;&#x73AF;&#x5883;&#x3002;</del>
+<del>$ mvn clean package liquibase:updateTestingRollback liquibase:update liquibase:tag liquibase:dbDoc -Dprofiles.active=${profiles.active} -Dliquibase.password=${liquibase.password}</del>
+<del>&gt;&gt; &#x6570;&#x636E;&#x5E93;&#x53D8;&#x66F4;&#x7684;&#x9ED8;&#x8BA4;&#x7248;&#x672C;&#x4E0E;pom.xml&#x7684;version&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#xFF0C;&#x65E0;&#x9700;&#x6307;&#x5B9A;&#x7248;&#x672C;&#x53F7;(mvn liquibase:tag ~~-Dliquibase.tag=1.0.0)</del></p>
+<blockquote>
+<p>&#x56DE;&#x6EDA;&#x547D;&#x4EE4;&#xFF1A;</p>
+<p>&#x53C2;&#x8003; <a href="https://docsstage.liquibase.com/commands/home.html" target="_blank">https://docsstage.liquibase.com/commands/home.html</a></p>
+<p>&#x51C6;&#x5907;&#x5DE5;&#x4F5C;</p>
+<ol>
+<li>&#x5B89;&#x88C5;liquibase</li>
+<li>liquibase&#x5B89;&#x88C5;&#x76EE;&#x5F55;/lib/&#x52A0;&#x5165;mysql.jar</li>
+<li>liquibase.properties&#x4F4D;&#x7F6E;&#x5728;&#x9879;&#x76EE;&#x4F4D;&#x7F6E;/resources/liquibase/master.xml&#x7684;&#x4E0A;&#x5C42;&#x76EE;&#x5F55;
+&#x6839;&#x636E;&#x5B9E;&#x9645;&#x60C5;&#x51B5;&#x4EFB;&#x9009;&#x4E00;&#x79CD;   </li>
+<li>&#x56DE;&#x6EDA;-&#x6307;&#x5B9A;tag&#xFF0C;&#x7ACB;&#x5373;&#x6267;&#x884C;&#x56DE;&#x6EDA;&#x64CD;&#x4F5C;
+<code>$ liquibase rollback 1.0.0 --changeLogFile=liquibase/master.xml</code></li>
+<li>&#x751F;&#x6210;&#x56DE;&#x6EDA;&#x7684;sql-&#x6307;&#x5B9A;tag&#xFF0C;&#x4E0D;&#x4F1A;&#x6267;&#x884C;&#x56DE;&#x6EDA;&#x64CD;&#x4F5C;&#xFF0C;<strong><em>&#x63A8;&#x8350;</em></strong>
+<code>$ liquibase rollbackSQL 1.0.1 --changeLogFile=liquibase/master.xml --outputFile=rollback_1.0.1.sql</code></li>
+<li>&#x751F;&#x6210;&#x56DE;&#x6EDA;&#x7684;sql-&#x6307;&#x5B9A;xml&#x6216;sql&#xFF0C;&#x4E0D;&#x5B9E;&#x7528;
+<code>$ liquibase --changeLogFile=liquibase/master.xml --outputFile=future.txt futureRollbackSQL</code></li>
+</ol>
+</blockquote>
+<p><del>&gt; maven&#x65B9;&#x5F0F; 4.0&#x7248;&#x672C;&#x5DF2;&#x6536;&#x8D39;&#xFF0C;&#x5E9F;&#x5F03;</del>
+<del>$ mvn clean package liquibase:rollback -Dprofiles.active=${profiles.active} -Dliquibase.password=${liquibase.password} -Dliquibase.rollbackTag=${&#x6307;&#x5B9A;&#x56DE;&#x6EDA;&#x5230;&#x7684;&#x6807;&#x7B7E;&#x7248;&#x672C;&#x53F7;}</del></p>
+<h3 id="&#x5207;&#x6362;&#x9879;&#x76EE;&#x5206;&#x652F;&#x95EE;&#x9898;">&#x5207;&#x6362;&#x9879;&#x76EE;&#x5206;&#x652F;&#x95EE;&#x9898;</h3>
+<blockquote>
+<p>&#x5728;&#x5F00;&#x53D1;&#x8FC7;&#x7A0B;&#x4E2D;&#x5207;&#x6362;&#x5206;&#x652F;&#x53EF;&#x80FD;&#x4F1A;&#x51FA;&#x73B0;&#x6570;&#x636E;&#x96C6;&#x4E0D;&#x7EDF;&#x4E00;&#x95EE;&#x9898;&#xFF0C;&#x63A8;&#x8350;&#x5237;&#x65B0;&#x6216;&#x91CD;&#x65B0;&#x540C;&#x6B65;&#x6570;&#x636E;&#x5E93;&#xFF0C;&#x53C2;&#x8003;&#x547D;&#x4EE4;&#xFF1A;</p>
+<pre><code class="lang-shell">    1.$ liquibase dropAll
+    2.$ liquibase update
+</code></pre>
+</blockquote>
+<h3 id="&#x4E0A;&#x4E0B;&#x6587;">&#x4E0A;&#x4E0B;&#x6587;</h3>
+<blockquote>
+<p>&#x5728;&#x4E0D;&#x540C;&#x7684;&#x73AF;&#x5883;&#x4E2D;&#x6267;&#x884C;&#x4E0D;&#x540C;&#x7684;SQL
+&#x5982;&#xFF1A;&#x5728;DEV&#x73AF;&#x5883;&#x4E2D;&#x6267;&#x884C;&#x63D2;&#x5165;&#x6D4B;&#x8BD5;&#x6570;&#x636E;&#xFF0C;&#x5728;&#x751F;&#x4EA7;&#x73AF;&#x5883;&#x4E2D;&#x4E0D;&#x6267;&#x884C;&#x3002;
+&#x793A;&#x4F8B;&#xFF1A;context&#x6307;&#x5B9A;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x73AF;&#x5883;&#x4E0B;&#x624D;&#x6267;&#x884C;&#xFF0C;&#x5982;&#x547D;&#x4EE4;&#x4E0D;&#x6307;&#x5B9A;context&#x53C2;&#x6570;&#xFF0C;&#x9ED8;&#x8BA4;&#x6267;&#x884C;&#x3002;</p>
+<pre><code>    &lt;changeSet id=&quot;20200703_001_init_data_student&quot; author=&quot;miaoyj&quot; context=&quot;prod,demo&quot;&gt;
+</code></pre></blockquote>
+<h3 id="&#x6700;&#x4F73;&#x5B9E;&#x8DF5;">&#x6700;&#x4F73;&#x5B9E;&#x8DF5;</h3>
+<blockquote>
+<ul>
+<li><strong>DEVOPS&#x65B9;&#x5F0F;</strong></li>
+<li>&#x66F4;&#x65B0;&#xFF1A;liquibase&#x7684;update&#x64CD;&#x4F5C;&#x4EA4;&#x7ED9;liquibase-spring&#xFF0C;&#x5373;&#x9879;&#x76EE;&#x542F;&#x52A8;&#x65F6;&#x5373;&#x81EA;&#x52A8;&#x6267;&#x884C;update&#x64CD;&#x4F5C;</li>
+<li>&#x56DE;&#x6EDA;&#xFF1A;&#x5728;jenkins&#x670D;&#x52A1;&#x5668;&#x4E0A;&#x5B89;&#x88C5;liquibase&#x547D;&#x4EE4;&#xFF0C;&#x5355;&#x72EC;&#x5EFA;&#x7ACB;&#x4E00;&#x4E2A;job&#xFF0C;&#x5185;&#x5BB9;&#xFF1A;&#x83B7;&#x53D6;&#x7684;&#x9879;&#x76EE;&#x4EE3;&#x7801;&#x5206;&#x652F;&#x540C;&#x8981;&#x53D1;&#x5E03;&#x7684;&#x5206;&#x652F;&#x4FDD;&#x6301;&#x4E00;&#x81F4;&#xFF0C;
+&#x5207;&#x6362;&#x5230;resources/liquibase.properties&#x76EE;&#x5F55;&#x4E0B;&#xFF0C;&#x4F7F;&#x7528;&#x65B9;&#x6CD5;1.&#x56DE;&#x6EDA;-&#x6307;&#x5B9A;tag&#xFF0C;&#x7ACB;&#x5373;&#x6267;&#x884C;&#x56DE;&#x6EDA;&#x64CD;&#x4F5C;</li>
+<li>&#x9879;&#x76EE;&#x91CC;liquibase.properties&#x91CC;&#x4E0D;&#x8981;&#x6D89;&#x53CA;&#x5BC6;&#x7801;&#x7B49;&#x4FE1;&#x606F;&#xFF0C;&#x5728;&#x6267;&#x884C;&#x547D;&#x4EE4;&#x65F6;&#x901A;&#x8FC7;&#x53C2;&#x6570;&#x6307;&#x5B9A;&#x5BC6;&#x7801; --password   </li>
+</ul>
+<p><strong>&#x5F00;&#x53D1;&#x3001;DBA&#x5206;&#x79BB;&#x65B9;&#x5F0F;</strong></p>
+<ol>
+<li>&#x66F4;&#x65B0;&#xFF1A;&#x7981;&#x7528;liquibase-spring&#x65B9;&#x5F0F;&#xFF0C;&#x4F7F;&#x7528;&#x547D;&#x4EE4;&#x751F;&#x6210;update.sql&#x4EA4;&#x7531;DBA&#x6267;&#x884C;&#xFF1A;<code>$liquibase --changeLogFile=liquibase/master.xml updateSQL --outputFile=update.sql --contexts=prod</code></li>
+<li>&#x56DE;&#x6EDA;&#xFF1A;&#x4F7F;&#x7528;&#x56DE;&#x6EDA;&#x65B9;&#x5F0F;2. &#x751F;&#x6210;&#x56DE;&#x6EDA;&#x7684;sql-&#x6307;&#x5B9A;tag&#xFF0C;&#x4E0D;&#x4F1A;&#x6267;&#x884C;&#x56DE;&#x6EDA;&#x64CD;&#x4F5C;&#xFF0C;<em>&#x63A8;&#x8350;</em>&#xFF0C;&#x751F;&#x6210;&#x56DE;&#x6EDA;&#x7684;sql&#x4EA4;&#x7531;DBA&#x6267;&#x884C;</li>
+<li><p>&#x9879;&#x76EE;&#x91CC;liquibase.properties&#x91CC;&#x4E0D;&#x8981;&#x6D89;&#x53CA;&#x5BC6;&#x7801;&#x7B49;&#x4FE1;&#x606F;&#xFF0C;&#x5728;&#x6267;&#x884C;&#x547D;&#x4EE4;&#x65F6;&#x901A;&#x8FC7;&#x53C2;&#x6570;&#x6307;&#x5B9A;&#x5BC6;&#x7801; --password</p>
+</li>
+<li><p><strong>Docker</strong>
+&#x5F85;&#x66F4;&#x65B0;</p>
+</li>
+</ol>
+</blockquote>
+<h3 id="&#x95EE;&#x9898;">&#x95EE;&#x9898;</h3>
+<ol>
+<li><p>liquibase-maven-plugin</p>
+<ul>
+<li><p>3.10.1&#x7248;&#x672C;</p>
+<ol>
+<li>changeLogFile&#x8DEF;&#x5F84;&#x662F;src/main/resources/liquibase/master.xml</li>
+<li><p>&#x4E0D;&#x652F;&#x6301;&lt;includeAll&#xFF0C;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<ul>
+<li><p>liquibase/master.xml</p>
+<p><code>&lt;include file=&quot;changelog/1.0.0/master.xml&quot; relativeToChangelogFile=&quot;true&quot;/&gt;</code></p>
+</li>
+<li><p>changelog/1.0.0/master.xml</p>
+<p><code>&lt;include file=&quot;20200702_001_add_tb_student.xml&quot; relativeToChangelogFile=&quot;true&quot;/&gt;</code></p>
+</li>
+</ul>
+</li>
+<li><p>addColumn remarks&#x5C5E;&#x6027;&#x4F1A;&#x4FEE;&#x6539;&#x8868;&#x7684;remarks&#x5C5E;&#x6027;&#xFF0C;&#x9700;&#x8981;&#x5728;&#x4E4B;&#x540E;&#x589E;&#x52A0;&#x4FEE;&#x6539;&#x8868;&#x5907;&#x6CE8;SQL&#xFF0C;&#x72EC;&#x7ACB;&#x7684;changeSet <a href="https://github.com/liquibase/liquibase/issues/1210" target="_blank">https://github.com/liquibase/liquibase/issues/1210</a></p>
+</li>
+</ol>
+</li>
+<li>4.0.0<ol>
+<li>&#x652F;&#x6301;includeAll&#xFF0C;&#x4F46;&#x8BE5;&#x6807;&#x7B7E;&#x4F1A;&#x5C06;&#x4F1A;&#x6267;&#x884C;path&#x4E0B;&#x6240;&#x6709;&#x5B50;&#x76EE;&#x5F55;&#x6587;&#x4EF6;&#xFF08;&#x5982;&#x6307;&#x5B9A;&#x573A;&#x666F;&#x4E0B;&#x7684;SQL&#x6587;&#x4EF6;&#xFF1A;&#x6267;&#x884C;&#x5B8C;addColumn&#x64CD;&#x4F5C;&#x540E;&#x7684;sql&#xFF0C;&#x4F1A;&#x63D0;&#x524D;&#x6267;&#x884C;&#xFF09;&#xFF0C;&#x6309;&#x81EA;&#x6392;&#x5E8F;(&#x6709;&#x6F5C;&#x5728;&#x98CE;&#x9669;)&#x8FDB;&#x884C;&#x6267;&#x884C;&#xFF0C;&#x7528;includeFile&#x6307;&#x5B9A;xml&#x4E0E;sql&#x987A;&#x5E8F;&#x89E3;&#x51B3;&#x3002;</li>
+<li>addColumn remarks&#x5C5E;&#x6027;&#x4F1A;&#x4FEE;&#x6539;&#x8868;&#x7684;remarks&#x5C5E;&#x6027;&#xFF0C;&#x72EC;&#x7ACB;&#x7684;changeSet&#xFF0C;&#x9700;&#x8981;&#x5728;&#x4E4B;&#x540E;&#x589E;&#x52A0;&#x4FEE;&#x6539;&#x8868;&#x5907;&#x6CE8;SQL <a href="https://github.com/liquibase/liquibase/issues/1210" target="_blank">https://github.com/liquibase/liquibase/issues/1210</a></li>
+<li>modifyDataType&#x4F1A;&#x5220;&#x9664;&#x5B57;&#x6BB5;&#x5907;&#x6CE8;</li>
+<li>spring.liquibase.tag&#xFF0C;&#x4E0D;&#x4F1A;&#x6253;tag&#xFF0C;&#x9700;&#x8981;&#x7528;command&#x6216;maven plugin&#xFF0C;&#x6682;&#x65F6;&#x4F7F;&#x7528;tagDatabase&#x89E3;&#x51B3; <a href="https://github.com/liquibase/liquibase/issues/1627" target="_blank">https://github.com/liquibase/liquibase/issues/1627</a></li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="LIMIT.html" class="navigation navigation-prev " aria-label="Previous page: 限流">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="MYBATIS.html" class="navigation navigation-next " aria-label="Next page: mybatis">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"数据库版本控制","level":"1.10.13","depth":2,"next":{"title":"mybatis","level":"1.10.14","depth":2,"path":"backend/MYBATIS.md","ref":"backend/MYBATIS.md","articles":[]},"previous":{"title":"限流","level":"1.10.12","depth":2,"path":"backend/LIMIT.md","ref":"backend/LIMIT.md","articles":[]},"dir":"ltr"},"config":{"plugins":["search-pro","chapter-fold","splitter","back-to-top-button","copy-code-button","cuav-chapters","heading-anchors","-sharing","-lunr","-search","-fontsettings","livereload"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"livereload":{},"splitter":{},"search-pro":{},"cuav-chapters":{"summaryMaxSize":20,"useLimitExpanded":false},"heading-anchors":{},"highlight":{},"back-to-top-button":{},"copy-code-button":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"miaoyj","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"boot-admin开发文档","language":"zh-hans","gitbook":"*","description":"boot-admin"},"file":{"path":"backend/LIQUIBASE.md","mtime":"2021-09-27T05:09:45.860Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-09-27T06:24:17.515Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-pro/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-pro/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-chapter-fold/chapter-fold.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-back-to-top-button/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-cuav-chapters/cuav-chapters.js"></script>
+        
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/1.2.1/anchor.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-heading-anchors/anchor-style.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+
+    </body>
+</html>
+

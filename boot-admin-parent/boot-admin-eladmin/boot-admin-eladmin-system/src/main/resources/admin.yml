@@ -1,0 +1,32 @@
+spring:
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+boot:
+  admin:
+    liquibase:
+      change-log: classpath:liquibase/changelog/0.9.0/admin.xml
+    user:
+      account:
+        expired-days: 90
+      password:
+        enabled: true
+        default-val: ${BOOT_ADMIN_USER_PASSWORD_DEFAULT-VAL:123456}
+        min-length: 8
+        max-length: 20
+        fails-max-count: 5
+        advance-day-must-reset: 1
+        advance-day-tip-reset: 15
+        expired-days: 90
+    task:
+      pool:
+        # 核心线程池大小
+        core-pool-size: 10
+        # 最大线程数
+        max-pool-size: 30
+        # 活跃时间
+        keep-alive-seconds: 60
+        # 队列容量
+        queue-capacity: 50

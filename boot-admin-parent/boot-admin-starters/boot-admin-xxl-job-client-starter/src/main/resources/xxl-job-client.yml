@@ -1,0 +1,14 @@
+boot:
+  admin:
+    xxl:
+      job:
+        admin:
+          addresses: http://localhost:8888/xxl-job-admin
+        accessToken:
+        executor:
+          appName: ${spring.application.name}
+          address:
+          ip:
+          port: 9999
+          logretentiondays: 30
+          logpath: ${log.path:./logs/}
