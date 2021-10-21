@@ -1,7 +1,5 @@
 package com.boot.admin.sba.actuator.health;
 
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -16,13 +14,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DbCountAutoConfiguration {
 
-    /**
-     * <p>dbCountHealthIndicator</p>
-     *
-     * @return a {@link org.springframework.boot.actuate.health.HealthIndicator} object.
-     */
-    @Bean("dbCountTest")
-    public HealthIndicator dbCountHealthIndicator() {
-        return new DbCountHealthIndicator();
-    }
+//    /**
+//     * <p>dbCountHealthIndicator</p>
+//     *
+//     * @return a {@link org.springframework.boot.actuate.health.HealthIndicator} object.
+//     */
+//    @Bean("dbCountTest")
+//    public HealthIndicator dbCountHealthIndicator() {
+//        return new DbCountHealthIndicator();
+//    }
 }
