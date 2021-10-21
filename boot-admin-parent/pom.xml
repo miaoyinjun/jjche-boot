@@ -38,9 +38,6 @@
         <mail.version>1.4.7</mail.version>
         <qiniu.version>7.8.0</qiniu.version>
         <alipay.version>4.9.153.ALL</alipay.version>
-
-        <maven.server.snapshots>maven-snapshots</maven.server.snapshots>
-        <maven.server.releases>maven-releases</maven.server.releases>
     </properties>
 
     <modules>
@@ -134,8 +131,8 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.version}</version>
                 <scope>runtime</scope>
+                <version>${mysql.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.liquibase</groupId>
@@ -571,19 +568,19 @@
                         </validationProperties>
                     </configuration>
                 </plugin>
-<!--                <plugin>-->
-<!--                    <groupId>org.liquibase</groupId>-->
-<!--                    <artifactId>liquibase-maven-plugin</artifactId>-->
-<!--                    <version>${liquibase.version}</version>-->
-<!--                    <configuration>-->
-<!--                        <propertyFile>src/main/resources/liquibase/env/${profiles.active}.properties</propertyFile>-->
-<!--                        <password>${liquibase.password}</password>-->
-<!--                        <changeLogFile>liquibase/master.xml</changeLogFile>-->
-<!--                        <tag>${project.version}</tag>-->
-<!--                        <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>-->
-<!--                        <contexts>${profiles.active}</contexts>-->
-<!--                    </configuration>-->
-<!--                </plugin>-->
+                <!--                <plugin>-->
+                <!--                    <groupId>org.liquibase</groupId>-->
+                <!--                    <artifactId>liquibase-maven-plugin</artifactId>-->
+                <!--                    <version>${liquibase.version}</version>-->
+                <!--                    <configuration>-->
+                <!--                        <propertyFile>src/main/resources/liquibase/env/${profiles.active}.properties</propertyFile>-->
+                <!--                        <password>${liquibase.password}</password>-->
+                <!--                        <changeLogFile>liquibase/master.xml</changeLogFile>-->
+                <!--                        <tag>${project.version}</tag>-->
+                <!--                        <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>-->
+                <!--                        <contexts>${profiles.active}</contexts>-->
+                <!--                    </configuration>-->
+                <!--                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -715,14 +712,12 @@
     <!-- 发布maven私服 -->
     <distributionManagement>
         <repository>
-            <id>${maven.server.releases}</id>
-            <name>${maven.server.releases}</name>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.releases}</url>
+            <id>maven-releases</id>
+            <url>${BOOT_ADMIN_MAVEN_URL}/maven-releases</url>
         </repository>
         <snapshotRepository>
-            <id>${maven.server.snapshots}</id>
-            <name>${maven.server.snapshots}</name>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.snapshots}</url>
+            <id>maven-snapshots</id>
+            <url>${BOOT_ADMIN_MAVEN_URL}/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
