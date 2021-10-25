@@ -1,8 +1,7 @@
 package com.boot.admin.system.modules.system.mapper;
 
-import com.boot.admin.system.modules.system.domain.UserDO;
-import com.boot.admin.common.annotation.DataPermission;
 import com.boot.admin.mybatis.base.MyBaseMapper;
+import com.boot.admin.system.modules.system.domain.UserDO;
 
 import java.util.Date;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Set;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-11-22
  */
-@DataPermission
+//@DataPermission
 public interface UserMapper extends MyBaseMapper<UserDO> {
 
     /**

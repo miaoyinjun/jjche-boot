@@ -233,7 +233,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
                             "Application '{}' is running [{}] ! Access URLs:\n\t" +
                             "Local: \t\thttp://localhost:{}\n\t" +
                             "External: \thttp://{}:{}\n\t" +
-                            "Doc: \thttp://{}:{}/sba/api/doc.html\n" +
+                            "Doc:       \thttp://{}:{}/sba/api/doc.html\n" +
                             "----------------------------------------------------------",
                     env.getProperty("spring.application.name"),
                     env.getProperty("spring.profiles.active"),

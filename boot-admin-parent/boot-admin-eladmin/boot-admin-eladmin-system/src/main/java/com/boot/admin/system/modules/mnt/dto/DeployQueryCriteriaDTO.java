@@ -1,6 +1,7 @@
 package com.boot.admin.system.modules.mnt.dto;
 
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 2019-08-24
  */
 @Data
-public class DeployQueryCriteriaDTO {
+public class DeployQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     /**
      * 模糊

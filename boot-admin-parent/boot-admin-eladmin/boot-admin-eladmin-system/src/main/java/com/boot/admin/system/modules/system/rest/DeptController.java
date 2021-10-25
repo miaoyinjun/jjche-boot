@@ -2,10 +2,7 @@ package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
-import com.boot.admin.system.modules.system.domain.DeptDO;
-import com.boot.admin.system.modules.system.dto.DeptDTO;
-import com.boot.admin.system.modules.system.dto.DeptQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.service.DeptService;
+import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.core.annotation.controller.AdminRestController;
@@ -13,6 +10,10 @@ import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
 import com.boot.admin.mybatis.param.MyPage;
+import com.boot.admin.system.modules.system.domain.DeptDO;
+import com.boot.admin.system.modules.system.dto.DeptDTO;
+import com.boot.admin.system.modules.system.dto.DeptQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.service.DeptService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,7 @@ public class DeptController extends BaseController {
     @ApiOperation("导出部门数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('dept:list')")
+    @PermissionData(deptIdInFieldName = "id")
     public void download(HttpServletResponse response, DeptQueryCriteriaDTO criteria) throws Exception {
         deptService.download(deptService.queryAll(criteria, false), response);
     }
@@ -70,6 +72,7 @@ public class DeptController extends BaseController {
     @ApiOperation("查询部门")
     @GetMapping
     @PreAuthorize("@el.check('user:list','dept:list')")
+    @PermissionData(deptIdInFieldName = "id")
     public ResultWrapper<MyPage> query(DeptQueryCriteriaDTO criteria) throws Exception {
         List<DeptDTO> deptDtos = deptService.queryAll(criteria, true);
         MyPage<DeptDTO> myPage = new MyPage<>();
@@ -91,6 +94,7 @@ public class DeptController extends BaseController {
     @ApiOperation("查询部门:根据ID获取同级与上级数据")
     @PostMapping("/superior")
     @PreAuthorize("@el.check('user:list','dept:list')")
+    @PermissionData(deptIdInFieldName = "id")
     public ResultWrapper<MyPage<List<DeptDTO>>> getSuperior(@RequestBody List<Long> ids) {
         Set<DeptDTO> deptDtos = new LinkedHashSet<>();
         for (Long id : ids) {

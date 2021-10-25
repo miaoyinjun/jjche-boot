@@ -1,7 +1,9 @@
 package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.lang.Assert;
+import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.enums.CodeEnum;
+import com.boot.admin.common.pojo.DataScope;
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.PasswordProperties;
 import com.boot.admin.system.modules.system.domain.UserDO;
@@ -72,6 +74,7 @@ public class UserController extends BaseController {
     @ApiOperation("导出用户数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('user:list')")
+    @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
     public void download(HttpServletResponse response, UserQueryCriteriaDTO criteria) throws IOException {
         userService.download(userService.queryAll(criteria), response);
     }
@@ -90,6 +93,7 @@ public class UserController extends BaseController {
     @ApiOperation("查询用户")
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
+    @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
     public ResultWrapper<Object> query(UserQueryCriteriaDTO criteria, PageParam pageable) {
         return ResultWrapper.ok(userService.queryAll(criteria, pageable));
     }

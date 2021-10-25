@@ -1,6 +1,7 @@
 package com.boot.admin.tool.modules.tool.dto;
 
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @version 1.0.8-SNAPSHOT
  */
 @Data
-public class QiniuQueryCriteriaDTO {
+public class QiniuQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
     private String key;
