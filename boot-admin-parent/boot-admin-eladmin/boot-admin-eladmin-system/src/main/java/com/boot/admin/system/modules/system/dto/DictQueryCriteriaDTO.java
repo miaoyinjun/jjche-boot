@@ -1,5 +1,6 @@
 package com.boot.admin.system.modules.system.dto;
 
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 
 /**
@@ -10,7 +11,7 @@ import lombok.Data;
  * @version 1.0.8-SNAPSHOT
  */
 @Data
-public class DictQueryCriteriaDTO {
+public class DictQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     private String blurry;
 }

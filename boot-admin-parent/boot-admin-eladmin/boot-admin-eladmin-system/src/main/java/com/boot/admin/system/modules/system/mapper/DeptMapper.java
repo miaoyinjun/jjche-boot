@@ -1,8 +1,7 @@
 package com.boot.admin.system.modules.system.mapper;
 
-import com.boot.admin.system.modules.system.domain.DeptDO;
-import com.boot.admin.common.annotation.DataPermission;
 import com.boot.admin.mybatis.base.MyBaseMapper;
+import com.boot.admin.system.modules.system.domain.DeptDO;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-11-22
  */
-@DataPermission(deptIdInFieldName = "id")
+//@DataPermission(deptIdInFieldName = "id")
 public interface DeptMapper extends MyBaseMapper<DeptDO> {
     /**
      * 根据角色ID 查询

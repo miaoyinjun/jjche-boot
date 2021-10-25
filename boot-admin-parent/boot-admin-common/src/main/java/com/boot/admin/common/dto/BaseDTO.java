@@ -17,6 +17,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 public class BaseDTO implements Serializable {
+
     /* 分组校验 */
     public @interface Create {
     }

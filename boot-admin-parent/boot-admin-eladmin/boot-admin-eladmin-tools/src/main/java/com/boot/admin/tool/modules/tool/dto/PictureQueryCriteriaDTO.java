@@ -1,5 +1,6 @@
 package com.boot.admin.tool.modules.tool.dto;
 
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  * @version 1.0.8-SNAPSHOT
  */
 @Data
-public class PictureQueryCriteriaDTO {
+public class PictureQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     private String filename;
     

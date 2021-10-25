@@ -1,6 +1,7 @@
 package com.boot.admin.system.modules.system.dto;
 
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 @Data
 @NoArgsConstructor
-public class JobQueryCriteriaDTO {
+public class JobQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
     private String name;

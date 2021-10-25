@@ -2,10 +2,15 @@ package com.boot.admin.mybatis.util;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.*;
+import cn.hutool.core.util.EnumUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
+import com.boot.admin.common.dto.PermissionDataRuleDTO;
 import com.boot.admin.mybatis.param.BetweenParam;
 
 import java.lang.reflect.Field;
@@ -28,12 +33,21 @@ public class MybatisUtil {
      * </p>
      *
      * @param query 查询参数
-     * @return queryWrapper
-     * @author miaoyj
-     * @since 2020-10-10
+     * @return /
      */
-    public static QueryWrapper assemblyQueryWrapper(Object query) {
+    public static QueryWrapper assemblyQueryWrapper(BaseQueryCriteriaDTO query) {
         QueryWrapper queryWrapper = new QueryWrapper();
+        //权限字段
+        List<PermissionDataRuleDTO> permissionDataRuleList = query.getPermissionDataRuleList();
+        if (CollUtil.isNotEmpty(permissionDataRuleList)) {
+            for (PermissionDataRuleDTO dataRuleDTO : permissionDataRuleList) {
+                String propName = dataRuleDTO.getColumn();
+                QueryCriteria.Type condition = dataRuleDTO.getCondition();
+                Object val = dataRuleDTO.getValue();
+                setQueryWrapper(queryWrapper, condition, propName, val);
+            }
+        }
+        //查询对象字段
         List<Field> fields = getAllFields(query.getClass(), new ArrayList<>());
         for (Field field : fields) {
             boolean accessible = field.isAccessible();
@@ -60,43 +74,7 @@ public class MybatisUtil {
                 if (ObjectUtil.isNull(val) || "".equals(val)) {
                     continue;
                 }
-                switch (q.type()) {
-                    case EQUAL:
-                        queryWrapper.eq(propName, val);
-                        break;
-                    case GREATER_THAN:
-                        queryWrapper.ge(propName, val);
-                        break;
-                    case LESS_THAN:
-                        queryWrapper.le(propName, val);
-                        break;
-                    case INNER_LIKE:
-                        queryWrapper.like(propName, val);
-                        break;
-                    case BETWEEN:
-                        if (ObjectUtil.isNotNull(val)) {
-                            List<String> betweenParamList = (List) val;
-                            BetweenParam betweenParam = getBetweenParam(betweenParamList, true);
-                            queryWrapper.between(propName, betweenParam.getStart(), betweenParam.getEnd());
-                        }
-                        break;
-                    case IN:
-                        if (ObjectUtil.isNotNull(val)) {
-                            Set<String> inParamList = (Set<String>) val;
-                            if (CollUtil.isNotEmpty(inParamList)) {
-                                queryWrapper.in(propName, inParamList);
-                            }
-                        }
-                        break;
-                    case IS_NULL:
-                        queryWrapper.isNull(propName);
-                        break;
-                    case NOT_NULL:
-                        queryWrapper.isNotNull(propName);
-                        break;
-                    default:
-                        break;
-                }
+                setQueryWrapper(queryWrapper, q.type(), propName, val);
             }
             field.setAccessible(accessible);
         }
@@ -105,12 +83,81 @@ public class MybatisUtil {
 
     /**
      * <p>
+     * 设置查询对象
+     * </p>
+     *
+     * @param queryWrapper 查询对象
+     * @param type         类型
+     * @param propName     属性名
+     * @param val          值
+     */
+    private static void setQueryWrapper(QueryWrapper queryWrapper, QueryCriteria.Type type, String propName, Object val) {
+        switch (type) {
+            case EQUAL:
+                queryWrapper.eq(propName, val);
+                break;
+            case NE:
+                queryWrapper.ne(propName, val);
+                break;
+            case GT:
+                queryWrapper.gt(propName, val);
+                break;
+            case GE:
+                queryWrapper.ge(propName, val);
+                break;
+            case LT:
+                queryWrapper.lt(propName, val);
+                break;
+            case LE:
+                queryWrapper.le(propName, val);
+                break;
+            case LIKE:
+                queryWrapper.like(propName, val);
+                break;
+            case LEFT_LIKE:
+                queryWrapper.likeLeft(propName, val);
+                break;
+            case RIGHT_LIKE:
+                queryWrapper.likeRight(propName, val);
+                break;
+            case BETWEEN:
+                if (ObjectUtil.isNotNull(val)) {
+                    List<String> betweenParamList = (List) val;
+                    BetweenParam betweenParam = getBetweenParam(betweenParamList, true);
+                    queryWrapper.between(propName, betweenParam.getStart(), betweenParam.getEnd());
+                }
+                break;
+            case IN:
+                if (ObjectUtil.isNotNull(val)) {
+                    Set<String> inParamList = (Set<String>) val;
+                    if (CollUtil.isNotEmpty(inParamList)) {
+                        queryWrapper.in(propName, inParamList);
+                    }
+                }
+                break;
+            case IS_NULL:
+                queryWrapper.isNull(propName);
+                break;
+            case NOT_NULL:
+                queryWrapper.isNotNull(propName);
+                break;
+            case SQL_RULES:
+                queryWrapper.apply(String.valueOf(val));
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    /**
+     * <p>
      * 获取class 所有字段
      * </p>
      *
-     * @param clazz
-     * @param fields
-     * @return
+     * @param clazz  类
+     * @param fields 字段
+     * @return /
      * @author miaoyj
      * @since 2020-10-10
      */

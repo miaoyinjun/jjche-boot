@@ -1,5 +1,6 @@
 package com.boot.admin.demo.modules.student.rest;
 
+import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.dto.BaseDTO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
@@ -8,11 +9,11 @@ import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.demo.constant.ApiVersion;
 import com.boot.admin.demo.modules.student.api.dto.StudentDTO;
-import com.boot.admin.demo.modules.student.api.vo.StudentVO;
-import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
 import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
 import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
+import com.boot.admin.demo.modules.student.api.vo.StudentVO;
+import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
@@ -161,6 +162,7 @@ public class StudentController extends BaseController {
             value = "列表", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = ApiVersion.MODULE_STUDENT
     )
+    @PermissionData
     public ResultWrapper<MyPage<StudentVO>> pageQuery(PageParam page,
                                                       @ApiParam(value = "排序", required = true)
                                                    @NotNull(message = "排序字段不正确")
