@@ -4,20 +4,22 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <date-range-picker v-model="query.gmtCreate" class="date-item" />
-        <rrOperation />
+        <el-input v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;"
+                  class="filter-item" @keyup.enter.native="crud.toQuery"/>
+        <date-range-picker v-model="query.gmtCreate" class="date-item"/>
+        <rrOperation/>
       </div>
-      <crudOperation :permission="permission" />
+      <crudOperation :permission="permission"/>
     </div>
     <!-- 表单渲染 -->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="520px">
+    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU"
+               :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="520px">
       <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" style="width: 380px;" />
+          <el-input v-model="form.name" style="width: 380px;"/>
         </el-form-item>
         <el-form-item label="角色级别" prop="level">
-          <el-input-number v-model.number="form.level" :min="1" controls-position="right" style="width: 145px;" />
+          <el-input-number v-model.number="form.level" :min="1" controls-position="right" style="width: 145px;"/>
         </el-form-item>
         <el-form-item label="数据范围" prop="dataScope">
           <el-select v-model="form.dataScope" style="width: 140px" placeholder="请选择数据范围" @change="changeScope">
@@ -40,7 +42,7 @@
           />
         </el-form-item>
         <el-form-item label="描述信息" prop="description">
-          <el-input v-model="form.description" style="width: 380px;" rows="5" type="textarea" />
+          <el-input v-model="form.description" style="width: 380px;" rows="5" type="textarea"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -55,18 +57,21 @@
           <div slot="header" class="clearfix">
             <span class="role-span">角色列表</span>
           </div>
-          <el-table stripe ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;" :data="crud.data" @selection-change="crud.selectionChangeHandler" @current-change="handleCurrentChange">
-            <el-table-column :selectable="checkboxT" type="selection" width="55" />
-            <el-table-column prop="name" label="名称" />
-            <el-table-column prop="dataScopeValue" label="数据权限" />
-            <el-table-column prop="level" label="角色级别" />
-            <el-table-column :show-overflow-tooltip="true" prop="description" label="描述" />
+          <el-table stripe ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;"
+                    :data="crud.data" @selection-change="crud.selectionChangeHandler"
+                    @current-change="handleCurrentChange">
+            <el-table-column :selectable="checkboxT" type="selection" width="55"/>
+            <el-table-column prop="name" label="名称"/>
+            <el-table-column prop="dataScopeValue" label="数据权限"/>
+            <el-table-column prop="level" label="角色级别"/>
+            <el-table-column :show-overflow-tooltip="true" prop="description" label="描述"/>
             <el-table-column :show-overflow-tooltip="true" width="135px" prop="gmtCreate" label="创建日期">
               <template slot-scope="scope">
                 <span>{{ parseTime(scope.row.gmtCreate) }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="130px" align="center" fixed="right">
+            <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="130px" align="center"
+                             fixed="right">
               <template slot-scope="scope">
                 <udOperation
                   v-if="scope.row.level >= level"
@@ -77,7 +82,7 @@
             </el-table-column>
           </el-table>
           <!--分页组件-->
-          <pagination />
+          <pagination/>
         </el-card>
       </el-col>
       <!-- 菜单授权 -->
@@ -96,7 +101,8 @@
               style="float: right; padding: 6px 9px"
               type="primary"
               @click="saveMenu"
-            >保存</el-button>
+            >保存
+            </el-button>
           </div>
           <el-tree
             ref="menu"
@@ -108,8 +114,9 @@
             check-strictly
             accordion
             show-checkbox
+            :expand-on-click-node="false"
             node-key="id"
-            @check="menuChange"
+            @node-click="handleNodeClick"
           >
             <span slot-scope="{ node, data }" class="data-permission-filed-tree-node">
               <span>{{ node.label }}</span>
@@ -129,7 +136,10 @@
                     :label="item.name"
                     :value="item.id"
                   >
-                    <label :style="{'text-decoration-line': (dataPermissionFieldIds.includes(item.id) ? 'line-through' : 'none')}">{{ item.name }}</label>
+                    <label
+                      :style="{'text-decoration-line': (dataPermissionFieldIds.includes(item.id) ? 'line-through' : 'none')}">{{
+                        item.name
+                      }}</label>
                   </el-option>
                 </el-select>
               </span>
@@ -138,6 +148,15 @@
         </el-card>
       </el-col>
     </el-row>
+    <el-drawer
+      title="数据规则权限"
+      :visible.sync="dataPermissionRuleVisible"
+      @open="handleDataPermissionRuleOpen()"
+      size="20%">
+      <div style="margin-left: 20px">
+        <dataPermissionRule ref="dataPermissionRule" :permission="permission"/>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -154,22 +173,35 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import DateRangePicker from '@/components/DateRangePicker'
+import dataPermissionRule from './dataPermissionRule'
 
 const defaultForm = { id: null, name: null, depts: [], description: null, dataScope: 'DATA_SCOPE_ALL', level: 3 }
 export default {
   name: 'Role',
-  components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
+  components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule },
   cruds() {
-    return Crud({ title: '角色', url: 'admin/roles', sort: 'level asc', crudMethod: { ...crudRoles }})
+    return Crud({ title: '角色', url: 'admin/roles', sort: 'level asc', crudMethod: { ...crudRoles } })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
     return {
+      nodeMenuId: null,
+      dataPermissionRuleVisible: false,
       defaultProps: { children: 'children', label: 'label', isLeaf: 'leaf' },
-      dateScopes: [{ k: 'DATA_SCOPE_ALL', v: '全部' }, { k: 'DATA_SCOPE_DEPT_AND_CHILD', v: '所在机构及以下' }, { k: 'DATA_SCOPE_DEPT', v: '所在机构' }, { k: 'DATA_SCOPE_SELF', v: '本人' }, { k: 'DATA_SCOPE_CUSTOM', v: '自定义' }], level: 3,
-      currentId: 0, menuLoading: false, showButton: false,
-      menus: [], menuIds: [], depts: [], deptDatas: [], // 多选时使用
-      dataPermissionFields: [], dataPermissionFieldIds: [],
+      dateScopes: [{ k: 'DATA_SCOPE_ALL', v: '全部' }, {
+        k: 'DATA_SCOPE_DEPT_AND_CHILD',
+        v: '所在机构及以下'
+      }, { k: 'DATA_SCOPE_DEPT', v: '所在机构' }, { k: 'DATA_SCOPE_SELF', v: '本人' }, { k: 'DATA_SCOPE_CUSTOM', v: '自定义' }],
+      level: 3,
+      currentId: 0,
+      menuLoading: false,
+      showButton: false,
+      menus: [],
+      menuIds: [],
+      depts: [],
+      deptDatas: [], // 多选时使用
+      dataPermissionFields: [],
+      dataPermissionFieldIds: [],
       permission: {
         add: ['admin', 'roles:add'],
         edit: ['admin', 'roles:edit'],
@@ -199,7 +231,10 @@ export default {
           res.forEach(function(menu) {
             const dataPermissionFieldSelectedIds = menu.dataPermissionFieldSelectedIds
             if (dataPermissionFieldSelectedIds != null) {
-              _this.dataPermissionFields.push({ menuId: menu.id, dataPermissionFieldIds: dataPermissionFieldSelectedIds })
+              _this.dataPermissionFields.push({
+                menuId: menu.id,
+                dataPermissionFieldIds: dataPermissionFieldSelectedIds
+              })
             }
           })
         })
@@ -379,34 +414,53 @@ export default {
           data.dataPermissionFieldIds = val
         }
       })
+    },
+    handleNodeClick(data) {
+      if (this.currentId) {
+        this.dataPermissionRuleVisible = true
+        this.nodeMenuId = data.id
+      }
+    },
+    handleDataPermissionRuleOpen() {
+      this.$nextTick(() => {
+        if (this.$refs.dataPermissionRule) {
+          this.$refs.dataPermissionRule.query.menuId = this.nodeMenuId
+          this.$refs.dataPermissionRule.query.roleId = this.currentId
+          this.$refs.dataPermissionRule.crud.toQuery()
+        }
+      })
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  .role-span {
-    font-weight: bold;color: #303133;
-    font-size: 15px;
-  }
+.role-span {
+  font-weight: bold;
+  color: #303133;
+  font-size: 15px;
+}
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
- ::v-deep .el-input-number .el-input__inner {
-    text-align: left;
-  }
- ::v-deep .vue-treeselect__multi-value{
-    margin-bottom: 0;
-  }
- ::v-deep .vue-treeselect__multi-value-item{
-    border: 0;
-    padding: 0;
-  }
- .data-permission-filed-tree-node {
-   flex: 1;
-   align-items: center;
-   justify-content: space-between;
-   font-size: 14px;
-   padding-right: 8px;
- }
+::v-deep .el-input-number .el-input__inner {
+  text-align: left;
+}
+
+::v-deep .vue-treeselect__multi-value {
+  margin-bottom: 0;
+}
+
+::v-deep .vue-treeselect__multi-value-item {
+  border: 0;
+  padding: 0;
+}
+
+.data-permission-filed-tree-node {
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
 </style>

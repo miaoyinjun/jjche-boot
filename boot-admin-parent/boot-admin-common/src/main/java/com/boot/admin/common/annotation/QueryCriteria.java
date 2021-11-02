@@ -1,9 +1,16 @@
 package com.boot.admin.common.annotation;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -11,8 +18,8 @@ import java.lang.annotation.Target;
  * </p>
  *
  * @author miaoyj
- * @since 2020-10-10
  * @version 1.0.8-SNAPSHOT
+ * @since 2020-10-10
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -36,35 +43,101 @@ public @interface QueryCriteria {
      */
     Type type() default Type.EQUAL;
 
+    @Getter
+    @AllArgsConstructor
     enum Type {
-        //相等
-        EQUAL
-        //大于等于
-        , GREATER_THAN
-        //小于等于
-        , LESS_THAN
-        //中模糊查询
-        , INNER_LIKE
-        // between
-        , BETWEEN
-        // 包含
-        , IN
-        // 不为空
-        ,NOT_NULL
-        // 为空
-        ,IS_NULL
+        /**
+         * 等于
+         */
+        EQUAL("=", "等于"),
+        /**
+         * 不等于
+         */
+        NE("!=", "不等于"),
+        /**
+         * 大于
+         */
+        GT(">", "大于"),
+        /**
+         * 大于等于
+         */
+        GE(">=", "大于等于"),
+        /**
+         * 小于
+         */
+        LT("<", "小于"),
+        /**
+         * 小于等于
+         */
+        LE("<=", "小于等于"),
+        /**
+         * 全模糊
+         */
+        LIKE("LIKE", "全模糊"),
+        /**
+         * 左模糊
+         */
+        LEFT_LIKE("LEFT_LIKE", "左模糊"),
+        /**
+         * 右模糊
+         */
+        RIGHT_LIKE("RIGHT_LIKE", "右模糊"),
+        /**
+         * 区间
+         */
+        BETWEEN("BETWEEN", "区间"),
+        /**
+         * 包含
+         */
+        IN("IN", "包含"),
+        /**
+         * 不为空
+         */
+        NOT_NULL("NOT_NULL", "不为空"),
+        /**
+         * 为空
+         */
+        IS_NULL("IS_NULL", "为空"),
+
+        /**
+         * 自定义SQL片段
+         */
+        SQL_RULES("USE_SQL_RULES", "自定义SQL片段"),
+        ;
+
+        /**
+         * Constant <code>MAPPINGS</code>
+         */
+        private static final Map<String, Type> MAPPINGS;
+
+        static {
+            Map<String, Type> temp = new HashMap<String, Type>();
+            for (Type courseEnum : values()) {
+                temp.put(courseEnum.value, courseEnum);
+            }
+            MAPPINGS = Collections.unmodifiableMap(temp);
+        }
+
+        @JsonValue
+        private final String value;
+        private final String desc;
+
+        /**
+         * <p>
+         * 根据index获取枚举
+         * </p>
+         *
+         * @param index a Integer.
+         * @return 枚举
+         * @author miaoyj
+         * @since 2020-07-09
+         */
+//        @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
+        public static Type resolve(String index) {
+            return MAPPINGS.get(index);
+        }
+
     }
 
-    /**
-     * @author Zheng Jie
-     * 适用于简单连接查询，复杂的请自定义该注解，或者使用sql查询
-     */
-    enum Join {
-        /**
-         * jie 2019-6-4 13:18:30
-         */
-        LEFT, RIGHT, INNER
-    }
 
 }
-
