@@ -37,11 +37,6 @@ import java.lang.annotation.*;
 @Target({ElementType.TYPE,ElementType.METHOD})
 @Documented
 public @interface PermissionData {
-    /**
-     * 暂时没用
-     * @return
-     */
-    String value() default "";
 
     /**
      * <p>
@@ -61,8 +56,4 @@ public @interface PermissionData {
      */
     String userIdEQFieldName() default "";
 
-    /**
-     * 配置菜单的组件路径,用于数据权限
-     */
-    String pageComponent() default "";
 }

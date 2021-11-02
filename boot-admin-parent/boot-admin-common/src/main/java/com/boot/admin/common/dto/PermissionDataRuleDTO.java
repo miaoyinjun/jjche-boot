@@ -3,6 +3,7 @@ package com.boot.admin.common.dto;
 
 import com.boot.admin.common.annotation.QueryCriteria;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.io.Serializable;
  */
 @Data
 @SuperBuilder
+@NoArgsConstructor
 public class PermissionDataRuleDTO implements Serializable {
 
     /**
@@ -42,5 +44,5 @@ public class PermissionDataRuleDTO implements Serializable {
     /**
      * 状态值 1有效 0无效
      */
-    private Boolean status;
+    private Boolean isActivated;
 }

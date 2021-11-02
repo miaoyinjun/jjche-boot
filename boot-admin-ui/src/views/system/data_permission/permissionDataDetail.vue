@@ -10,7 +10,7 @@
           <el-form-item label="名称" prop="name">
             <el-input v-model="form.name" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="标识" prop="code">
+          <el-form-item label="字段" prop="code">
             <el-input v-model="form.code" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="排序" prop="sort">
@@ -28,7 +28,7 @@
           {{ menuName }}
         </el-table-column>
         <el-table-column prop="name" label="名称" />
-        <el-table-column prop="code" label="标识" />
+        <el-table-column prop="code" label="字段" />
         <el-table-column prop="sort" label="排序" />
         <el-table-column v-permission="['admin','data_permission:edit','data_permission:del']" label="操作" width="130px" align="center" fixed="right">
           <template slot-scope="scope">
@@ -84,10 +84,10 @@ export default {
           { required: true, message: '请输入名称', trigger: 'blur' }
         ],
         code: [
-          { required: true, message: '请输入标识', trigger: 'blur' }
+          { required: true, message: '请输入字段', trigger: 'blur' }
         ],
         sort: [
-          { required: true, message: '请输入序号', trigger: 'blur', type: 'number' }
+          { required: true, message: '请输入排序', trigger: 'blur', type: 'number' }
         ]
       },
       permission: {

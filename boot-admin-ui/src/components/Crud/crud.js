@@ -34,8 +34,8 @@ function CRUD(options) {
     // 重置表单
     defaultForm: () => {
     },
-    // 排序规则，默认 id 降序， 支持多字段排序 ['id,desc', 'gmtCreate,asc']
-    sort: ['id'],
+    // 排序规则，默认 id 降序， 支持多字段排序 ['id DESC', 'gmtCreate ASC']
+    sort: ['id DESC'],
     // 等待时间
     time: 50,
     // CRUD Method

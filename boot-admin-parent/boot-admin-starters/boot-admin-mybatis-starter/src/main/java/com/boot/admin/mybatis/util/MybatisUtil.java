@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -182,14 +181,14 @@ public class MybatisUtil {
      */
     public static BetweenParam getBetweenParam(List<String> betweenParamList, boolean isDateTime) {
         boolean isBetween = CollUtil.isNotEmpty(betweenParamList) && betweenParamList.size() == 2;
-        Assert.isTrue(isBetween, "区间参数格式不正确");
+        Assert.isTrue(isBetween, "区间参数长度必须是2");
         BetweenParam betweenParam = new BetweenParam(betweenParamList.get(0), betweenParamList.get(1));
-        if (isDateTime) {
-            String dateTimeRegex = "^[1-9]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\\s+(20|21|22|23|[0-1]\\d):[0-5]\\d:[0-5]\\d$";
-            boolean isMatchStart = ReUtil.isMatch(dateTimeRegex, betweenParam.getStart());
-            boolean isMatchEnd = ReUtil.isMatch(dateTimeRegex, betweenParam.getEnd());
-            Assert.isTrue(isMatchStart && isMatchEnd, "区间参数日期时间格式不正确");
-        }
+//        if (isDateTime) {
+//            String dateTimeRegex = "^[1-9]\\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\\s+(20|21|22|23|[0-1]\\d):[0-5]\\d:[0-5]\\d$";
+//            boolean isMatchStart = ReUtil.isMatch(dateTimeRegex, betweenParam.getStart());
+//            boolean isMatchEnd = ReUtil.isMatch(dateTimeRegex, betweenParam.getEnd());
+//            Assert.isTrue(isMatchStart && isMatchEnd, "区间参数日期时间格式不正确");
+//        }
         return betweenParam;
     }
 }
