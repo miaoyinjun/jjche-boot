@@ -26,11 +26,11 @@
       <!--表单组件-->
       <el-dialog :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
         <el-form ref="form" v-loading="crud.editLoading" :model="form" :rules="rules" size="small" label-width="80px">
-          <el-form-item label="姓名" prop="name" v-if="crud.metaDetailIsAccessible('name')">
-            <el-input v-model="form.name" style="width: 370px;" :readonly="!crud.metaDetailIsEditable('name')"/>
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="form.name" style="width: 370px;" />
           </el-form-item>
-          <el-form-item label="年龄" prop="age" v-if="crud.metaDetailIsAccessible('age')">
-            <el-input v-model="form.age" style="width: 370px;" :readonly="!crud.metaDetailIsEditable('age')"/>
+          <el-form-item label="年龄" prop="age">
+            <el-input v-model="form.age" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="课程类型">
             <el-select v-model="form.course" filterable placeholder="请选择">
@@ -40,11 +40,8 @@
                 :label="item.label"
                 :value="item.value"
               />
-            </el-select>               
+            </el-select>
           </el-form-item>
-          <el-form-item label="创建者" prop="createdBy" v-if="crud.metaDetailIsAccessible('createdBy')">
-            <el-tag>{{form.createdBy}}</el-tag>
-          </el-form-item>           
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button type="text" @click="crud.cancelCU">取消</el-button>
@@ -54,15 +51,19 @@
       <!--表格渲染-->
       <el-table ref="table" v-loading="crud.loading" stripe :data="crud.data" size="small" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
-        <el-table-column
-          v-for="(item, index) in crud.meta"
-          :key="index"
-          :prop="item.code"
-          :label="item.name">
-            <template slot-scope="scope">
-              {{ item.code === 'course' ? dict.label.course_status[scope.row.course] : scope.row[item.code]}}
-            </template>
+        <el-table-column prop="name" label="姓名" />
+        <el-table-column prop="age" label="年龄" />
+        <el-table-column prop="course" label="课程类型">
+          <template slot-scope="scope">
+            {{ dict.label.course_status[scope.row.course] }}
+          </template>
         </el-table-column>
+        <el-table-column prop="gmtCreate" label="创建时间">
+          <template slot-scope="scope">
+            <span>{{ scope.row.gmtCreate }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createdBy" label="创建者" />
         <el-table-column v-permission="['admin','student:edit','student:del']" label="操作" width="150px" align="center">
           <template slot-scope="scope">
             <udOperation
@@ -86,7 +87,6 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import DateRangePicker from '@/components/DateRangePicker'
-import checkPermission from '@/utils/permission'
 
 const defaultForm = { id: null, name: null, age: null, deptId: null, course: '102' }
 export default {
@@ -119,7 +119,6 @@ export default {
     }
   },
   methods: {
-    checkPermission,
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
       return true

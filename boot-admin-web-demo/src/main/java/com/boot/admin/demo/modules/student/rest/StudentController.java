@@ -1,9 +1,6 @@
 package com.boot.admin.demo.modules.student.rest;
 
-import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.dto.BaseDTO;
-import com.boot.admin.common.dto.IdQueryCriteriaDTO;
-import com.boot.admin.common.dto.IdsQueryCriteriaDTO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.core.annotation.controller.ApiRestController;
@@ -14,13 +11,11 @@ import com.boot.admin.demo.modules.student.api.dto.StudentDTO;
 import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
 import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
 import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
-import com.boot.admin.demo.modules.student.api.vo.StudentDetailVO;
 import com.boot.admin.demo.modules.student.api.vo.StudentVO;
 import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
-import com.boot.admin.security.permission.field.DataPermissionFieldResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
@@ -33,6 +28,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * <p>
@@ -75,7 +71,7 @@ public class StudentController extends BaseController {
     /**
      * <p>delete.</p>
      *
-     * @param query a {@link java.util.Set} object.
+     * @param ids a {@link java.util.Set} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @DeleteMapping
@@ -84,12 +80,11 @@ public class StudentController extends BaseController {
     @LogRecordAnnotation(
             value = "被删除的学生姓名是...", category = LogCategoryType.OPERATING,
             type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT,
-            prefix = "student", bizNo = "{{#query.ids}}",
-            detail = "学生姓名：「{STUDENT_NAME_BY_IDS{#query.ids}}」"
+            prefix = "student", bizNo = "{{#ids}}",
+            detail = "学生姓名：「{STUDENT_NAME_BY_IDS{#ids}}」"
     )
-    @PermissionData
-    public ResultWrapper delete(@Validated @RequestBody IdsQueryCriteriaDTO query) {
-        studentService.delete(query);
+    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+        studentService.delete(ids);
         return ResultWrapper.ok();
     }
 
@@ -108,7 +103,6 @@ public class StudentController extends BaseController {
             prefix = "student", bizNo = "{{#dto.name}}",
             detail = "修改内容：「{STUDENT_UPDATE_DIFF_BY_DTO{#dto}}」"
     )
-    @PermissionData(fieldUpdate = true)
     public ResultWrapper update(@Validated(BaseDTO.Update.class) @RequestBody StudentDTO dto) {
         studentService.update(dto);
         return ResultWrapper.ok();
@@ -117,19 +111,18 @@ public class StudentController extends BaseController {
     /**
      * <p>getById.</p>
      *
-     * @param query /
+     * @param id a {@link java.lang.Long} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
-    @GetMapping("/get")
+    @GetMapping("/{id}")
     @ApiOperation(value = "学生-查询单个", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
     @LogRecordAnnotation(
             value = "查询单个", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = ApiVersion.MODULE_STUDENT
     )
-    @PermissionData(fieldReturn = true)
-    public ResultWrapper<DataPermissionFieldResult<StudentDetailVO>> getById(@Validated IdQueryCriteriaDTO query) {
-        return ResultWrapper.ok(this.studentService.getVoById(query));
+    public ResultWrapper<StudentVO> getById(@PathVariable Long id) {
+        return ResultWrapper.ok(this.studentService.getVoById(id));
     }
 
     /**
@@ -149,17 +142,17 @@ public class StudentController extends BaseController {
                          @NotNull(message = "排序字段不正确")
                          @RequestParam StudentSortEnum sort,
                          StudentQueryCriteriaDTO criteria) {
-        studentService.download(studentService.listQueryAll(sort, criteria));
+        studentService.download(sort, criteria);
     }
 
     /**
      * <p>pageQuery.</p>
      *
-     * @param page   a {@link com.boot.admin.mybatis.param.PageParam} object.
-     * @param sort   a {@link StudentSortEnum} object.
-     * @param query  a {@link StudentQueryCriteriaDTO} object.
-     * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
+     * @param page  a {@link com.boot.admin.mybatis.param.PageParam} object.
+     * @param sort  a {@link StudentSortEnum} object.
+     * @param query a {@link StudentQueryCriteriaDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
      */
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
@@ -168,7 +161,6 @@ public class StudentController extends BaseController {
             value = "列表", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = ApiVersion.MODULE_STUDENT
     )
-    @PermissionData(fieldReturn = true)
     public ResultWrapper<MyPage<StudentVO>> pageQuery(PageParam page,
                                                       @ApiParam(value = "排序", required = true)
                                                       @NotNull(message = "排序字段不正确")
