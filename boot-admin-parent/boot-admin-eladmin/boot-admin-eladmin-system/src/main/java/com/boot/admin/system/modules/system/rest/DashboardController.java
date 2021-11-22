@@ -1,8 +1,8 @@
 package com.boot.admin.system.modules.system.rest;
 
 import com.boot.admin.system.modules.system.service.DashboardService;
-import com.boot.admin.system.modules.system.vo.DashboardChartVO;
-import com.boot.admin.system.modules.system.vo.DashboardCountVO;
+import com.boot.admin.system.modules.system.api.vo.DashboardChartVO;
+import com.boot.admin.system.modules.system.api.vo.DashboardCountVO;
 import com.boot.admin.core.annotation.controller.AdminRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;

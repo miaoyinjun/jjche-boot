@@ -2,8 +2,8 @@ package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.lang.Assert;
 import com.boot.admin.system.modules.system.domain.DictDetailDO;
-import com.boot.admin.system.modules.system.dto.DictDetailDTO;
-import com.boot.admin.system.modules.system.dto.DictDetailQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDetailDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDetailQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.DictDetailService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
@@ -42,7 +42,7 @@ public class DictDetailController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.DictDetailQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.DictDetailQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

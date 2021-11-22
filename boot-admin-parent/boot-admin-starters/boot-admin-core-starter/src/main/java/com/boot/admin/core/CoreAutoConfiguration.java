@@ -1,19 +1,16 @@
 package com.boot.admin.core;
 
+import com.boot.admin.core.alarm.dd.AlarmDingTalkService;
 import com.boot.admin.core.annotation.controller.AdminRestController;
 import com.boot.admin.core.annotation.controller.ApiRestController;
+import com.boot.admin.core.convert.OriKaMapper;
 import com.boot.admin.core.exception.GlobalExceptionHandler;
 import com.boot.admin.core.exception.RequestWrapperFilter;
 import com.boot.admin.core.property.CoreApiPathProperties;
 import com.boot.admin.core.property.CoreProperties;
-import com.boot.admin.core.alarm.dd.AlarmDingTalkService;
-import com.boot.admin.core.convert.OriKaMapper;
 import com.boot.admin.core.util.SpringContextHolder;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -36,6 +33,7 @@ import javax.annotation.Resource;
 @ComponentScan(basePackages={"cn.hutool.extra.spring"})
 @EnableFeignClients
 @EnableAsync(proxyTargetClass = true)
+@EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
 public class CoreAutoConfiguration implements WebMvcConfigurer {
 
     @Resource

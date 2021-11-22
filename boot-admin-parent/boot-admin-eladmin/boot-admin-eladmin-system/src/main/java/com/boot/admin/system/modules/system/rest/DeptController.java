@@ -11,8 +11,8 @@ import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.system.modules.system.domain.DeptDO;
-import com.boot.admin.system.modules.system.dto.DeptDTO;
-import com.boot.admin.system.modules.system.dto.DeptQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DeptDTO;
+import com.boot.admin.system.modules.system.api.dto.DeptQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.DeptService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +43,7 @@ public class DeptController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.DeptQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.DeptQueryCriteriaDTO} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecordAnnotation(
@@ -61,7 +61,7 @@ public class DeptController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.DeptQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.DeptQueryCriteriaDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */

@@ -9,10 +9,13 @@ export function add(data) {
 }
 
 export function del(ids) {
+  const params = {
+    ids: ids
+  }
   return request({
     url: 'students/',
     method: 'delete',
-    data: ids
+    data: params
   })
 }
 
@@ -25,9 +28,13 @@ export function edit(data) {
 }
 
 export function get(id) {
+  const params = {
+    id: id
+  }
   return request({
-    url: 'students/' + id,
-    method: 'get'
+    url: 'students/get',
+    method: 'get',
+    params
   })
 }
 

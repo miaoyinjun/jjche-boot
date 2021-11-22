@@ -2,6 +2,7 @@ package com.boot.admin.common.dto;
 
 
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -45,4 +46,10 @@ public class PermissionDataRuleDTO implements Serializable {
      * 状态值 1有效 0无效
      */
     private Boolean isActivated;
+
+    /**
+     * 权限标识
+     */
+    @JsonIgnore
+    private String menuPermission;
 }

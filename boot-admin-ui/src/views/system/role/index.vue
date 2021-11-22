@@ -116,47 +116,38 @@
             show-checkbox
             :expand-on-click-node="false"
             node-key="id"
+            @check="menuChange"
             @node-click="handleNodeClick"
           >
             <span slot-scope="{ node, data }" class="data-permission-filed-tree-node">
               <span>{{ node.label }}</span>
-              <span v-if="data.dataPermissionFields.length > 0" class="el-icon-s-fold">
-                <el-select
-                  v-model="dataPermissionFieldIds"
-                  size="small"
-                  collapse-tags
-                  clearable
-                  multiple
-                  placeholder="请选择"
-                  @change="handleDataPermissionField($event, data.id)"
-                >
-                  <el-option
-                    v-for="item in data.dataPermissionFields"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  >
-                    <label
-                      :style="{'text-decoration-line': (dataPermissionFieldIds.includes(item.id) ? 'line-through' : 'none')}">{{
-                        item.name
-                      }}</label>
-                  </el-option>
-                </el-select>
-              </span>
+              <span v-if="data.isDataPermission" class="el-icon-s-fold" style="color: red;"/>
             </span>
           </el-tree>
         </el-card>
       </el-col>
     </el-row>
+
     <el-drawer
-      title="数据规则权限"
-      :visible.sync="dataPermissionRuleVisible"
-      @open="handleDataPermissionRuleOpen()"
+      title="数据权限"
+      :visible.sync="dataPermissionVisible"
+      @open="handleDataPermissionOpen()"
       size="20%">
-      <div style="margin-left: 20px">
-        <dataPermissionRule ref="dataPermissionRule" :permission="permission"/>
-      </div>
-    </el-drawer>
+
+        <div style="margin-left: 20px">
+          <el-tabs v-model="DataPermissionActiveName" @tab-click="handleTabDataPermissionClick">
+          
+            <el-tab-pane label="数据规则" name="dataPermissionRule">
+              <dataPermissionRule ref="dataPermissionRule" :permission="permission"/>
+            </el-tab-pane>
+      
+            <el-tab-pane label="数据字段" name="dataPermissionField">
+              <dataPermissionField ref="dataPermissionField" :permission="permission"/>
+            </el-tab-pane>
+    
+          </el-tabs>
+        </div>
+        </el-drawer>
   </div>
 </template>
 
@@ -174,19 +165,21 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import DateRangePicker from '@/components/DateRangePicker'
 import dataPermissionRule from './dataPermissionRule'
+import dataPermissionField from './dataPermissionField'
 
 const defaultForm = { id: null, name: null, depts: [], description: null, dataScope: 'DATA_SCOPE_ALL', level: 3 }
 export default {
   name: 'Role',
-  components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule },
+  components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule, dataPermissionField },
   cruds() {
     return Crud({ title: '角色', url: 'admin/roles', sort: 'level asc', crudMethod: { ...crudRoles } })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
     return {
+      DataPermissionActiveName: 'dataPermissionRule',
       nodeMenuId: null,
-      dataPermissionRuleVisible: false,
+      dataPermissionVisible: false,
       defaultProps: { children: 'children', label: 'label', isLeaf: 'leaf' },
       dateScopes: [{ k: 'DATA_SCOPE_ALL', v: '全部' }, {
         k: 'DATA_SCOPE_DEPT_AND_CHILD',
@@ -200,8 +193,6 @@ export default {
       menuIds: [],
       depts: [],
       deptDatas: [], // 多选时使用
-      dataPermissionFields: [],
-      dataPermissionFieldIds: [],
       permission: {
         add: ['admin', 'roles:add'],
         edit: ['admin', 'roles:edit'],
@@ -224,19 +215,9 @@ export default {
   },
   methods: {
     getMenuDatas(node, resolve) {
-      const _this = this
       setTimeout(() => {
         getMenusTree(node.data.id ? node.data.id : 0, this.currentId).then(res => {
           resolve(res)
-          res.forEach(function(menu) {
-            const dataPermissionFieldSelectedIds = menu.dataPermissionFieldSelectedIds
-            if (dataPermissionFieldSelectedIds != null) {
-              _this.dataPermissionFields.push({
-                menuId: menu.id,
-                dataPermissionFieldIds: dataPermissionFieldSelectedIds
-              })
-            }
-          })
         })
       }, 100)
     },
@@ -288,13 +269,8 @@ export default {
         this.currentId = val.id
         // 初始化默认选中的key
         this.menuIds = []
-        // 初始化默认选中的数据权限字段
-        this.dataPermissionFieldIds = []
         val.menus.forEach(function(data) {
           _this.menuIds.push(data.id)
-          data.dataPermissionFieldSelectedIds.forEach((val) => {
-            _this.dataPermissionFieldIds.push(val)
-          })
         })
         this.showButton = true
       }
@@ -321,13 +297,12 @@ export default {
     // 保存菜单
     saveMenu() {
       this.menuLoading = true
-      const role = { id: this.currentId, menus: [], roleMenuDataPermissionFields: [] }
+      const role = { id: this.currentId, menus: [] }
       // 得到已选中的 key 值
       this.menuIds.forEach(function(id) {
         const menu = { id: id }
         role.menus.push(menu)
       })
-      role.roleMenuDataPermissionFields = this.dataPermissionFields
       crudRoles.editMenu(role).then(() => {
         this.crud.notify('保存成功', Crud.NOTIFICATION_TYPE.SUCCESS)
         this.menuLoading = false
@@ -406,29 +381,33 @@ export default {
     checkboxT(row) {
       return row.level >= this.level
     },
-    // 菜单权限下拉框发生改变时触发
-    handleDataPermissionField(val, menuId) {
-      this.dataPermissionFields.forEach(function(data) {
-        const dataMenuId = data.menuId
-        if (menuId === dataMenuId) {
-          data.dataPermissionFieldIds = val
-        }
-      })
-    },
     handleNodeClick(data) {
       if (this.currentId) {
-        this.dataPermissionRuleVisible = true
+        this.dataPermissionVisible = true
+        this.DataPermissionActiveName = 'dataPermissionRule'
         this.nodeMenuId = data.id
       }
     },
-    handleDataPermissionRuleOpen() {
-      this.$nextTick(() => {
-        if (this.$refs.dataPermissionRule) {
+    getDataPermissionRuleData(){
           this.$refs.dataPermissionRule.query.menuId = this.nodeMenuId
           this.$refs.dataPermissionRule.query.roleId = this.currentId
           this.$refs.dataPermissionRule.crud.toQuery()
+    },
+    handleDataPermissionOpen() {
+      this.$nextTick(() => {
+        if (this.$refs.dataPermissionRule) {
+          this.getDataPermissionRuleData()
         }
       })
+    },
+    handleTabDataPermissionClick(tab, event) {
+      if(tab.name === 'dataPermissionField'){
+          this.$refs.dataPermissionField.query.menuId = this.nodeMenuId
+          this.$refs.dataPermissionField.query.roleId = this.currentId
+          this.$refs.dataPermissionField.crud.toQuery()
+      }else{
+        this.getDataPermissionRuleData()
+      }
     }
   }
 }

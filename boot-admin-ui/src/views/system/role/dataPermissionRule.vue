@@ -14,7 +14,7 @@
       <!--表格渲染-->
       <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" highlight-current-row style="width: 100%;"
                 @selection-change="crud.selectionChangeHandler">
-        <el-table-column type="selection" width="55"/>
+        <el-table-column type="selection" width="55" :selectable="checkSelectable"/>
         <el-table-column prop="name" label="名称"/>
       </el-table>
       <!--分页组件-->
@@ -35,7 +35,7 @@ export default {
     return [
       Crud({
         title: '数据规则详情',
-        url: 'admin/sys_data_permission_rule_roles',
+        url: 'admin/data_permission_rule_roles',
         query: { menuId: '', roleId: '' },
         sort: ['id DESC'],
         crudMethod: { ...crudDataPermissionRule },
@@ -59,6 +59,15 @@ export default {
     }
   },
   methods: {
+    // 新增前合并dictId
+    [Crud.HOOK.afterRefresh]() {
+      // 获取选中
+        this.crud.data.forEach(val => {
+            if (val.isSelected) {
+              this.crud.getTable().toggleRowSelection(val)
+            }
+        })
+    },
     saveChecked() {
       this.dataPermissionRuleLoading = true
       const ids = []
@@ -73,6 +82,9 @@ export default {
         this.dataPermissionRuleLoading = false
         console.log(err.response.data.message)
       })
+    },
+    checkSelectable(row) {
+      return row.isActivated === true
     }
   }
 }

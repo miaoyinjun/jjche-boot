@@ -1,6 +1,5 @@
 package com.boot.admin.security;
 
-import com.boot.admin.security.permission.field.DataPermissionFieldResourceAuthorityInterceptor;
 import com.boot.admin.security.property.SecurityProperties;
 import com.boot.admin.security.security.TokenProvider;
 import com.boot.admin.security.service.JwtUserServiceImpl;
@@ -27,7 +26,7 @@ import org.springframework.context.annotation.Import;
         JwtAuthenticationAccessDeniedHandler.class,
         JwtAuthenticationEntryPoint.class, SecurityConfig.class,
         OnlineUserService.class, TokenProvider.class, ElPermissionConfig.class,
-        JwtUserServiceImpl.class, DataPermissionFieldResourceAuthorityInterceptor.class
+        JwtUserServiceImpl.class
 })
 public class SecurityAutoConfiguration {
 }

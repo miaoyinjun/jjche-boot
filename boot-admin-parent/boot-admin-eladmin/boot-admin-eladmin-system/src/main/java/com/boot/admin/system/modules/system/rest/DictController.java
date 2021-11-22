@@ -2,8 +2,8 @@ package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.lang.Assert;
 import com.boot.admin.system.modules.system.domain.DictDO;
-import com.boot.admin.system.modules.system.dto.DictDTO;
-import com.boot.admin.system.modules.system.dto.DictQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDTO;
+import com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.DictService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
@@ -44,7 +44,7 @@ public class DictController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.DictQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
     @LogRecordAnnotation(
@@ -77,7 +77,7 @@ public class DictController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param resources a {@link com.boot.admin.system.modules.system.dto.DictQueryCriteriaDTO} object.
+     * @param resources a {@link com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

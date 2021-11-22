@@ -3,11 +3,11 @@ package com.boot.admin.system.modules.system.rest;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
 import com.boot.admin.system.modules.system.domain.MenuDO;
-import com.boot.admin.system.modules.system.dto.MenuDTO;
-import com.boot.admin.system.modules.system.dto.MenuQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.MenuDTO;
+import com.boot.admin.system.modules.system.api.dto.MenuQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.mapstruct.MenuMapStruct;
 import com.boot.admin.system.modules.system.service.MenuService;
-import com.boot.admin.system.modules.system.vo.MenuVO;
+import com.boot.admin.system.modules.system.api.vo.MenuVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.core.annotation.controller.AdminRestController;
@@ -49,14 +49,14 @@ public class MenuController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.MenuQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.MenuQueryCriteriaDTO} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecordAnnotation(
             value = "导出", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = "菜单"
     )
-    @ApiOperation("导出菜单数据")
+    @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('menu:list')")
     public void download(HttpServletResponse response, MenuQueryCriteriaDTO criteria) throws Exception {
@@ -116,7 +116,7 @@ public class MenuController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.MenuQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.MenuQueryCriteriaDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
@@ -138,7 +138,7 @@ public class MenuController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.MenuQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.MenuQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

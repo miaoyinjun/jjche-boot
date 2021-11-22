@@ -1,16 +1,13 @@
 package com.boot.admin.system.modules.security.permission;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
+import com.boot.admin.common.util.ClassCompareUtil;
 import com.boot.admin.core.permission.DataPermissionFieldResultVO;
 import com.boot.admin.core.permission.IDataPermissionFieldUserAuthorityHelper;
 import com.boot.admin.core.util.SecurityUtils;
-import com.boot.admin.security.dto.RoleSmallDto;
-import com.boot.admin.security.dto.UserVO;
-import com.boot.admin.system.modules.system.domain.DataPermissionFieldDO;
-import com.boot.admin.system.modules.system.domain.DataPermissionFieldRoleDO;
-import com.boot.admin.system.modules.system.domain.MenuDO;
+import com.boot.admin.system.modules.system.api.vo.DataPermissionFieldVO;
 import com.boot.admin.system.modules.system.service.DataPermissionFieldRoleService;
 import com.boot.admin.system.modules.system.service.DataPermissionFieldService;
 import com.boot.admin.system.modules.system.service.MenuService;
@@ -20,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -42,29 +41,46 @@ public class DataPermissionFieldUserAuthorityHelper implements IDataPermissionFi
     private DataPermissionFieldRoleService dataPermissionFieldRoleService;
     @Autowired
     private DataPermissionFieldService dataPermissionFieldService;
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<DataPermissionFieldResultVO> getDataResource(String permission) {
-        Long userId = SecurityUtils.getCurrentUserId();
+    public List<DataPermissionFieldResultVO> getDataResource(String permission, Class returnClass, boolean isFilter) {
         List<DataPermissionFieldResultVO> resources = new ArrayList<>();
-        MenuDO menu = menuService.findByPermission(permission);
-        if (ObjectUtil.isNotNull(menu)) {
-            Long menuId = menu.getId();
-            List<DataPermissionFieldDO> dataPermissionFields = dataPermissionFieldService.findByMenuId(menuId);
-            if (ObjectUtil.isNotNull(userId) && CollUtil.isNotEmpty(dataPermissionFields)) {
-                UserVO userDto = userService.findById(userId);
-                List<RoleSmallDto> roleList = userDto.getRoles();
-                if (CollUtil.isNotEmpty(roleList)) {
-                    List<Long> roleIdList = roleList.stream().map(RoleSmallDto::getId).collect(Collectors.toList());
-                    List<DataPermissionFieldRoleDO> dataPermissionFieldRoleList = dataPermissionFieldRoleService.findByMenuIdAndRoleIdIn(menuId, roleIdList);
-                    List<Long> dataPermissionFieldIdList = dataPermissionFieldRoleList.stream().map(DataPermissionFieldRoleDO::getDataPermissionFieldId).collect(Collectors.toList());
-                    resources = Convert.toList(DataPermissionFieldResultVO.class, dataPermissionFields);
-                    for (DataPermissionFieldResultVO resource : resources) {
-                        Long dataPermissionFieldId = resource.getId();
-                        Boolean isAccessible = !CollUtil.contains(dataPermissionFieldIdList, dataPermissionFieldId);
-                        resource.setIsAccessible(isAccessible);
+        if (returnClass != null) {
+            Map<String, String> map = ClassCompareUtil.getApiModelPropertyValue(returnClass);
+            //获取list里的类型，取ApiModelProperty注解里的字段名，相同的字段名优先配置里的名称
+            for (String key : map.keySet()) {
+                String value = MapUtil.getStr(map, key);
+                DataPermissionFieldResultVO dataPermissionFieldResultVO = DataPermissionFieldResultVO.builder()
+                        .name(value)
+                        .code(key)
+                        .isAccessible(true)
+                        .isEditable(true)
+                        .build();
+                resources.add(dataPermissionFieldResultVO);
+            }
+        }
+        if (isFilter) {
+            //获取用户数据规则配置
+            if (StrUtil.isNotBlank(permission)) {
+                List<DataPermissionFieldVO> permissionDataFieldDTOList =
+                        dataPermissionFieldService.listByUserId(SecurityUtils.getCurrentUserId());
+                if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
+                    String finalPermissionCode = permission;
+                    Predicate condition = (str) -> StrUtil.equals(String.valueOf(str), finalPermissionCode);
+                    permissionDataFieldDTOList = permissionDataFieldDTOList.stream().filter((p) -> (condition.test(p.getMenuPermission()))).collect(Collectors.toList());
+                    if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
+                        for (DataPermissionFieldResultVO resource : resources) {
+                            for (DataPermissionFieldVO permissionFieldVO : permissionDataFieldDTOList) {
+                                if (StrUtil.equals(permissionFieldVO.getCode(), resource.getCode())) {
+                                    resource.setIsAccessible(permissionFieldVO.getIsAccessible());
+                                    resource.setIsEditable(permissionFieldVO.getIsEditable());
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }

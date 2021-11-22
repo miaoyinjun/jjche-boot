@@ -27,15 +27,6 @@ CREATE TABLE `sys_data_permission_rule` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB COMMENT='菜单数据规则权限角色表';
 
--- 添加菜单-增，删，改
-INSERT INTO `sys_menu`(pid, sub_count, type, title, `name`, component, menu_sort, icon, path, i_frame, `cache`, hidden, permission, created_by, updated_by, gmt_create, gmt_modified)
-	VALUES ((SELECT id FROM (SELECT id FROM sys_menu WHERE `name` = 'Menu') AS temp), 0, 2, '数据规则', 'sysDataPermissionRule_list', '', 5, '', '', b'0', b'0', b'0', 'sysDataPermissionRule:list', 'admin', 'admin', now(), now());
-
--- 添加菜单-角色关联
-INSERT INTO `sys_roles_menus`
-	VALUES
-		((SELECT id FROM sys_menu WHERE `permission` = 'sysDataPermissionRule:list'), (SELECT id FROM sys_role WHERE `name` = '超级管理员'));
-
 -- 添加字典
 INSERT INTO `sys_dict`
 (`name`, `description`, `created_by`, `updated_by`, `gmt_create`, `gmt_modified`)
@@ -58,10 +49,4 @@ VALUES
 ((SELECT id FROM sys_dict WHERE name = 'dataPermissionRule_condition'),'不为空', 'NOT_NULL', 12),
 ((SELECT id FROM sys_dict WHERE name = 'dataPermissionRule_condition'),'为空', 'IS_NULL', 13),
 ((SELECT id FROM sys_dict WHERE name = 'dataPermissionRule_condition'),'自定义SQL片段', 'USE_SQL_RULES', 14);
-
-INSERT INTO `sys_data_permission_rule` (`menu_id`, `name`, `condition`, `column`, `value`, `is_activated`, `created_by`, `updated_by`, `gmt_create`, `gmt_modified`)
-    VALUES ((SELECT id FROM sys_menu WHERE `permission` = 'student:list'), '只看年龄等于3的', 'EQUAL', 'age', '3', 1, 'System', 'System', now(), now());
-
-INSERT INTO `sys_data_permission_rule_role` (`role_id`, `menu_id`, `data_permission_rule_id`, `created_by`, `updated_by`, `gmt_create`, `gmt_modified`)
-    VALUES ((SELECT id FROM sys_role WHERE `name` = '普通用户'), (SELECT id FROM sys_menu WHERE `permission` = 'student:list'), (SELECT id FROM sys_data_permission_rule WHERE name = '只看年龄等于3的'), 'System', 'System', now(), now());
 COMMIT;

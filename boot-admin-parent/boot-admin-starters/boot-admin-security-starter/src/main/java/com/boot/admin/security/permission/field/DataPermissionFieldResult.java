@@ -1,20 +1,22 @@
 package com.boot.admin.security.permission.field;
 
-import cn.hutool.json.JSONArray;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.EnumUtil;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.boot.admin.common.util.FileUtil;
+import com.boot.admin.common.util.ClassCompareUtil;
+import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.core.permission.DataPermissionFieldFilterable;
 import com.boot.admin.core.permission.DataPermissionFieldMetaSetter;
 import com.boot.admin.core.permission.DataPermissionFieldResultVO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.lang.reflect.Field;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,19 +29,21 @@ import java.util.function.Function;
  * </p>
  *
  * @author miaoyj
- * @since 2020-11-11
  * @version 1.0.10-SNAPSHOT
+ * @since 2020-11-11
  */
 public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterable<T>, DataPermissionFieldMetaSetter {
 
     @Getter
     @Setter
     @ApiModelProperty("数据")
-    private List<T> records;
+    private Iterable<T> records;
     @ApiModelProperty("字段")
     private List<DataPermissionFieldResultVO> meta;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void doFilter(Function<T, T> filterFunc) {
         for (T row : records) {
@@ -47,13 +51,22 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
         }
     }
 
-    /** {@inheritDoc} */
+    @JsonIgnore
+    public Iterable<T> getData() {
+        return this.records;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setMeta(List<DataPermissionFieldResultVO> dataResources) {
         this.meta = dataResources;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public List<DataPermissionFieldResultVO> getMeta() {
         return this.meta;
@@ -66,11 +79,8 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
      *
      * @param rows 集合
      * @return 结果
-     * @author miaoyj
-     * @since 2020-12-09
-     * @param <T> a T object.
      */
-    public static <T> DataPermissionFieldResult<T> build(List<T> rows) {
+    public static <T> DataPermissionFieldResult<T> build(Iterable<T> rows) {
         DataPermissionFieldResult<T> result = new DataPermissionFieldResult<>();
         result.setRecords(rows);
         return result;
@@ -78,36 +88,62 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
 
     /**
      * <p>
-     * 导出过滤后的excel
+     * 过滤单个
      * </p>
      *
-     * @param dataPermissionFieldResult 待导出数据
-     * @author miaoyj
-     * @since 2020-12-10
+     * @param row 数据
+     * @return /
      */
-    public static void downloadExcel(DataPermissionFieldResult dataPermissionFieldResult){
+    public static <T> DataPermissionFieldResult<T> build(T row) {
+        return build(CollUtil.newArrayList(row));
+    }
+
+
+    /**
+     * <p>
+     * 转换Excel所需格式
+     * </p>
+     *
+     * @param dataPermissionFieldResult 内容
+     * @return /
+     */
+    public static List<Map<String, Object>> toExcelListMap(DataPermissionFieldResult dataPermissionFieldResult) {
         List<Map<String, Object>> list = new ArrayList<>();
-        List data = dataPermissionFieldResult.getRecords();
-        List<DataPermissionFieldResultVO> meta = dataPermissionFieldResult.getMeta();
-        JSONArray jsonArray = JSONUtil.parseArray(data);
-        for (Object o : jsonArray) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            for (DataPermissionFieldResultVO fieldResultVO : meta) {
-                Boolean isAccessible = fieldResultVO.getIsAccessible();
-                if (isAccessible) {
-                    String name = fieldResultVO.getName();
-                    String code = fieldResultVO.getCode();
-                    String value = new JSONObject(o).get(code, String.class);
-                    map.put(name, value);
+        if (dataPermissionFieldResult != null) {
+            Iterable dataList = dataPermissionFieldResult.getData();
+            List<DataPermissionFieldResultVO> meta = dataPermissionFieldResult.getMeta();
+
+            if (CollUtil.isNotEmpty(dataList)) {
+                List<Field> fieldList = ClassCompareUtil.getAllFields(CollUtil.getFirst(dataList).getClass());
+                for (Object o : dataList) {
+                    Map<String, Object> map = new LinkedHashMap<>();
+                    for (DataPermissionFieldResultVO fieldResultVO : meta) {
+                        Boolean isAccessible = fieldResultVO.getIsAccessible();
+                        if (isAccessible) {
+                            String name = fieldResultVO.getName();
+                            String code = fieldResultVO.getCode();
+                            for (Field field : fieldList) {
+                                if (StrUtil.equals(field.getName(), code)) {
+                                    String value = new JSONObject(o).get(code, String.class);
+                                    //处理枚举
+                                    if (field.getType().isEnum()) {
+                                        Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>) field.getType();
+                                        Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, "desc");
+                                        value = enumMap.get(value).toString();
+                                    }//格式化时间
+                                    else if (field.getType().isAssignableFrom(Timestamp.class)) {
+                                        value = DateUtil.format(DateUtil.parse(value), DatePattern.NORM_DATETIME_PATTERN);
+                                    }
+                                    map.put(name, value);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    list.add(map);
                 }
             }
-            list.add(map);
         }
-        try {
-            HttpServletResponse httpServletResponse = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-            FileUtil.downloadExcel(list, httpServletResponse);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("文件下载失败");
-        }
+        return list;
     }
 }

@@ -37,8 +37,8 @@ import com.boot.admin.security.security.UserTypeEnum;
 import com.boot.admin.security.service.JwtUserService;
 import com.boot.admin.security.service.OnlineUserService;
 import com.boot.admin.system.modules.system.domain.*;
-import com.boot.admin.system.modules.system.dto.UserDTO;
-import com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.UserDTO;
+import com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.mapper.UserJobMapper;
 import com.boot.admin.system.modules.system.mapper.UserMapper;
 import com.boot.admin.system.modules.system.mapper.UserRoleMapper;
@@ -144,7 +144,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @return /
      */
     @Cached(name = CacheKey.USER_ID, key = "#id")
-    @Transactional(rollbackFor = Exception.class)
     public UserVO findById(long id) {
         UserDO user = this.getById(id);
         ValidationUtil.isNull(user.getId(), "UserDO", "id", id);

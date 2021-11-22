@@ -34,12 +34,12 @@ public class ClassCompareUtil {
      * 获取注解ApiModelProperty内容
      * </p>
      *
-     * @param object 含有ApiModelProperty注解的对象
+     * @param objectClass 含有ApiModelProperty注解的对象类
      * @return 字段注释值
      */
-    public static Map<String, String> getApiModelPropertyValue(Object object) {
-        List<Field> fieldList = getAllFields(object);
-        Map<String, String> fieldMap = new HashMap<>(fieldList.size());
+    public static Map<String, String> getApiModelPropertyValue(Class objectClass) {
+        List<Field> fieldList = getAllFields(objectClass);
+        Map<String, String> fieldMap = new LinkedHashMap<>();
         for (Field field : fieldList) {
             field.setAccessible(true);
             String annotationName = AnnotationUtil.getAnnotationValue(field, ApiModelProperty.class, "value");
@@ -64,7 +64,7 @@ public class ClassCompareUtil {
         if (ObjectUtil.isNotNull(oldObject) && ObjectUtil.isNotNull(newObject)) {
             compareFieldList = compareFields(oldObject, newObject);
             if (CollUtil.isNotEmpty(compareFieldList)) {
-                Map<String, String> fieldMap = getApiModelPropertyValue(newObject);
+                Map<String, String> fieldMap = getApiModelPropertyValue(newObject.getClass());
                 //转换为注释里的中文
                 for (LogUpdateDetailDTO detailDTO : compareFieldList) {
                     String fieldKey = detailDTO.getName();
@@ -117,12 +117,11 @@ public class ClassCompareUtil {
      * 获取对象所有的属性
      * </p>
      *
-     * @param object 对象
+     * @param clazz 对象类型
      * @return 属性
      */
-    private static List<Field> getAllFields(Object object) {
+    public static List<Field> getAllFields(Class clazz) {
         List<Field> fieldList = CollUtil.newArrayList();
-        Class clazz = object.getClass();
         while (clazz != null && !OBJECT_STR.equals(clazz.getName().toLowerCase())) {
             fieldList.addAll(Arrays.asList(clazz.getDeclaredFields()));
             //得到父类,然后赋给自己

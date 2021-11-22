@@ -1,8 +1,8 @@
 package com.boot.admin.system.modules.system.rest;
 
 import com.boot.admin.system.modules.system.domain.JobDO;
-import com.boot.admin.system.modules.system.dto.JobDTO;
-import com.boot.admin.system.modules.system.dto.JobQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.JobDTO;
+import com.boot.admin.system.modules.system.api.dto.JobQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.JobService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
@@ -42,7 +42,7 @@ public class JobController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.JobQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.JobQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
     @LogRecordAnnotation(
@@ -58,7 +58,7 @@ public class JobController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.JobQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.JobQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

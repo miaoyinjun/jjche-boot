@@ -50,7 +50,7 @@
       <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" highlight-current-row style="width: 100%;"
                 @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55"/>
-        <el-table-column prop="name" label="名称"/>
+        <el-table-column prop="name" label="名称" show-overflow-tooltip/>
         <el-table-column prop="column" label="字段"/>
         <el-table-column prop="condition" label="条件">
           <template slot-scope="scope">
@@ -58,7 +58,13 @@
           </template>
         </el-table-column>
         <el-table-column prop="value" label="值"/>
-        <el-table-column v-permission="['admin','sysDataPermissionRule:list']" label="操作" width="130px" align="center"
+        <el-table-column prop="isActivated" label="状态">
+          <template slot-scope="scope">
+            <el-tag type="success" v-if="scope.row.isActivated">启用</el-tag>
+            <el-tag v-else type="danger">禁用</el-tag>
+          </template>
+        </el-table-column>            
+        <el-table-column v-permission="['admin','menu:add', 'menu:edit']" label="操作" width="130px" align="center"
                          fixed="right">
           <template slot-scope="scope">
             <udOperation
@@ -96,7 +102,7 @@ export default {
   cruds() {
     return [
       Crud({
-        title: '数据规则详情', url: 'admin/sys_data_permission_rules', query: { menuId: '' }, sort: ['id DESC'],
+        title: '数据规则详情', url: 'admin/data_permission_rules', query: { menuId: '' }, sort: ['id DESC'],
         crudMethod: { ...crudDataPermissionRule },
         optShow: {
           add: true,
@@ -126,9 +132,9 @@ export default {
         ]
       },
       permission: {
-        add: ['admin', 'sysDataPermissionRule:list'],
-        edit: ['admin', 'sysDataPermissionRule:list'],
-        del: ['admin', 'sysDataPermissionRule:list']
+        add: ['admin', 'menu:add'],
+        edit: ['admin', 'menu:edit'],
+        del: ['admin', 'menu:del']
       }
     }
   }

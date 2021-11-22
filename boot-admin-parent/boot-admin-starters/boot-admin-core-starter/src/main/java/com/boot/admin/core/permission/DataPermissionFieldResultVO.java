@@ -1,8 +1,8 @@
 package com.boot.admin.core.permission;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 /**
  * <p>DataPermissionFieldResultVO class.</p>
@@ -11,10 +11,8 @@ import lombok.Data;
  * @version 1.0.10-SNAPSHOT
  */
 @Data
+@SuperBuilder
 public class DataPermissionFieldResultVO {
-
-    @JsonIgnore
-    Long id;
     /**
      * 排序
      */
@@ -36,6 +34,9 @@ public class DataPermissionFieldResultVO {
     /**
      * 是否允许访问
      */
-    @ApiModelProperty("是否允许访问")
+    @ApiModelProperty("可访问")
     private Boolean isAccessible;
+
+    @ApiModelProperty(value = "可编辑")
+    private Boolean isEditable;
 }

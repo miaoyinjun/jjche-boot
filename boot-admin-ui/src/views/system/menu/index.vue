@@ -154,22 +154,34 @@
               msg="确定删除吗,如果存在下级节点则一并删除，此操作不能撤销！"
             />
           </div>
-          <el-button v-permission="['sysDataPermissionRule:list']" size="mini" type="warning" icon="el-icon-s-grid"
-                     style="display: inline-block;" @click="handleDataPermissionRule(scope.row)"/>
-          <el-button v-permission="['sysDataPermissionRule:list']" size="mini" type="info" icon="el-icon-tickets"
-                     style="display: inline-block;" @click="handleDataPermissionRule(scope.row)"/>
+             <el-tooltip content="数据权限" effect="dark" placement="top">
+              <el-button v-permission="['menu:edit','menu:del']" size="mini" type="warning" icon="el-icon-s-grid"
+                     style="display: inline-block;" @click="handleDataPermission(scope.row)"/>
+            </el-tooltip>                     
         </template>
       </el-table-column>
     </el-table>
+
     <el-drawer
-      title="数据规则权限"
-      :visible.sync="dataPermissionRuleVisible"
-      @open="handleDataPermissionRuleOpen()"
-      size="50%">
-      <div style="margin-left: 20px">
-        <dataPermissionRule ref="dataPermissionRule" :permission="permission"/>
-      </div>
-    </el-drawer>
+      title="数据权限"
+      :visible.sync="dataPermissionVisible"
+      @open="handleDataPermissionOpen()"
+      size="40%">
+
+        <div style="margin-left: 20px">
+          <el-tabs v-model="DataPermissionActiveName" @tab-click="handleTabDataPermissionClick">
+          
+            <el-tab-pane label="数据规则" name="dataPermissionRule">
+              <dataPermissionRule ref="dataPermissionRule" :permission="permission"/>
+            </el-tab-pane>
+      
+            <el-tab-pane label="数据字段" name="dataPermissionField">
+              <dataPermissionField ref="dataPermissionField" :permission="permission"/>
+            </el-tab-pane>
+    
+          </el-tabs>
+        </div>
+        </el-drawer>
   </div>
 </template>
 
@@ -185,6 +197,7 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import DateRangePicker from '@/components/DateRangePicker'
 import dataPermissionRule from './dataPermissionRule'
+import dataPermissionField from './dataPermissionField'
 
 // crud交由presenter持有
 const defaultForm = {
@@ -205,14 +218,15 @@ const defaultForm = {
 }
 export default {
   name: 'Menu',
-  components: { Treeselect, IconSelect, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule },
+  components: { Treeselect, IconSelect, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule, dataPermissionField },
   cruds() {
     return Crud({ title: '菜单', url: 'admin/menus', crudMethod: { ...crudMenu } })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
     return {
-      dataPermissionRuleVisible: false,
+      DataPermissionActiveName: 'dataPermissionRule',
+      dataPermissionVisible: false,
       menuId: null,
       menus: [],
       permission: {
@@ -281,19 +295,30 @@ export default {
     selected(name) {
       this.form.icon = name
     },
-    handleDataPermissionRule(data) {
-      this.dataPermissionRuleVisible = true
+    handleDataPermission(data) {
+      this.dataPermissionVisible = true
+      this.DataPermissionActiveName = 'dataPermissionRule'
       this.menuId = data.id
     },
-    handleDataPermissionRuleOpen() {
+    getDataPermissionRuleData(){
+      this.$refs.dataPermissionRule.query.menuId = this.menuId
+      this.$refs.dataPermissionRule.crud.toQuery()
+    },
+    handleDataPermissionOpen() {
       this.$nextTick(() => {
         if (this.$refs.dataPermissionRule) {
-          this.$refs.dataPermissionRule.query.menuId = this.menuId
-          this.$refs.dataPermissionRule.crud.toQuery()
+          this.getDataPermissionRuleData()
         }
       })
+    },
+    handleTabDataPermissionClick(tab, event) {
+      if(tab.name === 'dataPermissionField'){
+          this.$refs.dataPermissionField.query.menuId = this.menuId
+          this.$refs.dataPermissionField.crud.toQuery()
+      }else{
+        this.getDataPermissionRuleData()
+      }
     }
-
   }
 }
 </script>

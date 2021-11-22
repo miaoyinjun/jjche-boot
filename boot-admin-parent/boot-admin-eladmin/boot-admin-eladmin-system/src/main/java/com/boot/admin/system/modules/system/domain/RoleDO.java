@@ -3,7 +3,6 @@ package com.boot.admin.system.modules.system.domain;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.boot.admin.common.enums.DataScopeEnum;
-import com.boot.admin.system.modules.system.dto.RoleMenuDataPermissionFieldDTO;
 import com.boot.admin.mybatis.base.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,7 +10,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,7 +45,4 @@ public class RoleDO extends BaseEntity {
 
     @ApiModelProperty(value = "描述")
     private String description;
-
-    @TableField(exist = false)
-    private List<RoleMenuDataPermissionFieldDTO> roleMenuDataPermissionFields;
 }

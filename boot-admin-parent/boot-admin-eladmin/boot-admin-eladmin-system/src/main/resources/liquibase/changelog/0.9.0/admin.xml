@@ -6,6 +6,8 @@
 
     <include file="xml/20200922_001_init.xml" relativeToChangelogFile="true"/>
     <include file="xml/202110027_001_add_tb_sys_data_permission_rule.xml" relativeToChangelogFile="true"/>
+    <include file="xml/202111002_001_udpate_tb_sys_data_permission_field.xml" relativeToChangelogFile="true"/>
+    <include file="xml/202111012_001_udpate_tb_sys_data_permission_field_role.xml" relativeToChangelogFile="true"/>
     <changeSet  author="miaoyj"  id="add tag">
         <tagDatabase  tag="0.9.0"/>
     </changeSet>

@@ -23,6 +23,8 @@ function CRUD(options) {
     data: [],
     // 表格头部数据
     meta: [],
+    // 详情字段数据
+    metaDetail: [],    
     // 选择项
     selections: [],
     // 待查询的对象
@@ -194,6 +196,10 @@ function CRUD(options) {
       if (crud.crudMethod.get != null) {
         crud.resetForm()
         return crud.crudMethod.get(data.id).then((resData) => {
+          if(resData != null && resData.meta != null){
+            crud.metaDetail = resData.meta
+            resData = resData.records[0]
+          }
           crud.resetForm(resData)
           crud.getDataStatus(crud.getDataId(data)).edit = crud.STATUS.PREPARED
         }).catch(() => {
@@ -572,7 +578,35 @@ function CRUD(options) {
           })
         }
       })
-    }
+    },
+
+    /**
+    * 判断详细是否可访问
+    * @param {*} fieldName 字段名
+    */
+    metaDetailIsAccessible(fieldName){
+      if(fieldName != null){
+        const data = this.metaDetail.filter(item => item.code === fieldName)
+        if(data != null && data.length > 0){
+          return data[0].isAccessible;
+        }
+      }
+      return true;
+    },
+
+    /**
+    * 判断详细是否可编辑
+    * @param {*} fieldName 字段名
+    */
+    metaDetailIsEditable(fieldName){
+      if(fieldName != null){
+        const data = this.metaDetail.filter(item => item.code === fieldName)
+        if(data != null && data.length > 0){
+          return data[0].isEditable;
+        }
+      }
+      return true;
+    }    
   }
   const crud = Object.assign({}, data)
   // 可观测化
