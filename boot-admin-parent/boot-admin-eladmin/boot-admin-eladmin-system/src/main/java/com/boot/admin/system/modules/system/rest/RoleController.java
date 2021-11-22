@@ -3,8 +3,8 @@ package com.boot.admin.system.modules.system.rest;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Dict;
 import com.boot.admin.system.modules.system.domain.RoleDO;
-import com.boot.admin.system.modules.system.dto.RoleDTO;
-import com.boot.admin.system.modules.system.dto.RoleQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.RoleDTO;
+import com.boot.admin.system.modules.system.api.dto.RoleQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.RoleService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
@@ -63,7 +63,7 @@ public class RoleController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.RoleQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.RoleQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
     @ApiOperation("导出角色数据")
@@ -88,7 +88,7 @@ public class RoleController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.RoleQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.RoleQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

@@ -1,99 +1,173 @@
 package com.boot.admin.system.modules.system.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Assert;
+import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.boot.admin.system.modules.system.domain.DataPermissionFieldRoleDO;
-import com.boot.admin.system.modules.system.dto.RoleMenuDataPermissionFieldDTO;
-import com.boot.admin.system.modules.system.mapper.DataPermissionFieldRoleMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.boot.admin.cache.service.RedisService;
+import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
+import com.boot.admin.mybatis.param.MyPage;
+import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.util.MybatisUtil;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldRoleDTO;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldRoleQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFiledRoleSelectedDTO;
+import com.boot.admin.system.modules.system.api.enums.DataPermissionFieldRoleSortEnum;
+import com.boot.admin.system.modules.system.api.vo.DataPermissionFieldRoleVO;
+import com.boot.admin.system.modules.system.domain.DataPermissionFieldDO;
+import com.boot.admin.system.modules.system.domain.DataPermissionFieldRoleDO;
+import com.boot.admin.system.modules.system.mapper.DataPermissionFieldRoleMapper;
+import com.boot.admin.system.modules.system.mapstruct.DataPermissionFieldRoleMapStruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
- * 数据字段权限角色服务
+ * 数据字段角色 服务实现类
  * </p>
  *
  * @author miaoyj
- * @version 1.0.10-SNAPSHOT
- * @since 2020-11-17
+ * @since 2021-11-04
  */
 @Service
 @RequiredArgsConstructor
 public class DataPermissionFieldRoleService extends MyServiceImpl<DataPermissionFieldRoleMapper, DataPermissionFieldRoleDO> {
 
+    private final DataPermissionFieldRoleMapStruct sysDataPermissionFieldRoleMapStruct;
+    private final RedisService redisService;
+
     /**
      * <p>
-     * 批量删除
+     * 创建
      * </p>
      *
-     * @param roleId 角色id
+     * @param dto 创建对象
      */
-    public void deleteInBatch(Long roleId) {
-        LambdaQueryWrapper<DataPermissionFieldRoleDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(DataPermissionFieldRoleDO::getRoleId, roleId);
+    @Transactional(rollbackFor = Exception.class)
+    public void save(DataPermissionFieldRoleDTO dto) {
+        Long roleId = dto.getRoleId();
+        Long menuId = dto.getMenuId();
+        //删除
+        LambdaQueryWrapper<DataPermissionFieldRoleDO> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.in(DataPermissionFieldRoleDO::getRoleId, roleId);
+        queryWrapper.in(DataPermissionFieldRoleDO::getMenuId, menuId);
+        this.remove(queryWrapper);
+
+        List<DataPermissionFiledRoleSelectedDTO> dataPermissionFieldSelectedList = dto.getDataPermissionFieldSelectedList();
+        if (CollUtil.isNotEmpty(dataPermissionFieldSelectedList)) {
+            List<DataPermissionFieldRoleDO> sysDataPermissionFieldRoleDOList = CollUtil.newArrayList();
+            for (DataPermissionFiledRoleSelectedDTO selectedDTO : dataPermissionFieldSelectedList) {
+                DataPermissionFieldRoleDO sysDataPermissionFieldRoleDO = new DataPermissionFieldRoleDO();
+                sysDataPermissionFieldRoleDO.setRoleId(roleId);
+                sysDataPermissionFieldRoleDO.setMenuId(menuId);
+                sysDataPermissionFieldRoleDO.setDataPermissionFieldId(selectedDTO.getId());
+                sysDataPermissionFieldRoleDO.setIsAccessible(selectedDTO.getIsAccessible());
+                sysDataPermissionFieldRoleDO.setIsEditable(selectedDTO.getIsEditable());
+                sysDataPermissionFieldRoleDOList.add(sysDataPermissionFieldRoleDO);
+            }
+            Assert.isTrue(this.saveBatch(sysDataPermissionFieldRoleDOList), "保存失败");
+        }
+        this.delUserCache();
+    }
+
+    /**
+     * <p>
+     * 查询所有数据不分页
+     * </p>
+     *
+     * @param sort  排序
+     * @param query 条件
+     * @return DataPermissionFieldRoleVO 列表对象
+     */
+    public List<DataPermissionFieldRoleVO> listQueryAll(DataPermissionFieldRoleSortEnum sort, DataPermissionFieldRoleQueryCriteriaDTO query) {
+        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
+        List<DataPermissionFieldRoleDO> list = this.baseMapper.queryAll(sort, queryWrapper);
+        return sysDataPermissionFieldRoleMapStruct.toVO(list);
+    }
+
+    /**
+     * <p>
+     * 多选删除
+     * </p>
+     *
+     * @param permissionRuleIds 数据规则id
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByPermissionFieldIds(Set<Long> permissionRuleIds) {
+        LambdaQueryWrapper<DataPermissionFieldRoleDO> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.in(DataPermissionFieldRoleDO::getDataPermissionFieldId, permissionRuleIds);
         this.remove(queryWrapper);
     }
 
     /**
      * <p>
-     * 批量保存
+     * 分页查询
      * </p>
      *
-     * @param list 资源
+     * @param page  分页
+     * @param query 条件
+     * @return 分页VO
      */
-    public void saveAll(List<DataPermissionFieldRoleDO> list) {
-        this.saveBatch(list);
-    }
+    public MyPage<DataPermissionFieldRoleVO> page(PageParam page, DataPermissionFieldRoleQueryCriteriaDTO query) {
+        DataPermissionFieldService dataPermissionFieldService = SpringUtil.getBean(DataPermissionFieldService.class);
+        MyPage<DataPermissionFieldRoleVO> resultPage = new MyPage<>();
+        List<DataPermissionFieldRoleVO> resultList = new ArrayList<>();
 
-    /**
-     * <p>
-     * 删除原数据，并保存新数据
-     * </p>
-     *
-     * @param roleId                       角色id
-     * @param roleMenuDataPermissionFields 数据
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteAndSaveAll(Long roleId,
-                                 List<RoleMenuDataPermissionFieldDTO> roleMenuDataPermissionFields) {
-        if (CollUtil.isNotEmpty(roleMenuDataPermissionFields)) {
-            List<DataPermissionFieldRoleDO> dataPermissionFieldRoleList = CollUtil.newArrayList();
-            for (RoleMenuDataPermissionFieldDTO field : roleMenuDataPermissionFields) {
-                Long menuId = field.getMenuId();
-                List<Long> dataPermissionFieldIds = field.getDataPermissionFieldIds();
-                if (CollUtil.isNotEmpty(dataPermissionFieldIds)) {
-                    for (Long dataPermissionFieldId : dataPermissionFieldIds) {
-                        DataPermissionFieldRoleDO dataPermissionFieldRole = new DataPermissionFieldRoleDO();
-                        dataPermissionFieldRole.setRoleId(roleId);
-                        dataPermissionFieldRole.setMenuId(menuId);
-                        dataPermissionFieldRole.setDataPermissionFieldId(dataPermissionFieldId);
-                        dataPermissionFieldRoleList.add(dataPermissionFieldRole);
+        //查询字段表
+        DataPermissionFieldQueryCriteriaDTO fileQueryCriteria = new DataPermissionFieldQueryCriteriaDTO();
+        fileQueryCriteria.setMenuId(query.getMenuId());
+        QueryWrapper fileRolequeryWrapper = MybatisUtil.assemblyQueryWrapper(fileQueryCriteria);
+        MyPage<DataPermissionFieldDO> filedPage = dataPermissionFieldService.page(page, fileRolequeryWrapper);
+        if (filedPage != null) {
+            List<DataPermissionFieldDO> filedList = filedPage.getRecords();
+            if (CollUtil.isNotEmpty(filedList)) {
+                List<DataPermissionFieldRoleVO> list = this.listQueryAll(null, query);
+
+                for (DataPermissionFieldDO fieldDO : filedList) {
+                    Long fieldId = fieldDO.getId();
+                    String fieldName = fieldDO.getName();
+                    Boolean isActivated = fieldDO.getIsActivated();
+
+                    DataPermissionFieldRoleVO fieldRoleVO = new DataPermissionFieldRoleVO();
+                    fieldRoleVO.setId(fieldId);
+                    fieldRoleVO.setName(fieldName);
+                    fieldRoleVO.setIsActivated(isActivated);
+
+                    for (DataPermissionFieldRoleVO fieldRole : list) {
+                        if (fieldId.equals(fieldRole.getDataPermissionFieldId())) {
+                            fieldRoleVO.setIsAccessible(fieldRole.getIsAccessible());
+                            fieldRoleVO.setIsEditable(fieldRole.getIsEditable());
+                            fieldRoleVO.setIsSelected(true);
+                            break;
+                        }
                     }
+                    resultList.add(fieldRoleVO);
                 }
             }
-            //删除该角色所有菜单数据字段权限
-            this.deleteInBatch(roleId);
-            this.saveAll(dataPermissionFieldRoleList);
         }
+        resultPage.setNewRecords(resultList);
+        resultPage.setPages(filedPage.getPages());
+        resultPage.setTotal(filedPage.getTotal());
+        return resultPage;
     }
+
 
     /**
      * <p>
-     * 根据菜单与角色id查询
+     * 删除用户数据字段缓存
      * </p>
      *
-     * @param menuId  角色id
-     * @param roleIds 菜单id
-     * @return /
      */
-    public List<DataPermissionFieldRoleDO> findByMenuIdAndRoleIdIn(Long menuId, List<Long> roleIds) {
-        LambdaQueryWrapper<DataPermissionFieldRoleDO> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(DataPermissionFieldRoleDO::getMenuId, menuId);
-        queryWrapper.in(DataPermissionFieldRoleDO::getRoleId, roleIds);
-        return this.list(queryWrapper);
+    public void delUserCache(){
+        redisService.delByKeyPrefix(CacheKey.PERMISSION_DATA_FIELD_USER_ID);
     }
+
 }

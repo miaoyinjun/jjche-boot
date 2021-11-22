@@ -29,12 +29,13 @@ package com.boot.admin.common.annotation;
 import java.lang.annotation.*;
 
 /**
- *  数据权限注解
+ * 数据权限注解
+ *
  * @Author taoyan
  * @Date 2019年4月11日
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE,ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
 public @interface PermissionData {
 
@@ -56,4 +57,13 @@ public @interface PermissionData {
      */
     String userIdEQFieldName() default "";
 
+    /**
+     * 是否处理字段修改权限
+     */
+    boolean fieldUpdate() default false;
+
+    /**
+     * 是否处理字段返回权限
+     */
+    boolean fieldReturn() default false;
 }

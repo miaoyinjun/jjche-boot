@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.mapstruct;
 
 import com.boot.admin.system.modules.system.domain.RoleDO;
-import com.boot.admin.system.modules.system.dto.RoleDTO;
+import com.boot.admin.system.modules.system.api.dto.RoleDTO;
 import com.boot.admin.core.base.BaseMapStruct;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

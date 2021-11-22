@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function add(data) {
   return request({
-    url: 'admin/sys_data_permission_rules',
+    url: 'admin/data_permission_rules',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function add(data) {
 
 export function del(ids) {
   return request({
-    url: 'admin/sys_data_permission_rules/',
+    url: 'admin/data_permission_rules/',
     method: 'delete',
     data: ids
   })
@@ -18,7 +18,7 @@ export function del(ids) {
 
 export function edit(data) {
   return request({
-    url: 'admin/sys_data_permission_rules',
+    url: 'admin/data_permission_rules',
     method: 'put',
     data
   })
@@ -26,7 +26,7 @@ export function edit(data) {
 
 export function get(id) {
   return request({
-    url: 'admin/sys_data_permission_rules/' + id,
+    url: 'admin/data_permission_rules/' + id,
     method: 'get'
   })
 }

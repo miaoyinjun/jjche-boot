@@ -5,7 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import com.boot.admin.common.constant.ElAdminConstant;
 import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.core.util.FileUtil;
-import com.boot.admin.system.modules.system.vo.MonitorVO;
+import com.boot.admin.system.modules.system.api.vo.MonitorVO;
 import org.springframework.stereotype.Service;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
@@ -40,7 +40,7 @@ public class MonitorService {
     /**
      * {@inheritDoc}
      *
-     * @return a {@link com.boot.admin.system.modules.system.vo.MonitorVO} object.
+     * @return a {@link com.boot.admin.system.modules.system.api.vo.MonitorVO} object.
      */
     public MonitorVO getServers() {
         MonitorVO monitorVO = new MonitorVO();

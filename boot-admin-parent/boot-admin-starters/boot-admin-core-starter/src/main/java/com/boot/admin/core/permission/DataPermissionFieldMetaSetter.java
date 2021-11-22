@@ -26,4 +26,6 @@ public interface DataPermissionFieldMetaSetter {
      * @return 数据结构
      */
     List<DataPermissionFieldResultVO> getMeta();
+
+    Iterable getData();
 }

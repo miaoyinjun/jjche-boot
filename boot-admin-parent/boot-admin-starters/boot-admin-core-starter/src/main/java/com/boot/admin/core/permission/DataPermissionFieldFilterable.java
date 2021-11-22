@@ -19,4 +19,6 @@ public interface DataPermissionFieldFilterable<T> {
      * @param filterFunc 过滤方法
      */
     void doFilter(Function<T, T> filterFunc);
+
+    Iterable<T> getData();
 }

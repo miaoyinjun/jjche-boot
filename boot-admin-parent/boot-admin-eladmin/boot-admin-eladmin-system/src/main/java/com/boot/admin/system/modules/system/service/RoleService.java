@@ -3,7 +3,6 @@ package com.boot.admin.system.modules.system.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alicp.jetcache.anno.Cached;
@@ -21,10 +20,9 @@ import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.security.dto.RoleSmallDto;
 import com.boot.admin.security.dto.UserVO;
 import com.boot.admin.security.service.JwtUserService;
+import com.boot.admin.system.modules.system.api.dto.RoleDTO;
+import com.boot.admin.system.modules.system.api.dto.RoleQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.domain.*;
-import com.boot.admin.system.modules.system.dto.RoleDTO;
-import com.boot.admin.system.modules.system.dto.RoleMenuDataPermissionFieldDTO;
-import com.boot.admin.system.modules.system.dto.RoleQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.mapper.RoleDeptMapper;
 import com.boot.admin.system.modules.system.mapper.RoleMapper;
 import com.boot.admin.system.modules.system.mapper.RoleMenuMapper;
@@ -60,8 +58,8 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
     private final RedisService redisService;
     private final UserMapper userMapper;
     private final JwtUserService jwtUserService;
-    private final DataPermissionFieldRoleService dataPermissionFieldRoleService;
     private final DataPermissionFieldService dataPermissionFieldService;
+    private final DataPermissionRuleService dataPermissionRuleService;
 
     /**
      * 查询全部数据
@@ -115,20 +113,15 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         List<RoleDO> roleList = myPage.getRecords();
         if (CollUtil.isNotEmpty(roleList)) {
             for (RoleDO role : roleList) {
-                Long roleId = role.getId();
                 Set<MenuDO> menus = role.getMenus();
                 Set<MenuDO> newMenus = CollUtil.newHashSet();
                 if (CollUtil.isNotEmpty(menus)) {
                     for (MenuDO menu : menus) {
                         Long menuId = menu.getId();
-                        List<DataPermissionFieldDO> dataPermissionFieldList = dataPermissionFieldService.findByMenuId(menuId);
-                        menu.setDataPermissionFields(dataPermissionFieldList);
-                        List<DataPermissionFieldRoleDO> dataPermissionFieldRoleList = dataPermissionFieldRoleService.findByMenuIdAndRoleIdIn(menuId, CollUtil.newArrayList(roleId));
-                        if (CollUtil.isNotEmpty(dataPermissionFieldRoleList)) {
-                            List<Long> dataIds = dataPermissionFieldRoleList.stream().map(o -> o.getDataPermissionFieldId()).collect(Collectors.toList());
-                            menu = ObjectUtil.clone(menu);
-                            menu.setDataPermissionFieldSelectedIds(dataIds);
-                        }
+                        Long countFiled = dataPermissionFieldService.countByMenuId(menuId);
+                        Long countRule = dataPermissionRuleService.countByMenuId(menuId);
+                        Boolean isDataPermission = (countFiled != null && countFiled > 0) || countRule != null && countRule > 0;
+                        menu.setIsDataPermission(isDataPermission);
                         newMenus.add(menu);
                     }
                 }
@@ -221,10 +214,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         List<Long> menuIds = resources.getMenus().stream().map(MenuDO::getId).collect(Collectors.toList());
         updateRoleAndMenu(roleId, menuIds);
         delCaches(resources.getId());
-
-        /**保存数据权限字段*/
-        List<RoleMenuDataPermissionFieldDTO> roleMenuDataPermissionFields = resources.getRoleMenuDataPermissionFields();
-        dataPermissionFieldRoleService.deleteAndSaveAll(roleId, roleMenuDataPermissionFields);
     }
 
     /**
@@ -279,6 +268,21 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         permissions = roles.stream().flatMap(role -> role.getMenus().stream())
                 .filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
                 .map(MenuDO::getPermission).collect(Collectors.toSet());
+        //列权限同菜单一同返回
+//        Set<Long> roleIds = roles.stream().map(RoleDO::getId).collect(Collectors.toSet());
+//        List<DataPermissionFieldVO> permissionDataFieldDTOList =
+//                dataPermissionFieldService.selectByRoleIdsAndPermission(roleIds, permissions);
+//        if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
+//            for (DataPermissionFieldVO vo : permissionDataFieldDTOList) {
+//                String permission = StrUtil.format("{}:{}:", vo.getMenuPermission(), vo.getCode());
+//                if (vo.getIsAccessible()) {
+//                    permissions.add(StrUtil.format("{}accessible", permission));
+//                }
+//                if (vo.getIsEditable()) {
+//                    permissions.add(StrUtil.format("{}editable", permission));
+//                }
+//            }
+//        }
         return permissions.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import com.boot.admin.common.annotation.QueryCriteria;
 import com.boot.admin.common.dto.BaseDTO;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.EqualsAndHashCode;
 /**
 * <p>
@@ -20,7 +21,7 @@ import lombok.EqualsAndHashCode;
 */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ${className}DTO extends BaseDTO {
+public class ${className}DTO extends BaseQueryCriteriaDTO implements BaseDTO {
 <#if columns??>
     <#list columns as column>
    <#if column.formShow>

@@ -5,33 +5,38 @@ import com.boot.admin.mybatis.base.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.Objects;
-
 /**
- * <p>
- * 菜单数据字段权限角色表
- * </p>
- *
- * @author miaoyj
- * @version 1.0.10-SNAPSHOT
- * @since 2020-11-17
- */
+* <p>
+* 数据字段角色
+* </p>
+*
+* @author miaoyj
+* @since 2021-11-04
+*/
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@TableName(value = "sys_data_permission_field_role")
+@TableName("sys_data_permission_field_role")
 public class DataPermissionFieldRoleDO extends BaseEntity {
-
-    private Long menuId;
-
+    /**
+    * 角色ID
+    */
     private Long roleId;
-
+    /**
+    * 菜单ID
+    */
+    private Long menuId;
+    /**
+    * 数据字段权限ID
+    */
     private Long dataPermissionFieldId;
 
-    /** {@inheritDoc} */
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getId());
-    }
+    /**
+     * 可见
+     */
+    private Boolean isAccessible;
+    /**
+     * 编辑
+     */
+    private Boolean isEditable;
 }

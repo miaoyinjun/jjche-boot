@@ -7,11 +7,11 @@ import com.boot.admin.common.pojo.DataScope;
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.PasswordProperties;
 import com.boot.admin.system.modules.system.domain.UserDO;
-import com.boot.admin.system.modules.system.dto.UserDTO;
-import com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.dto.UserResetPassDTO;
+import com.boot.admin.system.modules.system.api.dto.UserDTO;
+import com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.UserResetPassDTO;
 import com.boot.admin.system.modules.system.service.*;
-import com.boot.admin.system.modules.system.vo.UserPassVO;
+import com.boot.admin.system.modules.system.api.vo.UserPassVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.common.util.RsaUtils;
@@ -64,7 +64,7 @@ public class UserController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
     @LogRecordAnnotation(
@@ -82,7 +82,7 @@ public class UserController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
@@ -182,7 +182,7 @@ public class UserController extends BaseController {
     /**
      * <p>updatePass.</p>
      *
-     * @param passVo a {@link com.boot.admin.system.modules.system.vo.UserPassVO} object.
+     * @param passVo a {@link com.boot.admin.system.modules.system.api.vo.UserPassVO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
@@ -210,7 +210,7 @@ public class UserController extends BaseController {
     /**
      * <p>resetPass.</p>
      *
-     * @param passDTO a {@link com.boot.admin.system.modules.system.dto.UserResetPassDTO} object.
+     * @param passDTO a {@link com.boot.admin.system.modules.system.api.dto.UserResetPassDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @LogRecordAnnotation(

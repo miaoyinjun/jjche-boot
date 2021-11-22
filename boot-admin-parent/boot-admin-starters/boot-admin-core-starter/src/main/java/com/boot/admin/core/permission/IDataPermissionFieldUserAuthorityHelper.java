@@ -18,9 +18,9 @@ public interface IDataPermissionFieldUserAuthorityHelper {
       * </p>
       *
       * @param permission 权限标识
+      * @param returnClass 对象类型
+      * @param isFilter 是否过滤
       * @return 结果
-      * @author miaoyj
-      * @since 2020-12-09
       */
-     List<DataPermissionFieldResultVO> getDataResource(String permission);
+     List<DataPermissionFieldResultVO> getDataResource(String permission, Class returnClass, boolean isFilter);
 }
