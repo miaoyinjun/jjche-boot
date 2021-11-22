@@ -2,25 +2,19 @@ package com.boot.admin.demo.modules.student.service;
 
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.boot.admin.common.annotation.PermissionData;
-import com.boot.admin.common.dto.IdQueryCriteriaDTO;
-import com.boot.admin.common.dto.IdsQueryCriteriaDTO;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.demo.modules.student.api.dto.StudentDTO;
-import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
-import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
-import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
-import com.boot.admin.demo.modules.student.api.vo.StudentDetailVO;
 import com.boot.admin.demo.modules.student.api.vo.StudentVO;
 import com.boot.admin.demo.modules.student.domain.StudentDO;
 import com.boot.admin.demo.modules.student.mapper.StudentMapper;
-import com.boot.admin.demo.modules.student.mapstruct.StudentDetailMapStruct;
 import com.boot.admin.demo.modules.student.mapstruct.StudentMapStruct;
+import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
+import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
+import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import com.boot.admin.mybatis.util.MybatisUtil;
-import com.boot.admin.security.permission.field.DataPermissionFieldResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
@@ -46,7 +39,6 @@ import java.util.Map;
 public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
 
     private final StudentMapStruct studentMapStruct;
-    private final StudentDetailMapStruct studentDetailMapStruct;
 
     /**
      * <p>
@@ -66,12 +58,11 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * 多选删除
      * </p>
      *
-     * @param query 主键
+     * @param ids 主键
      */
     @Transactional(rollbackFor = Exception.class)
-    public void delete(IdsQueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        Assert.isTrue(this.removeBatchWithFill(new StudentDO(), queryWrapper) == query.getIds().size(), "删除失败，记录不存在或权限不足");
+    public void delete(Set<Long> ids) {
+        Assert.isTrue(this.removeBatchByIdsWithFill(new StudentDO(), ids) == ids.size(), "删除失败，记录不存在或权限不足");
     }
 
     /**
@@ -79,14 +70,13 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * 编辑
      * </p>
      *
-     * @param query 编辑对象
+     * @param dto 编辑对象
      */
     @Transactional(rollbackFor = Exception.class)
-    public void update(StudentDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        StudentDO studentDO = this.getOne(queryWrapper);
+    public void update(StudentDTO dto) {
+        StudentDO studentDO = this.getById(dto.getId());
         Assert.notNull(studentDO, "记录不存在");
-        studentDO = this.studentMapStruct.toDO(query);
+        studentDO = this.studentMapStruct.toDO(dto);
         Assert.isTrue(this.updateById(studentDO), "修改失败，记录不存在或权限不足");
     }
 
@@ -95,14 +85,13 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * 根据ID查询
      * </p>
      *
-     * @param query 条件
+     * @param id ID
      * @return StudentVO 对象
      */
-    public DataPermissionFieldResult<StudentDetailVO> getVoById(IdQueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        StudentDO studentDO = this.getOne(queryWrapper);
+    public StudentVO getVoById(Long id) {
+        StudentDO studentDO = this.getById(id);
         Assert.notNull(studentDO, "记录不存在或权限不足");
-        return DataPermissionFieldResult.build(studentDetailMapStruct.toVO(studentDO));
+        return this.studentMapStruct.toVO(studentDO);
     }
 
     /**
@@ -110,11 +99,11 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * 查询数据分页
      * </p>
      *
-     * @param query  条件
-     * @param sort   排序
-     * @param page   分页
-     * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
+     * @param query 条件
+     * @param sort  排序
+     * @param page  分页
      * @return StudentVO 分页
+     * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
      */
     public MyPage<StudentVO> pageQuery(PageParam page, StudentSortEnum sort, CourseEnum course, StudentQueryCriteriaDTO query) {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
@@ -133,11 +122,10 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * @param query 条件
      * @return StudentVO 列表对象
      */
-    @PermissionData(fieldReturn = true)
-    public DataPermissionFieldResult<StudentVO> listQueryAll(StudentSortEnum sort, StudentQueryCriteriaDTO query) {
+    public List<StudentVO> listQueryAll(StudentSortEnum sort, StudentQueryCriteriaDTO query) {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
         List<StudentDO> list = this.baseMapper.queryAll(sort, queryWrapper);
-        return DataPermissionFieldResult.build(studentMapStruct.toVO(list));
+        return studentMapStruct.toVO(list);
     }
 
     /**
@@ -145,10 +133,21 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * 导出数据
      * </p>
      *
-     * @param dataPermissionFieldResult 结果
+     * @param sort  排序
+     * @param query 条件
      */
-    public void download(DataPermissionFieldResult<StudentVO> dataPermissionFieldResult) {
-        List<Map<String, Object>> list = DataPermissionFieldResult.toExcelListMap(dataPermissionFieldResult);
+    public void download(StudentSortEnum sort, StudentQueryCriteriaDTO query) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<StudentVO> all = this.listQueryAll(sort, query);
+        for (StudentVO student : all) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("姓名", student.getName());
+            map.put("年龄", student.getAge());
+            map.put("课程", student.getCourse().getDesc());
+            map.put("创建时间", student.getGmtCreate());
+            map.put("创建者", student.getCreatedBy());
+            list.add(map);
+        }
         try {
             HttpServletResponse httpServletResponse = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
             FileUtil.downloadExcel(list, httpServletResponse);
