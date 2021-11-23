@@ -1,13 +1,12 @@
 package com.boot.admin.demo.modules.student.function;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.boot.admin.demo.modules.student.domain.StudentDO;
 import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.log.biz.service.IParseFunction;
-import com.boot.admin.demo.modules.student.domain.StudentDO;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +38,9 @@ public class StudentNameByIdsParseFunction implements IParseFunction<Set> {
     /** {@inheritDoc} */
     @Override
     public String apply(Set value) {
-        QueryWrapper<StudentDO> studentQueryWrapper = Wrappers.query();
-        studentQueryWrapper.select("name");
-        studentQueryWrapper.in("id", Convert.convert(List.class, value));
+        LambdaQueryWrapper<StudentDO> studentQueryWrapper = Wrappers.lambdaQuery();
+        studentQueryWrapper.select(StudentDO::getName);
+        studentQueryWrapper.in(StudentDO::getId, value);
         List<Object> list = studentService.getBaseMapper().selectObjs(studentQueryWrapper);
         if (CollUtil.isNotEmpty(list)) {
             return CollUtil.join(list, StrUtil.COMMA);
