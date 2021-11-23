@@ -27,6 +27,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -63,7 +64,7 @@ public class StudentController extends BaseController {
             type = LogType.ADD, module = ApiVersion.MODULE_STUDENT,
             prefix = "student", bizNo = "{{#dto.name}}"
     )
-    public ResultWrapper create(@Validated @RequestBody StudentDTO dto) {
+    public ResultWrapper create(@Validated @Valid @RequestBody StudentDTO dto) {
         studentService.save(dto);
         return ResultWrapper.ok();
     }
@@ -103,7 +104,7 @@ public class StudentController extends BaseController {
             prefix = "student", bizNo = "{{#dto.name}}",
             detail = "修改内容：「{STUDENT_UPDATE_DIFF_BY_DTO{#dto}}」"
     )
-    public ResultWrapper update(@Validated(BaseDTO.Update.class) @RequestBody StudentDTO dto) {
+    public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody StudentDTO dto) {
         studentService.update(dto);
         return ResultWrapper.ok();
     }
