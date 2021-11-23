@@ -353,6 +353,8 @@ public class GenUtil {
             listMap.put("capitalColumnName", capitalColumnName);
             // 字典名称
             listMap.put("dictName", column.getDictName());
+            //最大长度
+            listMap.put("maxLength", column.getMaxLength());
             // 日期注解
             listMap.put("dateAnnotation", column.getDateAnnotation());
             if (com.boot.admin.common.util.StrUtil.isNotBlank(column.getDateAnnotation())) {

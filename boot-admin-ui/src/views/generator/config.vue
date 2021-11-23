@@ -36,6 +36,11 @@
             <el-table v-loading="loading" stripe :data="data" :max-height="tableHeight" size="small" style="width: 100%;margin-bottom: 15px">
               <el-table-column prop="columnName" label="字段名称" />
               <el-table-column prop="columnType" label="字段类型" />
+              <el-table-column prop="remark" label="最大长度">
+                <template slot-scope="scope">
+                  <el-input v-model="data[scope.$index].maxLength" size="mini" class="edit-input" />
+                </template>
+              </el-table-column>              
               <el-table-column prop="remark" label="字段描述">
                 <template slot-scope="scope">
                   <el-input v-model="data[scope.$index].remark" size="mini" class="edit-input" />

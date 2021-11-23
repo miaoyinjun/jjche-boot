@@ -11,6 +11,8 @@ import com.boot.admin.common.annotation.QueryCriteria;
 import com.boot.admin.common.dto.BaseDTO;
 import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.EqualsAndHashCode;
+import org.hibernate.validator.constraints.Length;
+
 /**
 * <p>
 * ${apiAlias}
@@ -34,6 +36,9 @@ public class ${className}DTO extends BaseQueryCriteriaDTO implements BaseDTO {
    </#if>
    <#if column.columnKey == 'PRI'>
    @NotNull(message = "id不能为空", groups = Update.class)
+   </#if>
+   <#if column.maxLength?? && column.maxLength gt 0>
+   @Length(max = ${column.maxLength}, message = "${column.remark}最大长度不能超过${column.maxLength}")
    </#if>
    @ApiModelProperty(value = "${column.remark}"<#if column.columnType = 'Timestamp'>, dataType = "java.lang.String"</#if>)
    private ${column.columnType} ${column.changeColumnName};

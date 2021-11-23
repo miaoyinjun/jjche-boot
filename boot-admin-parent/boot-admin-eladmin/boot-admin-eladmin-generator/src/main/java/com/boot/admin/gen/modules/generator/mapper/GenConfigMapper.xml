@@ -20,7 +20,8 @@
     <select id="queryColumn" resultType="com.boot.admin.gen.modules.generator.domain.ColumnInfoDO">
         <![CDATA[
         select #{tableName} AS 'tableName', column_name, is_nullable <=> 'NO' AS 'notNull',
-        data_type AS 'columnType', column_comment AS 'remark', column_key AS 'keyType', extra
+        data_type AS 'columnType', column_comment AS 'remark', column_key AS 'keyType', extra,
+        character_maximum_length AS 'maxLength'
             from information_schema.columns
         where table_name = #{tableName}
         and table_schema = (select database()) order by ordinal_position
