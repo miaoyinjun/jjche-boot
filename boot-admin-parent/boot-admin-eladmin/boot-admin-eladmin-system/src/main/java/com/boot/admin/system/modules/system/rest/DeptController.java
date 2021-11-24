@@ -5,7 +5,7 @@ import cn.hutool.core.lang.Assert;
 import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -33,7 +33,7 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统：部门管理")
-@AdminRestController("dept")
+@SysRestController("dept")
 public class DeptController extends BaseController {
 
     private final DeptService deptService;

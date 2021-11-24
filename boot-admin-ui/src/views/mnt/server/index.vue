@@ -78,7 +78,7 @@ export default {
   name: 'Server',
   components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '服务器', url: 'admin/serverDeploy', crudMethod: { ...crudServer }})
+    return Crud({ title: '服务器', url: 'sys/serverDeploy', crudMethod: { ...crudServer }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

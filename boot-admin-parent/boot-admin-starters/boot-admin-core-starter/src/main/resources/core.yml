@@ -43,7 +43,7 @@ boot:
       api:
         path:
           global-prefix: /api
-          admin-prefix: ${boot.admin.core.api.path.global-prefix}/admin
+          sys-prefix: ${boot.admin.core.api.path.global-prefix}/sys
       alarm:
         ding-talk:
           url: https://oapi.dingtalk.com/robot/send

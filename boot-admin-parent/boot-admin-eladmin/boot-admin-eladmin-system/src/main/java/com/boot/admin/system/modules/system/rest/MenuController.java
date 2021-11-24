@@ -10,7 +10,7 @@ import com.boot.admin.system.modules.system.service.MenuService;
 import com.boot.admin.system.modules.system.api.vo.MenuVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Api(tags = "系统：菜单管理")
-@AdminRestController("menus")
+@SysRestController("menus")
 public class MenuController extends BaseController {
 
     private final MenuService menuService;

@@ -172,7 +172,7 @@ export default {
   name: 'Role',
   components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule, dataPermissionField },
   cruds() {
-    return Crud({ title: '角色', url: 'admin/roles', sort: 'level asc', crudMethod: { ...crudRoles } })
+    return Crud({ title: '角色', url: 'sys/roles', sort: 'level asc', crudMethod: { ...crudRoles } })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

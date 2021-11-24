@@ -15,7 +15,7 @@ import com.boot.admin.system.modules.system.api.vo.UserPassVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.common.util.RsaUtils;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  * @since 2018-11-23
  */
 @Api(tags = "系统：用户管理")
-@AdminRestController("users")
+@SysRestController("users")
 @RequiredArgsConstructor
 public class UserController extends BaseController {
 

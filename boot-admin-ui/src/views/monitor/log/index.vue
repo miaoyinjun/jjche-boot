@@ -98,7 +98,7 @@ export default {
   name: 'Log',
   components: { Search, crudOperation, pagination, rrOperation },
   cruds() {
-    return Crud({ title: '日志', url: 'admin/logs' })
+    return Crud({ title: '日志', url: 'sys/logs' })
   },
   mixins: [presenter()],
   data() {

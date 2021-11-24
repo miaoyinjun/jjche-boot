@@ -102,7 +102,7 @@ export default {
   cruds() {
     return [
       Crud({
-        title: '数据规则详情', url: 'admin/data_permission_rules', query: { menuId: '' }, sort: ['id DESC'],
+        title: '数据规则详情', url: 'sys/data_permission_rules', query: { menuId: '' }, sort: ['id DESC'],
         crudMethod: { ...crudDataPermissionRule },
         optShow: {
           add: true,

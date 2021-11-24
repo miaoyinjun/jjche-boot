@@ -56,7 +56,7 @@ export default {
   name: 'DeployHistory',
   components: { pagination, crudOperation, rrOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '部署历史', url: 'admin/deployHistory', crudMethod: { del }})
+    return Crud({ title: '部署历史', url: 'sys/deployHistory', crudMethod: { del }})
   },
   mixins: [presenter(), header()],
   data() {

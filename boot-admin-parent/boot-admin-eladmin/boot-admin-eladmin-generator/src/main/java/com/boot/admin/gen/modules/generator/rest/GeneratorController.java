@@ -5,7 +5,7 @@ import com.boot.admin.gen.modules.generator.domain.ColumnInfoDO;
 import com.boot.admin.gen.modules.generator.service.GenConfigService;
 import com.boot.admin.gen.modules.generator.service.GeneratorService;
 import com.boot.admin.common.constant.EnvConstant;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.SpringContextHolder;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @since 2019-01-02
  */
 @RequiredArgsConstructor
-@AdminRestController("generator")
+@SysRestController("generator")
 @Api(tags = "系统：代码生成管理")
 public class GeneratorController extends BaseController {
 

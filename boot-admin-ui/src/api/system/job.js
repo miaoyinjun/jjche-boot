@@ -7,7 +7,7 @@ export function getAllJob() {
     enabled: true
   }
   return request({
-    url: 'admin/job',
+    url: 'sys/job',
     method: 'get',
     params
   })
@@ -15,7 +15,7 @@ export function getAllJob() {
 
 export function add(data) {
   return request({
-    url: 'admin/job',
+    url: 'sys/job',
     method: 'post',
     data
   })
@@ -23,7 +23,7 @@ export function add(data) {
 
 export function del(ids) {
   return request({
-    url: 'admin/job',
+    url: 'sys/job',
     method: 'delete',
     data: ids
   })
@@ -31,7 +31,7 @@ export function del(ids) {
 
 export function edit(data) {
   return request({
-    url: 'admin/job',
+    url: 'sys/job',
     method: 'put',
     data
   })

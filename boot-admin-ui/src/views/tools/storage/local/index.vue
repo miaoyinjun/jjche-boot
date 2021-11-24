@@ -119,7 +119,7 @@ const defaultForm = { id: null, name: '' }
 export default {
   components: { pagination, crudOperation, rrOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '文件', url: 'admin/localStorage', crudMethod: { ...crudFile }})
+    return Crud({ title: '文件', url: 'sys/localStorage', crudMethod: { ...crudFile }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

@@ -115,7 +115,7 @@ export default {
   name: 'Dept',
   components: { Treeselect, crudOperation, rrOperation, udOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '部门', url: 'admin/dept', crudMethod: { ...crudDept }})
+    return Crud({ title: '部门', url: 'sys/dept', crudMethod: { ...crudDept }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   // 设置数据字典

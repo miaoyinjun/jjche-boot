@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Assert;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.common.util.StrUtil;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
@@ -39,7 +39,7 @@ import java.util.Set;
  */
 @Api(tags = "运维：数据库管理")
 @RequiredArgsConstructor
-@AdminRestController("database")
+@SysRestController("database")
 public class DatabaseController extends BaseController {
 
     private final String fileSavePath = FileUtil.getTmpDirPath() + "/";

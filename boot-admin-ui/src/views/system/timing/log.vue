@@ -84,7 +84,7 @@ export default {
     },
     // 获取数据前设置好接口地址
     beforeInit() {
-      this.url = 'admin/jobs/logs'
+      this.url = 'sys/jobs/logs'
       this.pageSize = 6
       return true
     },

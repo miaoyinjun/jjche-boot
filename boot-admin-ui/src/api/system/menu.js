@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getMenusTree(pid, roleId) {
   return request({
-    url: 'admin/menus/lazy?pid=' + pid + '&roleId=' + roleId,
+    url: 'sys/menus/lazy?pid=' + pid + '&roleId=' + roleId,
     method: 'get'
   })
 }
 
 export function getMenus(params) {
   return request({
-    url: 'admin/menus',
+    url: 'sys/menus',
     method: 'get',
     params
   })
@@ -18,7 +18,7 @@ export function getMenus(params) {
 export function getMenuSuperior(ids) {
   const data = ids.length && ids.length === 0 ? ids : Array.of(ids)
   return request({
-    url: 'admin/menus/superior',
+    url: 'sys/menus/superior',
     method: 'post',
     data
   })
@@ -26,21 +26,21 @@ export function getMenuSuperior(ids) {
 
 export function getChild(id) {
   return request({
-    url: 'admin/menus/child?id=' + id,
+    url: 'sys/menus/child?id=' + id,
     method: 'get'
   })
 }
 
 export function buildMenus() {
   return request({
-    url: 'admin/menus/build',
+    url: 'sys/menus/build',
     method: 'get'
   })
 }
 
 export function add(data) {
   return request({
-    url: 'admin/menus',
+    url: 'sys/menus',
     method: 'post',
     data
   })
@@ -48,7 +48,7 @@ export function add(data) {
 
 export function del(ids) {
   return request({
-    url: 'admin/menus',
+    url: 'sys/menus',
     method: 'delete',
     data: ids
   })
@@ -56,7 +56,7 @@ export function del(ids) {
 
 export function edit(data) {
   return request({
-    url: 'admin/menus',
+    url: 'sys/menus',
     method: 'put',
     data
   })

@@ -3,7 +3,7 @@ package com.boot.admin.system.modules.system.rest;
 import cn.hutool.core.lang.Assert;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -32,7 +32,7 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Api(tags = "系统：数据字段管理")
-@AdminRestController("data_permission_fields")
+@SysRestController("data_permission_fields")
 public class DataPermissionFieldController extends BaseController {
 
     private final DataPermissionFieldService dataPermissionFieldService;

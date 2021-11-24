@@ -8,7 +8,7 @@ import com.boot.admin.tool.modules.tool.utils.AlipayUtils;
 import com.boot.admin.tool.modules.tool.vo.TradeVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -33,7 +33,7 @@ import java.util.Map;
  * @version 1.0.8-SNAPSHOT
  */
 @Slf4j
-@AdminRestController("aliPay")
+@SysRestController("aliPay")
 @RequiredArgsConstructor
 @Api(tags = "工具：支付宝管理")
 public class AliPayController extends BaseController {

@@ -8,7 +8,7 @@ import com.boot.admin.system.modules.system.api.dto.RoleQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.RoleService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统：角色管理")
-@AdminRestController("roles")
+@SysRestController("roles")
 public class RoleController extends BaseController {
 
     private final RoleService roleService;
