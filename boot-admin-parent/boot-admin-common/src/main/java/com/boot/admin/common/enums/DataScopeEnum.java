@@ -83,7 +83,7 @@ public enum DataScopeEnum {
      * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
      */
     private final String value;
-    private final String description;
+    private final String desc;
 
     public static DataScopeEnum find(String val) {
         Map<String,DataScopeEnum> enumMap = EnumUtil.getEnumMap(DataScopeEnum.class);

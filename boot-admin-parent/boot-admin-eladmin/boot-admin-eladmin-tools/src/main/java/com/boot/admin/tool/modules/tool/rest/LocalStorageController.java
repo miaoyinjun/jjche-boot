@@ -1,6 +1,8 @@
 package com.boot.admin.tool.modules.tool.rest;
 
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ArrayUtil;
+import com.boot.admin.common.enums.FileType;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.core.annotation.controller.AdminRestController;
@@ -14,6 +16,7 @@ import com.boot.admin.tool.modules.tool.domain.LocalStorageDO;
 import com.boot.admin.tool.modules.tool.dto.LocalStorageDTO;
 import com.boot.admin.tool.modules.tool.dto.LocalStorageQueryCriteriaDTO;
 import com.boot.admin.tool.modules.tool.service.LocalStorageService;
+import com.boot.admin.tool.modules.tool.vo.LocalStorageBaseVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +28,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>LocalStorageController class.</p>
  *
  * @author Zheng Jie
- * @since 2019-09-05
  * @version 1.0.8-SNAPSHOT
+ * @since 2019-09-05
  */
 @RequiredArgsConstructor
 @Api(tags = "工具：本地存储管理")
@@ -51,7 +55,7 @@ public class LocalStorageController extends BaseController {
     @GetMapping
     @PreAuthorize("@el.check('storage:list')")
     public ResultWrapper<MyPage<LocalStorageDTO>> query(LocalStorageQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(localStorageService.queryAll(criteria, pageable));
+        return ResultWrapper.ok(localStorageService.pageQuery(criteria, pageable));
     }
 
     /**
@@ -82,9 +86,8 @@ public class LocalStorageController extends BaseController {
     @ApiOperation("上传文件")
     @PostMapping
     @PreAuthorize("@el.check('storage:add')")
-    public ResultWrapper create(@RequestParam String name, @RequestParam("file") MultipartFile file) {
-        localStorageService.create(name, file);
-        return ResultWrapper.ok();
+    public ResultWrapper<List<LocalStorageBaseVO>> create(@RequestParam String name, @RequestParam("file") MultipartFile[] file) {
+        return ResultWrapper.ok(localStorageService.create(name, file));
     }
 
     /**
@@ -99,13 +102,16 @@ public class LocalStorageController extends BaseController {
     )
     @PostMapping("/pictures")
     @ApiOperation("上传图片")
-    public ResultWrapper<LocalStorageDO> upload(@RequestParam MultipartFile file) {
+    public ResultWrapper<List<LocalStorageBaseVO>> upload(@RequestParam MultipartFile[] file) {
         // 判断文件是否为图片
-        String suffix = FileUtil.getExtensionName(file.getOriginalFilename());
-        Boolean isPic = FileUtil.IMAGE.equals(FileUtil.getFileType(suffix));
-        Assert.isTrue(isPic, "只能上传图片");
-        LocalStorageDO localStorage = localStorageService.create(null, file);
-        return ResultWrapper.ok(localStorage);
+        Assert.isTrue(ArrayUtil.isNotEmpty(file), "请选择图片");
+        for (MultipartFile f : file) {
+            String suffix = FileUtil.getExtensionName(f.getOriginalFilename());
+            Boolean isPic = FileType.IMAGE.equals(FileUtil.getFileType(suffix));
+            Assert.isTrue(isPic, "只能上传图片");
+        }
+        return ResultWrapper.ok(localStorageService.create(null, file));
+
     }
 
     /**
@@ -134,8 +140,15 @@ public class LocalStorageController extends BaseController {
     )
     @DeleteMapping
     @ApiOperation("多选删除")
-    public ResultWrapper delete(@RequestBody List<Long> ids) {
+    @PreAuthorize("@el.check('storage:del')")
+    public ResultWrapper delete(@RequestBody List<String> ids) {
         localStorageService.deleteAll(ids);
         return ResultWrapper.ok();
+    }
+
+    @PostMapping("/get_files")
+    @ApiOperation("获取文件信息")
+    public ResultWrapper<List<LocalStorageBaseVO>> list(@RequestBody Set<String> ids) {
+        return ResultWrapper.ok(localStorageService.listBaseByEncIds(ids));
     }
 }

@@ -71,7 +71,7 @@ public enum CodeBiEnum {
      * @return a {@link com.boot.admin.common.enums.CodeBiEnum} object.
      */
     private final Integer code;
-    private final String description;
+    private final String desc;
 
     public static CodeBiEnum find(Integer code) {
         for (CodeBiEnum value : CodeBiEnum.values()) {
