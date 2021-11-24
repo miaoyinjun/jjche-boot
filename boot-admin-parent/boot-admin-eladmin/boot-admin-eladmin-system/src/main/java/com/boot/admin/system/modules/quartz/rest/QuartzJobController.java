@@ -7,7 +7,7 @@ import com.boot.admin.system.modules.quartz.dto.JobQueryCriteriaDTO;
 import com.boot.admin.system.modules.quartz.service.QuartzJobService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -33,7 +33,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统:定时任务管理")
-@AdminRestController("jobs")
+@SysRestController("jobs")
 public class QuartzJobController extends BaseController {
 
     private static final String ENTITY_NAME = "quartzJob";

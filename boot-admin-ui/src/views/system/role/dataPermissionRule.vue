@@ -35,7 +35,7 @@ export default {
     return [
       Crud({
         title: '数据规则详情',
-        url: 'admin/data_permission_rule_roles',
+        url: 'sys/data_permission_rule_roles',
         query: { menuId: '', roleId: '' },
         sort: ['id DESC'],
         crudMethod: { ...crudDataPermissionRule },

@@ -1,7 +1,7 @@
 package com.boot.admin.core;
 
 import com.boot.admin.core.alarm.dd.AlarmDingTalkService;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.annotation.controller.ApiRestController;
 import com.boot.admin.core.convert.OriKaMapper;
 import com.boot.admin.core.exception.GlobalExceptionHandler;
@@ -46,7 +46,7 @@ public class CoreAutoConfiguration implements WebMvcConfigurer {
      * 增加restApi前缀
      * </p>
      * <p>
-     * ApiRestController与AdminRestController
+     * ApiRestController与SysRestController
      * </p>
      * @author miaoyj
      * @since 2020-09-21
@@ -56,7 +56,7 @@ public class CoreAutoConfiguration implements WebMvcConfigurer {
         CoreApiPathProperties coreApiPathProperties = coreProperties.getApi().getPath();
         configurer
                 .addPathPrefix(coreApiPathProperties.getGlobalPrefix(), c -> c.isAnnotationPresent(ApiRestController.class))
-                .addPathPrefix(coreApiPathProperties.getAdminPrefix(), c -> c.isAnnotationPresent(AdminRestController.class));
+                .addPathPrefix(coreApiPathProperties.getSysPrefix(), c -> c.isAnnotationPresent(SysRestController.class));
     }
 
     /**

@@ -23,7 +23,7 @@ boot:
     swagger:
       filter-path: ${boot.admin.core.api.path.global-prefix}
       ignore-filter-path:
-        - ${boot.admin.core.api.path.admin-prefix}.*
+        - ${boot.admin.core.api.path.sys-prefix}.*
         - /error.*
       title: ${info.name:}
       version: ${info.version:}

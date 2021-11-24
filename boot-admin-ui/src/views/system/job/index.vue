@@ -67,7 +67,7 @@ export default {
   cruds() {
     return Crud({
       title: '岗位',
-      url: 'admin/job',
+      url: 'sys/job',
       sort: ['jobSort asc', 'id desc'],
       crudMethod: { ...crudJob }
     })

@@ -23,7 +23,7 @@ import java.lang.annotation.*;
 @Documented
 @RestController
 @RequestMapping
-public @interface AdminRestController {
+public @interface SysRestController {
     @AliasFor(annotation = RequestMapping.class)
     String name() default "";
 

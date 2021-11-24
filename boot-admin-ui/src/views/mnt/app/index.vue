@@ -92,7 +92,7 @@ export default {
   name: 'App',
   components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '应用', url: 'admin/app', crudMethod: { ...crudApp }})
+    return Crud({ title: '应用', url: 'sys/app', crudMethod: { ...crudApp }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

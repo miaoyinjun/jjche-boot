@@ -220,7 +220,7 @@ export default {
   name: 'Menu',
   components: { Treeselect, IconSelect, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule, dataPermissionField },
   cruds() {
-    return Crud({ title: '菜单', url: 'admin/menus', crudMethod: { ...crudMenu } })
+    return Crud({ title: '菜单', url: 'sys/menus', crudMethod: { ...crudMenu } })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

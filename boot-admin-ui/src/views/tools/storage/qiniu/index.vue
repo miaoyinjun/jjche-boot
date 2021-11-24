@@ -83,7 +83,7 @@ import DateRangePicker from '@/components/DateRangePicker'
 export default {
   components: { eForm, pagination, crudOperation, rrOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '七牛云文件', url: 'admin/qiNiuContent', crudMethod: { ...crudQiNiu }})
+    return Crud({ title: '七牛云文件', url: 'sys/qiNiuContent', crudMethod: { ...crudQiNiu }})
   },
   mixins: [presenter(), header(), crud()],
   data() {

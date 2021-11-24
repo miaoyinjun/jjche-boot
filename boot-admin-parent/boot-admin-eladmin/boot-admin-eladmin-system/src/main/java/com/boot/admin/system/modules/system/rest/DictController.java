@@ -7,7 +7,7 @@ import com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.DictService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -34,7 +34,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统：字典管理")
-@AdminRestController("dict")
+@SysRestController("dict")
 public class DictController extends BaseController {
 
     private final DictService dictService;

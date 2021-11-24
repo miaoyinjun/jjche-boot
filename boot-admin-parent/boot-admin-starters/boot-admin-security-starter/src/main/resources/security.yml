@@ -42,7 +42,7 @@ boot:
           - /**/*.html
           - /**/*.css
           - /**/*.js
-          - ${boot.admin.core.api.path.admin-prefix}/webSocket/**
+          - ${boot.admin.core.api.path.sys-prefix}/webSocket/**
           - /avatar/**
           - /file/**
       #密码加密传输，前端公钥加密，后端私钥解密

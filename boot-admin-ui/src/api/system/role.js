@@ -3,14 +3,14 @@ import request from '@/utils/request'
 // 获取所有的Role
 export function getAll() {
   return request({
-    url: 'admin/roles/all',
+    url: 'sys/roles/all',
     method: 'get'
   })
 }
 
 export function add(data) {
   return request({
-    url: 'admin/roles',
+    url: 'sys/roles',
     method: 'post',
     data
   })
@@ -18,21 +18,21 @@ export function add(data) {
 
 export function get(id) {
   return request({
-    url: 'admin/roles/' + id,
+    url: 'sys/roles/' + id,
     method: 'get'
   })
 }
 
 export function getLevel() {
   return request({
-    url: 'admin/roles/level',
+    url: 'sys/roles/level',
     method: 'get'
   })
 }
 
 export function del(ids) {
   return request({
-    url: 'admin/roles',
+    url: 'sys/roles',
     method: 'delete',
     data: ids
   })
@@ -40,7 +40,7 @@ export function del(ids) {
 
 export function edit(data) {
   return request({
-    url: 'admin/roles',
+    url: 'sys/roles',
     method: 'put',
     data
   })
@@ -48,7 +48,7 @@ export function edit(data) {
 
 export function editMenu(data) {
   return request({
-    url: 'admin/roles/menu',
+    url: 'sys/roles/menu',
     method: 'put',
     data
   })

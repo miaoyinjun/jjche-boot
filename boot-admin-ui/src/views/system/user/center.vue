@@ -176,7 +176,7 @@ export default {
       }
     },
     beforeInit() {
-      this.url = 'admin/logs/user'
+      this.url = 'sys/logs/user'
       return true
     },
     cropUploadSuccess(jsonData, field) {

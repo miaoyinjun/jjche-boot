@@ -3,7 +3,7 @@ package com.boot.admin.system.modules.system.rest;
 
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  */
 @Api(tags = "数据规则权限")
 @ApiSupport(order = 1, author = "miaoyj")
-@AdminRestController("data_permission_rule_roles")
+@SysRestController("data_permission_rule_roles")
 @RequiredArgsConstructor
 public class DataPermissionRuleRoleController extends BaseController {
 

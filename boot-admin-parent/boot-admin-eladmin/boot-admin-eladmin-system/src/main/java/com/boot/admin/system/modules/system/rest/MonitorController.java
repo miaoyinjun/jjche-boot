@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.rest;
 
 import com.boot.admin.system.modules.system.service.MonitorService;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import io.swagger.annotations.Api;
@@ -24,7 +24,7 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统-服务监控管理")
-@AdminRestController("monitor")
+@SysRestController("monitor")
 public class MonitorController extends BaseController {
 
     private final MonitorService serverService;
