@@ -73,7 +73,6 @@ public class EnumModelPropertyBuilderPlugin implements ModelPropertyBuilderPlugi
                                 ReflectionUtils.makeAccessible(descField);
                                 Object desc = ReflectionUtils.getField(descField, item);
                                 return value + ":" + desc;
-
                             }).collect(Collectors.toList());
 
 

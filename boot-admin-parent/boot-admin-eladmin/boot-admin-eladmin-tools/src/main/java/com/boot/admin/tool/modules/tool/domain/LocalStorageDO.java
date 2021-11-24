@@ -1,6 +1,7 @@
 package com.boot.admin.tool.modules.tool.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.boot.admin.common.enums.FileType;
 import com.boot.admin.mybatis.base.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class LocalStorageDO extends BaseEntity {
     private String path;
 
     @ApiModelProperty(value = "类型")
-    private String type;
+    private FileType type;
 
     @ApiModelProperty(value = "大小")
     private String size;
