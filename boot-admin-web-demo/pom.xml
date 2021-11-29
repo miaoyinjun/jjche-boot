@@ -80,30 +80,30 @@
     </build>
 
     <!--     远程nexus仓库 -->
-    <repositories>
-        <repository>
-            <id>maven-releases</id>
-            <url>http://x.x.x.x:8081/repository/maven-releases</url>
-        </repository>
-        <repository>
-            <id>maven-snapshots</id>
-            <url>http://x.x.x.x:8081/repository/maven-snapshots</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-releases</id>
-            <url>http://x.x.x.x:8081/repository/maven-releases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>maven-snapshots</id>
-            <url>http://x.x.x.x.129:8081/repository/maven-snapshots</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>maven-releases</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>maven-snapshots</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
+<!--            <snapshots>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>maven-releases</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
+<!--        </pluginRepository>-->
+<!--        <pluginRepository>-->
+<!--            <id>maven-snapshots</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
+<!--            <snapshots>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
 </project>
