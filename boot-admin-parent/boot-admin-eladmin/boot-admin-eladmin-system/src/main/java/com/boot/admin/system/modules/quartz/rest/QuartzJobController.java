@@ -32,7 +32,7 @@ import java.util.Set;
  * @version 1.0.8-SNAPSHOT
  */
 @RequiredArgsConstructor
-@Api(tags = "系统:定时任务管理")
+@Api(tags = "系统：定时任务管理")
 @SysRestController("jobs")
 public class QuartzJobController extends BaseController {
 

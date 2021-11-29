@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author miaoyj
  * @since 2021-11-01
  */
-@Api(tags = "数据规则权限")
+@Api(tags = "系统：数据规则权限")
 @ApiSupport(order = 1, author = "miaoyj")
 @SysRestController("data_permission_rule_roles")
 @RequiredArgsConstructor

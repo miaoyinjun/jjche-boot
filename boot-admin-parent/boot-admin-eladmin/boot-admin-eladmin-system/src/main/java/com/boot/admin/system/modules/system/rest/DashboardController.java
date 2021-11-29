@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
  * @since 2020-05-02
  */
 @RequiredArgsConstructor
-@Api(tags = "系统-首页")
+@Api(tags = "系统：首页")
 @SysRestController("dashboard")
 public class DashboardController extends BaseController {
 

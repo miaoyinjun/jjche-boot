@@ -34,7 +34,7 @@ import java.util.Set;
 * @author miaoyj
 * @since 2021-10-27
 */
-@Api(tags = "数据规则")
+@Api(tags = "系统：数据规则")
 @ApiSupport(order = 1, author = "miaoyj")
 @SysRestController("data_permission_rules")
 @RequiredArgsConstructor

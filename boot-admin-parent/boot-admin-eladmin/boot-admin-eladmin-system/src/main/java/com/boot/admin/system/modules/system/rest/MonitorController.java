@@ -23,7 +23,7 @@ import java.util.*;
  * @since 2020-05-02
  */
 @RequiredArgsConstructor
-@Api(tags = "系统-服务监控管理")
+@Api(tags = "系统：服务监控管理")
 @SysRestController("monitor")
 public class MonitorController extends BaseController {
 
