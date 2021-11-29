@@ -9,7 +9,7 @@ import com.boot.admin.system.modules.version.dto.VersionDTO;
 import com.boot.admin.system.modules.version.vo.VersionVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -31,8 +31,8 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-04-23
  */
-@Api(tags = "版本")
-@AdminRestController("versions")
+@Api(tags = "系统：版本")
+@SysRestController("versions")
 @RequiredArgsConstructor
 public class VersionController extends BaseController {
 

@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.mapstruct;
 
 import com.boot.admin.system.modules.system.domain.MenuDO;
-import com.boot.admin.system.modules.system.dto.MenuDTO;
+import com.boot.admin.system.modules.system.api.dto.MenuDTO;
 import com.boot.admin.core.base.BaseMapStruct;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

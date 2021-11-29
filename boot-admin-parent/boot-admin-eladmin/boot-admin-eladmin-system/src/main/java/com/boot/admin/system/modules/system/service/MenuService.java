@@ -20,15 +20,16 @@ import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.security.dto.RoleSmallDto;
-import com.boot.admin.system.modules.system.domain.*;
-import com.boot.admin.system.modules.system.dto.MenuDTO;
-import com.boot.admin.system.modules.system.dto.MenuQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.MenuDTO;
+import com.boot.admin.system.modules.system.api.dto.MenuQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.vo.MenuMetaVO;
+import com.boot.admin.system.modules.system.api.vo.MenuVO;
+import com.boot.admin.system.modules.system.domain.MenuDO;
+import com.boot.admin.system.modules.system.domain.RoleDO;
+import com.boot.admin.system.modules.system.domain.UserDO;
 import com.boot.admin.system.modules.system.mapper.MenuMapper;
 import com.boot.admin.system.modules.system.mapper.UserMapper;
-import com.boot.admin.system.modules.system.mapstruct.DataPermissionFieldMapStruct;
 import com.boot.admin.system.modules.system.mapstruct.MenuMapStruct;
-import com.boot.admin.system.modules.system.vo.MenuMetaVO;
-import com.boot.admin.system.modules.system.vo.MenuVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,9 +51,8 @@ import java.util.stream.Collectors;
 public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
 
     private final UserMapper userRepository;
-    private final DataPermissionFieldRoleService dataPermissionFieldRoleService;
     private final DataPermissionFieldService dataPermissionFieldService;
-    private final DataPermissionFieldMapStruct dataPermissionFieldMapStruct;
+    private final DataPermissionRuleService dataPermissionRuleService;
     private final MenuMapStruct menuMapStruct;
     private final RoleService roleService;
     private final RedisService redisService;
@@ -81,7 +81,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
      * @param criteria 条件
      * @param isQuery  是否查询pid
      * @return /
-     * @throws java.lang.IllegalAccessException /
+     * @throws java.lang.IllegalAccessException if any.
      */
     public List<MenuDTO> queryAll(MenuQueryCriteriaDTO criteria, Boolean isQuery) throws IllegalAccessException {
         if (isQuery) {
@@ -107,7 +107,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
     /**
      * <p>queryPage.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.MenuQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.MenuQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.mybatis.param.PageParam} object.
      */
@@ -356,7 +356,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
 
     /**
      * <p>
-     * 懒加载菜单数据
+     * 懒加载数据
      * </p>
      *
      * @param pid    父id
@@ -374,13 +374,10 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
         if (roleId != null && roleId > 0 && CollUtil.isNotEmpty(list)) {
             for (MenuDTO menuDto : list) {
                 Long menuId = menuDto.getId();
-                List<DataPermissionFieldDO> dataPermissionFieldList = dataPermissionFieldService.findByMenuId(menuId);
-                menuDto.setDataPermissionFields(dataPermissionFieldMapStruct.toVO(dataPermissionFieldList));
-                List<DataPermissionFieldRoleDO> dataPermissionFieldRoleList = dataPermissionFieldRoleService.findByMenuIdAndRoleIdIn(menuId, CollUtil.newArrayList(roleId));
-                if (CollUtil.isNotEmpty(dataPermissionFieldRoleList)) {
-                    List<Long> dataIds = dataPermissionFieldRoleList.stream().map(o -> o.getDataPermissionFieldId()).collect(Collectors.toList());
-                    menuDto.setDataPermissionFieldSelectedIds(dataIds);
-                }
+                Long countFiled = dataPermissionFieldService.countByMenuId(menuId);
+                Long countRule = dataPermissionRuleService.countByMenuId(menuId);
+                Boolean isDataPermission = (countFiled != null && countFiled > 0) || countRule != null && countRule > 0;
+                menuDto.setIsDataPermission(isDataPermission);
             }
         }
         return list;

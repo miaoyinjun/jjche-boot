@@ -6,7 +6,7 @@ import com.boot.admin.tool.modules.tool.dto.QiniuQueryCriteriaDTO;
 import com.boot.admin.tool.modules.tool.service.QiNiuService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -34,7 +34,7 @@ import java.util.Map;
  */
 @Slf4j
 @RequiredArgsConstructor
-@AdminRestController("qiNiuContent")
+@SysRestController("qiNiuContent")
 @Api(tags = "工具：七牛云存储管理")
 public class QiniuController extends BaseController {
 

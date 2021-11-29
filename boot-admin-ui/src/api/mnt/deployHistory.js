@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function del(ids) {
   return request({
-    url: 'admin/deployHistory',
+    url: 'sys/deployHistory',
     method: 'delete',
     data: ids
   })
@@ -14,7 +14,7 @@ export function del(ids) {
  */
 export function reducte(data) {
   return request({
-    url: 'admin/deploy/serverReduction',
+    url: 'sys/deploy/serverReduction',
     method: 'post',
     data
   })

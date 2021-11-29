@@ -1,6 +1,7 @@
 package com.boot.admin.system.modules.mnt.dto;
 
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -13,12 +14,12 @@ import java.util.List;
  * @version 1.0.8-SNAPSHOT
  */
 @Data
-public class AppQueryCriteriaDTO {
+public class AppQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
 	/**
 	 * 模糊
 	 */
-    @QueryCriteria(type = QueryCriteria.Type.INNER_LIKE)
+    @QueryCriteria(type = QueryCriteria.Type.LIKE)
     private String name;
 
     @QueryCriteria(type = QueryCriteria.Type.BETWEEN)

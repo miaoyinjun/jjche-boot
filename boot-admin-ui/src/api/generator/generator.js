@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function generator(tableName, type) {
   return request({
-    url: 'admin/generator/' + tableName + '/' + type,
+    url: 'sys/generator/' + tableName + '/' + type,
     method: 'post',
     responseType: type === 2 ? 'blob' : ''
   })
@@ -10,7 +10,7 @@ export function generator(tableName, type) {
 
 export function save(data) {
   return request({
-    url: 'admin/generator',
+    url: 'sys/generator',
     data,
     method: 'put'
   })
@@ -18,7 +18,7 @@ export function save(data) {
 
 export function sync(tables) {
   return request({
-    url: 'admin/generator/sync',
+    url: 'sys/generator/sync',
     method: 'post',
     data: tables
   })

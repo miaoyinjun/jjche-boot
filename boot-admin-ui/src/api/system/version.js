@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function add(data) {
   return request({
-    url: 'admin/versions',
+    url: 'sys/versions',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function add(data) {
 
 export function del(ids) {
   return request({
-    url: 'admin/versions/',
+    url: 'sys/versions/',
     method: 'delete',
     data: ids
   })
@@ -18,14 +18,14 @@ export function del(ids) {
 
 export function activated(id) {
   return request({
-    url: 'admin/versions/' + id,
+    url: 'sys/versions/' + id,
     method: 'put',
   })
 }
 
 export function edit(data) {
   return request({
-    url: 'admin/versions',
+    url: 'sys/versions',
     method: 'put',
     data
   })
@@ -33,14 +33,14 @@ export function edit(data) {
 
 export function get(id) {
   return request({
-    url: 'admin/versions/' + id,
+    url: 'sys/versions/' + id,
     method: 'get'
   })
 }
 
 export function latest() {
   return request({
-    url: 'admin/versions/latest',
+    url: 'sys/versions/latest',
     method: 'get'
   })
 }

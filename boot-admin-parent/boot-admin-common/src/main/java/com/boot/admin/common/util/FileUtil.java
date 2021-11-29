@@ -3,9 +3,11 @@ package com.boot.admin.common.util;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import cn.hutool.poi.excel.BigExcelWriter;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.boot.admin.common.enums.FileType;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 
 import javax.servlet.ServletOutputStream;
@@ -59,27 +61,6 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * 格式化小数
      */
     private static final DecimalFormat DF = new DecimalFormat("0.00");
-
-    /**
-     * Constant <code>IMAGE="图片"</code>
-     */
-    public static final String IMAGE = "image";
-    /**
-     * Constant <code>TXT="文档"</code>
-     */
-    public static final String TXT = "txt";
-    /**
-     * Constant <code>MUSIC="音乐"</code>
-     */
-    public static final String MUSIC = "music";
-    /**
-     * Constant <code>VIDEO="视频"</code>
-     */
-    public static final String VIDEO = "video";
-    /**
-     * Constant <code>OTHER="其他"</code>
-     */
-    public static final String OTHER = "other";
 
     /**
      * 获取文件扩展名，不带 .
@@ -144,12 +125,12 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * 如resources目录下，防止jar运行找不到文件
      * </p>
      *
-     * @param filePath 文件路径 xx/file.xlsx
-     * @param fileName 文件名称
+     * @param filePath    文件路径 xx/file.xlsx
+     * @param fileName    文件名称
+     * @param isCacheFile a boolean.
      * @return 文件
      * @author miaoyj
      * @since 2020-11-17
-     * @param isCacheFile a boolean.
      * @throws java.lang.Exception if any.
      */
     public static File getLocalFile(String filePath, String fileName, boolean isCacheFile) throws Exception {
@@ -161,10 +142,10 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     /**
      * inputStream 转 File
      *
-     * @param ins  a {@link java.io.InputStream} object.
-     * @param name a {@link java.lang.String} object.
-     * @return a {@link java.io.File} object.
+     * @param ins         a {@link java.io.InputStream} object.
+     * @param name        a {@link java.lang.String} object.
      * @param isCacheFile a boolean.
+     * @return a {@link java.io.File} object.
      * @throws java.lang.Exception if any.
      */
     public static File inputStreamToFile(InputStream ins, String name, boolean isCacheFile) throws Exception {
@@ -191,7 +172,6 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     }
 
 
-
     /**
      * 导出excel
      *
@@ -205,7 +185,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         BigExcelWriter writer = ExcelUtil.getBigWriter(file);
         // 一次性写出内容，使用默认样式，强制输出标题
         writer.write(list, true);
-        SXSSFSheet sheet = (SXSSFSheet)writer.getSheet();
+        SXSSFSheet sheet = (SXSSFSheet) writer.getSheet();
         //上面需要强转SXSSFSheet  不然没有trackAllColumnsForAutoSizing方法
         sheet.trackAllColumnsForAutoSizing();
         //列宽自适应
@@ -228,21 +208,21 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * @param type a {@link java.lang.String} object.
      * @return a {@link java.lang.String} object.
      */
-    public static String getFileType(String type) {
+    public static FileType getFileType(String type) {
         String documents = "txt doc pdf ppt pps xlsx xls docx";
         String music = "mp3 wav wma mpa ram ra aac aif m4a";
         String video = "avi mpg mpe mpeg asf wmv mov qt rm mp4 flv m4v webm ogv ogg";
         String image = "bmp dib pcp dif wmf gif jpg tif eps psd cdr iff tga pcd mpt png jpeg";
-        if (image.contains(type)) {
-            return IMAGE;
-        } else if (documents.contains(type)) {
-            return TXT;
-        } else if (music.contains(type)) {
-            return MUSIC;
-        } else if (video.contains(type)) {
-            return VIDEO;
+        if (StrUtil.containsIgnoreCase(image, type)) {
+            return FileType.IMAGE;
+        } else if (StrUtil.containsIgnoreCase(documents, type)) {
+            return FileType.TXT;
+        } else if (StrUtil.containsIgnoreCase(music, type)) {
+            return FileType.MUSIC;
+        } else if (StrUtil.containsIgnoreCase(video, type)) {
+            return FileType.VIDEO;
         } else {
-            return OTHER;
+            return FileType.OTHER;
         }
     }
 
@@ -268,7 +248,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
     public static boolean check(File file1, File file2) {
         String img1Md5 = getMd5(file1);
         String img2Md5 = getMd5(file2);
-        if(img1Md5 != null){
+        if (img1Md5 != null) {
             return img1Md5.equals(img2Md5);
         }
         return false;

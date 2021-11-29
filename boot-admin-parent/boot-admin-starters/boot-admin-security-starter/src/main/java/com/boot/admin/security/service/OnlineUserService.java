@@ -76,7 +76,7 @@ public class OnlineUserService {
      */
     public List<OnlineUserDto> getAll(String filter) {
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
-        Set<String> keys = redisService.keys(securityJwtProperties.getOnlineKey() + "*");
+        Set<String> keys = redisService.keys(securityJwtProperties.getOnlineKey());
         List<OnlineUserDto> onlineUserDtos = new ArrayList<>();
         for (String key : keys) {
             OnlineUserDto onlineUserDto = redisService.objectGetObject(key, OnlineUserDto.class);

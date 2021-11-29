@@ -5,7 +5,7 @@ import com.boot.admin.common.enums.CodeEnum;
 import com.boot.admin.system.modules.system.service.VerifyService;
 import com.boot.admin.tool.modules.tool.service.EmailService;
 import com.boot.admin.tool.modules.tool.vo.EmailVO;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import io.swagger.annotations.Api;
@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统：验证码管理")
-@AdminRestController("code")
+@SysRestController("code")
 public class VerifyController extends BaseController {
 
     private final VerifyService verificationCodeService;

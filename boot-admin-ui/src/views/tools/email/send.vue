@@ -57,7 +57,7 @@ export default {
       files.forEach(image => {
         files.forEach(image => {
           upload(_this.imagesUploadApi, image).then(data => {
-            insert(data.data.url)
+            insert(data.data.data[0].path)
           })
         })
       })

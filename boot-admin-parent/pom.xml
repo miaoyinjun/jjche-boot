@@ -5,7 +5,7 @@
     <groupId>com.boot.admin</groupId>
     <artifactId>boot-admin-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,14 +17,14 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <build.plugins.plugin.version>3.0.0-M1</build.plugins.plugin.version>
 
-        <spring.boot.starter.version>2.5.5</spring.boot.starter.version>
+        <spring.boot.starter.version>2.5.7</spring.boot.starter.version>
+        <spring.boot.admin.starter.version>2.5.4</spring.boot.admin.starter.version>
         <maven.plugin.version>3.6.0</maven.plugin.version>
         <screw.version>1.0.4</screw.version>
         <mysql.version>8.0.21</mysql.version>
         <!-- docker -->
         <docker.maven.verion>1.4.13</docker.maven.verion>
 
-        <spring.boot.admin.starter.version>2.5.1</spring.boot.admin.starter.version>
         <hutool.version>5.7.11</hutool.version>
         <mybatis.plus.version>3.4.3.3</mybatis.plus.version>
         <liquibase.version>4.4.3</liquibase.version>
@@ -38,9 +38,6 @@
         <mail.version>1.4.7</mail.version>
         <qiniu.version>7.8.0</qiniu.version>
         <alipay.version>4.9.153.ALL</alipay.version>
-
-        <maven.server.snapshots>maven-snapshots</maven.server.snapshots>
-        <maven.server.releases>maven-releases</maven.server.releases>
     </properties>
 
     <modules>
@@ -54,49 +51,49 @@
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-common</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-core-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-sba-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-swagger-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-log-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-mybatis-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-cache-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-filter-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-security-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>com.boot.admin</groupId>-->
@@ -106,12 +103,12 @@
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-jackson-starter</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-system</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
 
             <dependency>
@@ -134,6 +131,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
+                <scope>runtime</scope>
                 <version>${mysql.version}</version>
             </dependency>
             <dependency>
@@ -144,7 +142,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.2.6</version>
+                <version>1.2.8</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -714,14 +712,12 @@
     <!-- 发布maven私服 -->
     <distributionManagement>
         <repository>
-            <id>${maven.server.releases}</id>
-            <name>${maven.server.releases}</name>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.releases}</url>
+            <id>maven-releases</id>
+            <url>${BOOT_ADMIN_MAVEN_URL}/maven-releases</url>
         </repository>
         <snapshotRepository>
-            <id>${maven.server.snapshots}</id>
-            <name>${maven.server.snapshots}</name>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.snapshots}</url>
+            <id>maven-snapshots</id>
+            <url>${BOOT_ADMIN_MAVEN_URL}/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 

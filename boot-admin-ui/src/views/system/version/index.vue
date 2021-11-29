@@ -74,7 +74,7 @@ export default {
   components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   cruds() {
-    return CRUD({ title: '版本', url: 'admin/versions', idField: 'id', crudMethod: { ...crudVersion }, optShow:{add: true}})
+    return CRUD({ title: '版本', url: 'sys/versions', idField: 'id', crudMethod: { ...crudVersion }, optShow:{add: true}})
   },
   data() {
     return {

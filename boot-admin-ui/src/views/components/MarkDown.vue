@@ -33,8 +33,7 @@ export default {
   methods: {
     imgAdd(pos, $file) {
       upload(this.imagesUploadApi, $file).then(res => {
-        const data = res.data
-        const url = '/file/' + data.type + '/' + data.realName
+        const url = res.data.data[0].path
         this.$refs.md.$img2Url(pos, url)
       })
     }

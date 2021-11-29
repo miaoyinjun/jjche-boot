@@ -334,13 +334,6 @@ public class RedisServiceImpl implements RedisService {
 
     /** {@inheritDoc} */
     @Override
-    public Boolean delete(Set<String> keys) {
-        Long successSize = redisTemplate.delete(keys);
-        return ObjectUtil.isNotNull(successSize) && successSize == keys.size();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public Long getExpire(String key) {
         return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
     }
@@ -360,9 +353,16 @@ public class RedisServiceImpl implements RedisService {
     /** {@inheritDoc} */
     @Override
     public Set<String> keys(String pattern) {
-        Set<String> keyList = redisTemplate.keys(pattern);
+        Set<String> keyList = redisTemplate.keys(pattern + "*");
         String keyPrefix = new StringBuffer(appName).append(":").toString();
         return keyList.stream().map(s -> StrUtil.removePrefix(s, keyPrefix)).collect(Collectors.toSet());
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Boolean delete(Set<String> keys) {
+        Long successSize = redisTemplate.delete(keys);
+        return ObjectUtil.isNotNull(successSize) && successSize == keys.size();
     }
 
     /** {@inheritDoc} */
@@ -373,5 +373,12 @@ public class RedisServiceImpl implements RedisService {
             CollUtil.addAll(keys, new StringBuffer(prefix).append(id).toString());
         }
         this.delete(keys);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean delByKeyPrefix(String prefix) {
+        Set<String> keys = this.keys(prefix);
+        return this.delete(keys);
     }
 }

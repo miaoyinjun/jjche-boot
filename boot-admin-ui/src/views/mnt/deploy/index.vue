@@ -125,7 +125,7 @@ export default {
   name: 'Deploy',
   components: { dForm, fForm, pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '部署', url: 'admin/deploy', crudMethod: { ...crudDeploy }})
+    return Crud({ title: '部署', url: 'sys/deploy', crudMethod: { ...crudDeploy }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {

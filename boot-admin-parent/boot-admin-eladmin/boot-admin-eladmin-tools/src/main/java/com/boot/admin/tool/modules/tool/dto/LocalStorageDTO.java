@@ -1,5 +1,6 @@
 package com.boot.admin.tool.modules.tool.dto;
 
+import com.boot.admin.common.enums.FileType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.sql.Timestamp;
 @Data
 public class LocalStorageDTO implements Serializable {
 
-    private Long id;
+    private String id;
 
     private String realName;
 
@@ -23,7 +24,7 @@ public class LocalStorageDTO implements Serializable {
 
     private String suffix;
 
-    private String type;
+    private FileType type;
 
     private String size;
 

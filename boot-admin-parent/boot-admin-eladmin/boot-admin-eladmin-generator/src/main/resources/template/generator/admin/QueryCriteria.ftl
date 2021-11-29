@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.math.BigDecimal;
 import java.util.List;
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
+
 /**
 * <p>
 * ${apiAlias} 查询
@@ -17,7 +19,7 @@ import com.boot.admin.common.annotation.QueryCriteria;
 * @since ${date}
 */
 @Data
-public class ${className}QueryCriteriaDTO{
+public class ${className}QueryCriteriaDTO extends BaseQueryCriteriaDTO{
 
 <#if queryColumns??>
     <#list queryColumns as column>
@@ -40,7 +42,7 @@ public class ${className}QueryCriteriaDTO{
     * 模糊
     */
     @ApiModelProperty(value = "${column.remark}", required = false)
-    @QueryCriteria(propName = "${column.columnName}", type = QueryCriteria.Type.INNER_LIKE)
+    @QueryCriteria(propName = "${column.columnName}", type = QueryCriteria.Type.LIKE)
     private ${column.columnType} ${column.changeColumnName};
 </#if>
 <#if column.queryType = '!='>

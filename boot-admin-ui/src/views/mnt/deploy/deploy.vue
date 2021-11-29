@@ -148,7 +148,7 @@ export default {
       })
     },
     initWebSocket() {
-      const wsUriSuffix = '/admin/webSocket/deploy'
+      const wsUriSuffix = '/sys/webSocket/deploy'
       let currentUrl = 'ws://' + location.host + location.pathname + Settings.apiPrefix
       currentUrl = currentUrl + wsUriSuffix
       this.websock = new WebSocket(currentUrl)

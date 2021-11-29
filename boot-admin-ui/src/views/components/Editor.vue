@@ -48,9 +48,7 @@ export default {
       // insert 是获取图片 url 后，插入到编辑器的方法
       files.forEach(image => {
         upload(_this.imagesUploadApi, image).then(res => {
-          const data = res.data
-          const url = '/file/' + data.type + '/' + data.realName
-          insert(url)
+          insert(res.data.data[0].path)
         })
       })
     }

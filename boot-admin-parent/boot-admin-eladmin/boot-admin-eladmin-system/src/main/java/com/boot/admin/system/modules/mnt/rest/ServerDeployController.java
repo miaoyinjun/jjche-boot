@@ -6,7 +6,7 @@ import com.boot.admin.system.modules.mnt.dto.ServerDeployQueryCriteriaDTO;
 import com.boot.admin.system.modules.mnt.service.ServerDeployService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -32,7 +32,7 @@ import java.util.Set;
  */
 @Api(tags = "运维：服务器管理")
 @RequiredArgsConstructor
-@AdminRestController("serverDeploy")
+@SysRestController("serverDeploy")
 public class ServerDeployController extends BaseController {
 
     private final ServerDeployService serverDeployService;
