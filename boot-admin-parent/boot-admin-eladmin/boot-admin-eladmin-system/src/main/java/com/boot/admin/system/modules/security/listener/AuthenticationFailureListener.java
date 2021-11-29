@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author miaoyj
- * @since 2021-01-06
  * @version 1.0.0-SNAPSHOT
+ * @since 2021-01-06
  */
 @Component
 public class AuthenticationFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
@@ -29,29 +29,27 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
     @Autowired
     private UserMapStruct userMapper;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent authenticationFailureBadCredentialsEvent) {
         PasswordProperties password = adminProperties.getUser().getPassword();
-        //是否激活密码策略
-        Boolean pwdEnabled = password.getEnabled();
-        if (pwdEnabled) {
-            String username = authenticationFailureBadCredentialsEvent.getAuthentication().getPrincipal().toString();
-            UserDO user = userService.getByUsername(username);
-            if (user != null) {
-                // 用户密码失败次数
-                Integer fails = user.getPwdFailsCount();
-                if (fails == null) {
-                    fails = 0;
-                }
-                fails++;
-                user.setPwdFailsCount(fails);
-                // 超出失败pwdFailsMaxCount次，锁定账户
-                if (fails >= password.getFailsMaxCount()) {
-                    user.setIsAccountNonLocked(false);
-                }
-                userService.saveUser(user);
+        String username = authenticationFailureBadCredentialsEvent.getAuthentication().getPrincipal().toString();
+        UserDO user = userService.getByUsername(username);
+        if (user != null) {
+            // 用户密码失败次数
+            Integer fails = user.getPwdFailsCount();
+            if (fails == null) {
+                fails = 0;
             }
+            fails++;
+            user.setPwdFailsCount(fails);
+            // 超出失败pwdFailsMaxCount次，锁定账户
+            if (fails >= password.getFailsMaxCount()) {
+                user.setIsAccountNonLocked(false);
+            }
+            userService.saveUser(user);
         }
     }
 }

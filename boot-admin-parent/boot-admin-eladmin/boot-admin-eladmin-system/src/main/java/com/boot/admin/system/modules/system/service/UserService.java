@@ -215,9 +215,9 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         UserDO userDO = userMapStruct.toDO(resources);
         userDO.setPwdResetTime(DateUtil.date().toTimestamp());
         //是否激活密码策略
-        Boolean pwdEnabled = adminConfig.getUser().getPassword().getEnabled();
+        Boolean newUserMustReset = adminConfig.getUser().getPassword().getNewUserMustReset();
         //新用户必须修改密码
-        userDO.setIsMustResetPwd(pwdEnabled);
+        userDO.setIsMustResetPwd(newUserMustReset);
         userDO.setPassword(pwd);
         userDO.setDeptId(resources.getDept().getId());
         this.saveUser(userDO);
@@ -392,15 +392,26 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         boolean isLength = PwdCheckUtil.checkPasswordLength(pass, minLength, maxLength);
         Assert.isTrue(isLength, StrUtil.format("密码长度不得小于{}位，大于{}位", minLength, maxLength));
         //大写
-        boolean isUpperCase = PwdCheckUtil.checkContainUpperCase(pass);
+        if (pwdConf.getUpperCase()) {
+            boolean isUpperCase = PwdCheckUtil.checkContainUpperCase(pass);
+            Assert.isTrue(isUpperCase, "密码必须包含字母大写");
+        }
+
         //小写
-        boolean isLowerCase = PwdCheckUtil.checkContainLowerCase(pass);
+        if (pwdConf.getLowerCase()) {
+            boolean isLowerCase = PwdCheckUtil.checkContainLowerCase(pass);
+            Assert.isTrue(isLowerCase, "密码必须包含字母小写");
+        }
         //数字
-        boolean isDigit = PwdCheckUtil.checkContainDigit(pass);
+        if (pwdConf.getDigit()) {
+            boolean isDigit = PwdCheckUtil.checkContainDigit(pass);
+            Assert.isTrue(isDigit, "密码必须包含数字");
+        }
         //特殊符号
-        boolean isSpecialChar = PwdCheckUtil.checkContainSpecialChar(pass);
-        boolean isCaseNumberSpecialChar = isUpperCase && isLowerCase && isDigit && isSpecialChar;
-        Assert.isTrue(isCaseNumberSpecialChar, "密码必须同时包含字母大、小写，数字和特殊符号");
+        if (pwdConf.getSpecialChar()) {
+            boolean isSpecialChar = PwdCheckUtil.checkContainSpecialChar(pass);
+            Assert.isTrue(isSpecialChar, "密码必须包含特殊符号");
+        }
     }
 
     /**

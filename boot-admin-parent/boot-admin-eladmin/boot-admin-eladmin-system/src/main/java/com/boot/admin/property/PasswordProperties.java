@@ -14,9 +14,9 @@ import lombok.Data;
 @Data
 public class PasswordProperties {
     /**
-     * 是否激活
+     * 新用户必须修改密码
      */
-    private Boolean enabled;
+    private Boolean newUserMustReset;
     /**
      * 密码最小长度
      */
@@ -25,6 +25,22 @@ public class PasswordProperties {
      * 密码最大长度
      */
     private String maxLength;
+    /**
+     * 是否要包大写
+     */
+    private Boolean upperCase;
+    /**
+     * 是否要包小写
+     */
+    private Boolean lowerCase;
+    /**
+     * 是否要包含数字
+     */
+    private Boolean digit;
+    /**
+     * 是否要包含特殊符号
+     */
+    private Boolean specialChar;
     /**
      * 默认密码
      */
