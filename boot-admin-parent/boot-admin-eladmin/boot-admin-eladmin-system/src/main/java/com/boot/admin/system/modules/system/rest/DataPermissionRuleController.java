@@ -27,13 +27,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
-* <p>
-* 数据规则 控制器
-* </p>
-*
-* @author miaoyj
-* @since 2021-10-27
-*/
+ * <p>
+ * 数据规则 控制器
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-10-27
+ * @version 1.0.1-SNAPSHOT
+ */
 @Api(tags = "系统：数据规则")
 @ApiSupport(order = 1, author = "miaoyj")
 @SysRestController("data_permission_rules")
@@ -42,6 +43,12 @@ public class DataPermissionRuleController extends BaseController{
 
     private final DataPermissionRuleService sysDataPermissionRuleService;
 
+    /**
+     * <p>create.</p>
+     *
+     * @param dto a {@link com.boot.admin.system.modules.system.api.dto.DataPermissionRuleDTO} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @PostMapping
     @ApiOperation(value = "数据规则-新增")
     @ApiOperationSupport(ignoreParameters = {"id"})
@@ -56,6 +63,12 @@ public class DataPermissionRuleController extends BaseController{
         return ResultWrapper.ok();
     }
 
+    /**
+     * <p>delete.</p>
+     *
+     * @param ids a {@link java.util.Set} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @DeleteMapping
     @ApiOperation(value = "数据规则-删除")
     @PreAuthorize("@el.check('menu:del')")
@@ -69,6 +82,12 @@ public class DataPermissionRuleController extends BaseController{
         return ResultWrapper.ok();
     }
 
+    /**
+     * <p>update.</p>
+     *
+     * @param dto a {@link com.boot.admin.system.modules.system.api.dto.DataPermissionRuleDTO} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @PutMapping
     @ApiOperation(value = "数据规则-修改")
     @PreAuthorize("@el.check('menu:edit')")
@@ -82,6 +101,12 @@ public class DataPermissionRuleController extends BaseController{
         return ResultWrapper.ok();
     }
 
+    /**
+     * <p>getById.</p>
+     *
+     * @param id a {@link java.lang.Long} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @GetMapping("/{id}")
     @ApiOperation(value = "数据规则-查询单个")
     @PreAuthorize("@el.check('menu:list')")
@@ -93,6 +118,14 @@ public class DataPermissionRuleController extends BaseController{
         return ResultWrapper.ok(this.sysDataPermissionRuleService.getVoById(id));
     }
 
+    /**
+     * <p>pageQuery.</p>
+     *
+     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
+     * @param sort a {@link com.boot.admin.system.modules.system.api.enums.DataPermissionRuleSortEnum} object.
+     * @param query a {@link com.boot.admin.system.modules.system.api.dto.DataPermissionRuleQueryCriteriaDTO} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @GetMapping
     @ApiOperation(value = "数据规则-列表")
     @PreAuthorize("@el.check('menu:list')")

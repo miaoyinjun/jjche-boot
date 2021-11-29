@@ -42,9 +42,7 @@ public class DataPermissionFieldUserAuthorityHelper implements IDataPermissionFi
     @Autowired
     private DataPermissionFieldService dataPermissionFieldService;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public List<DataPermissionFieldResultVO> getDataResource(String permission, Class returnClass, boolean isFilter) {
         List<DataPermissionFieldResultVO> resources = new ArrayList<>();

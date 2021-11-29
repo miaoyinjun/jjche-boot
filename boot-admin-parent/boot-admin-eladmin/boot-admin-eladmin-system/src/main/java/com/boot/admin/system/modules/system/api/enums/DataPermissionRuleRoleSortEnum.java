@@ -10,13 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-* <p>
-* 数据规则权限 排序枚举
-* </p>
-*
-* @author miaoyj
-* @since 2021-11-01
-*/
+ * <p>
+ * 数据规则权限 排序枚举
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-11-01
+ * @version 1.0.1-SNAPSHOT
+ */
 @Getter
 @AllArgsConstructor
 public enum DataPermissionRuleRoleSortEnum {
@@ -46,15 +47,15 @@ public enum DataPermissionRuleRoleSortEnum {
     private final String desc;
 
     /**
-    * <p>
-    * 根据index获取枚举
-    * </p>
-    *
-    * @param index a String.
-    * @return 枚举
-    * @author miaoyj
-    * @since 2021-11-01
-    */
+     * <p>
+     * 根据index获取枚举
+     * </p>
+     *
+     * @param index a String.
+     * @return 枚举
+     * @author miaoyj
+     * @since 2021-11-01
+     */
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static DataPermissionRuleRoleSortEnum resolve(String index) {
     return MAPPINGS.get(index);

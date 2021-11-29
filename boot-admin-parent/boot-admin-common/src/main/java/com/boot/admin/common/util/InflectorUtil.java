@@ -198,12 +198,12 @@ public class InflectorUtil {
  */
 
     /**
-     * <p>plural.</p>
+     * <p>
+     * /
+     * </p>
      *
-    /**
-     * <p>Getter for the field <code>rule</code>.</p>
-     *
-     * @param rule a {@link java.lang.String} object.
+     * @param rule /
+     * @param replacement /
      */
     public static void plural(String rule, String replacement) {
         /**

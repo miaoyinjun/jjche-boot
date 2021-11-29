@@ -76,6 +76,7 @@ public class MyPage<T> extends Page<T> implements DataPermissionFieldFilterable<
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     @JsonIgnore
     public Iterable<T> getData() {

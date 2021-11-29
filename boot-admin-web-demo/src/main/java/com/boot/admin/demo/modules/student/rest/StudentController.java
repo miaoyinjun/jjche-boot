@@ -51,7 +51,7 @@ public class StudentController extends BaseController {
     /**
      * <p>create.</p>
      *
-     * @param dto a {@link StudentDTO} object.
+     * @param dto a {@link com.boot.admin.demo.modules.student.api.dto.StudentDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @PostMapping
@@ -92,7 +92,7 @@ public class StudentController extends BaseController {
     /**
      * <p>update.</p>
      *
-     * @param dto a {@link StudentDTO} object.
+     * @param dto a {@link com.boot.admin.demo.modules.student.api.dto.StudentDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @PutMapping
@@ -129,8 +129,8 @@ public class StudentController extends BaseController {
     /**
      * <p>download.</p>
      *
-     * @param sort     a {@link StudentSortEnum} object.
-     * @param criteria a {@link StudentQueryCriteriaDTO} object.
+     * @param sort     a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
+     * @param criteria a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      */
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ApiOperation(value = "学生-导出", tags = ApiVersion.VERSION_1_0_0)
@@ -150,8 +150,8 @@ public class StudentController extends BaseController {
      * <p>pageQuery.</p>
      *
      * @param page  a {@link com.boot.admin.mybatis.param.PageParam} object.
-     * @param sort  a {@link StudentSortEnum} object.
-     * @param query a {@link StudentQueryCriteriaDTO} object.
+     * @param sort  a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
+     * @param query a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
      */

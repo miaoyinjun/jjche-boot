@@ -146,6 +146,12 @@ public class LocalStorageController extends BaseController {
         return ResultWrapper.ok();
     }
 
+    /**
+     * <p>list.</p>
+     *
+     * @param ids a {@link java.util.Set} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @PostMapping("/get_files")
     @ApiOperation("获取文件信息")
     public ResultWrapper<List<LocalStorageBaseVO>> list(@RequestBody Set<String> ids) {

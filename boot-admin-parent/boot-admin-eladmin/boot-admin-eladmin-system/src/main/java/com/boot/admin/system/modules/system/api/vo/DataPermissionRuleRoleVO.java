@@ -5,13 +5,14 @@ import lombok.Data;
 
 import java.io.Serializable;
 /**
-* <p>
-* 数据规则权限
-* </p>
-*
-* @author miaoyj
-* @since 2021-11-01
-*/
+ * <p>
+ * 数据规则权限
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-11-01
+ * @version 1.0.1-SNAPSHOT
+ */
 @Data
 public class DataPermissionRuleRoleVO implements Serializable {
    @ApiModelProperty(value = "ID")

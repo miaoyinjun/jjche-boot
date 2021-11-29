@@ -11,8 +11,6 @@ import java.io.Serializable;
  * @since 2021-04-25
  * @version 1.0.0-SNAPSHOT
  */
-//@Data
-//@NoArgsConstructor
 public interface BaseDTO extends Serializable {
 
     /* 分组校验 */

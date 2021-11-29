@@ -16,6 +16,7 @@ import java.io.Serializable;
  *
  * @author miaoyj
  * @since 2021-09-29
+ * @version 1.0.1-SNAPSHOT
  */
 @Data
 @SuperBuilder

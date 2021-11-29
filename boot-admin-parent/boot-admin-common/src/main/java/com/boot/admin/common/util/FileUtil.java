@@ -129,9 +129,9 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
      * @param fileName    文件名称
      * @param isCacheFile a boolean.
      * @return 文件
-     * @throws java.lang.Exception if any.
      * @author miaoyj
      * @since 2020-11-17
+     * @throws java.lang.Exception if any.
      */
     public static File getLocalFile(String filePath, String fileName, boolean isCacheFile) throws Exception {
         InputStream inputStream = FileUtil.class.getClassLoader().getResourceAsStream(filePath);

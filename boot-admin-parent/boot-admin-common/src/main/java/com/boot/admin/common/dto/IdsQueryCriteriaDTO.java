@@ -14,6 +14,7 @@ import java.util.Set;
  *
  * @author miaoyj
  * @since 2021-10-22
+ * @version 1.0.1-SNAPSHOT
  */
 @Data
 public class IdsQueryCriteriaDTO extends BaseQueryCriteriaDTO {

@@ -191,17 +191,13 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         applicationContext = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void destroy() {
         SpringContextHolder.clearHolder();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (SpringContextHolder.applicationContext != null) {

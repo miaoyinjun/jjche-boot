@@ -22,7 +22,7 @@ public interface IMyService<T> extends IService<T> {
      * {@inheritDoc}
      *
      * <p>
-     * baseMapper
+     * 获取当前mapper
      * </p>
      */
     @Override

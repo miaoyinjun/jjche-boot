@@ -8,13 +8,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 /**
-* <p>
-* 数据规则权限 转换类
-* </p>
-*
-* @author miaoyj
-* @since 2021-11-01
-*/
+ * <p>
+ * 数据规则权限 转换类
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-11-01
+ * @version 1.0.1-SNAPSHOT
+ */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface DataPermissionRuleRoleMapStruct extends BaseMapStruct<DataPermissionRuleRoleDO, DataPermissionRuleRoleDTO, DataPermissionRuleRoleVO> {
 }

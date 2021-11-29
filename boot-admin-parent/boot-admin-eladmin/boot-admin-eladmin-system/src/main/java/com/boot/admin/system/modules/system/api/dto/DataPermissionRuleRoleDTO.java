@@ -8,13 +8,14 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
-* <p>
-* 数据规则权限
-* </p>
-*
-* @author miaoyj
-* @since 2021-11-01
-*/
+ * <p>
+ * 数据规则权限
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-11-01
+ * @version 1.0.1-SNAPSHOT
+ */
 @Data
 public class DataPermissionRuleRoleDTO implements BaseDTO {
    @NotNull(message = "角色ID不能为空")

@@ -93,8 +93,8 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
      * 上传
      *
      * @param name          文件名称
-     * @param multipartFile 文件
      * @return a {@link com.boot.admin.tool.modules.tool.domain.LocalStorageDO} object.
+     * @param multipartFiles an array of {@link org.springframework.web.multipart.MultipartFile} objects.
      */
     @Transactional(rollbackFor = Exception.class)
     public List<LocalStorageBaseVO> create(String name, MultipartFile[] multipartFiles) {

@@ -13,7 +13,7 @@ import java.util.Arrays;
  * @since 2021-05-24
  * @version 1.0.0-SNAPSHOT
  */
-public class WxPKCS7Encoder {
+public class WxPkcs7Encoder {
     private static final Charset CHARSET = Charset.forName("utf-8");
     private static final int BLOCK_SIZE = 32;
 

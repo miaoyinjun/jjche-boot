@@ -7,13 +7,14 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
-* <p>
-* 数据规则
-* </p>
-*
-* @author miaoyj
-* @since 2021-10-27
-*/
+ * <p>
+ * 数据规则
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-10-27
+ * @version 1.0.1-SNAPSHOT
+ */
 @Data
 public class DataPermissionRuleVO implements Serializable {
    @ApiModelProperty(value = "ID")

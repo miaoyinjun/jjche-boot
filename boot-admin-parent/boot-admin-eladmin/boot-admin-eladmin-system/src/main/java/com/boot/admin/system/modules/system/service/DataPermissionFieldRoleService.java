@@ -36,6 +36,7 @@ import java.util.Set;
  *
  * @author miaoyj
  * @since 2021-11-04
+ * @version 1.0.1-SNAPSHOT
  */
 @Service
 @RequiredArgsConstructor
@@ -164,7 +165,6 @@ public class DataPermissionFieldRoleService extends MyServiceImpl<DataPermission
      * <p>
      * 删除用户数据字段缓存
      * </p>
-     *
      */
     public void delUserCache(){
         redisService.delByKeyPrefix(CacheKey.PERMISSION_DATA_FIELD_USER_ID);

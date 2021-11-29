@@ -30,38 +30,66 @@ public @interface BizLog {
     LogType type() default LogType.SELECT;
 
     /**
+     * <p>
      * 模块
+     * </p>
+     *
+     * @return /
      */
-    String module() default "";;
+    String module() default "";
 
     /**
+     * <p>
      * 方法
+     * </p>
+     *
+     * @return /
      */
     String methods() default "";
 
     /**
+     * <p>
      * 查询的bean名称
+     * </p>
+     *
+     * @return /
      */
     Class serviceClass() default BizLog.class;
 
     /**
+     * <p>
      * 查询单个详情的bean的方法
+     * </p>
+     *
+     * @return /
      */
     String queryMethod() default "getById";
 
     /**
+     * <p>
      * 从页面参数中解析出要查询的id，
      * 如域名修改中要从参数中获取customerDomainId的值进行查询
+     * </p>
+     *
+     * @return /
      */
     String parameterKey() default "id";
 
     /**
+     * <p>
      * 是否保存修改前内容
+     * </p>
+     *
+     * @return /
      */
     boolean isSaveBeforeData() default false;
 
     /**
+     * <p>
      * 主键描述
+     * </p>
+     *
+     * @return /
      */
     String parameterKeyDesc() default "主键ID";
 

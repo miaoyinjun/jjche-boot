@@ -1,7 +1,7 @@
 package com.boot.admin.security.config;
 
 import cn.hutool.core.collection.CollUtil;
-import com.boot.admin.common.context.ELPermissionContext;
+import com.boot.admin.common.context.ElPermissionContext;
 import com.boot.admin.core.util.SecurityUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class ElPermissionConfig {
     public Boolean check(String... permissions) {
         List<String> permissionList = CollUtil.newArrayList(permissions);
         if (CollUtil.isNotEmpty(permissionList)) {
-            ELPermissionContext.set(CollUtil.getFirst(permissionList));
+            ElPermissionContext.set(CollUtil.getFirst(permissionList));
         }
         // 获取当前用户的所有权限
         List<String> elPermissions = SecurityUtils.getCurrentUser().getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());

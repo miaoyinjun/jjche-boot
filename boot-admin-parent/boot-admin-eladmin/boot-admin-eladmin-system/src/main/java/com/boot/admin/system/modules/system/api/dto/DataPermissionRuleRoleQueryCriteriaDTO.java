@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author miaoyj
  * @since 2021-11-01
+ * @version 1.0.1-SNAPSHOT
  */
 @Data
 public class DataPermissionRuleRoleQueryCriteriaDTO extends BaseQueryCriteriaDTO {

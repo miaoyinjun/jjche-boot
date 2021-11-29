@@ -33,17 +33,13 @@ public class RedisServiceImpl implements RedisService {
     @Value("${spring.application.name}")
     private String appName;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Boolean hashHasHk(String hKey, String hashKey) {
         return redisTemplate.opsForHash().hasKey(hKey, hashKey);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public <T> T hashGet(String hKey, String hashKey, Class<T> valueCls) {
         Object result = redisTemplate.opsForHash().get(hKey, hashKey);
@@ -54,9 +50,7 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Map<Object, Object> hashGetAll(String key, Class valueCls) {
         Map<Object, Object> map = redisTemplate.opsForHash().entries(key);
@@ -67,57 +61,43 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long hashIncrementLongOfHashMap(String hKey, String hashKey, Long delta) {
         return redisTemplate.opsForHash().increment(hKey, hashKey, delta);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Double hashIncrementDoubleOfHashMap(String hKey, String hashKey, Double delta) {
         return redisTemplate.opsForHash().increment(hKey, hashKey, delta);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void hashPushHashMap(String key, Object hashKey, Object value) {
         redisTemplate.opsForHash().put(key, hashKey, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void hashPushHashMap(String key, Map<String, Object> maps) {
         redisTemplate.opsForHash().putAll(key, maps);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Set<Object> hashGetAllHashKey(String key) {
         return redisTemplate.opsForHash().keys(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long hashGetHashMapSize(String key) {
         return redisTemplate.opsForHash().size(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public List<Object> hashGetHashAllValues(String key, Class valueCls) {
         List<Object> result = redisTemplate.opsForHash().values(key);
@@ -128,9 +108,7 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long hashDeleteHashKey(String key, Object... hashKeys) {
         if (hashKeys.length > 0) {
@@ -139,49 +117,37 @@ public class RedisServiceImpl implements RedisService {
         return 0L;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public List<Object> listGet(String key, Class valueCls) {
         return this.listRangeList(key, 0L, -1L, valueCls);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long listLeftPush(String key, Object... values) {
         return redisTemplate.opsForList().leftPushAll(key, values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long listLeftPushAll(String key, Collection<Object> values) {
         return redisTemplate.opsForList().leftPushAll(key, values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long listRightPush(String key, Object... values) {
         return redisTemplate.opsForList().rightPushAll(key, values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long listRightPushAll(String key, Collection<Object> values) {
         return redisTemplate.opsForList().rightPushAll(key, values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public <T> T listRightPop(String key, Class<T> valueCls) {
         Object result = redisTemplate.opsForList().rightPop(key);
@@ -192,9 +158,7 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public <T> T listLeftPop(String key, Class<T> valueCls) {
         Object result = redisTemplate.opsForList().leftPop(key);
@@ -205,17 +169,13 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long listSize(String key) {
         return redisTemplate.opsForList().size(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public List<Object> listRangeList(String key, Long start, Long end, Class valueCls) {
         List<Object> result = redisTemplate.opsForList().range(key, start, end);
@@ -225,9 +185,7 @@ public class RedisServiceImpl implements RedisService {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public <T> T listIndexFromList(String key, Long index, Class<T> valueCls) {
         Object result = redisTemplate.opsForList().index(key, index);
@@ -238,41 +196,31 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void listSetValueToList(String key, Long index, Object value) {
         redisTemplate.opsForList().set(key, index, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void listTrimByRange(String key, Long start, Long end) {
         redisTemplate.opsForList().trim(key, start, end);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long setAddSetObject(String key, Object... values) {
         return redisTemplate.opsForSet().add(key, values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long setGetSizeForSetMap(String key) {
         return redisTemplate.opsForSet().size(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Set<Object> setGetMemberOfSetMap(String key, Class valueCls) {
         Set<Object> result = redisTemplate.opsForSet().members(key);
@@ -282,17 +230,13 @@ public class RedisServiceImpl implements RedisService {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Boolean setCheckIsMemberOfSet(String key, Object o) {
         return redisTemplate.opsForSet().isMember(key, o);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public <T> T setPop(String key, Class<T> valueCls) {
         Object result = redisTemplate.opsForSet().pop(key);
@@ -303,57 +247,43 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long setRemove(String key, Object... values) {
         return redisTemplate.opsForSet().remove(key, values);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void stringAppendString(String key, String value) {
         stringRedisTemplate.opsForValue().append(key, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String stringGetString(String key) {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long stringIncrementLongString(String key, Long delta) {
         return stringRedisTemplate.opsForValue().increment(key, delta);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Double stringIncrementDoubleString(String key, Double delta) {
         return stringRedisTemplate.opsForValue().increment(key, delta);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void stringSetString(String key, String value) {
         stringSetString(key, value, 0L);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void stringSetString(String key, String value, Long expireMilliSeconds) {
         if (expireMilliSeconds > 0) {
@@ -363,25 +293,19 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String stringGetAndSet(String key, String value) {
         return stringRedisTemplate.opsForValue().getAndSet(key, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void objectSetObject(String key, Object o) {
         this.objectSetObject(key, o, 0L);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void objectSetObject(String key, Object o, Long expireMilliSeconds) {
         if (expireMilliSeconds > 0) {
@@ -391,9 +315,7 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public <T> T objectGetObject(String key, Class<T> valueCls) {
         Object result = redisTemplate.opsForValue().get(key);
@@ -404,41 +326,31 @@ public class RedisServiceImpl implements RedisService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Boolean delete(String key) {
         return redisTemplate.delete(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Long getExpire(String key) {
         return redisTemplate.getExpire(key, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Boolean setExpire(String key, Long expireMilliSeconds) {
         return redisTemplate.expire(key, expireMilliSeconds, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Set<String> keys(String pattern) {
         Set<String> keyList = redisTemplate.keys(pattern + "*");
@@ -446,18 +358,14 @@ public class RedisServiceImpl implements RedisService {
         return keyList.stream().map(s -> StrUtil.removePrefix(s, keyPrefix)).collect(Collectors.toSet());
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Boolean delete(Set<String> keys) {
         Long successSize = redisTemplate.delete(keys);
         return ObjectUtil.isNotNull(successSize) && successSize == keys.size();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void delByKeys(String prefix, Set<Long> ids) {
         Set<String> keys = new HashSet<>();
@@ -467,6 +375,7 @@ public class RedisServiceImpl implements RedisService {
         this.delete(keys);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean delByKeyPrefix(String prefix) {
         Set<String> keys = this.keys(prefix);

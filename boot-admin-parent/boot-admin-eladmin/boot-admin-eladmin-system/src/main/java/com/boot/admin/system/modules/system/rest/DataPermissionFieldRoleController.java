@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  *
  * @author miaoyj
  * @since 2021-11-04
+ * @version 1.0.1-SNAPSHOT
  */
 @Api(tags = "系统：数据字段角色")
 @ApiSupport(order = 1, author = "miaoyj")
@@ -38,6 +39,12 @@ public class DataPermissionFieldRoleController extends BaseController {
 
     private final DataPermissionFieldRoleService sysDataPermissionFieldRoleService;
 
+    /**
+     * <p>create.</p>
+     *
+     * @param dto a {@link com.boot.admin.system.modules.system.api.dto.DataPermissionFieldRoleDTO} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @PostMapping
     @ApiOperation(value = "数据字段角色-保存")
     @PreAuthorize("@el.check('roles:edit')")
@@ -51,6 +58,13 @@ public class DataPermissionFieldRoleController extends BaseController {
         return ResultWrapper.ok();
     }
 
+    /**
+     * <p>pageQuery.</p>
+     *
+     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
+     * @param query a {@link com.boot.admin.system.modules.system.api.dto.DataPermissionFieldRoleQueryCriteriaDTO} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @GetMapping
     @ApiOperation(value = "数据字段角色-列表")
     @PreAuthorize("@el.check('roles:list')")
