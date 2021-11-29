@@ -82,6 +82,18 @@ public enum DataScopeEnum {
      * @param val a {@link java.lang.String} object.
      * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
      */
+    /**
+     * <p>find.</p>
+     *
+     * @param val a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
+     */
+    /**
+     * <p>find.</p>
+     *
+     * @param val a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
+     */
     private final String value;
     private final String desc;
 

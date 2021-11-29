@@ -127,12 +127,9 @@ public @interface QueryCriteria {
          * 根据index获取枚举
          * </p>
          *
-         * @param index a Integer.
+         * @param index 索引
          * @return 枚举
-         * @author miaoyj
-         * @since 2020-07-09
          */
-//        @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
         public static Type resolve(String index) {
             return MAPPINGS.get(index);
         }

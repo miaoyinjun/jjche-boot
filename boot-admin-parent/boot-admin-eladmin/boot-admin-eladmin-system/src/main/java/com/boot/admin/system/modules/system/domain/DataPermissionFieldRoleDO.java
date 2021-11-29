@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 /**
-* <p>
-* 数据字段角色
-* </p>
-*
-* @author miaoyj
-* @since 2021-11-04
-*/
+ * <p>
+ * 数据字段角色
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-11-04
+ * @version 1.0.1-SNAPSHOT
+ */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

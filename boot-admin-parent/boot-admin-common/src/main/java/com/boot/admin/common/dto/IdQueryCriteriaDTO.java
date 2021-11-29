@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author miaoyj
  * @since 2021-11-10
+ * @version 1.0.1-SNAPSHOT
  */
 @Data
 public class IdQueryCriteriaDTO extends BaseQueryCriteriaDTO {

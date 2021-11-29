@@ -26,6 +26,7 @@ import java.util.Set;
  *
  * @author miaoyj
  * @since 2021-11-01
+ * @version 1.0.1-SNAPSHOT
  */
 @Service
 @RequiredArgsConstructor
@@ -97,7 +98,6 @@ public class DataPermissionRuleRoleService extends MyServiceImpl<DataPermissionR
      * <p>
      * 删除用户数据规则缓存
      * </p>
-     *
      */
     public void delUserCache(){
         redisService.delByKeyPrefix(CacheKey.PERMISSION_DATA_RULE_USER_ID);

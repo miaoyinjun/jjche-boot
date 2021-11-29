@@ -81,7 +81,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
      * @param criteria 条件
      * @param isQuery  是否查询pid
      * @return /
-     * @throws java.lang.IllegalAccessException /
+     * @throws java.lang.IllegalAccessException if any.
      */
     public List<MenuDTO> queryAll(MenuQueryCriteriaDTO criteria, Boolean isQuery) throws IllegalAccessException {
         if (isQuery) {

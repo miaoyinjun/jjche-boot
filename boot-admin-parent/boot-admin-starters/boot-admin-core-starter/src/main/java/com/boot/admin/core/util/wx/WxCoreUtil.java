@@ -33,10 +33,10 @@ public class WxCoreUtil {
     public static String decrypt(String appId, String encryptedData, String sessionKey, String iv) {
         String result = "";
         try {
-            WxAESUtil aes = new WxAESUtil();
+            WxAesUtil aes = new WxAesUtil();
             byte[] resultByte = aes.decrypt(Base64.decodeBase64(encryptedData), Base64.decodeBase64(sessionKey), Base64.decodeBase64(iv));
             if (null != resultByte && resultByte.length > 0) {
-                result = new String(WxPKCS7Encoder.decode(resultByte));
+                result = new String(WxPkcs7Encoder.decode(resultByte));
                 JSONObject jsonObject = JSONUtil.parseObj(result);
                 String decryptAppid = jsonObject.getJSONObject(WATERMARK).getStr(APPID);
                 if (!appId.equals(decryptAppid)) {

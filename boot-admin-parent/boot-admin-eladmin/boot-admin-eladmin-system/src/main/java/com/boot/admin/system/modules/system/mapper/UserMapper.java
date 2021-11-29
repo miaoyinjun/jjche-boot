@@ -14,7 +14,6 @@ import java.util.Set;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-11-22
  */
-//@DataPermission
 public interface UserMapper extends MyBaseMapper<UserDO> {
 
     /**

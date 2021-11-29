@@ -7,13 +7,14 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 /**
-* <p>
-* 数据规则 查询
-* </p>
-*
-* @author miaoyj
-* @since 2021-10-27
-*/
+ * <p>
+ * 数据规则 查询
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2021-10-27
+ * @version 1.0.1-SNAPSHOT
+ */
 @Data
 public class DataPermissionRuleQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 

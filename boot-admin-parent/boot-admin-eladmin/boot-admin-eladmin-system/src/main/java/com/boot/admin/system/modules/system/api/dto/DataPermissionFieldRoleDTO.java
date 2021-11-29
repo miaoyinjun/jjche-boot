@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @author miaoyj
  * @since 2021-11-04
+ * @version 1.0.1-SNAPSHOT
  */
 @Data
 public class DataPermissionFieldRoleDTO implements BaseDTO {

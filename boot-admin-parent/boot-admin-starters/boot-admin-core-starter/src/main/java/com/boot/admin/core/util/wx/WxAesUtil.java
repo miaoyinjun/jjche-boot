@@ -19,7 +19,7 @@ import java.security.*;
  * @since 2021-05-20
  * @version 1.0.0-SNAPSHOT
  */
-public class WxAESUtil {
+public class WxAesUtil {
     /** Constant <code>initialized=false</code> */
     public static boolean initialized = false;
 

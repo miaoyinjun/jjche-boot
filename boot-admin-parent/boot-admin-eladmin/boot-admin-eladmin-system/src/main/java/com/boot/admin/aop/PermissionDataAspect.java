@@ -7,7 +7,7 @@ import cn.hutool.core.util.*;
 import cn.hutool.log.StaticLog;
 import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.annotation.QueryCriteria;
-import com.boot.admin.common.context.ELPermissionContext;
+import com.boot.admin.common.context.ElPermissionContext;
 import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import com.boot.admin.common.dto.PermissionDataRuleDTO;
 import com.boot.admin.common.pojo.DataScope;
@@ -41,11 +41,14 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
+ * <p>
  * 数据权限切面处理类
  * 当被请求的方法有注解PermissionData时,会在往当前request中写入数据权限信息
+ * </p>
  *
- * @Date 2019年4月10日
- * @Version: 1.0
+ * @author miaoyj
+ * @since 2021-11-29
+ * @version 1.0.1-SNAPSHOT
  */
 @Aspect
 @Component
@@ -59,11 +62,21 @@ public class PermissionDataAspect {
     @Autowired(required = false)
     private IDataPermissionFieldUserAuthorityHelper userAuthorityHelper;
 
+    /**
+     * <p>permissionDataCut.</p>
+     */
     @Pointcut("@annotation(com.boot.admin.common.annotation.PermissionData)")
     public void permissionDataCut() {
 
     }
 
+    /**
+     * <p>around.</p>
+     *
+     * @param point a {@link org.aspectj.lang.ProceedingJoinPoint} object.
+     * @return a {@link java.lang.Object} object.
+     * @throws java.lang.Throwable if any.
+     */
     @Around("permissionDataCut()")
     public Object around(ProceedingJoinPoint point) throws Throwable {
         Object object = null;
@@ -71,7 +84,7 @@ public class PermissionDataAspect {
         Method method = signature.getMethod();
         PermissionData pd = method.getAnnotation(PermissionData.class);
 
-        String permissionCode = ELPermissionContext.get();
+        String permissionCode = ElPermissionContext.get();
         DataScope dataScope = null;
         //未登录情况下
         try {
@@ -215,7 +228,8 @@ public class PermissionDataAspect {
             for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
                 String name = propertyDescriptor.getName();
                 DataPermissionFieldResultVO dataColumn = dataColumnMap.get(name);
-                if (dataColumn != null && (!dataColumn.getIsAccessible() || (editable && !dataColumn.getIsEditable()))) {
+                boolean isAccessibleOrEditable = dataColumn != null && (!dataColumn.getIsAccessible() || (editable && !dataColumn.getIsEditable()));
+                if (isAccessibleOrEditable) {
                     try {
                         propertyDescriptor.getWriteMethod().invoke(o, new Object[]{null});
                     } catch (Exception ex) {

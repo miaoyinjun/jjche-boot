@@ -69,9 +69,9 @@ public class GeneratorService extends MyServiceImpl<ColumnInfoMapper, ColumnInfo
                 columnInfo.setFormShow(true);
 
                 if ((GenUtil.PK.equalsIgnoreCase(columnInfo.getKeyType())
-                        && GenUtil.EXTRA.equalsIgnoreCase(columnInfo.getExtra())))
+                        && GenUtil.EXTRA.equalsIgnoreCase(columnInfo.getExtra()))) {
                     columnInfo.setNotNull(false);
-
+                }
                 if ((CollUtil.contains(GenUtil.DEFAULT_COLUMNS, columnInfo.getColumnName()))) {
                     columnInfo.setNotNull(false);
                     columnInfo.setListShow(false);

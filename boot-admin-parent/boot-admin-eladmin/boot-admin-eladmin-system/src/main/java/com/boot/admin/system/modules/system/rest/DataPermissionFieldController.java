@@ -59,8 +59,8 @@ public class DataPermissionFieldController extends BaseController {
     /**
      * <p>delete.</p>
      *
-     * @param id a {@link java.lang.Long} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     * @param ids a {@link java.util.Set} object.
      */
     @LogRecordAnnotation(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -92,6 +92,12 @@ public class DataPermissionFieldController extends BaseController {
         return ResultWrapper.ok();
     }
 
+    /**
+     * <p>getById.</p>
+     *
+     * @param id a {@link java.lang.Long} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @GetMapping("/{id}")
     @ApiOperation(value = "数据字段-查询单个")
     @PreAuthorize("@el.check('menu:list')")

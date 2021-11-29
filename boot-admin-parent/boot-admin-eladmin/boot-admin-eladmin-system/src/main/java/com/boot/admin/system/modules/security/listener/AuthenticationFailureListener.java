@@ -29,9 +29,7 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
     @Autowired
     private UserMapStruct userMapper;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent authenticationFailureBadCredentialsEvent) {
         PasswordProperties password = adminProperties.getUser().getPassword();

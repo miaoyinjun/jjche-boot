@@ -41,9 +41,7 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
     @ApiModelProperty("字段")
     private List<DataPermissionFieldResultVO> meta;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void doFilter(Function<T, T> filterFunc) {
         for (T row : records) {
@@ -51,22 +49,20 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
         }
     }
 
+    /** {@inheritDoc} */
     @JsonIgnore
+    @Override
     public Iterable<T> getData() {
         return this.records;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setMeta(List<DataPermissionFieldResultVO> dataResources) {
         this.meta = dataResources;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public List<DataPermissionFieldResultVO> getMeta() {
         return this.meta;
@@ -79,6 +75,7 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
      *
      * @param rows 集合
      * @return 结果
+     * @param <T> a T object.
      */
     public static <T> DataPermissionFieldResult<T> build(Iterable<T> rows) {
         DataPermissionFieldResult<T> result = new DataPermissionFieldResult<>();
@@ -93,6 +90,7 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
      *
      * @param row 数据
      * @return /
+     * @param <T> a T object.
      */
     public static <T> DataPermissionFieldResult<T> build(T row) {
         return build(CollUtil.newArrayList(row));

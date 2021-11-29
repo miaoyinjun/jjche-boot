@@ -48,6 +48,7 @@ public class GenUtil {
      * Constant <code>EXTRA="auto_increment"</code>
      */
     public static final String EXTRA = "auto_increment";
+    /** Constant <code>API_VERSION_JAVA="ApiVersion.java"</code> */
     public static final String API_VERSION_JAVA = "ApiVersion.java";
 
     /**

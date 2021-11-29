@@ -56,9 +56,7 @@ public class CoreEnvironmentPostProcessor implements EnvironmentPostProcessor {
         this.extPropertyNameIsLoad = extPropertyNameIsLoad;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment,
                                        SpringApplication application) {

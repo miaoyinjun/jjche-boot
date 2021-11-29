@@ -8,8 +8,9 @@ package com.boot.admin.common.context;
  *
  * @author miaoyj
  * @since 2021-11-10
+ * @version 1.0.1-SNAPSHOT
  */
-public class ELPermissionContext {
+public class ElPermissionContext {
 
     private static final InheritableThreadLocal<String> VARIABLE = new InheritableThreadLocal<>();
 
@@ -17,7 +18,7 @@ public class ELPermissionContext {
     /**
      * <p>putVariable.</p>
      *
-     * @param value a {@link String} object.
+     * @param value a {@link java.lang.String} object.
      */
     public static void set(String value) {
         VARIABLE.set(value);
@@ -26,7 +27,7 @@ public class ELPermissionContext {
     /**
      * <p>getVariables.</p>
      *
-     * @return a {@link String} object.
+     * @return a {@link java.lang.String} object.
      */
     public static String get() {
         String value = VARIABLE.get();

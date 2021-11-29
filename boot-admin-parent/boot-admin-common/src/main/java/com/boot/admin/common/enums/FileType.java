@@ -16,6 +16,7 @@ import java.util.Map;
  *
  * @author miaoyj
  * @since 2021-11-24
+ * @version 1.0.1-SNAPSHOT
  */
 @Getter
 @AllArgsConstructor
