@@ -2,21 +2,21 @@ import request from '@/utils/request'
 
 export function count() {
   return request({
-    url: 'admin/dashboard/count',
+    url: 'sys/dashboard/count',
     method: 'get'
   })
 }
 
 export function chart() {
   return request({
-    url: 'admin/dashboard/chart',
+    url: 'sys/dashboard/chart',
     method: 'get'
   })
 }
 
 export function pvIncr() {
   return request({
-    url: 'admin/dashboard/pvIncr',
+    url: 'sys/dashboard/pvIncr',
     method: 'post'
   })
 }

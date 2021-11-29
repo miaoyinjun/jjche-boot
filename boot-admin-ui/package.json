@@ -16,11 +16,6 @@
     "svgo": "svgo -f src/assets/icons/svg --config=src/assets/icons/svgo.yml",
     "new": "plop"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,vue}": [
       "eslint --fix",

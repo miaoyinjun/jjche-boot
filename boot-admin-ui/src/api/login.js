@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function login(username, password, code, uuid) {
   return request({
-    url: 'admin/auth/login',
+    url: 'sys/auth/login',
     method: 'post',
     data: {
       username,
@@ -15,21 +15,21 @@ export function login(username, password, code, uuid) {
 
 export function getInfo() {
   return request({
-    url: 'admin/auth/info',
+    url: 'sys/auth/info',
     method: 'get'
   })
 }
 
 export function getCodeImg() {
   return request({
-    url: 'admin/auth/code',
+    url: 'sys/auth/code',
     method: 'get'
   })
 }
 
 export function logout() {
   return request({
-    url: 'admin/auth/logout',
+    url: 'sys/auth/logout',
     method: 'delete'
   })
 }

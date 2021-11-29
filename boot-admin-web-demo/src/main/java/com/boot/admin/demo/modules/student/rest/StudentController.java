@@ -8,11 +8,11 @@ import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.demo.constant.ApiVersion;
 import com.boot.admin.demo.modules.student.api.dto.StudentDTO;
-import com.boot.admin.demo.modules.student.api.vo.StudentVO;
-import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
 import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
 import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
+import com.boot.admin.demo.modules.student.api.vo.StudentVO;
+import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
@@ -27,6 +27,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
@@ -50,7 +51,7 @@ public class StudentController extends BaseController {
     /**
      * <p>create.</p>
      *
-     * @param dto a {@link StudentDTO} object.
+     * @param dto a {@link com.boot.admin.demo.modules.student.api.dto.StudentDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @PostMapping
@@ -63,7 +64,7 @@ public class StudentController extends BaseController {
             type = LogType.ADD, module = ApiVersion.MODULE_STUDENT,
             prefix = "student", bizNo = "{{#dto.name}}"
     )
-    public ResultWrapper create(@Validated @RequestBody StudentDTO dto) {
+    public ResultWrapper create(@Validated @Valid @RequestBody StudentDTO dto) {
         studentService.save(dto);
         return ResultWrapper.ok();
     }
@@ -91,7 +92,7 @@ public class StudentController extends BaseController {
     /**
      * <p>update.</p>
      *
-     * @param dto a {@link StudentDTO} object.
+     * @param dto a {@link com.boot.admin.demo.modules.student.api.dto.StudentDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @PutMapping
@@ -103,7 +104,7 @@ public class StudentController extends BaseController {
             prefix = "student", bizNo = "{{#dto.name}}",
             detail = "修改内容：「{STUDENT_UPDATE_DIFF_BY_DTO{#dto}}」"
     )
-    public ResultWrapper update(@Validated(BaseDTO.Update.class) @RequestBody StudentDTO dto) {
+    public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody StudentDTO dto) {
         studentService.update(dto);
         return ResultWrapper.ok();
     }
@@ -128,8 +129,8 @@ public class StudentController extends BaseController {
     /**
      * <p>download.</p>
      *
-     * @param sort     a {@link StudentSortEnum} object.
-     * @param criteria a {@link StudentQueryCriteriaDTO} object.
+     * @param sort     a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
+     * @param criteria a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      */
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ApiOperation(value = "学生-导出", tags = ApiVersion.VERSION_1_0_0)
@@ -149,8 +150,8 @@ public class StudentController extends BaseController {
      * <p>pageQuery.</p>
      *
      * @param page  a {@link com.boot.admin.mybatis.param.PageParam} object.
-     * @param sort  a {@link StudentSortEnum} object.
-     * @param query a {@link StudentQueryCriteriaDTO} object.
+     * @param sort  a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
+     * @param query a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
      */
@@ -163,10 +164,10 @@ public class StudentController extends BaseController {
     )
     public ResultWrapper<MyPage<StudentVO>> pageQuery(PageParam page,
                                                       @ApiParam(value = "排序", required = true)
-                                                   @NotNull(message = "排序字段不正确")
-                                                   @RequestParam StudentSortEnum sort,
+                                                      @NotNull(message = "排序字段不正确")
+                                                      @RequestParam StudentSortEnum sort,
                                                       @ApiParam(value = "课程")
-                                                   @RequestParam(required = false) CourseEnum course,
+                                                      @RequestParam(required = false) CourseEnum course,
                                                       @Validated StudentQueryCriteriaDTO query) {
         return ResultWrapper.ok(studentService.pageQuery(page, sort, course, query));
     }

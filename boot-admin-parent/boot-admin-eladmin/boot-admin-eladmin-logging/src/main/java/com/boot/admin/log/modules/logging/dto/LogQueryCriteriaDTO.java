@@ -1,6 +1,7 @@
 package com.boot.admin.log.modules.logging.dto;
 
 import com.boot.admin.common.annotation.QueryCriteria;
+import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @since 2019-6-4 09:23:07
  */
 @Data
-public class LogQueryCriteriaDTO {
+public class LogQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     private String blurry;
 

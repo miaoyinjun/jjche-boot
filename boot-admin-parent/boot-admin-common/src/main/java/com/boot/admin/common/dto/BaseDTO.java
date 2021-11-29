@@ -1,8 +1,5 @@
 package com.boot.admin.common.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 
 /**
@@ -14,9 +11,8 @@ import java.io.Serializable;
  * @since 2021-04-25
  * @version 1.0.0-SNAPSHOT
  */
-@Data
-@NoArgsConstructor
-public class BaseDTO implements Serializable {
+public interface BaseDTO extends Serializable {
+
     /* 分组校验 */
     public @interface Create {
     }

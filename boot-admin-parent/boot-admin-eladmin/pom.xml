@@ -4,7 +4,7 @@
 
     <artifactId>boot-admin-eladmin</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <modules>
         <module>boot-admin-eladmin-generator</module>
@@ -16,7 +16,7 @@
     <parent>
         <groupId>com.boot.admin</groupId>
         <artifactId>boot-admin-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <dependencies>
@@ -110,11 +110,6 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <!--Spring boot 安全框架-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -173,17 +168,17 @@
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-generator</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-tools</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-logging</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

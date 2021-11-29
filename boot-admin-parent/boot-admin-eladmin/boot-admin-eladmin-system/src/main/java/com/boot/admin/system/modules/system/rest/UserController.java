@@ -1,19 +1,21 @@
 package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.lang.Assert;
+import com.boot.admin.common.annotation.PermissionData;
 import com.boot.admin.common.enums.CodeEnum;
+import com.boot.admin.common.pojo.DataScope;
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.PasswordProperties;
 import com.boot.admin.system.modules.system.domain.UserDO;
-import com.boot.admin.system.modules.system.dto.UserDTO;
-import com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.dto.UserResetPassDTO;
+import com.boot.admin.system.modules.system.api.dto.UserDTO;
+import com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.UserResetPassDTO;
 import com.boot.admin.system.modules.system.service.*;
-import com.boot.admin.system.modules.system.vo.UserPassVO;
+import com.boot.admin.system.modules.system.api.vo.UserPassVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.common.util.RsaUtils;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
@@ -46,7 +48,7 @@ import java.util.stream.Collectors;
  * @since 2018-11-23
  */
 @Api(tags = "系统：用户管理")
-@AdminRestController("users")
+@SysRestController("users")
 @RequiredArgsConstructor
 public class UserController extends BaseController {
 
@@ -62,7 +64,7 @@ public class UserController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
     @LogRecordAnnotation(
@@ -72,6 +74,7 @@ public class UserController extends BaseController {
     @ApiOperation("导出用户数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('user:list')")
+    @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
     public void download(HttpServletResponse response, UserQueryCriteriaDTO criteria) throws IOException {
         userService.download(userService.queryAll(criteria), response);
     }
@@ -79,7 +82,7 @@ public class UserController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.UserQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
@@ -90,6 +93,7 @@ public class UserController extends BaseController {
     @ApiOperation("查询用户")
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
+    @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
     public ResultWrapper<Object> query(UserQueryCriteriaDTO criteria, PageParam pageable) {
         return ResultWrapper.ok(userService.queryAll(criteria, pageable));
     }
@@ -178,7 +182,7 @@ public class UserController extends BaseController {
     /**
      * <p>updatePass.</p>
      *
-     * @param passVo a {@link com.boot.admin.system.modules.system.vo.UserPassVO} object.
+     * @param passVo a {@link com.boot.admin.system.modules.system.api.vo.UserPassVO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
@@ -206,7 +210,7 @@ public class UserController extends BaseController {
     /**
      * <p>resetPass.</p>
      *
-     * @param passDTO a {@link com.boot.admin.system.modules.system.dto.UserResetPassDTO} object.
+     * @param passDTO a {@link com.boot.admin.system.modules.system.api.dto.UserResetPassDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @LogRecordAnnotation(

@@ -19,4 +19,13 @@ public interface DataPermissionFieldFilterable<T> {
      * @param filterFunc 过滤方法
      */
     void doFilter(Function<T, T> filterFunc);
+
+    /**
+     * <p>
+     * 获取数据
+     * </p>
+     *
+     * @return /
+     */
+    Iterable<T> getData();
 }

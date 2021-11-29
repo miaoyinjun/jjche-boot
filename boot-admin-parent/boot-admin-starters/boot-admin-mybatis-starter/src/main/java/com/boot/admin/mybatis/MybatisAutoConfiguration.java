@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.boot.admin.mybatis.aop.SortAspect;
-import com.boot.admin.mybatis.datascope.DataScopeInterceptor;
 import com.boot.admin.mybatis.extension.MySqlInjector;
 import com.boot.admin.mybatis.handler.MyMetaObjectHandler;
 import org.springframework.context.annotation.Bean;
@@ -61,14 +60,14 @@ public class MybatisAutoConfiguration {
         return new OrderByHelper();
     }
 
-    /**
-     * 数据权限插件
-     *
-     * @return DataScopeInterceptor
-     */
-    @Bean
-    public DataScopeInterceptor dataScopeInterceptor() {
-        return new DataScopeInterceptor();
-    }
+//    /**
+//     * 数据权限插件
+//     *
+//     * @return DataScopeInterceptor
+//     */
+//    @Bean
+//    public DataScopeInterceptor dataScopeInterceptor() {
+//        return new DataScopeInterceptor();
+//    }
 
 }

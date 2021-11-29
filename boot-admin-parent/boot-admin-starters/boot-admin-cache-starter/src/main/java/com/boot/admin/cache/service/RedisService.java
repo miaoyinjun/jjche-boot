@@ -24,8 +24,6 @@ public interface RedisService {
      * @param key     标识
      * @param hashKey 哈希标识
      * @param value   值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     void hashPushHashMap(String key, Object hashKey, Object value);
 
@@ -36,8 +34,6 @@ public interface RedisService {
      *
      * @param key  标识
      * @param maps kv
-     * @author miaoyj
-     * @since 2020-07-20
      */
     void hashPushHashMap(String key, Map<String, Object> maps);
 
@@ -49,8 +45,6 @@ public interface RedisService {
      * @param hKey    标识
      * @param hashKey 哈希标识
      * @return 是否存在
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Boolean hashHasHk(String hKey, String hashKey);
 
@@ -64,8 +58,6 @@ public interface RedisService {
      * @param valueCls value类型
      * @param <T>      a T object.
      * @return 对象
-     * @author miaoyj
-     * @since 2020-07-20
      */
     <T> T hashGet(String hKey, String hashKey, Class<T> valueCls);
 
@@ -77,8 +69,6 @@ public interface RedisService {
      * @param key      标识
      * @param valueCls value类型
      * @return 所有的散列值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Map<Object, Object> hashGetAll(String key, Class valueCls);
 
@@ -91,8 +81,6 @@ public interface RedisService {
      * @param hashKey 哈希标识
      * @param delta   数值
      * @return 哈希表 hKey 中域 hashKey 的值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long hashIncrementLongOfHashMap(String hKey, String hashKey, Long delta);
 
@@ -105,8 +93,6 @@ public interface RedisService {
      * @param hashKey 哈希标识
      * @param delta   数值
      * @return 哈希表 hKey 中域 hashKey 的值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Double hashIncrementDoubleOfHashMap(String hKey, String hashKey, Double delta);
 
@@ -117,8 +103,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 所有域
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Set<Object> hashGetAllHashKey(String key);
 
@@ -129,8 +113,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 字段数量
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long hashGetHashMapSize(String key);
 
@@ -142,8 +124,6 @@ public interface RedisService {
      * @param key      标识
      * @param valueCls value类型
      * @return 所有值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     List<Object> hashGetHashAllValues(String key, Class valueCls);
 
@@ -155,8 +135,6 @@ public interface RedisService {
      * @param key      标识
      * @param hashKeys 哈希标识
      * @return 被成功删除的数量
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long hashDeleteHashKey(String key, Object... hashKeys);
 
@@ -168,8 +146,6 @@ public interface RedisService {
      * @param key    标识
      * @param values 内容
      * @return 总数量
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long listLeftPush(String key, Object... values);
 
@@ -181,8 +157,6 @@ public interface RedisService {
      * @param key    标识
      * @param values 内容
      * @return 总数量
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long listLeftPushAll(String key, Collection<Object> values);
 
@@ -194,8 +168,6 @@ public interface RedisService {
      * @param key    标识
      * @param values 内容
      * @return 总数量
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long listRightPush(String key, Object... values);
 
@@ -207,8 +179,6 @@ public interface RedisService {
      * @param key    标识
      * @param values 内容
      * @return 总数量
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long listRightPushAll(String key, Collection<Object> values);
 
@@ -220,8 +190,6 @@ public interface RedisService {
      * @param key      标识
      * @param valueCls value类型
      * @return 列表
-     * @author miaoyj
-     * @since 2020-07-20
      */
     List<Object> listGet(String key, Class valueCls);
 
@@ -234,8 +202,6 @@ public interface RedisService {
      * @param valueCls value类型
      * @param <T>      a T object.
      * @return 弹出的对象
-     * @author miaoyj
-     * @since 2020-07-20
      */
     <T> T listRightPop(String key, Class<T> valueCls);
 
@@ -248,8 +214,6 @@ public interface RedisService {
      * @param valueCls value类型
      * @param <T>      a T object.
      * @return 弹出的对象
-     * @author miaoyj
-     * @since 2020-07-20
      */
     <T> T listLeftPop(String key, Class<T> valueCls);
 
@@ -260,8 +224,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 长度
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long listSize(String key);
 
@@ -275,8 +237,6 @@ public interface RedisService {
      * @param end      结束位置
      * @param valueCls value类型
      * @return 列表
-     * @author miaoyj
-     * @since 2020-07-20
      */
     List<Object> listRangeList(String key, Long start, Long end, Class valueCls);
 
@@ -290,8 +250,6 @@ public interface RedisService {
      * @param valueCls value类型
      * @param <T>      a T object.
      * @return 对象
-     * @author miaoyj
-     * @since 2020-07-20
      */
     <T> T listIndexFromList(String key, Long index, Class<T> valueCls);
 
@@ -303,8 +261,6 @@ public interface RedisService {
      * @param key   标识
      * @param index 位置
      * @param value 值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     void listSetValueToList(String key, Long index, Object value);
 
@@ -316,8 +272,6 @@ public interface RedisService {
      * @param key   标识
      * @param start 开始位置
      * @param end   结束位置
-     * @author miaoyj
-     * @since 2020-07-20
      */
     void listTrimByRange(String key, Long start, Long end);
 
@@ -329,8 +283,6 @@ public interface RedisService {
      * @param key    标识
      * @param values 值
      * @return 被添加到集合中的新元素的数量，不包括被忽略的元素
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long setAddSetObject(String key, Object... values);
 
@@ -341,8 +293,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 集合大小
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long setGetSizeForSetMap(String key);
 
@@ -354,8 +304,6 @@ public interface RedisService {
      * @param key      标识
      * @param valueCls value类型
      * @return 集合
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Set<Object> setGetMemberOfSetMap(String key, Class valueCls);
 
@@ -367,8 +315,6 @@ public interface RedisService {
      * @param key 标识
      * @param o   对象
      * @return 是否存在
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Boolean setCheckIsMemberOfSet(String key, Object o);
 
@@ -381,8 +327,6 @@ public interface RedisService {
      * @param valueCls value类型
      * @param <T>      a T object.
      * @return 出栈内容
-     * @author miaoyj
-     * @since 2020-07-28
      */
     <T> T setPop(String key, Class<T> valueCls);
 
@@ -394,8 +338,6 @@ public interface RedisService {
      * @param key    标识
      * @param values 内容
      * @return 删除长度
-     * @author miaoyj
-     * @since 2020-07-28
      */
     Long setRemove(String key, Object... values);
 
@@ -406,8 +348,6 @@ public interface RedisService {
      *
      * @param key   标识
      * @param value 值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     void stringSetString(String key, String value);
 
@@ -419,8 +359,6 @@ public interface RedisService {
      * @param key                标识
      * @param value              值
      * @param expireMilliSeconds 过期时间(毫秒)
-     * @author miaoyj
-     * @since 2020-07-21
      */
     void stringSetString(String key, String value, Long expireMilliSeconds);
 
@@ -432,8 +370,6 @@ public interface RedisService {
      * @param key   标识
      * @param value 值
      * @return 旧值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     String stringGetAndSet(String key, String value);
 
@@ -448,8 +384,6 @@ public interface RedisService {
      *
      * @param key   标识
      * @param value 值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     void stringAppendString(String key, String value);
 
@@ -460,8 +394,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 键的值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     String stringGetString(String key);
 
@@ -473,8 +405,6 @@ public interface RedisService {
      * @param key   标识
      * @param delta 值
      * @return 增长后的结果值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Long stringIncrementLongString(String key, Long delta);
 
@@ -486,8 +416,6 @@ public interface RedisService {
      * @param key   标识
      * @param delta 值
      * @return 返回增长后的结果值
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Double stringIncrementDoubleString(String key, Double delta);
 
@@ -498,8 +426,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @param o   对象
-     * @author miaoyj
-     * @since 2020-07-21
      */
     void objectSetObject(String key, Object o);
 
@@ -511,8 +437,6 @@ public interface RedisService {
      * @param key                标识
      * @param o                  对象
      * @param expireMilliSeconds 过期时间(毫秒)
-     * @author miaoyj
-     * @since 2020-07-21
      */
     void objectSetObject(String key, Object o, Long expireMilliSeconds);
 
@@ -525,8 +449,6 @@ public interface RedisService {
      * @param valueCls value类型
      * @param <T>      a T object.
      * @return 对象
-     * @author miaoyj
-     * @since 2020-07-21
      */
     <T> T objectGetObject(String key, Class<T> valueCls);
 
@@ -537,22 +459,8 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 是否成功
-     * @author miaoyj
-     * @since 2020-07-20
      */
     Boolean delete(String key);
-
-    /**
-     * <p>
-     * 删除
-     * </p>
-     *
-     * @param keys 标识
-     * @return 是否成功
-     * @author miaoyj
-     * @since 2020-07-20
-     */
-    Boolean delete(Set<String> keys);
 
     /**
      * <p>
@@ -561,8 +469,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 过期时间（毫秒）
-     * @author miaoyj
-     * @since 2020-07-21
      */
     Long getExpire(String key);
 
@@ -573,8 +479,6 @@ public interface RedisService {
      *
      * @param key 标识
      * @return 是否存在
-     * @author miaoyj
-     * @since 2020-07-21
      */
     Boolean hasKey(String key);
 
@@ -586,8 +490,6 @@ public interface RedisService {
      * @param key                标识
      * @param expireMilliSeconds 过期时间(毫秒)
      * @return 是否成功
-     * @author miaoyj
-     * @since 2020-07-22
      */
     Boolean setExpire(String key, Long expireMilliSeconds);
 
@@ -597,11 +499,19 @@ public interface RedisService {
      * </p>
      *
      * @param pattern a {@link java.lang.String} object.
-     * @author miaoyj
-     * @since 2020-09-17
      * @return a {@link java.util.Set} object.
      */
     Set<String> keys(String pattern);
+
+    /**
+     * <p>
+     * 删除
+     * </p>
+     *
+     * @param keys 标识
+     * @return 是否成功
+     */
+    Boolean delete(Set<String> keys);
 
     /**
      * <p>
@@ -610,8 +520,16 @@ public interface RedisService {
      *
      * @param prefix 前缀
      * @param ids    id
-     * @author miaoyj
-     * @since 2020-09-18
      */
     void delByKeys(String prefix, Set<Long> ids);
+
+    /**
+     * <p>
+     * 批量删除key前缀
+     * </p>
+     *
+     * @param prefix 前缀
+     * @return 是否成功
+     */
+    boolean delByKeyPrefix(String prefix);
 }

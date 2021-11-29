@@ -1,15 +1,15 @@
 package com.boot.admin.system.modules.system.mapstruct;
 
 import com.boot.admin.system.modules.system.domain.DataPermissionFieldDO;
-import com.boot.admin.system.modules.system.dto.DataPermissionFieldDTO;
-import com.boot.admin.system.modules.system.vo.DataPermissionFieldVO;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldDTO;
+import com.boot.admin.system.modules.system.api.vo.DataPermissionFieldVO;
 import com.boot.admin.core.base.BaseMapStruct;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 /**
  * <p>
- * 数据权限列映射
+ * 数据字段映射
  * </p>
  *
  * @author miaoyj

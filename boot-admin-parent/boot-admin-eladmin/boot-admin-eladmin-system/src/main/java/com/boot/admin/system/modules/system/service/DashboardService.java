@@ -2,8 +2,8 @@ package com.boot.admin.system.modules.system.service;
 
 import cn.hutool.core.date.DateUtil;
 import com.boot.admin.log.modules.logging.service.LogService;
-import com.boot.admin.system.modules.system.vo.DashboardChartVO;
-import com.boot.admin.system.modules.system.vo.DashboardCountVO;
+import com.boot.admin.system.modules.system.api.vo.DashboardChartVO;
+import com.boot.admin.system.modules.system.api.vo.DashboardCountVO;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.core.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;

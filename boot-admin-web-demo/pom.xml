@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.boot.admin</groupId>
         <artifactId>boot-admin-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
 
     <name>boot-admin-web-demo</name>
@@ -14,12 +14,9 @@
     <groupId>com.boot.admin.demo</groupId>
     <artifactId>boot-admin-web-demo</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
-        <maven.server.snapshots>maven-snapshots</maven.server.snapshots>
-        <maven.server.releases>maven-releases</maven.server.releases>
-
         <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
         <docker.namespace>boot-admin</docker.namespace>
     </properties>
@@ -82,30 +79,30 @@
     </build>
 
     <!--     远程nexus仓库 -->
-    <repositories>
-        <repository>
-            <id>${maven.server.releases}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.releases}</url>
-        </repository>
-        <repository>
-            <id>${maven.server.snapshots}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.snapshots}</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>${maven.server.releases}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.releases}</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>${maven.server.snapshots}</id>
-            <url>${BOOT_ADMIN_MAVEN_URL}/${maven.server.snapshots}</url>
-            <snapshots>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>maven-releases</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>maven-snapshots</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
+<!--            <snapshots>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>maven-releases</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
+<!--        </pluginRepository>-->
+<!--        <pluginRepository>-->
+<!--            <id>maven-snapshots</id>-->
+<!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
+<!--            <snapshots>-->
+<!--                <updatePolicy>always</updatePolicy>-->
+<!--            </snapshots>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
 </project>

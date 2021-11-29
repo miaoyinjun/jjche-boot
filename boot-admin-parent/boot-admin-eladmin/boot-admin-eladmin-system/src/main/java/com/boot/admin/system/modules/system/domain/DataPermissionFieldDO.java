@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * <p>
- * 菜单数据字段权限表
+ * 数据字段表
  * </p>
  *
  * @author miaoyj
@@ -34,7 +34,8 @@ public class DataPermissionFieldDO extends BaseEntity {
 
     @ApiModelProperty(value = "排序")
     private Integer sort = 999;
-
+    @ApiModelProperty(value = "是否有效")
+    private Boolean isActivated;
     /** {@inheritDoc} */
     @Override
     public int hashCode() {

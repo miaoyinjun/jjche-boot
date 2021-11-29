@@ -2,12 +2,12 @@ package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.lang.Assert;
 import com.boot.admin.system.modules.system.domain.DictDetailDO;
-import com.boot.admin.system.modules.system.dto.DictDetailDTO;
-import com.boot.admin.system.modules.system.dto.DictDetailQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDetailDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDetailQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.DictDetailService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -33,7 +33,7 @@ import java.util.Map;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统：字典详情管理")
-@AdminRestController("dictDetail")
+@SysRestController("dictDetail")
 public class DictDetailController extends BaseController {
 
     private final DictDetailService dictDetailService;
@@ -42,7 +42,7 @@ public class DictDetailController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.DictDetailQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.DictDetailQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

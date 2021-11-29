@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.rest;
 
 import com.boot.admin.common.annotation.Limit;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.security.annotation.rest.AnonymousGetMapping;
 import io.swagger.annotations.Api;
@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version 1.0.8-SNAPSHOT
  */
 @Api(tags = "系统：限流测试管理")
-@AdminRestController("limit")
+@SysRestController("limit")
 public class LimitController extends BaseController {
 
     private static final AtomicInteger ATOMIC_INTEGER = new AtomicInteger();

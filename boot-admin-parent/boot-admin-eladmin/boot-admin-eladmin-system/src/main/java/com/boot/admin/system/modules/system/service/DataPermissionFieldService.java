@@ -1,27 +1,30 @@
 package com.boot.admin.system.modules.system.service;
 
+import cn.hutool.core.lang.Assert;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.boot.admin.common.util.ValidationUtil;
-import com.boot.admin.system.modules.system.domain.DataPermissionFieldDO;
-import com.boot.admin.system.modules.system.dto.DataPermissionFieldDTO;
-import com.boot.admin.system.modules.system.dto.DataPermissionFieldQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.mapper.DataPermissionFieldMapper;
-import com.boot.admin.system.modules.system.mapstruct.DataPermissionFieldMapStruct;
-import com.boot.admin.system.modules.system.vo.DataPermissionFieldVO;
+import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import com.boot.admin.mybatis.util.MybatisUtil;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldDTO;
+import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.vo.DataPermissionFieldVO;
+import com.boot.admin.system.modules.system.domain.DataPermissionFieldDO;
+import com.boot.admin.system.modules.system.mapper.DataPermissionFieldMapper;
+import com.boot.admin.system.modules.system.mapstruct.DataPermissionFieldMapStruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
- * 数据字段权限服务
+ * 数据字段服务
  * </p>
  *
  * @author miaoyj
@@ -33,17 +36,18 @@ import java.util.List;
 public class DataPermissionFieldService extends MyServiceImpl<DataPermissionFieldMapper, DataPermissionFieldDO> {
 
     private final DataPermissionFieldMapStruct dataPermissionFieldMapper;
+    private final DataPermissionFieldRoleService dataPermissionFieldRoleService;
 
     /**
      * <p>
      * 查询
      * </p>
      *
-     * @param criteria 条件
      * @param pageable 分页
+     * @param criteria 条件
      * @return /
      */
-    public MyPage queryAll(DataPermissionFieldQueryCriteriaDTO criteria, PageParam pageable) {
+    public MyPage pageQuery(PageParam pageable, DataPermissionFieldQueryCriteriaDTO criteria) {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         queryWrapper.orderByAsc("sort");
         MyPage<DataPermissionFieldDO> myPage = this.page(pageable, queryWrapper);
@@ -54,14 +58,30 @@ public class DataPermissionFieldService extends MyServiceImpl<DataPermissionFiel
 
     /**
      * <p>
+     * 根据ID查询
+     * </p>
+     *
+     * @param id ID
+     * @return DataPermissionFieldVO 对象
+     */
+    public DataPermissionFieldVO getVoById(Long id) {
+        DataPermissionFieldDO dataPermissionFieldDO = this.getById(id);
+        Assert.notNull(dataPermissionFieldDO, "记录不存在或权限不足");
+        return this.dataPermissionFieldMapper.toVO(dataPermissionFieldDO);
+    }
+
+    /**
+     * <p>
      * 删除
      * </p>
      *
-     * @param id 主键
+     * @param ids 主键
      */
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
-        this.removeById(id);
+    public void delete(Set<Long> ids) {
+        Assert.isTrue(this.removeBatchByIdsWithFill(new DataPermissionFieldDO(), ids) == ids.size(), "删除失败，记录不存在或权限不足");
+        dataPermissionFieldRoleService.deleteByPermissionFieldIds(ids);
+        dataPermissionFieldRoleService.delUserCache();
     }
 
     /**
@@ -81,28 +101,42 @@ public class DataPermissionFieldService extends MyServiceImpl<DataPermissionFiel
      * 修改
      * </p>
      *
-     * @param resources 内容
+     * @param dto 内容
      */
     @Transactional(rollbackFor = Exception.class)
-    public void update(DataPermissionFieldDTO resources) {
-        Long id = resources.getId();
-        DataPermissionFieldDO dataPermissionField = this.getById(id);
-        ValidationUtil.isNull(id, "DataPermissionFieldDO", "id", resources.getId());
-        resources.setId(id);
-        this.updateById(dataPermissionFieldMapper.toDO(resources));
+    public void update(DataPermissionFieldDTO dto) {
+        DataPermissionFieldDO dataPermissionField = this.getById(dto.getId());
+        Assert.notNull(dataPermissionField, "记录不存在");
+
+        dataPermissionField = this.dataPermissionFieldMapper.toDO(dto);
+        Assert.isTrue(this.updateById(dataPermissionField), "修改失败，记录不存在或权限不足");
+        dataPermissionFieldRoleService.delUserCache();
     }
 
     /**
      * <p>
-     * 根据菜单id查询
+     * 根据菜单id统计
      * </p>
      *
      * @param menuId 菜单id
      * @return /
      */
-    public List<DataPermissionFieldDO> findByMenuId(Long menuId) {
+    public Long countByMenuId(Long menuId) {
         LambdaQueryWrapper<DataPermissionFieldDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(DataPermissionFieldDO::getMenuId, menuId);
-        return this.list(queryWrapper);
+        return this.count(queryWrapper);
+    }
+
+    /**
+     * <p>
+     * 根据用户id查询
+     * </p>
+     *
+     * @param userId     用户id
+     * @return /
+     */
+    @Cached(name = CacheKey.PERMISSION_DATA_FIELD_USER_ID, key = "#userId")
+    public List<DataPermissionFieldVO> listByUserId(Long userId) {
+        return this.getBaseMapper().queryByUserId(userId);
     }
 }

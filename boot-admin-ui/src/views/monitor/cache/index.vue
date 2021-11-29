@@ -74,7 +74,7 @@ export default {
   name: 'Server',
   data() {
     return {
-      url: 'admin/monitor/cache',
+      url: 'sys/monitor/cache',
       // 统计命令信息
       commandstats: null,
       // 使用内存

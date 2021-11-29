@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function get() {
   return request({
-    url: 'admin/email',
+    url: 'sys/email',
     method: 'get'
   })
 }
 
 export function update(data) {
   return request({
-    url: 'admin/email',
+    url: 'sys/email',
     data,
     method: 'put'
   })
@@ -17,7 +17,7 @@ export function update(data) {
 
 export function send(data) {
   return request({
-    url: 'admin/email',
+    url: 'sys/email',
     data,
     method: 'post'
   })

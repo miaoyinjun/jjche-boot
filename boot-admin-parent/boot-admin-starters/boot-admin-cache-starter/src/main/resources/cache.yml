@@ -3,7 +3,7 @@ spring:
     database: ${BOOT_ADMIN_REDIS_DB:1}
     host: ${BOOT_ADMIN_REDIS_HOST:localhost}
     port: ${BOOT_ADMIN_REDIS_PORT:6379}
-    password: ${BOOT_ADMIN_REDIS_PASSWORD:redis}
+    password: ${BOOT_ADMIN_REDIS_PASSWORD:}
     lettuce:
       pool:
         max-active: 30

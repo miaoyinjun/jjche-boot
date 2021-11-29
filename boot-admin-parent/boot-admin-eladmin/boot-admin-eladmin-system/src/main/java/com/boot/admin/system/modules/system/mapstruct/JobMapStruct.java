@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.mapstruct;
 
 import com.boot.admin.system.modules.system.domain.JobDO;
-import com.boot.admin.system.modules.system.dto.JobDTO;
+import com.boot.admin.system.modules.system.api.dto.JobDTO;
 import com.boot.admin.core.base.BaseMapStruct;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

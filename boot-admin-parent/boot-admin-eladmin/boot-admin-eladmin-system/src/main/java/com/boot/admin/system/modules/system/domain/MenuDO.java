@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * <p>MenuDO class.</p>
  *
@@ -64,7 +62,6 @@ public class MenuDO extends BaseEntity {
     private Boolean iFrame;
 
     @TableField(exist = false)
-    private List<DataPermissionFieldDO> dataPermissionFields;
-    @TableField(exist = false)
-    private List<Long> dataPermissionFieldSelectedIds;
+    @ApiModelProperty(value = "数据权限")
+    private Boolean isDataPermission;
 }

@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.mapstruct;
 
 import com.boot.admin.system.modules.system.domain.DictDO;
-import com.boot.admin.system.modules.system.dto.DictDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDTO;
 import com.boot.admin.core.base.BaseMapStruct;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

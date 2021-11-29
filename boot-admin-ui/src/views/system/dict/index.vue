@@ -93,7 +93,7 @@ export default {
   components: { crudOperation, pagination, rrOperation, udOperation, dictDetail },
   cruds() {
     return [
-      Crud({ title: '字典', url: 'admin/dict', crudMethod: { ...crudDict } })
+      Crud({ title: '字典', url: 'sys/dict', crudMethod: { ...crudDict } })
     ]
   },
   mixins: [presenter(), header(), form(defaultForm)],

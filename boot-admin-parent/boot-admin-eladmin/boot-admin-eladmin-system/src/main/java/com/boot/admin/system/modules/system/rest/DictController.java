@@ -2,12 +2,12 @@ package com.boot.admin.system.modules.system.rest;
 
 import cn.hutool.core.lang.Assert;
 import com.boot.admin.system.modules.system.domain.DictDO;
-import com.boot.admin.system.modules.system.dto.DictDTO;
-import com.boot.admin.system.modules.system.dto.DictQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDTO;
+import com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.service.DictService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
-import com.boot.admin.core.annotation.controller.AdminRestController;
+import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -34,7 +34,7 @@ import java.util.Set;
  */
 @RequiredArgsConstructor
 @Api(tags = "系统：字典管理")
-@AdminRestController("dict")
+@SysRestController("dict")
 public class DictController extends BaseController {
 
     private final DictService dictService;
@@ -44,7 +44,7 @@ public class DictController extends BaseController {
      * <p>download.</p>
      *
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link com.boot.admin.system.modules.system.dto.DictQueryCriteriaDTO} object.
+     * @param criteria a {@link com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
     @LogRecordAnnotation(
@@ -77,7 +77,7 @@ public class DictController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @param resources a {@link com.boot.admin.system.modules.system.dto.DictQueryCriteriaDTO} object.
+     * @param resources a {@link com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO} object.
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

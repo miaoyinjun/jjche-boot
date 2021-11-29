@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.boot.admin.core.util.FileUtil.SYS_TEM_DIR;
 
@@ -51,7 +48,14 @@ public class GenUtil {
      * Constant <code>EXTRA="auto_increment"</code>
      */
     public static final String EXTRA = "auto_increment";
+    /** Constant <code>API_VERSION_JAVA="ApiVersion.java"</code> */
     public static final String API_VERSION_JAVA = "ApiVersion.java";
+
+    /**
+     * 默认字段
+     */
+    public static final Set<String> DEFAULT_COLUMNS = CollUtil.newHashSet("created_by",
+            "updated_by", "gmt_create", "gmt_modified");
 
     /**
      * 获取后端代码模板名称
@@ -350,6 +354,8 @@ public class GenUtil {
             listMap.put("capitalColumnName", capitalColumnName);
             // 字典名称
             listMap.put("dictName", column.getDictName());
+            //最大长度
+            listMap.put("maxLength", column.getMaxLength());
             // 日期注解
             listMap.put("dateAnnotation", column.getDateAnnotation());
             if (com.boot.admin.common.util.StrUtil.isNotBlank(column.getDateAnnotation())) {

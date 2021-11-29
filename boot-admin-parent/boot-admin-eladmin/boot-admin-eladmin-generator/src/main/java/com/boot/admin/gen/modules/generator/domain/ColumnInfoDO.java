@@ -65,4 +65,7 @@ public class ColumnInfoDO implements Serializable {
 
     @ApiModelProperty(value = "日期注解")
     private String dateAnnotation;
+
+    @ApiModelProperty(value = "最大长度")
+    private Integer maxLength;
 }

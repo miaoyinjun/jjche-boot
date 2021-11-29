@@ -82,8 +82,20 @@ public enum DataScopeEnum {
      * @param val a {@link java.lang.String} object.
      * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
      */
+    /**
+     * <p>find.</p>
+     *
+     * @param val a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
+     */
+    /**
+     * <p>find.</p>
+     *
+     * @param val a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.common.enums.DataScopeEnum} object.
+     */
     private final String value;
-    private final String description;
+    private final String desc;
 
     public static DataScopeEnum find(String val) {
         Map<String,DataScopeEnum> enumMap = EnumUtil.getEnumMap(DataScopeEnum.class);

@@ -23,10 +23,10 @@ public class StudentVO implements Serializable {
    private String name;
    @ApiModelProperty(value = "年龄")
    private Integer age;
+   @ApiModelProperty(value = "课程类型")
+   private CourseEnum course;
    @ApiModelProperty(value = "创建时间", dataType = "java.lang.String")
    private Timestamp gmtCreate;
    @ApiModelProperty(value = "创建者")
    private String createdBy;
-   @ApiModelProperty(value = "课程类型")
-   private CourseEnum course;
 }

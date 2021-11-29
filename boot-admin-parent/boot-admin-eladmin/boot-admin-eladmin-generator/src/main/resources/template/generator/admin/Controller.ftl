@@ -27,6 +27,7 @@ import io.swagger.annotations.ApiParam;
 import javax.validation.constraints.NotNull;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.common.enums.LogCategoryType;
+import javax.validation.Valid;
 
 /**
 * <p>
@@ -53,7 +54,7 @@ public class ${className}Controller extends BaseController{
               category = LogCategoryType.MANAGER,
               type = LogType.ADD, module = "${apiAlias}"
     )
-    public ResultWrapper create(@Validated @RequestBody ${className}DTO dto){
+    public ResultWrapper create(@Validated @Valid @RequestBody ${className}DTO dto){
         ${changeClassName}Service.save(dto);
         return ResultWrapper.ok();
     }
@@ -79,7 +80,7 @@ public class ${className}Controller extends BaseController{
             type = LogType.UPDATE, module = "${apiAlias}"
     )
     public ResultWrapper update(@Validated(${className}DTO.Update.class)
-                                            @RequestBody ${className}DTO dto){
+                                @Valid @RequestBody ${className}DTO dto){
         ${changeClassName}Service.update(dto);
         return ResultWrapper.ok();
     }

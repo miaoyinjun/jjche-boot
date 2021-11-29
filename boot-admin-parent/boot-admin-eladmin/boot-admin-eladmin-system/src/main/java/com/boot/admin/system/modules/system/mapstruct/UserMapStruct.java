@@ -1,7 +1,7 @@
 package com.boot.admin.system.modules.system.mapstruct;
 
 import com.boot.admin.system.modules.system.domain.UserDO;
-import com.boot.admin.system.modules.system.dto.UserDTO;
+import com.boot.admin.system.modules.system.api.dto.UserDTO;
 import com.boot.admin.core.base.BaseMapStruct;
 import com.boot.admin.security.dto.UserVO;
 import org.mapstruct.Mapper;

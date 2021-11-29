@@ -95,6 +95,12 @@ public enum RequestMethodEnum {
      * @param type a {@link java.lang.String} object.
      * @return a {@link com.boot.admin.security.util.RequestMethodEnum} object.
      */
+    /**
+     * <p>find.</p>
+     *
+     * @param type a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.security.util.RequestMethodEnum} object.
+     */
     private final String type;
 
     public static RequestMethodEnum find(String type) {
