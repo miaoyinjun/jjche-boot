@@ -3,9 +3,6 @@ package com.boot.admin.system.modules.security.rest;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
-import com.boot.admin.security.property.*;
-import com.boot.admin.system.modules.security.vo.LoginCodeVO;
-import com.boot.admin.system.modules.system.service.UserService;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogModule;
@@ -19,14 +16,16 @@ import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
 import com.boot.admin.security.annotation.rest.AnonymousDeleteMapping;
 import com.boot.admin.security.annotation.rest.AnonymousGetMapping;
 import com.boot.admin.security.annotation.rest.AnonymousPostMapping;
-import com.boot.admin.security.auth.sms.SmsCodeAuthenticationToken;
-import com.boot.admin.security.security.TokenProvider;
-import com.boot.admin.security.security.UserTypeEnum;
-import com.boot.admin.security.service.OnlineUserService;
 import com.boot.admin.security.dto.AuthUserDto;
 import com.boot.admin.security.dto.AuthUserSmsDto;
 import com.boot.admin.security.dto.LoginVO;
 import com.boot.admin.security.dto.SmsCodeDTO;
+import com.boot.admin.security.property.*;
+import com.boot.admin.security.security.TokenProvider;
+import com.boot.admin.security.security.UserTypeEnum;
+import com.boot.admin.security.service.OnlineUserService;
+import com.boot.admin.system.modules.security.vo.LoginCodeVO;
+import com.boot.admin.system.modules.system.service.UserService;
 import com.wf.captcha.base.Captcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -103,23 +102,7 @@ public class AuthorizationController extends BaseController {
             type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", isSaveParams = false
     )
     public ResultWrapper<LoginVO> smslogin(@Validated @RequestBody AuthUserSmsDto dto) {
-        String phone = dto.getPhone();
-        String uuid = dto.getSmsCodeUuid();
-        SecurityJwtProperties securityJwtProperties = properties.getJwt();
-        String redisUuid = securityJwtProperties.getCodeKey() + phone + ":" + uuid;
-        String pCode = dto.getSmsCode();
-        // 查询验证码
-        String code = redisService.stringGetString(redisUuid);
-        Assert.notBlank(code, "手机验证码不存在或已过期");
-        Assert.isTrue(StrUtil.equals(pCode, code), "手机验证码错误");
-
-        SmsCodeAuthenticationToken authenticationToken =
-                new SmsCodeAuthenticationToken(phone);
-
-        LoginVO loginVO = userService.loginByAuthenticationToken(authenticationToken, UserTypeEnum.SMS);
-        // 清除验证码
-        redisService.delete(redisUuid);
-        return ResultWrapper.ok(loginVO);
+        return ResultWrapper.ok(userService.smslogin(dto));
     }
 
     /**

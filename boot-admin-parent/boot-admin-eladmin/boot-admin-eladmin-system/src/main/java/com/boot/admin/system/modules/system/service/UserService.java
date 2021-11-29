@@ -3,6 +3,7 @@ package com.boot.admin.system.modules.system.service;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -25,10 +26,8 @@ import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.AliYunSmsCodeProperties;
 import com.boot.admin.property.PasswordProperties;
-import com.boot.admin.security.dto.JwtUserDto;
-import com.boot.admin.security.dto.LoginVO;
-import com.boot.admin.security.dto.SmsCodeDTO;
-import com.boot.admin.security.dto.UserVO;
+import com.boot.admin.security.auth.sms.SmsCodeAuthenticationToken;
+import com.boot.admin.security.dto.*;
 import com.boot.admin.security.property.SecurityJwtProperties;
 import com.boot.admin.security.property.SecurityLoginProperties;
 import com.boot.admin.security.property.SecurityProperties;
@@ -36,9 +35,9 @@ import com.boot.admin.security.security.TokenProvider;
 import com.boot.admin.security.security.UserTypeEnum;
 import com.boot.admin.security.service.JwtUserService;
 import com.boot.admin.security.service.OnlineUserService;
-import com.boot.admin.system.modules.system.domain.*;
 import com.boot.admin.system.modules.system.api.dto.UserDTO;
 import com.boot.admin.system.modules.system.api.dto.UserQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.domain.*;
 import com.boot.admin.system.modules.system.mapper.UserJobMapper;
 import com.boot.admin.system.modules.system.mapper.UserMapper;
 import com.boot.admin.system.modules.system.mapper.UserRoleMapper;
@@ -617,7 +616,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      */
     public String getSmsCode(SmsCodeDTO dto) {
         String phone = dto.getPhone();
-//        // 查询验证码
+        // 查询验证码
         String captchaCodeUuid = dto.getCaptchaCodeUuid();
         String captchaCode = redisService.stringGetString(captchaCodeUuid);
         // 清除验证码
@@ -630,7 +629,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
             throw new DisabledException("");
         }
         //短信验证码
-        String smsCode = RandomUtil.randomNumbers(4);
+        String smsCode = RandomUtil.randomNumbers(6);
         StaticLog.info("phone:{}, smsCode:{}", phone, smsCode);
         //短信的配置
         AliYunSmsCodeProperties smsCodeConfig = adminConfig.getSms();
@@ -716,4 +715,53 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         return this.baseMapper.selectCount(queryWrapper);
     }
 
+    /**
+     * <p>
+     * 短信登录
+     * </p>
+     *
+     * @param dto 入参
+     * @return /
+     */
+    public LoginVO smslogin(AuthUserSmsDto dto) {
+        String phone = dto.getPhone();
+        String uuid = dto.getSmsCodeUuid();
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String redisUuid = securityJwtProperties.getCodeKey() + phone + ":" + uuid;
+        String pCode = dto.getSmsCode();
+        // 查询验证码
+        String code = redisService.stringGetString(redisUuid);
+        Assert.notBlank(code, "手机验证码不存在或已过期");
+        boolean smsCodeEqual = StrUtil.equals(pCode, code);
+        if (BooleanUtil.isFalse(smsCodeEqual)) {
+            String smsCodeErrorCountKey = StrUtil.format("{}:sms_error_count", redisUuid);
+            Long smsCodeErrorCount = redisService.objectGetObject(smsCodeErrorCountKey, Long.class);
+            if (smsCodeErrorCount == null) {
+                smsCodeErrorCount = 1L;
+                //短信的配置
+                AliYunSmsCodeProperties smsCodeConfig = adminConfig.getSms();
+                Assert.notNull(smsCodeConfig, "请先配置短信相关属性");
+                //保留时长
+                Long smsCodeTimeInterval = smsCodeConfig.getTimeInterval();
+                redisService.objectSetObject(smsCodeErrorCountKey, smsCodeErrorCount, smsCodeTimeInterval);
+            } else {
+                smsCodeErrorCount = redisService.stringIncrementLongString(smsCodeErrorCountKey, 1L);
+            }
+            boolean isErrorMax = smsCodeErrorCount > 3;
+            if (isErrorMax) {
+                redisService.delete(smsCodeErrorCountKey);
+                redisService.delete(redisUuid);
+            }
+            Assert.isFalse(isErrorMax, "手机验证码连续错误，请重新获取");
+        }
+        Assert.isTrue(smsCodeEqual, "手机验证码错误");
+
+        SmsCodeAuthenticationToken authenticationToken =
+                new SmsCodeAuthenticationToken(phone);
+
+        LoginVO loginVO = this.loginByAuthenticationToken(authenticationToken, UserTypeEnum.SMS);
+        // 清除验证码
+        redisService.delete(redisUuid);
+        return loginVO;
+    }
 }

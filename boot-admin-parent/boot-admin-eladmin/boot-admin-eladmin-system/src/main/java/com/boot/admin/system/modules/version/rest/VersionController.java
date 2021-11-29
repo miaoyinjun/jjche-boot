@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.*;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-04-23
  */
-@Api(tags = "版本")
+@Api(tags = "系统：版本")
 @SysRestController("versions")
 @RequiredArgsConstructor
 public class VersionController extends BaseController {
