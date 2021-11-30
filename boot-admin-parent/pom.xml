@@ -487,6 +487,7 @@
                         <pushHotfixes>true</pushHotfixes>
                         <pushReleases>true</pushReleases>
                         <noDeploy>true</noDeploy>
+                        <squash>true</squash>
                     </configuration>
                 </plugin>
                 <plugin>
