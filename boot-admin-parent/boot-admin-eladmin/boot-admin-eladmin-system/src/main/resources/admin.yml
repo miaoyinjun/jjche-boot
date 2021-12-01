@@ -12,7 +12,7 @@ boot:
       account:
         expired-days: 90
       password:
-        default-val: ${BOOT_ADMIN_USER_PASSWORD_DEFAULT-VAL:123456}
+        default-val: ${BOOT_ADMIN_USER_PASSWORD_DEFAULT_VAL:123456}
         new-user-must-reset: true
         min-length: 8
         max-length: 20
