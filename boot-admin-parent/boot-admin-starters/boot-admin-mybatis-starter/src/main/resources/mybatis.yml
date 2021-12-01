@@ -41,4 +41,4 @@ mybatis-plus:
   configuration:
     auto-mapping-behavior: FULL
 
-boot.admin.mybatis.is-print-sql: ${BOOT_ADMIN_DB_IS-PRINT-SQL:false}
+boot.admin.mybatis.is-print-sql: ${BOOT_ADMIN_DB_IS_PRINT_SQL:false}
