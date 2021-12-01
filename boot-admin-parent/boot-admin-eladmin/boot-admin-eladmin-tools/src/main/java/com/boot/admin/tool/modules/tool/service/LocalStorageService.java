@@ -103,7 +103,7 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
             FileUtil.checkSize(properties.getMaxSize(), multipartFile.getSize());
             String suffix = FileUtil.getExtensionName(multipartFile.getOriginalFilename());
             FileType type = FileUtil.getFileType(suffix);
-            File file = FileUtil.upload(multipartFile, properties.getPath().getPath() + type + File.separator);
+            File file = FileUtil.upload(multipartFile, properties.getPath().getPath() + type.getValue() + File.separator);
             Assert.notNull(file, "上传失败");
             try {
                 name = StringUtils.isBlank(name) ? FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()) : name;
