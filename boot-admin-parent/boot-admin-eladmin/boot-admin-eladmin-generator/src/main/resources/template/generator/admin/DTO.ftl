@@ -27,6 +27,7 @@ public class ${className}DTO extends BaseQueryCriteriaDTO implements BaseDTO {
 <#if columns??>
     <#list columns as column>
    <#if column.formShow>
+   @ApiModelProperty(value = "${column.remark}"<#if column.columnType = 'Timestamp'>, dataType = "java.lang.String"</#if>)
    <#if column.istNotNull && column.columnKey != 'PRI'>
    <#if column.columnType = 'String'>
    @NotBlank(message = "${column.remark}不能为空")
@@ -40,7 +41,6 @@ public class ${className}DTO extends BaseQueryCriteriaDTO implements BaseDTO {
    <#if column.maxLength?? && column.maxLength gt 0>
    @Length(max = ${column.maxLength}, message = "${column.remark}最大长度不能超过${column.maxLength}")
    </#if>
-   @ApiModelProperty(value = "${column.remark}"<#if column.columnType = 'Timestamp'>, dataType = "java.lang.String"</#if>)
    private ${column.columnType} ${column.changeColumnName};
    </#if>
     </#list>
