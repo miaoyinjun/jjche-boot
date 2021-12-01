@@ -1,5 +1,5 @@
-JAVA_OPTS=""
-JAVA_WEB_SERVICE_OPTS=""
+JAVA_OPTS="-Dfile.encoding=utf-8"
+JAVA_WEB_SERVICE_OPTS="--spring.profiles.active=qa"
 
 #mysql
 export BOOT_ADMIN_DB_HOST=""
@@ -11,8 +11,8 @@ export BOOT_ADMIN_DB_PORT="36010"
 #redis
 export BOOT_ADMIN_REDIS_DB=""
 export BOOT_ADMIN_REDIS_HOST=""
-export BOOT_ADMIN_REDIS_PORT=""
-export BOOT_ADMIN_REDIS_PASSWORD="16379"
+export BOOT_ADMIN_REDIS_PORT="16379"
+export BOOT_ADMIN_REDIS_PASSWORD=""
 
 #sba
 export BOOT_ADMIN_SBA_PASSWORD=""
