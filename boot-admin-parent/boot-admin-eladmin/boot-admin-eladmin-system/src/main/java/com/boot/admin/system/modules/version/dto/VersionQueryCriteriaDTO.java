@@ -19,8 +19,8 @@ public class VersionQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
 
     /**
-    * 模糊
-    */
+     * 模糊
+     */
     @ApiModelProperty(value = "版本号名称", required = false)
     @QueryCriteria(propName = "name", type = QueryCriteria.Type.LIKE)
     private String name;

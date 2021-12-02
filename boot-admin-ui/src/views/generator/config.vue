@@ -40,7 +40,7 @@
                 <template slot-scope="scope">
                   <el-input v-model="data[scope.$index].maxLength" size="mini" class="edit-input" />
                 </template>
-              </el-table-column>              
+              </el-table-column>
               <el-table-column prop="remark" label="字段描述">
                 <template slot-scope="scope">
                   <el-input v-model="data[scope.$index].remark" size="mini" class="edit-input" />
@@ -144,7 +144,7 @@
             </el-form-item>
             <el-form-item label="模块名称" prop="moduleName">
               <el-input v-model="form.moduleName" style="width: 40%" />
-              <span style="color: #C0C0C0;margin-left: 10px;">模块的名称，如：demo</span>
+              <span style="color: #C0C0C0;margin-left: 10px;">包的名称，如：demo</span>
             </el-form-item>
             <el-form-item label="接口名称" prop="apiAlias">
               <el-input v-model="form.apiAlias" style="width: 40%" />

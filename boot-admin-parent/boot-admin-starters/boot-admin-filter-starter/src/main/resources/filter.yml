@@ -7,4 +7,4 @@ boot:
           filter-urls:
             - ${boot.admin.core.api.path.global-prefix}/**
         field:
-          secret-key: ${BOOT_ADMIN_FILTER_ENCRYPTION_FIELD_SECRET-KEY:YgnE7hAjiifYFibD}
+          secret-key: ${BOOT_ADMIN_FILTER_ENCRYPTION_FIELD_SECRET_KEY:YgnE7hAjiifYFibD}

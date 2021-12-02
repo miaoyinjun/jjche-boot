@@ -16,15 +16,15 @@ import java.util.List;
 @Data
 public class DatabaseQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
-	/**
-	 * 模糊
-	 */
+    /**
+     * 模糊
+     */
     @QueryCriteria(type = QueryCriteria.Type.LIKE)
     private String name;
 
-	/**
-	 * 精确
-	 */
+    /**
+     * 精确
+     */
     @QueryCriteria
     private String jdbcUrl;
 

@@ -14,11 +14,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DbCountAutoConfiguration {
 
-    /**
-     * <p>dbCountHealthIndicator</p>
-     *
-     * @return a {@link org.springframework.boot.actuate.health.HealthIndicator} object.
-     */
+//    /**
+//     * <p>dbCountHealthIndicator</p>
+//     *
+//     * @return a {@link org.springframework.boot.actuate.health.HealthIndicator} object.
+//     */
 //    @Bean("dbCountTest")
 //    public HealthIndicator dbCountHealthIndicator() {
 //        return new DbCountHealthIndicator();

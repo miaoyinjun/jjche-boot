@@ -17,8 +17,8 @@ import lombok.Data;
 public class StudentQueryCriteriaDTO extends BaseQueryCriteriaDTO {
 
     /**
-    * 精确
-    */
+     * 精确
+     */
     @ApiModelProperty(value = "姓名")
     @QueryCriteria(propName = "name", type = QueryCriteria.Type.LIKE)
     private String name;
