@@ -2,6 +2,7 @@
   <div>
     <div>
       <el-button
+        v-permission="['admin','roles:edit']"
         class="filter-item"
         size="mini"
         style="float: right;margin-right: 10px;padding: 4px 10px"
