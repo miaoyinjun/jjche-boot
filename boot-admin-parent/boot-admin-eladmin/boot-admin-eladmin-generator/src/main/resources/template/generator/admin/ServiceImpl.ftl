@@ -15,6 +15,8 @@ import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 import com.boot.admin.mybatis.param.PageParam;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
@@ -54,11 +56,13 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
             <#if column.columnKey = 'UNI'>
         //唯一索引验证
         ${column.columnType} ${column.changeColumnName} = dto.get${column.capitalColumnName}();
-        Assert.isTrue(this.listByMap(MapUtil.of("${column.columnName}", ${column.changeColumnName})).isEmpty(), ${column.changeColumnName} + "已存在");
+        LambdaQueryWrapper<${className}DO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(${className}DO::get${column.capitalColumnName}, ${column.changeColumnName});
+        ${className}DO dbDO = this.getOne(queryWrapper, false);
+        Assert.isTrue(dbDO == null, ${column.changeColumnName} + "已存在");
             </#if>
         </#list>
     </#if>
-
         ${className}DO ${changeClassName}DO = this.${changeClassName}MapStruct.toDO(dto);
         Assert.isTrue(this.save(${changeClassName}DO), "保存失败");
     }
@@ -71,7 +75,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     */
     @Transactional(rollbackFor = Exception.class)
     public void delete(Set<${pkColumnType}> ids){
-        Assert.isTrue(this.removeBatchByIdsWithFill(new ${className}DO(), ids) == ids.size(), "删除失败，记录不存在或权限不足");
+        Assert.isTrue(this.removeBatchByIdsWithFill(new ${className}DO(), ids) == ids.size(), "删除失败，记录不存在");
     }
 
     /**
@@ -84,28 +88,21 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     public void update(${className}DTO dto) {
         ${className}DO ${changeClassName}DO = this.getById(dto.getId());
         Assert.notNull(${changeClassName}DO, "记录不存在");
-
 <#if columns??>
     <#list columns as column>
         <#if column.columnKey = 'UNI'>
-            <#if column_index = 1>
-        ${className}DO ${changeClassName}DoDb = null;
-        List<${className}DO> list = null;
-        boolean isExist = false;
-    </#if>
-
         //唯一索引验证
         ${column.columnType} ${column.changeColumnName} = dto.get${column.capitalColumnName}();
-        list = this.listByMap(MapUtil.of("${column.columnName}", ${column.changeColumnName}));
-        ${changeClassName}DoDb = CollUtil.isEmpty(list) ? null : list.get(0);
-        isExist = ${changeClassName}DoDb != null && !${changeClassName}DoDb.getId().equals(dto.getId());
-        Assert.isFalse(isExist, ${column.changeColumnName} + "已存在");
+        LambdaQueryWrapper<${className}DO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(${className}DO::get${column.capitalColumnName}, ${column.changeColumnName});
+        queryWrapper.ne(${className}DO::getId, dto.getId());
+        ${className}DO dbDO = this.getOne(queryWrapper, false);
+        Assert.isTrue(dbDO == null, ${column.changeColumnName} + "已存在");
         </#if>
     </#list>
 </#if>
-
         ${changeClassName}DO = this.${changeClassName}MapStruct.toDO(dto);
-        Assert.isTrue(this.updateById(${changeClassName}DO), "修改失败，记录不存在或权限不足");
+        Assert.isTrue(this.updateById(${changeClassName}DO), "修改失败，记录不存在");
 }
     /**
     * <p>
@@ -116,7 +113,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     */
     public ${className}VO getVoById(${pkColumnType} ${pkChangeColName}) {
         ${className}DO ${changeClassName}DO = this.getById(id);
-        Assert.notNull(${changeClassName}DO, "记录不存在或权限不足");
+        Assert.notNull(${changeClassName}DO, "记录不存在");
         return this.${changeClassName}MapStruct.toVO(${changeClassName}DO);
     }
 

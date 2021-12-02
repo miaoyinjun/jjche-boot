@@ -1,18 +1,27 @@
 # 项目介绍
+
 ## boot-admin
+
 基于SpringBoot2、MyBatis，Vue前后端分离，自动化配置，通过封装一系列Starter，快速生成脚手架 项目、后台管理系统
 
-## 项目源码
+### 体验地址：http://149.28.233.161
+
+- **登录**
+
+用户名：demo，密码：123456
+
+- **应用监控/接口文档**
+
+用户名：admin，密码：123456
+
+### 开发文档：https://miaoyinjun.gitee.io/boot-admin-book/
+
+### 项目源码
 
 | 源码   | 地址                                     |
 | ------ | ---------------------------------------- |
 | gitee  | https://gitee.com/miaoyinjun/boot-admin  |
 | github | https://github.com/miaoyinjun/boot-admin |
-
-
-
-## 技术文档：https://miaoyinjun.gitee.io/boot-admin-book/
-
 
 
 ![image-20210916171732597](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210916171732597.png)
@@ -25,6 +34,7 @@
 
 ![image-20210927154722486](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210927154722486.png)
 
+![image-20211202181126329](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211202181126329.png)
 ## 特别鸣谢
 
 1. 感谢[eladmin](https://github.com/elunez/eladmin) 允许在基础业务功能上进行扩展

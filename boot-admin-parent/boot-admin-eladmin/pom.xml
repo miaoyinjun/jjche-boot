@@ -4,7 +4,7 @@
 
     <artifactId>boot-admin-eladmin</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
     <modules>
         <module>boot-admin-eladmin-generator</module>
@@ -16,7 +16,7 @@
     <parent>
         <groupId>com.boot.admin</groupId>
         <artifactId>boot-admin-parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
 
     <dependencies>
@@ -168,17 +168,17 @@
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-generator</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-tools</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
             <dependency>
                 <groupId>com.boot.admin</groupId>
                 <artifactId>boot-admin-eladmin-logging</artifactId>
-                <version>1.0.1</version>
+                <version>1.0.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

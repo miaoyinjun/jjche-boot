@@ -5,7 +5,7 @@ boot:
         header: Authorization
         # 令牌前缀
         token-start-with: Bearer
-        base64-secret: ${BOOT_ADMIN_SECURITY_JWT_BASE64-SECRET:WW5NTU1oN09SYTZjbkR2Tm90N2p6Qm40U3BraUdPeGZ0cWtEU2RmQVVFWWl2bmpjMllwWDdZMGM3TXZnbUZYNW4yenp0aWV6UlNvRm85TUZ1WUwxc0ZpY1lJamdza2dodWx0RU5DZGd4TDFlZDJxbk1DSDlTU3JBYWxLRXZtbHU=}
+        base64-secret: ${BOOT_ADMIN_SECURITY_JWT_BASE64_SECRET:WW5NTU1oN09SYTZjbkR2Tm90N2p6Qm40U3BraUdPeGZ0cWtEU2RmQVVFWWl2bmpjMllwWDdZMGM3TXZnbUZYNW4yenp0aWV6UlNvRm85TUZ1WUwxc0ZpY1lJamdza2dodWx0RU5DZGd4TDFlZDJxbk1DSDlTU3JBYWxLRXZtbHU=}
         token-validity-in-milli-seconds: 7200000
         detect: 1800000
         online-key: "online-token:"

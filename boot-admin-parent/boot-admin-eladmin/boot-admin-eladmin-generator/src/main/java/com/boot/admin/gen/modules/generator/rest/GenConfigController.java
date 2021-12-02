@@ -1,13 +1,14 @@
 package com.boot.admin.gen.modules.generator.rest;
 
-import com.boot.admin.gen.modules.generator.domain.GenConfigDO;
-import com.boot.admin.gen.modules.generator.service.GenConfigService;
 import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
+import com.boot.admin.gen.modules.generator.domain.GenConfigDO;
+import com.boot.admin.gen.modules.generator.service.GenConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ public class GenConfigController extends BaseController {
      */
     @ApiOperation("查询")
     @GetMapping(value = "/{tableName}")
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper<GenConfigDO> query(@PathVariable String tableName) {
         return ResultWrapper.ok(genConfigService.find(tableName));
     }
@@ -48,6 +50,7 @@ public class GenConfigController extends BaseController {
      */
     @ApiOperation("修改")
     @PutMapping
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper<GenConfigDO> update(@Validated @RequestBody GenConfigDO genConfig) {
         return ResultWrapper.ok(genConfigService.update(genConfig));
     }
