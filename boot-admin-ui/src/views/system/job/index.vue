@@ -18,6 +18,7 @@
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enabled"
+            :disabled="!checkPermission(['admin','job:edit','job:del'])"
             active-color="#409EFF"
             inactive-color="#F56C6C"
             @change="changeEnabled(scope.row, scope.row.enabled)"
@@ -60,7 +61,7 @@ import Crud, { presenter } from '@crud/crud'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import udOperation from '@crud/UD.operation'
-
+import checkPermission from '@/utils/permission'
 export default {
   name: 'Job',
   components: { eHeader, eForm, crudOperation, pagination, udOperation },
@@ -85,6 +86,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     // 改变状态
     changeEnabled(data, val) {
       this.$confirm('此操作将 "' + this.dict.label.job_status[val] + '" ' + data.name + '岗位, 是否继续？', '提示', {

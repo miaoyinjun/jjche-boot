@@ -73,7 +73,7 @@
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enabled"
-            :disabled="scope.row.id === 1"
+            :disabled="scope.row.id === 1 || !checkPermission(['admin','dept:edit','dept:del'])"
             active-color="#409EFF"
             inactive-color="#F56C6C"
             @change="changeEnabled(scope.row, scope.row.enabled,)"
@@ -109,7 +109,7 @@ import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import DateRangePicker from '@/components/DateRangePicker'
-
+import checkPermission from '@/utils/permission'
 const defaultForm = { id: null, name: null, isTop: '1', subCount: 0, pid: null, deptSort: 999, enabled: 'true' }
 export default {
   name: 'Dept',
@@ -143,6 +143,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     getDeptDatas(tree, treeNode, resolve) {
       const params = { pid: tree.id }
       setTimeout(() => {

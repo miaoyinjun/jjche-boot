@@ -13,7 +13,7 @@
           icon="el-icon-delete"
           size="mini"
           :loading="delLoading"
-          :disabled="crud.selections.length === 0"
+          :disabled="crud.selections.length === 0 || !checkPermission(['admin','online:del'])"
           @click="doDelete(crud.selections)"
         >
           强退
@@ -45,7 +45,6 @@
         <template slot-scope="scope">
           <el-popover
             :ref="scope.$index"
-            v-permission="['admin']"
             placement="top"
             width="180"
           >
@@ -54,7 +53,9 @@
               <el-button size="mini" type="text" @click="$refs[scope.$index].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="delMethod(scope.row.key, scope.$index)">确定</el-button>
             </div>
-            <el-button slot="reference" size="mini" type="text">强退</el-button>
+            <el-button 
+            :disabled="!checkPermission(['admin','online:del'])"
+            slot="reference" size="mini" type="text">强退</el-button>
           </el-popover>
         </template>
       </el-table-column>
@@ -70,6 +71,7 @@ import Crud, { presenter, header, crud } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
+import checkPermission from '@/utils/permission'
 
 export default {
   name: 'OnlineUser',
@@ -94,6 +96,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     doDelete(datas) {
       this.$confirm(`确认强退选中的${datas.length}个用户?`, '提示', {
         confirmButtonText: '确定',

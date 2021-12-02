@@ -49,7 +49,7 @@ public class OnlineController extends BaseController {
      */
     @ApiOperation("查询在线用户")
     @GetMapping
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('online:list')")
     public ResultWrapper query(String filter, PageParam pageable) {
         List<OnlineUserDto> onlineUserDtos = onlineUserService.getAll(filter);
         List<OnlineUserDto> list = PageUtil.startPage(onlineUserDtos, (int) pageable.getPageIndex(), (int) pageable.getPageSize());
@@ -72,7 +72,7 @@ public class OnlineController extends BaseController {
     )
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('online:list')")
     public void download(HttpServletResponse response, String filter) throws IOException {
         onlineUserService.download(onlineUserService.getAll(filter), response);
     }
@@ -86,7 +86,7 @@ public class OnlineController extends BaseController {
      */
     @ApiOperation("踢出用户")
     @DeleteMapping
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('online:del')")
     public ResultWrapper delete(@RequestBody Set<String> keys) throws Exception {
         for (String key : keys) {
             String privateKey = securityProperties.getRsa().getPrivateKey();

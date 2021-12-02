@@ -4,6 +4,7 @@
       <Search />
       <crudOperation>
         <el-button
+          :disabled="!checkPermission(['admin','log:del'])"
           slot="left"
           class="filter-item"
           type="danger"
@@ -93,6 +94,7 @@ import Crud, { presenter } from '@crud/crud'
 import crudOperation from '@crud/CRUD.operation'
 import pagination from '@crud/Pagination'
 import rrOperation from '@crud/RR.operation'
+import checkPermission from '@/utils/permission'
 
 export default {
   name: 'Log',
@@ -115,6 +117,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     // 获取异常详情
     info(id) {
       this.dialog = true

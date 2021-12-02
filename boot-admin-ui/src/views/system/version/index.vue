@@ -47,9 +47,9 @@
         <el-table-column v-permission="['admin','version:edit','version:del']" label="操作" align="center">
           <template slot-scope="scope">
             <el-popconfirm title="确认激活该版本吗？" @confirm="handleIsActivated(scope.row.id)">
-            <el-button :disabled="scope.row.isActivated" slot="reference" size="mini" type="success" icon="el-icon-check" style="display: inline-block;" />
+            <el-button :disabled="scope.row.isActivated || !checkPermission(['admin','version:edit','version:del'])" slot="reference" size="mini" type="success" icon="el-icon-check" style="display: inline-block;" />
             </el-popconfirm>
-            <el-button :disabled="scope.row.isActivated" v-permission="permission.edit" size="mini" type="primary" icon="el-icon-edit" @click="crud.toEdit(scope.row)" />
+            <el-button :disabled="scope.row.isActivated || !checkPermission(['admin','version:edit','version:del'])" v-permission="permission.edit" size="mini" type="primary" icon="el-icon-edit" @click="crud.toEdit(scope.row)" />
           </template>
         </el-table-column>
       </el-table>
@@ -67,6 +67,7 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import DateRangePicker from '@/components/DateRangePicker'
+import checkPermission from '@/utils/permission'
 
 const defaultForm = { id: null, name: null, remark: null }
 export default {
@@ -94,6 +95,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     // 钩子：在获取表格数据之前执行，false 则代表不获取数据
     [CRUD.HOOK.beforeRefresh]() {
       return true

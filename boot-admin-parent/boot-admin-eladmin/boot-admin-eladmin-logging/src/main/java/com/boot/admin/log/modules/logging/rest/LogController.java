@@ -50,7 +50,7 @@ public class LogController extends BaseController {
      */
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('log:list')")
     public void download(HttpServletResponse response, LogQueryCriteriaDTO criteria) throws IOException {
         logService.download(logService.queryAll(criteria), response);
     }
@@ -63,7 +63,7 @@ public class LogController extends BaseController {
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @GetMapping
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('log:list')")
     public ResultWrapper<MyPage<LogVO>> query(LogQueryCriteriaDTO criteria, PageParam pageable) {
         return ResultWrapper.ok(logService.queryAll(criteria, pageable));
     }
@@ -89,7 +89,7 @@ public class LogController extends BaseController {
      */
     @GetMapping(value = "/error/{id}")
     @ApiOperation("日志异常详情查询")
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('log:list')")
     public ResultWrapper<Object> queryErrorLogs(@PathVariable Long id) {
         return ResultWrapper.ok(logService.findByErrDetail(id));
     }
@@ -105,7 +105,7 @@ public class LogController extends BaseController {
             type = LogType.DELETE, module = "日志"
     )
     @ApiOperation("清空6个月之前的操作日志")
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('log:del')")
     public ResultWrapper delAllInfoLog() {
         logService.delAll();
         return ResultWrapper.ok();
@@ -118,7 +118,7 @@ public class LogController extends BaseController {
      */
     @GetMapping("/modules")
     @ApiOperation("日志获取模块")
-    @PreAuthorize("@el.check()")
+    @PreAuthorize("@el.check('log:list')")
     @Cached(name="logs:modules", cacheType = CacheType.REMOTE, expire = 3600000)
     public ResultWrapper<List<String>> listModule() {
         return ResultWrapper.ok(logService.listModule());

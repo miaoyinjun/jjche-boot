@@ -1,19 +1,20 @@
 package com.boot.admin.gen.modules.generator.rest;
 
 import cn.hutool.core.lang.Assert;
-import com.boot.admin.gen.modules.generator.domain.ColumnInfoDO;
-import com.boot.admin.gen.modules.generator.service.GenConfigService;
-import com.boot.admin.gen.modules.generator.service.GeneratorService;
 import com.boot.admin.common.constant.EnvConstant;
 import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.util.SpringContextHolder;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
+import com.boot.admin.gen.modules.generator.domain.ColumnInfoDO;
+import com.boot.admin.gen.modules.generator.service.GenConfigService;
+import com.boot.admin.gen.modules.generator.service.GeneratorService;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,7 @@ public class GeneratorController extends BaseController {
      */
     @ApiOperation("查询数据库数据")
     @GetMapping(value = "/tables")
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper<Object> queryTables(@RequestParam(defaultValue = "") String name,
                                              PageParam page) {
         return ResultWrapper.ok(generatorService.getTables(name, page));
@@ -58,6 +60,7 @@ public class GeneratorController extends BaseController {
      */
     @ApiOperation("查询字段数据")
     @GetMapping(value = "/columns")
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper<MyPage> queryColumns(@RequestParam String tableName) {
         List<ColumnInfoDO> columnInfos = generatorService.getColumns(tableName);
         MyPage myPage = new MyPage();
@@ -74,6 +77,7 @@ public class GeneratorController extends BaseController {
      */
     @ApiOperation("保存字段数据")
     @PutMapping
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper save(@RequestBody List<ColumnInfoDO> columnInfos) {
         generatorService.saveColumnInfo(columnInfos);
         return ResultWrapper.ok();
@@ -87,6 +91,7 @@ public class GeneratorController extends BaseController {
      */
     @ApiOperation("同步字段数据")
     @PostMapping(value = "sync")
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper sync(@RequestBody List<String> tables) {
         for (String table : tables) {
             generatorService.sync(generatorService.getColumns(table), generatorService.query(table));
@@ -105,6 +110,7 @@ public class GeneratorController extends BaseController {
      */
     @ApiOperation("生成代码")
     @PostMapping(value = "/{tableName}/{type}")
+    @PreAuthorize("@el.check('generator:list')")
     public ResultWrapper generator(@PathVariable String tableName, @PathVariable Integer type, HttpServletRequest request, HttpServletResponse response) {
         boolean isDev = SpringContextHolder.getEnvActive().equalsIgnoreCase(EnvConstant.DEV);
         Assert.isFalse(!isDev && type == 0, "此环境不允许生成代码，请选择预览或者下载查看！");
