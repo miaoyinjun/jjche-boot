@@ -1,6 +1,7 @@
 package com.boot.admin.system.modules.quartz.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.OrderBy;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,6 +26,7 @@ public class QuartzLogDO implements Serializable {
      * 主键
      */
     @TableId(type = IdType.AUTO)
+    @OrderBy
     private Long id;
 
     /**

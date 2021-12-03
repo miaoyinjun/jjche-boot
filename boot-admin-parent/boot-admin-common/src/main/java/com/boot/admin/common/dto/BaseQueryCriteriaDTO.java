@@ -22,4 +22,8 @@ public class BaseQueryCriteriaDTO implements Serializable {
     @IgnoreSwaggerParameter
     @JsonIgnore
     private List<PermissionDataRuleDTO> permissionDataRuleList;
+
+    @IgnoreSwaggerParameter
+    @JsonIgnore
+    private String sort;
 }
