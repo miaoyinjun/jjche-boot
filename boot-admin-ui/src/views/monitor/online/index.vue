@@ -28,7 +28,6 @@
       <el-table-column prop="dept" label="部门" />
       <el-table-column prop="ip" label="登录IP" />
       <el-table-column :show-overflow-tooltip="true" prop="address" label="登录地点" />
-      <el-table-column :show-overflow-tooltip="true" prop="userAgent" label="用户代理" />
       <el-table-column prop="browser" label="浏览器" />
       <el-table-column :show-overflow-tooltip="true" prop="os" label="操作系统" />
       <el-table-column prop="loginTime" label="登录时间">
