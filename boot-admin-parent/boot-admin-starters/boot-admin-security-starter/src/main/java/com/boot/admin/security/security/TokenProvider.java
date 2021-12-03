@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.security.auth.sms.SmsCodeAuthenticationToken;
+import com.boot.admin.security.dto.OnlineUserDto;
 import com.boot.admin.security.property.SecurityJwtProperties;
 import com.boot.admin.security.property.SecurityProperties;
 import io.jsonwebtoken.*;
@@ -46,7 +47,9 @@ public class TokenProvider implements InitializingBean {
     private JwtParser jwtParser;
     private JwtBuilder jwtBuilder;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void afterPropertiesSet() {
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
@@ -63,9 +66,9 @@ public class TokenProvider implements InitializingBean {
     /**
      * <p>createToken.</p>
      *
-     * @param name a {@link java.lang.String} object.
-     * @return a {@link java.lang.String} object.
+     * @param name         a {@link java.lang.String} object.
      * @param userTypeEnum a {@link com.boot.admin.security.security.UserTypeEnum} object.
+     * @return a {@link java.lang.String} object.
      */
     public String createToken(String name, UserTypeEnum userTypeEnum) {
         return jwtBuilder
@@ -120,7 +123,10 @@ public class TokenProvider implements InitializingBean {
      *
      * @param tokenKey 需要检查的tokenKey
      */
-    public void checkRenewal(String tokenKey) {
+    public void checkRenewal(String tokenKey, OnlineUserDto onlineUserDto) {
+        //更新最后访问时间
+        onlineUserDto.setLastAccessTime(new Date());
+        redisService.objectSetObject(tokenKey, onlineUserDto);
         // 判断是否续期token,计算token的过期时间
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         long time = redisService.getExpire(tokenKey);
