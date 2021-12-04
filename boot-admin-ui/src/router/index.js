@@ -11,7 +11,7 @@ import { Notification } from 'element-ui'
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-const whiteList = ['/login']// no redirect whitelist
+const whiteList = ['/login', '/401', '/404', '/502']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
