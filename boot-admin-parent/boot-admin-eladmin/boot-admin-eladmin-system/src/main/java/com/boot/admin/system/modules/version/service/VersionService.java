@@ -1,5 +1,6 @@
 package com.boot.admin.system.modules.version.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.log.StaticLog;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -121,6 +122,7 @@ public class VersionService extends MyServiceImpl<VersionMapper, VersionDO> {
      */
     public MyPage<VersionVO> queryAll(VersionQueryCriteriaDTO criteria, PageParam page) {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        queryWrapper.orderByDesc(CollUtil.newArrayList("is_activated", "id"));
         return this.baseMapper.pageQuery(page, queryWrapper);
     }
 
