@@ -11,7 +11,7 @@ import { Notification } from 'element-ui'
 
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-const whiteList = ['/login']// no redirect whitelist
+const whiteList = ['/login', '/401', '/404', '/502']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
@@ -79,9 +79,9 @@ export const loadMenus = (next, to) => {
   })
 }
 
-router.afterEach((to,from,nex) => {
+router.afterEach((to, from, nex) => {
   NProgress.done() // finish progress bar
-  if(to.path !== '/' && to.path !== '/login'){
+  if (to.path !== '/' && to.path !== '/login') {
     pvIncr()
   }
 })

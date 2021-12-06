@@ -13,6 +13,13 @@ import com.boot.admin.log.biz.service.IParseFunction;
  * @version 1.0.0-SNAPSHOT
  */
 public class DefaultParseFunction implements IParseFunction<String> {
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean executeBefore() {
+        return true;
+    }
+
     /** {@inheritDoc} */
     @Override
     public String functionName() {

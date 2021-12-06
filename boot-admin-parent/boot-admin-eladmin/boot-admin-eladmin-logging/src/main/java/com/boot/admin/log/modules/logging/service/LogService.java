@@ -1,12 +1,15 @@
 package com.boot.admin.log.modules.logging.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogModule;
+import com.boot.admin.common.enums.LogType;
 import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
@@ -59,7 +62,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (cn.hutool.core.util.StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }
@@ -179,7 +182,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
         queryWrapper.ne("module", "");
         queryWrapper.select("DISTINCT module");
         queryWrapper.orderByAsc("module");
-        return this.listObjs(queryWrapper, a ->{
+        return this.listObjs(queryWrapper, a -> {
             return a.toString();
         });
     }
@@ -192,12 +195,17 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @param bizKey 业务标识
      * @param bizNo  业务主键
      * @return 日志
+     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
      */
-    public List<LogDO> findByBizKeyAndBizNo(String bizKey, String bizNo) {
+    public MyPage<LogDO> listByBizKeyAndBizNo(PageParam page, String bizKey, String bizNo) {
         LambdaQueryWrapper<LogDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(LogDO::getBizKey, bizKey);
-        queryWrapper.eq(LogDO::getBizNo, bizNo);
-        return this.list(queryWrapper);
+        queryWrapper.eq(LogDO::getIsSuccess, Boolean.TRUE);
+        queryWrapper.eq(LogDO::getCategory, LogCategoryType.OPERATING);
+        queryWrapper.in(LogDO::getLogType, CollUtil.newHashSet(LogType.ADD, LogType.UPDATE, LogType.DELETE));
+        queryWrapper.apply("FIND_IN_SET({0}, biz_no)", bizNo);
+        queryWrapper.orderByDesc(LogDO::getGmtCreate);
+        return this.page(page, queryWrapper);
     }
 
     /**

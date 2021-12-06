@@ -81,6 +81,7 @@ public class LogRecordOperationSource {
                 .type(recordAnnotation.type())
                 .module(recordAnnotation.module())
                 .detail(recordAnnotation.detail())
+                .condition(recordAnnotation.condition())
                 .isSaveParams(recordAnnotation.isSaveParams())
                 .build();
         return recordOps;

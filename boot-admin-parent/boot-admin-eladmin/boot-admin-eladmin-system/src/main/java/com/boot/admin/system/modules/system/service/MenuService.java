@@ -69,7 +69,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("title LIKE {0} OR component LIKE {0} OR permission LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(title LIKE {0} OR component LIKE {0} OR permission LIKE {0})", "%" + blurry + "%");
         }
         queryWrapper.orderByAsc("menu_sort");
         return queryWrapper;

@@ -1,25 +1,28 @@
 package com.boot.admin.system.modules.system.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.map.MapUtil;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.Cached;
 import com.alicp.jetcache.anno.CreateCache;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.constant.CacheKey;
-import com.boot.admin.common.util.ValidationUtil;
-import com.boot.admin.system.modules.system.domain.DictDO;
-import com.boot.admin.system.modules.system.domain.DictDetailDO;
-import com.boot.admin.system.modules.system.api.dto.DictDetailDTO;
-import com.boot.admin.system.modules.system.api.dto.DictDetailQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.api.dto.DictSmallDto;
-import com.boot.admin.system.modules.system.mapper.DictDetailMapper;
-import com.boot.admin.system.modules.system.mapstruct.DictDetailMapStruct;
 import com.boot.admin.common.util.StrUtil;
+import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import com.boot.admin.mybatis.util.MybatisUtil;
+import com.boot.admin.system.modules.system.api.dto.DictDetailDTO;
+import com.boot.admin.system.modules.system.api.dto.DictDetailQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.api.dto.DictSmallDto;
+import com.boot.admin.system.modules.system.conf.DictRunner;
+import com.boot.admin.system.modules.system.domain.DictDO;
+import com.boot.admin.system.modules.system.domain.DictDetailDO;
+import com.boot.admin.system.modules.system.mapper.DictDetailMapper;
+import com.boot.admin.system.modules.system.mapstruct.DictDetailMapStruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,9 +57,9 @@ public class DictDetailService extends MyServiceImpl<DictDetailMapper, DictDetai
         //非管理页面请求
         if (StrUtil.isNotBlank(dictName)) {
             DictDO dictDO = dictService.getByName(dictName);
-            if(dictDO != null) {
+            if (dictDO != null) {
                 criteria.setDictId(dictDO.getId());
-            }else{
+            } else {
                 criteria.setDictId(0L);
             }
         }
@@ -65,12 +68,16 @@ public class DictDetailService extends MyServiceImpl<DictDetailMapper, DictDetai
         MyPage<DictDetailDO> myPage = this.page(pageable, queryWrapper);
         List<DictDetailDTO> list = dictDetailMapper.toVO(myPage.getRecords());
         Long dictId = criteria.getDictId();
-        if(dictId != null){
+        if (dictId != null) {
             DictSmallDto dto = new DictSmallDto();
             dto.setId(dictId);
             for (DictDetailDTO detailDTO : list) {
                 detailDTO.setDict(dto);
             }
+        }
+        //如果为空，查询枚举
+        if (CollUtil.isEmpty(list)) {
+            list = MapUtil.get(DictRunner.DICT_ENUMS, dictName, List.class);
         }
         myPage.setNewRecords(list);
         return myPage;

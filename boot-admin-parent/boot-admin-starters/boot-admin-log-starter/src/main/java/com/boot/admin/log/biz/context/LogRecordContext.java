@@ -5,6 +5,7 @@ import cn.hutool.core.map.MapUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * <p>
@@ -17,8 +18,7 @@ import java.util.Map;
  */
 public class LogRecordContext {
 
-    private static final InheritableThreadLocal<Map<String, Object>> VARIABLE_MAP = new InheritableThreadLocal<>();
-
+    private static final InheritableThreadLocal<Stack<Map<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
 
     /**
      * <p>putVariable.</p>
@@ -27,12 +27,26 @@ public class LogRecordContext {
      * @param value a {@link java.lang.Object} object.
      */
     public static void putVariable(String name, Object value) {
-        if (VARIABLE_MAP.get() == null) {
-            HashMap<String, Object> map = MapUtil.newHashMap();
-            map.put(name, value);
-            VARIABLE_MAP.set(map);
+        if (variableMapStack.get() == null) {
+            Stack<Map<String, Object>> stack = new Stack<>();
+            variableMapStack.set(stack);
         }
-        VARIABLE_MAP.get().put(name, value);
+        Stack<Map<String, Object>> mapStack = variableMapStack.get();
+        if (mapStack.size() == 0) {
+            variableMapStack.get().push(new HashMap<>());
+        }
+        variableMapStack.get().peek().put(name, value);
+    }
+
+    /**
+     * <p>getVariable.</p>
+     *
+     * @param key a {@link java.lang.String} object.
+     * @return a {@link java.lang.Object} object.
+     */
+    public static Object getVariable(String key) {
+        Map<String, Object> variableMap = variableMapStack.get().peek();
+        return variableMap.get(key);
     }
 
     /**
@@ -41,15 +55,29 @@ public class LogRecordContext {
      * @return a {@link java.util.Map} object.
      */
     public static Map<String, Object> getVariables() {
-        return VARIABLE_MAP.get() == null ? MapUtil.newHashMap() : VARIABLE_MAP.get();
+        Stack<Map<String, Object>> mapStack = variableMapStack.get();
+        return mapStack.peek();
     }
 
     /**
      * <p>clear.</p>
      */
     public static void clear() {
-        if (VARIABLE_MAP.get() != null) {
-            VARIABLE_MAP.get().clear();
+        if (variableMapStack.get() != null) {
+            variableMapStack.get().pop();
         }
+    }
+
+    /**
+     * 日志使用方不需要使用到这个方法
+     * 每进入一个方法初始化一个 span 放入到 stack中，方法执行完后 pop 掉这个span
+     */
+    public static void putEmptySpan() {
+        Stack<Map<String, Object>> mapStack = variableMapStack.get();
+        if (mapStack == null) {
+            Stack<Map<String, Object>> stack = new Stack<>();
+            variableMapStack.set(stack);
+        }
+        variableMapStack.get().push(MapUtil.newHashMap());
     }
 }

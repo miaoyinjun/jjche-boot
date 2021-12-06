@@ -58,7 +58,7 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("name LIKE {0} OR suffix LIKE {0} OR type LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(name LIKE {0} OR suffix LIKE {0} OR type LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }

@@ -2,10 +2,10 @@ package com.boot.admin.security.security;
 
 import cn.hutool.core.util.StrUtil;
 import com.boot.admin.cache.service.RedisService;
+import com.boot.admin.security.dto.OnlineUserDto;
 import com.boot.admin.security.property.SecurityJwtProperties;
 import com.boot.admin.security.property.SecurityProperties;
 import com.boot.admin.security.service.OnlineUserService;
-import com.boot.admin.security.dto.OnlineUserDto;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,6 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -77,12 +76,10 @@ public class TokenFilter extends GenericFilterBean {
                 }
             }
             if (onlineUserDto != null && StringUtils.hasText(token)) {
-                //最后访问时间
-                onlineUserDto.setLastAccessTime(new Date());
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 // Token 续期
-                tokenProvider.checkRenewal(tokenKey);
+                tokenProvider.checkRenewal(tokenKey, onlineUserDto);
             }
         }
         filterChain.doFilter(servletRequest, servletResponse);

@@ -21,14 +21,13 @@
       </crudOperation>
     </div>
     <!--表格渲染-->
-    <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table ref="table" v-loading="crud.loading" stripe :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="userName" label="用户名" />
       <el-table-column prop="nickName" label="用户昵称" />
       <el-table-column prop="dept" label="部门" />
       <el-table-column prop="ip" label="登录IP" />
       <el-table-column :show-overflow-tooltip="true" prop="address" label="登录地点" />
-      <el-table-column :show-overflow-tooltip="true" prop="userAgent" label="用户代理" />
       <el-table-column prop="browser" label="浏览器" />
       <el-table-column :show-overflow-tooltip="true" prop="os" label="操作系统" />
       <el-table-column prop="loginTime" label="登录时间">
@@ -53,9 +52,7 @@
               <el-button size="mini" type="text" @click="$refs[scope.$index].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="delMethod(scope.row.key, scope.$index)">确定</el-button>
             </div>
-            <el-button 
-            :disabled="!checkPermission(['admin','online:del'])"
-            slot="reference" size="mini" type="text">强退</el-button>
+            <el-button slot="reference" :disabled="!checkPermission(['admin','online:del'])" size="mini" type="text">强退</el-button>
           </el-popover>
         </template>
       </el-table-column>

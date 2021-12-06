@@ -2,7 +2,7 @@
 
 ## boot-admin
 
-基于SpringBoot2、MyBatis，Vue前后端分离，自动化配置，通过封装一系列Starter，快速生成脚手架 项目、后台管理系统
+企业级快速开发平台，基于SpringBoot2、MyBatis，Vue前后端分离，自动化配置，通过封装一系列Starter，快速生成脚手架项目、后台管理系统。
 
 ### 体验地址：http://149.28.233.161
 

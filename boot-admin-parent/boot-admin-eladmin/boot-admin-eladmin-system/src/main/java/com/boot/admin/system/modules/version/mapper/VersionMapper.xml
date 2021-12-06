@@ -4,7 +4,6 @@
 
     <sql id="querySql">
         SELECT * FROM sys_version ${ew.customSqlSegment}
-        ORDER BY is_activated DESC, gmt_create DESC
     </sql>
 
     <select id="pageQuery" resultType="com.boot.admin.system.modules.version.vo.VersionVO">

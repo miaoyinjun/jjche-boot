@@ -52,11 +52,10 @@ public class ${className}Controller extends BaseController{
     @LogRecordAnnotation(
               value = "新增",
               category = LogCategoryType.MANAGER,
-              type = LogType.ADD, module = "${apiAlias}"
+              type = LogType.ADD, module = "${apiAlias}", bizNo = "{{#_ret.data}}"
     )
-    public ResultWrapper create(@Validated @Valid @RequestBody ${className}DTO dto){
-        ${changeClassName}Service.save(dto);
-        return ResultWrapper.ok();
+    public ResultWrapper<Long> create(@Validated @Valid @RequestBody ${className}DTO dto){
+        return ResultWrapper.ok(${changeClassName}Service.save(dto));
     }
 
     @DeleteMapping
@@ -64,8 +63,7 @@ public class ${className}Controller extends BaseController{
     @PreAuthorize("@el.check('${changeClassName}:del')")
     @LogRecordAnnotation(
             value = "删除", category = LogCategoryType.MANAGER,
-            type = LogType.DELETE, module = "${apiAlias}",
-            prefix = "${changeClassName}", bizNo = "{{#ids}}"
+            type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}"
     )
     public ResultWrapper delete(@RequestBody Set<${pkColumnType}> ids) {
         ${changeClassName}Service.delete(ids);
@@ -77,7 +75,7 @@ public class ${className}Controller extends BaseController{
     @PreAuthorize("@el.check('${changeClassName}:edit')")
     @LogRecordAnnotation(
             value = "修改", category = LogCategoryType.MANAGER,
-            type = LogType.UPDATE, module = "${apiAlias}"
+            type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}"
     )
     public ResultWrapper update(@Validated(${className}DTO.Update.class)
                                 @Valid @RequestBody ${className}DTO dto){
@@ -88,10 +86,6 @@ public class ${className}Controller extends BaseController{
     @GetMapping("/{id}")
     @ApiOperation(value = "${apiAlias}-查询单个", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:list')")
-    @LogRecordAnnotation(
-            value = "查询单个", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "${apiAlias}"
-    )
     public ResultWrapper<${className}VO> getById(@PathVariable Long id) {
         return ResultWrapper.ok(this.${changeClassName}Service.getVoById(id));
     }
@@ -99,10 +93,6 @@ public class ${className}Controller extends BaseController{
     @ApiOperation(value = "${apiAlias}-导出", tags = ApiVersion.${apiVersionConstant})
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PreAuthorize("@el.check('${changeClassName}:list')")
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "${apiAlias}"
-    )
     public void download(@ApiParam(value = "排序", required = true)
                         @NotNull(message = "排序字段不正确")
                         @RequestParam ${className}SortEnum sort,
@@ -113,10 +103,6 @@ public class ${className}Controller extends BaseController{
     @GetMapping
     @ApiOperation(value = "${apiAlias}-列表", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:list')")
-    @LogRecordAnnotation(
-            value = "列表", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "${apiAlias}"
-    )
     public ResultWrapper<MyPage<${className}VO>> pageQuery(PageParam page,
                             @ApiParam(value = "排序", required = true)
                             @NotNull(message = "排序字段不正确")
