@@ -125,6 +125,14 @@ public class LogController extends BaseController {
         return ResultWrapper.ok(logService.listModule());
     }
 
+    /**
+     * <p>listByBizKeyAndBizNo.</p>
+     *
+     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
+     * @param bizKey a {@link java.lang.String} object.
+     * @param bizNo a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
     @GetMapping("/biz")
     @ApiOperation("查询业务标识与业务主键")
     public ResultWrapper<MyPage<LogDO>> listByBizKeyAndBizNo(PageParam page,
