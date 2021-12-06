@@ -79,9 +79,9 @@ export const loadMenus = (next, to) => {
   })
 }
 
-router.afterEach((to,from,nex) => {
+router.afterEach((to, from, nex) => {
   NProgress.done() // finish progress bar
-  if(to.path !== '/' && to.path !== '/login'){
+  if (to.path !== '/' && to.path !== '/login') {
     pvIncr()
   }
 })

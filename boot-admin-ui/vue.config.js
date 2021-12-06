@@ -20,7 +20,7 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     port: port,
-    https: true,
+    https: false,
     open: true,
     overlay: {
       warnings: false,
@@ -30,7 +30,7 @@ module.exports = {
       '/': {
         target: process.env.VUE_APP_BASE_API,
         changeOrigin: true,
-        ws: false,
+        ws: true,
         secure: false,
         pathRewrite: {
           '^/': ''

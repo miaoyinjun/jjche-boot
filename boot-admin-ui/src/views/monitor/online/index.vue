@@ -21,7 +21,7 @@
       </crudOperation>
     </div>
     <!--表格渲染-->
-    <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+    <el-table ref="table" v-loading="crud.loading" stripe :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="userName" label="用户名" />
       <el-table-column prop="nickName" label="用户昵称" />
@@ -52,9 +52,7 @@
               <el-button size="mini" type="text" @click="$refs[scope.$index].doClose()">取消</el-button>
               <el-button :loading="delLoading" type="primary" size="mini" @click="delMethod(scope.row.key, scope.$index)">确定</el-button>
             </div>
-            <el-button 
-            :disabled="!checkPermission(['admin','online:del'])"
-            slot="reference" size="mini" type="text">强退</el-button>
+            <el-button slot="reference" :disabled="!checkPermission(['admin','online:del'])" size="mini" type="text">强退</el-button>
           </el-popover>
         </template>
       </el-table-column>

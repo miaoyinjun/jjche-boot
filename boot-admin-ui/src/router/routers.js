@@ -24,7 +24,7 @@ export const constantRouterMap = [
     path: '/502',
     component: (resolve) => require(['@/views/features/502'], resolve),
     hidden: true
-  },  
+  },
   {
     path: '/redirect',
     component: Layout,
