@@ -61,12 +61,10 @@ public class StudentController extends BaseController {
     @LogRecordAnnotation(
             value = "创建了一个学生, 学生姓名：「{{#dto.name}}」",
             category = LogCategoryType.OPERATING,
-            type = LogType.ADD, module = ApiVersion.MODULE_STUDENT,
-            prefix = "student", bizNo = "{{#dto.name}}"
+            type = LogType.ADD, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#_ret.data}}"
     )
-    public ResultWrapper create(@Validated @Valid @RequestBody StudentDTO dto) {
-        studentService.save(dto);
-        return ResultWrapper.ok();
+    public ResultWrapper<Long> create(@Validated @Valid @RequestBody StudentDTO dto) {
+        return ResultWrapper.ok(studentService.save(dto));
     }
 
     /**
@@ -80,8 +78,7 @@ public class StudentController extends BaseController {
     @PreAuthorize("@el.check('student:del')")
     @LogRecordAnnotation(
             value = "被删除的学生姓名是...", category = LogCategoryType.OPERATING,
-            type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT,
-            prefix = "student", bizNo = "{{#ids}}",
+            type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#ids}}",
             detail = "学生姓名：「{STUDENT_NAME_BY_IDS{#ids}}」"
     )
     public ResultWrapper delete(@RequestBody Set<Long> ids) {
@@ -100,8 +97,7 @@ public class StudentController extends BaseController {
     @PreAuthorize("@el.check('student:edit')")
     @LogRecordAnnotation(
             value = "被修改的学生姓名：「{{#dto.name}}」", category = LogCategoryType.OPERATING,
-            type = LogType.UPDATE, module = ApiVersion.MODULE_STUDENT,
-            prefix = "student", bizNo = "{{#dto.name}}",
+            type = LogType.UPDATE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#dto.name}}",
             detail = "修改内容：「{STUDENT_UPDATE_DIFF_BY_DTO{#dto}}」"
     )
     public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody StudentDTO dto) {
@@ -118,10 +114,6 @@ public class StudentController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation(value = "学生-查询单个", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    @LogRecordAnnotation(
-            value = "查询单个", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = ApiVersion.MODULE_STUDENT
-    )
     public ResultWrapper<StudentVO> getById(@PathVariable Long id) {
         return ResultWrapper.ok(this.studentService.getVoById(id));
     }
@@ -135,10 +127,6 @@ public class StudentController extends BaseController {
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ApiOperation(value = "学生-导出", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = ApiVersion.MODULE_STUDENT
-    )
     public void download(@ApiParam(value = "排序", required = true)
                          @NotNull(message = "排序字段不正确")
                          @RequestParam StudentSortEnum sort,
@@ -149,19 +137,15 @@ public class StudentController extends BaseController {
     /**
      * <p>pageQuery.</p>
      *
-     * @param page  a {@link com.boot.admin.mybatis.param.PageParam} object.
-     * @param sort  a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
-     * @param query a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
-     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     * @param page   a {@link com.boot.admin.mybatis.param.PageParam} object.
+     * @param sort   a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
+     * @param query  a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    @LogRecordAnnotation(
-            value = "列表", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = ApiVersion.MODULE_STUDENT
-    )
     public ResultWrapper<MyPage<StudentVO>> pageQuery(PageParam page,
                                                       @ApiParam(value = "排序", required = true)
                                                       @NotNull(message = "排序字段不正确")

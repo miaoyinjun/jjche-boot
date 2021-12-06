@@ -30,7 +30,7 @@
             <el-input v-model="form.name" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="年龄" prop="age">
-            <el-input v-model="form.age" style="width: 370px;" />
+            <el-input-number v-model="form.age" :min="1" :max="200" />
           </el-form-item>
           <el-form-item label="课程类型">
             <el-select v-model="form.course" filterable placeholder="请选择">
