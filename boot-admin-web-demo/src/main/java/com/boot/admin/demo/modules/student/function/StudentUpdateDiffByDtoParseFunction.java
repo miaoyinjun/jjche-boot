@@ -24,6 +24,11 @@ public class StudentUpdateDiffByDtoParseFunction implements IParseFunction<Stude
     @Resource
     private StudentService studentService;
 
+    @Override
+    public boolean executeBefore() {
+        return true;
+    }
+
     /** {@inheritDoc} */
     @Override
     public String functionName() {

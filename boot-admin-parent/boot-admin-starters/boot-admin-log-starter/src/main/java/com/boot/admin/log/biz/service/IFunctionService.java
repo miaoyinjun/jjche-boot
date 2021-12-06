@@ -21,4 +21,14 @@ public interface IFunctionService {
      * @return 结果
      */
     String apply(String functionName, Object value);
+
+    /**
+     * <p>
+     * 是否方法前运行
+     * </p>
+     *
+     * @param functionName 方法名
+     * @return /
+     */
+    boolean beforeFunction(String functionName);
 }

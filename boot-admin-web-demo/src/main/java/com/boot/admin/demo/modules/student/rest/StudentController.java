@@ -97,7 +97,7 @@ public class StudentController extends BaseController {
     @PreAuthorize("@el.check('student:edit')")
     @LogRecordAnnotation(
             value = "被修改的学生姓名：「{{#dto.name}}」", category = LogCategoryType.OPERATING,
-            type = LogType.UPDATE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#dto.name}}",
+            type = LogType.UPDATE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#dto.id}}",
             detail = "修改内容：「{STUDENT_UPDATE_DIFF_BY_DTO{#dto}}」"
     )
     public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody StudentDTO dto) {

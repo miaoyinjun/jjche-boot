@@ -50,7 +50,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
    * @param dto 创建对象
    */
     @Transactional(rollbackFor = Exception.class)
-    public void save(${className}DTO dto) {
+    public Long save(${className}DTO dto) {
     <#if columns??>
         <#list columns as column>
             <#if column.columnKey = 'UNI'>
@@ -65,6 +65,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     </#if>
         ${className}DO ${changeClassName}DO = this.${changeClassName}MapStruct.toDO(dto);
         Assert.isTrue(this.save(${changeClassName}DO), "保存失败");
+        return ${changeClassName}DO.getId();
     }
 
     /**

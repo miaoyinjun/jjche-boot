@@ -48,7 +48,7 @@ public class ServerDeployService extends MyServiceImpl<ServerDeployMapper, Serve
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("name LIKE {0} OR ip LIKE {0} OR account LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(name LIKE {0} OR ip LIKE {0} OR account LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }

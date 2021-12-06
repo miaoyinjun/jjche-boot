@@ -34,7 +34,6 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="用户名" />
       <el-table-column prop="module" label="模块" />
       <el-table-column :show-overflow-tooltip="true" prop="category" label="分类" >
         <template slot-scope="scope">
@@ -67,8 +66,9 @@
      <el-table-column prop="browser" label="浏览器" />
       <el-table-column :show-overflow-tooltip="true" prop="os" label="操作系统" />
       <el-table-column :show-overflow-tooltip="true" prop="requestIp" label="IP" />
-      <el-table-column :show-overflow-tooltip="true" prop="address" label="IP来源" />      
-      <el-table-column prop="gmtCreate" label="创建日期" width="180px">
+      <el-table-column :show-overflow-tooltip="true" prop="address" label="IP来源" />     
+      <el-table-column prop="username" label="操作人" />
+      <el-table-column prop="gmtCreate" label="操作时间" width="180px">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.gmtCreate) }}</span>
         </template>
