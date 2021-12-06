@@ -54,6 +54,6 @@ module.exports = {
   /**
    * http接口前缀
    */
-  apiPrefix: './api',
+  apiPrefix: '/api',
   sbaPrefix: '/sba'
 }

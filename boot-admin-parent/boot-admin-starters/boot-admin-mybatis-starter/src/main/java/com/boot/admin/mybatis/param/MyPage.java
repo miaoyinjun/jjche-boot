@@ -76,9 +76,12 @@ public class MyPage<T> extends Page<T> implements DataPermissionFieldFilterable<
         }
     }
 
+    @JsonIgnore
+    @IgnoreSwaggerParameter
+    private Iterable<T> data;
+
     /** {@inheritDoc} */
     @Override
-    @JsonIgnore
     public Iterable<T> getData() {
         return super.records;
     }

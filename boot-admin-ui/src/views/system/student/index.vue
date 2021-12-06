@@ -30,7 +30,7 @@
             <el-input v-model="form.name" style="width: 370px;" />
           </el-form-item>
           <el-form-item label="年龄" prop="age">
-            <el-input v-model="form.age" style="width: 370px;" />
+            <el-input-number v-model="form.age" :min="1" :max="200" />
           </el-form-item>
           <el-form-item label="课程类型">
             <el-select v-model="form.course" filterable placeholder="请选择">
@@ -64,18 +64,26 @@
           </template>
         </el-table-column>
         <el-table-column prop="createdBy" label="创建者" />
-        <el-table-column v-permission="['admin','student:edit','student:del']" label="操作" width="150px" align="center">
+        <el-table-column v-permission="['admin','student:edit','student:del']" label="操作" width="300px" align="center">
           <template slot-scope="scope">
-            <udOperation
-              :data="scope.row"
-              :permission="permission"
-            />
+            <div style="display: inline-block;">
+              <udOperation
+                :data="scope.row"
+                :permission="permission"
+              />
+            </div>
+            <el-tooltip content="日志" effect="dark" placement="top">
+              <el-button v-permission="['student:list']" size="mini" type="warning" icon="el-icon-notebook-2" style="display: inline-block;" @click="handleLog(scope.row)" />
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
       <!--分页组件-->
       <pagination />
     </div>
+    <el-dialog title="操作日志" :visible.sync="logVisible" width="50%">
+      <log ref="log" />
+    </el-dialog>
   </div>
 </template>
 
@@ -87,11 +95,13 @@ import crudOperation from '@crud/CRUD.operation'
 import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import DateRangePicker from '@/components/DateRangePicker'
+import log from '@/components/Log'
+import Settings from '../../../settings'
 
 const defaultForm = { id: null, name: null, age: null, deptId: null, course: '102' }
 export default {
   name: 'Student',
-  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
+  components: { pagination, crudOperation, rrOperation, udOperation, DateRangePicker, log },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   dicts: ['course_status'],
   cruds() {
@@ -99,6 +109,7 @@ export default {
   },
   data() {
     return {
+      logVisible: false,
       permission: {
         add: ['admin', 'student:add'],
         edit: ['admin', 'student:edit'],
@@ -127,7 +138,17 @@ export default {
     [CRUD.HOOK.afterToEdit](crud, form) {
       // form.course = this.dict.label.course_status[form.course]
       // debugger
-    }
+    },
+    handleLog(data) {
+      this.logVisible = true
+      this.$nextTick(() => {
+        if (this.$refs.log) {
+          this.$refs.log.query.bizKey = 'students'
+          this.$refs.log.query.bizNo = data.id
+          this.$refs.log.crud.toQuery()
+        }
+      })
+    },
   }
 }
 </script>

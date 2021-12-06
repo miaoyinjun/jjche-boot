@@ -3,7 +3,6 @@
 <mapper namespace="com.boot.admin.system.modules.quartz.mapper.QuartzJobMapper">
     <sql id="querySql">
         SELECT * FROM sys_quartz_job ${ew.customSqlSegment}
-        ORDER BY id DESC
     </sql>
 
     <select id="pageQuery" resultType="com.boot.admin.system.modules.quartz.domain.QuartzJobDO">

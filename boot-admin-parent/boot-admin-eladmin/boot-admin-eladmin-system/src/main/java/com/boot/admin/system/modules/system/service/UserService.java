@@ -105,7 +105,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("email LIKE {0} OR username LIKE {0} OR nick_name LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(email LIKE {0} OR username LIKE {0} OR nick_name LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }

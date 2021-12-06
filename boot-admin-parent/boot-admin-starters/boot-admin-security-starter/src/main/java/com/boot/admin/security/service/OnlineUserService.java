@@ -88,7 +88,7 @@ public class OnlineUserService {
                 onlineUserDtos.add(onlineUserDto);
             }
         }
-        onlineUserDtos.sort((o1, o2) -> o2.getLoginTime().compareTo(o1.getLoginTime()));
+        onlineUserDtos.sort((o1, o2) -> o2.getLastAccessTime().compareTo(o1.getLastAccessTime()));
         return onlineUserDtos;
     }
 

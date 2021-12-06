@@ -8,14 +8,9 @@
         <h1 class="text-jumbo text-ginormous">
           Oops!
         </h1>
-        <h2>你没有权限去该页面</h2>
+        <h2>系统升级中</h2>
         <ul class="list-unstyled">
-          <li>或者你可以去:</li>
-          <li class="link-type">
-            <router-link to="/">
-              回首页
-            </router-link>
-          </li>
+          <li>请稍等5分钟左右再试</li>
         </ul>
       </el-col>
       <el-col :span="12">

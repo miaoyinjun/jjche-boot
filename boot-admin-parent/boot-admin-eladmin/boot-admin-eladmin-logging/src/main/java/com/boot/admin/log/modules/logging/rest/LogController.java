@@ -2,15 +2,16 @@ package com.boot.admin.log.modules.logging.rest;
 
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;
-import com.boot.admin.log.modules.logging.dto.LogQueryCriteriaDTO;
-import com.boot.admin.log.modules.logging.service.LogService;
-import com.boot.admin.log.modules.logging.vo.LogVO;
 import com.boot.admin.common.enums.LogCategoryType;
 import com.boot.admin.common.enums.LogType;
 import com.boot.admin.core.annotation.controller.SysRestController;
 import com.boot.admin.core.base.BaseController;
 import com.boot.admin.core.wrapper.response.ResultWrapper;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
+import com.boot.admin.log.modules.logging.domain.LogDO;
+import com.boot.admin.log.modules.logging.dto.LogQueryCriteriaDTO;
+import com.boot.admin.log.modules.logging.service.LogService;
+import com.boot.admin.log.modules.logging.vo.LogVO;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import io.swagger.annotations.Api;
@@ -119,8 +120,24 @@ public class LogController extends BaseController {
     @GetMapping("/modules")
     @ApiOperation("日志获取模块")
     @PreAuthorize("@el.check('log:list')")
-    @Cached(name="logs:modules", cacheType = CacheType.REMOTE, expire = 3600000)
+    @Cached(name = "logs:modules", cacheType = CacheType.REMOTE, expire = 3600000)
     public ResultWrapper<List<String>> listModule() {
         return ResultWrapper.ok(logService.listModule());
     }
+
+    /**
+     * <p>listByBizKeyAndBizNo.</p>
+     *
+     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
+     * @param bizKey a {@link java.lang.String} object.
+     * @param bizNo a {@link java.lang.String} object.
+     * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
+     */
+    @GetMapping("/biz")
+    @ApiOperation("查询业务标识与业务主键")
+    public ResultWrapper<MyPage<LogDO>> listByBizKeyAndBizNo(PageParam page,
+                                                           String bizKey, String bizNo) {
+        return ResultWrapper.ok(logService.listByBizKeyAndBizNo(page, bizKey, bizNo));
+    }
+
 }

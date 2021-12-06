@@ -45,7 +45,7 @@ public class DeployHistoryService extends MyServiceImpl<DeployHistoryMapper, Dep
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("appName LIKE {0} OR ip LIKE {0} OR deployUser LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(appName LIKE {0} OR ip LIKE {0} OR deployUser LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }

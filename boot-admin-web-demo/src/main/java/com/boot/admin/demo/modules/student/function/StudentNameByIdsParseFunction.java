@@ -31,6 +31,12 @@ public class StudentNameByIdsParseFunction implements IParseFunction<Set> {
 
     /** {@inheritDoc} */
     @Override
+    public boolean executeBefore() {
+        return true;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public String functionName() {
         return "STUDENT_NAME_BY_IDS";
     }
