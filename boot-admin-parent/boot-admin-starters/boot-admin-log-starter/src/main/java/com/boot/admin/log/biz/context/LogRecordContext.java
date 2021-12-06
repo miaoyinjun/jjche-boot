@@ -20,6 +20,12 @@ public class LogRecordContext {
 
     private static final InheritableThreadLocal<Stack<Map<String, Object>>> variableMapStack = new InheritableThreadLocal<>();
 
+    /**
+     * <p>putVariable.</p>
+     *
+     * @param name a {@link java.lang.String} object.
+     * @param value a {@link java.lang.Object} object.
+     */
     public static void putVariable(String name, Object value) {
         if (variableMapStack.get() == null) {
             Stack<Map<String, Object>> stack = new Stack<>();
@@ -32,16 +38,30 @@ public class LogRecordContext {
         variableMapStack.get().peek().put(name, value);
     }
 
+    /**
+     * <p>getVariable.</p>
+     *
+     * @param key a {@link java.lang.String} object.
+     * @return a {@link java.lang.Object} object.
+     */
     public static Object getVariable(String key) {
         Map<String, Object> variableMap = variableMapStack.get().peek();
         return variableMap.get(key);
     }
 
+    /**
+     * <p>getVariables.</p>
+     *
+     * @return a {@link java.util.Map} object.
+     */
     public static Map<String, Object> getVariables() {
         Stack<Map<String, Object>> mapStack = variableMapStack.get();
         return mapStack.peek();
     }
 
+    /**
+     * <p>clear.</p>
+     */
     public static void clear() {
         if (variableMapStack.get() != null) {
             variableMapStack.get().pop();

@@ -31,9 +31,7 @@ public class DefaultFunctionServiceImpl implements IFunctionService {
         this.parseFunctionFactory = parseFunctionFactory;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String apply(String functionName, Object value) {
         IParseFunction function = parseFunctionFactory.getFunction(functionName);
@@ -48,6 +46,7 @@ public class DefaultFunctionServiceImpl implements IFunctionService {
         return function.apply(value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean beforeFunction(String functionName) {
         return parseFunctionFactory.isBeforeFunction(functionName);

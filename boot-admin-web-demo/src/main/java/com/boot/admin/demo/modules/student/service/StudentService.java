@@ -47,6 +47,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * </p>
      *
      * @param dto 创建对象
+     * @return a {@link java.lang.Long} object.
      */
     @Transactional(rollbackFor = Exception.class)
     public Long save(StudentDTO dto) {

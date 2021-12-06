@@ -195,6 +195,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @param bizKey 业务标识
      * @param bizNo  业务主键
      * @return 日志
+     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
      */
     public MyPage<LogDO> listByBizKeyAndBizNo(PageParam page, String bizKey, String bizNo) {
         LambdaQueryWrapper<LogDO> queryWrapper = new LambdaQueryWrapper<>();

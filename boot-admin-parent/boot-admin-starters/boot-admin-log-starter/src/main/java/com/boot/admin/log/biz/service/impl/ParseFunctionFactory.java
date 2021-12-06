@@ -27,7 +27,6 @@ public class ParseFunctionFactory {
      * </p>
      *
      * @param parseFunctions /
-     * @return /
      */
     public ParseFunctionFactory(List<IParseFunction> parseFunctions) {
         if (CollectionUtils.isEmpty(parseFunctions)) {

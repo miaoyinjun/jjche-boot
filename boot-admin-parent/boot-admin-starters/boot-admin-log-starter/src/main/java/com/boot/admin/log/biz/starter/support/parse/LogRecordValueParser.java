@@ -38,12 +38,13 @@ public class LogRecordValueParser implements BeanFactoryAware {
      * 解析日志表达式模板
      * </p>
      *
-     * @param templates   模板
-     * @param ret         结果
-     * @param targetClass 目的类
-     * @param method      方法
-     * @param args        对象
-     * @param errorMsg    错误 信息
+     * @param templates                      模板
+     * @param ret                            结果
+     * @param targetClass                    目的类
+     * @param method                         方法
+     * @param args                           对象
+     * @param errorMsg                       错误 信息
+     * @param beforeFunctionNameAndReturnMap 方法 信息
      * @return map
      */
     public Map<String, String> processTemplate(Collection<String> templates, Object ret,
@@ -80,10 +81,10 @@ public class LogRecordValueParser implements BeanFactoryAware {
      * 处理方法执行前
      * </p>
      *
-     * @param templates 模板
+     * @param templates   模板
      * @param targetClass 目标类
-     * @param method 方法
-     * @param args 参数
+     * @param method      方法
+     * @param args        参数
      * @return /
      */
     public Map<String, String> processBeforeExecuteFunctionTemplate(Collection<String> templates, Class<?> targetClass, Method method, Object[] args) {
@@ -122,9 +123,7 @@ public class LogRecordValueParser implements BeanFactoryAware {
         return functionReturnValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         this.beanFactory = beanFactory;

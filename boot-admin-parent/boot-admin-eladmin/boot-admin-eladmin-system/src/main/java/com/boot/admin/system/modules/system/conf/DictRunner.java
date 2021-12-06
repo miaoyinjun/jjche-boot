@@ -26,11 +26,13 @@ import java.util.stream.Collectors;
  *
  * @author miaoyj
  * @since 2021-12-03
+ * @version 1.0.3
  */
 @Component
 @RequiredArgsConstructor
 public class DictRunner implements ApplicationRunner {
 
+    /** Constant <code>DICT_ENUMS</code> */
     public final static Map<String, List<DictDetailDTO>> DICT_ENUMS = MapUtil.newHashMap();
 
     /**

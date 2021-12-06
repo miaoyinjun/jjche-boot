@@ -57,9 +57,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
 
     ThreadLocal<Long> currentTime = new ThreadLocal<>();
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
@@ -315,9 +313,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         this.bizLogService = bizLogService;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void afterPropertiesSet() throws Exception {
         bizLogService = beanFactory.getBean(ILogRecordService.class);

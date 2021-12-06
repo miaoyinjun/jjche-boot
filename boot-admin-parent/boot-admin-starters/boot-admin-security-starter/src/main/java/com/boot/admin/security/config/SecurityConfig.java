@@ -154,6 +154,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return 短信
      */
     @Bean("smsCodeAuthenticationProvider")
+    @Bean("smsCodeAuthenticationProvider")
     SmsCodeAuthenticationProvider smsCodeAuthenticationProvider() {
         SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(smsUserDetailsService);
@@ -167,6 +168,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @return 密码
      */
+    @Bean("usernamePasswordAuthenticationProvider")
     @Bean("usernamePasswordAuthenticationProvider")
     DaoAuthenticationProvider usernamePasswordAuthenticationProvider() {
         DaoAuthenticationProvider usernamePasswordAuthenticationProvider = new DaoAuthenticationProvider();
