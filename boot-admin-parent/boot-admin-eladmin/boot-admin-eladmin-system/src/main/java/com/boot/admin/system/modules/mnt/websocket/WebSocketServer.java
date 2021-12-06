@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @since 2019-08-10 15:46
  * @version 1.0.8-SNAPSHOT
  */
-@ServerEndpoint("/api/admin/webSocket/{sid}")
+@ServerEndpoint("/api/sys/webSocket/{sid}")
 @Slf4j
 @Component
 public class WebSocketServer {
