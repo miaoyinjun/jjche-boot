@@ -10,6 +10,17 @@ package com.boot.admin.log.biz.service;
  * @version 1.0.0-SNAPSHOT
  */
 public interface IParseFunction<T> {
+
+    /**
+     * <p>
+     * 是否在方法前运行
+     * </p>
+     *
+     * @return /
+     */
+    default boolean executeBefore(){
+        return false;
+    }
     /**
      * <p>
      * 方法名

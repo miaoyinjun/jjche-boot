@@ -1,10 +1,10 @@
 package com.boot.admin.log.biz.service.impl;
 
-import cn.hutool.core.map.MapUtil;
-import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.log.biz.service.IParseFunction;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,33 +19,50 @@ import java.util.Map;
  * @version 1.0.0-SNAPSHOT
  */
 public class ParseFunctionFactory {
-    private Map<String, IParseFunction> functionMap;
+    private Map<String, IParseFunction> allFunctionMap;
 
     /**
-     * <p>Constructor for ParseFunctionFactory.</p>
+     * <p>
+     * 所有方法
+     * </p>
      *
-     * @param parseFunctions a {@link java.util.List} object.
+     * @param parseFunctions /
+     * @return /
      */
     public ParseFunctionFactory(List<IParseFunction> parseFunctions) {
-        functionMap = MapUtil.newHashMap();
         if (CollectionUtils.isEmpty(parseFunctions)) {
             return;
         }
+        allFunctionMap = new HashMap<>();
         for (IParseFunction parseFunction : parseFunctions) {
-            if (StrUtil.isEmpty(parseFunction.functionName())) {
+            if (StringUtils.isEmpty(parseFunction.functionName())) {
                 continue;
             }
-            functionMap.put(parseFunction.functionName(), parseFunction);
+            allFunctionMap.put(parseFunction.functionName(), parseFunction);
         }
     }
 
     /**
-     * <p>getFunction.</p>
+     * <p>
+     * 获取方法
+     * </p>
      *
-     * @param functionName a {@link java.lang.String} object.
-     * @return a {@link com.boot.admin.log.biz.service.IParseFunction} object.
+     * @param functionName 方法名
+     * @return /
      */
     public IParseFunction getFunction(String functionName) {
-        return functionMap.get(functionName);
+        return allFunctionMap.get(functionName);
+    }
+
+    /**
+     * <p>
+     * 是否方法前执行
+     * </p>
+     *
+     * @param functionName 方法名
+     * @return /
+     */
+    public boolean isBeforeFunction(String functionName) {
+        return allFunctionMap.get(functionName) != null && allFunctionMap.get(functionName).executeBefore();
     }
 }

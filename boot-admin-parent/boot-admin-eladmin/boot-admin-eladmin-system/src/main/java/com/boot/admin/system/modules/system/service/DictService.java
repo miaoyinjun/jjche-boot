@@ -50,7 +50,7 @@ public class DictService extends MyServiceImpl<DictMapper, DictDO> {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("name LIKE {0} OR description LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(name LIKE {0} OR description LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }

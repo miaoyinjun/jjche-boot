@@ -62,7 +62,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
         QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (cn.hutool.core.util.StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0}", "%" + blurry + "%");
+            queryWrapper.apply("(username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }
@@ -182,7 +182,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
         queryWrapper.ne("module", "");
         queryWrapper.select("DISTINCT module");
         queryWrapper.orderByAsc("module");
-        return this.listObjs(queryWrapper, a ->{
+        return this.listObjs(queryWrapper, a -> {
             return a.toString();
         });
     }
@@ -196,15 +196,15 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @param bizNo  业务主键
      * @return 日志
      */
-    public List<LogDO> findByBizKeyAndBizNo(String bizKey, Object bizNo) {
+    public MyPage<LogDO> listByBizKeyAndBizNo(PageParam page, String bizKey, String bizNo) {
         LambdaQueryWrapper<LogDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(LogDO::getBizKey, bizKey);
-        queryWrapper.in(LogDO::getBizNo, bizNo);
         queryWrapper.eq(LogDO::getIsSuccess, Boolean.TRUE);
         queryWrapper.eq(LogDO::getCategory, LogCategoryType.OPERATING);
         queryWrapper.in(LogDO::getLogType, CollUtil.newHashSet(LogType.ADD, LogType.UPDATE, LogType.DELETE));
+        queryWrapper.apply("FIND_IN_SET({0}, biz_no)", bizNo);
         queryWrapper.orderByDesc(LogDO::getGmtCreate);
-        return this.list(queryWrapper);
+        return this.page(page, queryWrapper);
     }
 
     /**
