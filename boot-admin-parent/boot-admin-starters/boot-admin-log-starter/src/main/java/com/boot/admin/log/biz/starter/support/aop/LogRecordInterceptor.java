@@ -1,8 +1,10 @@
 package com.boot.admin.log.biz.starter.support.aop;
 
+import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
@@ -11,6 +13,7 @@ import cn.hutool.log.StaticLog;
 import com.boot.admin.common.pojo.AbstractResultWrapper;
 import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.common.util.ThrowableUtil;
+import com.boot.admin.core.annotation.controller.ApiRestController;
 import com.boot.admin.core.util.RequestHolder;
 import com.boot.admin.log.biz.beans.LogRecord;
 import com.boot.admin.log.biz.context.LogRecordContext;
@@ -18,11 +21,15 @@ import com.boot.admin.log.biz.service.ILogRecordService;
 import com.boot.admin.log.biz.service.IOperatorGetService;
 import com.boot.admin.log.biz.starter.support.parse.LogRecordValueParser;
 import eu.bitwalker.useragentutils.UserAgent;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +58,9 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
 
     ThreadLocal<Long> currentTime = new ThreadLocal<>();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
@@ -73,63 +82,25 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         currentTime.set(System.currentTimeMillis());
         Class<?> targetClass = getTargetClass(target);
         Object ret = null;
-        boolean success = true;
-        String errorMsg = "";
-        Throwable throwable = null;
-        LogRecord logRecord = null;
+        MethodExecuteResult methodExecuteResult = new MethodExecuteResult(true, null, "");
+        LogRecordContext.putEmptySpan();
+
         try {
-            LogRecordContext.clear();
-
-            //执行前
-            logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
-            //获取请求客户端信息
-            setLogRecordHttpRequest(logRecord, args);
-
-            String bizKey = logRecord.getBizKey();
-            String bizNo = logRecord.getBizNo();
-            String operatorId = logRecord.getOperatorId();
-            String detail = logRecord.getDetail();
-            String value = logRecord.getValue();
-            //获取需要解析的表达式
-            List<String> spElTemplates;
-            String realOperator = "";
-            if (StrUtil.isBlank(operatorId)) {
-                spElTemplates = CollUtil.newArrayList(bizKey, bizNo, value, detail);
-                if (operatorGetService.getUser() == null || StrUtil.isBlank(operatorGetService.getUser().getOperatorId())) {
-                    throw new IllegalArgumentException("user is null");
-                }
-                realOperator = operatorGetService.getUser().getOperatorId();
-            } else {
-                spElTemplates = CollUtil.newArrayList(bizKey, bizNo, operatorId, value, detail);
-            }
-            Map<String, String> expressionValues = processTemplate(spElTemplates, ret, targetClass, method, args, errorMsg);
-            logRecord.setBizKey(expressionValues.get(bizKey));
-            logRecord.setBizNo(expressionValues.get(bizNo));
-            logRecord.setOperator(StrUtil.isNotBlank(realOperator) ? realOperator : expressionValues.get(operatorId));
-            logRecord.setValue(expressionValues.get(value));
-            logRecord.setDetail(expressionValues.get(detail));
-
             //执行后
             ret = invoker.proceed();
         } catch (Exception e) {
-            success = false;
-            errorMsg = e.getMessage();
-            throwable = e;
-            logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(e).getBytes());
-            ;
+            methodExecuteResult = new MethodExecuteResult(false, e, e.getMessage());
         }
         try {
-            if (ObjectUtil.isNotNull(logRecord)) {
-                recordExecute(ret, method, args, logRecord, targetClass, success, errorMsg);
-            }
+            recordExecute(ret, method, args, targetClass, methodExecuteResult);
         } catch (Exception t) {
             //记录日志错误不要影响业务
             StaticLog.error("log record parse exception:{}", ThrowableUtil.getStackTrace(t));
         } finally {
             LogRecordContext.clear();
         }
-        if (throwable != null) {
-            throw throwable;
+        if (methodExecuteResult.throwable != null) {
+            throw methodExecuteResult.throwable;
         }
         return ret;
     }
@@ -147,41 +118,91 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * @param success     是否成功
      * @param errorMsg    错误消息
      */
-    private void recordExecute(Object ret, Method method, Object[] args, LogRecord logRecord,
-                               Class<?> targetClass, boolean success, String errorMsg) {
-        String methodName = targetClass.getName() + "." + method.getName() + "()";
-        String result = "未提供";
-        if (success) {
-            if (ObjectUtil.isNotNull(ret)) {
-                //是否控制器返回类型
-                boolean isResultWrapper = ClassUtil.isAssignable(AbstractResultWrapper.class, ret.getClass());
-                if (isResultWrapper) {
-                    AbstractResultWrapper iResultWrapper = Convert.convert(AbstractResultWrapper.class, ret);
-                    result = iResultWrapper.getMessage();
-                } else {
-                    result = StrUtil.toString(ret);
-                }
-            }
-        } else {
-            result = errorMsg;
+    private void recordExecute(Object ret, Method method, Object[] args,
+                               Class<?> targetClass, MethodExecuteResult methodExecuteResult) {
+        String errorMsg = methodExecuteResult.getErrorMsg();
+        boolean success = methodExecuteResult.isSuccess();
+        //执行前
+        LogRecord logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
+        Throwable throwable = methodExecuteResult.getThrowable();
+        //异常数据
+        if (throwable != null) {
+            logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(throwable).getBytes());
         }
+        //获取请求客户端信息
+        setLogRecordHttpRequest(logRecord, args);
 
-        try {
-            logRecord.setSuccess(success);
-            logRecord.setMethod(methodName);
-            logRecord.setTenant(tenantId);
-            logRecord.setResult(result);
-            logRecord.setCreateTime(DateUtil.date().toTimestamp());
-
-            //save log 需要新开事务，失败日志不能因为事务回滚而丢失
-            if (bizLogService == null) {
-                StaticLog.error("bizLogService not init!!");
+        String bizKey = logRecord.getBizKey();
+        if (StrUtil.isBlank(bizKey)) {
+            String[] restPrefixArray = AnnotationUtil.getAnnotationValue(targetClass, ApiRestController.class);
+            if (ArrayUtil.isNotEmpty(restPrefixArray)) {
+                bizKey = ArrayUtil.get(restPrefixArray, 0);
             }
-            logRecord.setTime(System.currentTimeMillis() - currentTime.get());
-            currentTime.remove();
-            bizLogService.record(logRecord);
-        } catch (Exception t) {
-            StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
+        }
+        String bizNo = logRecord.getBizNo();
+        String operatorId = logRecord.getOperatorId();
+        String detail = logRecord.getDetail();
+        String value = logRecord.getValue();
+        String condition = logRecord.getCondition();
+
+        //获取需要解析的表达式
+        List<String> spElTemplates;
+        String realOperator = "";
+        if (StrUtil.isBlank(operatorId)) {
+            spElTemplates = CollUtil.newArrayList(bizKey, bizNo, value, detail);
+            if (operatorGetService.getUser() == null || StrUtil.isBlank(operatorGetService.getUser().getOperatorId())) {
+                throw new IllegalArgumentException("user is null");
+            }
+            realOperator = operatorGetService.getUser().getOperatorId();
+        } else {
+            spElTemplates = CollUtil.newArrayList(bizKey, bizNo, operatorId, value, detail);
+        }
+        if (StrUtil.isNotBlank(condition)) {
+            spElTemplates.add(condition);
+        }
+        Map<String, String> expressionValues = processTemplate(spElTemplates, ret, targetClass, method, args, errorMsg);
+        if (StrUtil.isBlank(condition) || StringUtils.endsWithIgnoreCase(expressionValues.get(condition), "true")) {
+            logRecord.setBizKey(expressionValues.get(bizKey));
+            logRecord.setBizNo(expressionValues.get(bizNo));
+            logRecord.setOperator(StrUtil.isNotBlank(realOperator) ? realOperator : expressionValues.get(operatorId));
+            logRecord.setValue(expressionValues.get(value));
+            logRecord.setDetail(expressionValues.get(detail));
+
+
+            String methodName = targetClass.getName() + "." + method.getName() + "()";
+            String result = "未提供";
+            if (success) {
+                if (ObjectUtil.isNotNull(ret)) {
+                    //是否控制器返回类型
+                    boolean isResultWrapper = ClassUtil.isAssignable(AbstractResultWrapper.class, ret.getClass());
+                    if (isResultWrapper) {
+                        AbstractResultWrapper iResultWrapper = Convert.convert(AbstractResultWrapper.class, ret);
+                        result = iResultWrapper.getMessage();
+                    } else {
+                        result = StrUtil.toString(ret);
+                    }
+                }
+            } else {
+                result = errorMsg;
+            }
+
+            try {
+                logRecord.setSuccess(success);
+                logRecord.setMethod(methodName);
+                logRecord.setTenant(tenantId);
+                logRecord.setResult(result);
+                logRecord.setCreateTime(DateUtil.date().toTimestamp());
+
+                //save log 需要新开事务，失败日志不能因为事务回滚而丢失
+                if (bizLogService == null) {
+                    StaticLog.error("bizLogService not init!!");
+                }
+                logRecord.setTime(System.currentTimeMillis() - currentTime.get());
+                currentTime.remove();
+                bizLogService.record(logRecord);
+            } catch (Exception t) {
+                StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
+            }
         }
     }
 
@@ -241,7 +262,9 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         this.bizLogService = bizLogService;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         bizLogService = beanFactory.getBean(ILogRecordService.class);
@@ -300,5 +323,14 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         } catch (Exception e) {
             StaticLog.error("setLogRecordHttpRequest:{}", ThrowableUtil.getStackTrace(e));
         }
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    static class MethodExecuteResult {
+        private boolean success;
+        private Throwable throwable;
+        private String errorMsg;
     }
 }

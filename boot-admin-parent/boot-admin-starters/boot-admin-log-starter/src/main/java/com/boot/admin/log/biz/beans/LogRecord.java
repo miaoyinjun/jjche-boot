@@ -146,4 +146,9 @@ public class LogRecord {
      * url
      */
     private String url;
+
+    /**
+     * 条件
+     */
+    private String condition;
 }

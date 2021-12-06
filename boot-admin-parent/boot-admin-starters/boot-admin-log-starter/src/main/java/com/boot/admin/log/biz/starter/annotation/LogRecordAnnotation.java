@@ -11,8 +11,8 @@ import java.lang.annotation.*;
  * </p>
  *
  * @author miaoyj
- * @since 2021-04-30
  * @version 1.0.0-SNAPSHOT
+ * @since 2021-04-30
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -37,6 +37,7 @@ public @interface LogRecordAnnotation {
 
     /**
      * 标识
+     * 默认取当前restApi的value值
      * 是拼接在 bizNo 上作为 log 的一个标识。避免 bizNo 都为整数 ID 的时候和其他的业务中的 ID 重复。比如订单 ID、用户 ID 等
      */
     String prefix() default "";
@@ -66,4 +67,9 @@ public @interface LogRecordAnnotation {
      * 详情
      */
     String detail() default "";
+
+    /**
+     * 条件
+     */
+    String condition() default "";
 }

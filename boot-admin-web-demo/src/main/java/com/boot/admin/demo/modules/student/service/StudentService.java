@@ -4,13 +4,14 @@ import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.demo.modules.student.api.dto.StudentDTO;
+import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
+import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
+import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
 import com.boot.admin.demo.modules.student.api.vo.StudentVO;
 import com.boot.admin.demo.modules.student.domain.StudentDO;
 import com.boot.admin.demo.modules.student.mapper.StudentMapper;
 import com.boot.admin.demo.modules.student.mapstruct.StudentMapStruct;
-import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
-import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
-import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
+import com.boot.admin.log.biz.context.LogRecordContext;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
@@ -48,9 +49,10 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * @param dto 创建对象
      */
     @Transactional(rollbackFor = Exception.class)
-    public void save(StudentDTO dto) {
+    public Long save(StudentDTO dto) {
         StudentDO studentDO = this.studentMapStruct.toDO(dto);
         Assert.isTrue(this.save(studentDO), "保存失败");
+        return studentDO.getId();
     }
 
     /**
@@ -62,7 +64,8 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void delete(Set<Long> ids) {
-        Assert.isTrue(this.removeBatchByIdsWithFill(new StudentDO(), ids) == ids.size(), "删除失败，记录不存在或权限不足");
+        LogRecordContext.putVariable("test", "abcc");
+        Assert.isTrue(this.removeBatchByIdsWithFill(new StudentDO(), ids) == ids.size(), "删除失败，记录不存在");
     }
 
     /**
@@ -77,7 +80,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
         StudentDO studentDO = this.getById(dto.getId());
         Assert.notNull(studentDO, "记录不存在");
         studentDO = this.studentMapStruct.toDO(dto);
-        Assert.isTrue(this.updateById(studentDO), "修改失败，记录不存在或权限不足");
+        Assert.isTrue(this.updateById(studentDO), "修改失败，记录不存在");
     }
 
     /**
@@ -90,7 +93,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      */
     public StudentVO getVoById(Long id) {
         StudentDO studentDO = this.getById(id);
-        Assert.notNull(studentDO, "记录不存在或权限不足");
+        Assert.notNull(studentDO, "记录不存在");
         return this.studentMapStruct.toVO(studentDO);
     }
 
