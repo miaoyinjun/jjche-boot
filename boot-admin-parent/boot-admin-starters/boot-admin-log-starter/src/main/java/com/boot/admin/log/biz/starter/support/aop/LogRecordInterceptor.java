@@ -4,6 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -57,9 +58,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
 
     ThreadLocal<Long> currentTime = new ThreadLocal<>();
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
@@ -84,7 +83,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         MethodExecuteResult methodExecuteResult = new MethodExecuteResult(true, null, "");
         LogRecordContext.putEmptySpan();
 
-        Map<String, String> functionNameAndReturnMap = new HashMap<>();
+        Map<String, String> functionNameAndReturnMap = MapUtil.newHashMap();
         //获取方法执行前的模板
         try {
             LogRecord logRecord = logRecordOperationSource.computeLogRecordOperation(method, targetClass);
@@ -315,9 +314,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         this.bizLogService = bizLogService;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void afterPropertiesSet() throws Exception {
         bizLogService = beanFactory.getBean(ILogRecordService.class);

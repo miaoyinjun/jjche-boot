@@ -1,8 +1,8 @@
 package com.boot.admin.log.biz.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.boot.admin.log.biz.service.IParseFunction;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +27,6 @@ public class ParseFunctionFactory {
      * </p>
      *
      * @param parseFunctions /
-     * @return /
      */
     public ParseFunctionFactory(List<IParseFunction> parseFunctions) {
         if (CollectionUtils.isEmpty(parseFunctions)) {
@@ -35,7 +34,7 @@ public class ParseFunctionFactory {
         }
         allFunctionMap = new HashMap<>();
         for (IParseFunction parseFunction : parseFunctions) {
-            if (StringUtils.isEmpty(parseFunction.functionName())) {
+            if (StrUtil.isBlank(parseFunction.functionName())) {
                 continue;
             }
             allFunctionMap.put(parseFunction.functionName(), parseFunction);

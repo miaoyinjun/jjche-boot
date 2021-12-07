@@ -48,6 +48,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
    * 创建
    * </p>
    * @param dto 创建对象
+   * @return id
    */
     @Transactional(rollbackFor = Exception.class)
     public Long save(${className}DTO dto) {
