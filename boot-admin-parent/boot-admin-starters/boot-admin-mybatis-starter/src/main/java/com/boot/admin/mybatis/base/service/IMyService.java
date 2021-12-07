@@ -24,6 +24,7 @@ public interface IMyService<T> extends IService<T> {
      * <p>
      * 获取当前mapper
      * </p>
+     * @return /
      */
     @Override
     MyBaseMapper<T> getBaseMapper();

@@ -14,6 +14,7 @@ import com.boot.admin.log.biz.service.IParseFunction;
  */
 public class DefaultParseFunction implements IParseFunction<String> {
 
+    /** {@inheritDoc} */
     @Override
     public boolean executeBefore() {
         return true;

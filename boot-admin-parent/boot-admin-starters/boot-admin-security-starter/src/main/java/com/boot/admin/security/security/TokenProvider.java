@@ -47,9 +47,7 @@ public class TokenProvider implements InitializingBean {
     private JwtParser jwtParser;
     private JwtBuilder jwtBuilder;
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void afterPropertiesSet() {
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
@@ -122,6 +120,7 @@ public class TokenProvider implements InitializingBean {
      * <p>checkRenewal.</p>
      *
      * @param tokenKey 需要检查的tokenKey
+     * @param onlineUserDto a {@link com.boot.admin.security.dto.OnlineUserDto} object.
      */
     public void checkRenewal(String tokenKey, OnlineUserDto onlineUserDto) {
         //更新最后访问时间
