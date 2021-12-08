@@ -174,7 +174,7 @@
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.enabled"
-                :disabled="user.id === scope.row.id"
+                :disabled="!checkPermission(permission.edit)"
                 active-color="#409EFF"
                 inactive-color="#F56C6C"
                 @change="changeEnabled(scope.row, scope.row.enabled)"
@@ -235,6 +235,8 @@ import { mapGetters } from 'vuex'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import { Notification } from 'element-ui'
+import checkPermission from '@/utils/permission'
+
 const defaultForm = {
   id: null,
   username: null,
@@ -325,6 +327,7 @@ export default {
     }
   },
   methods: {
+    checkPermission,
     // 新增与编辑前做的操作
     [Crud.HOOK.afterToCU](crud, form) {
       this.getRoles()

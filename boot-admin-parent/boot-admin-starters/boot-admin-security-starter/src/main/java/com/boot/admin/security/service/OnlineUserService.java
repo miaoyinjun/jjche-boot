@@ -2,7 +2,6 @@ package com.boot.admin.security.service;
 
 import cn.hutool.extra.servlet.ServletUtil;
 import com.boot.admin.cache.service.RedisService;
-import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.util.FileUtil;
 import com.boot.admin.common.util.HttpUtil;
 import com.boot.admin.common.util.RsaUtils;
@@ -39,6 +38,8 @@ public class OnlineUserService {
     private SecurityProperties properties;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private JwtUserService jwtUserService;
 
     /**
      * 保存在线用户信息
@@ -111,17 +112,10 @@ public class OnlineUserService {
     public void logout(String token) {
         try {
             String username = SecurityUtils.getCurrentUsername();
-            Long userId = SecurityUtils.getCurrentUserId();
-
-            redisService.delete(CacheKey.DATE_USER_ID + userId);
-            redisService.delete(CacheKey.MENU_USER_ID + userId);
-            redisService.delete(CacheKey.ROLE_AUTH + userId);
-
             SecurityJwtProperties securityJwtProperties = properties.getJwt();
             String key = securityJwtProperties.getOnlineKey() + token;
             redisService.delete(key);
-            redisService.delete(CacheKey.JWT_USER_NAME + username);
-            redisService.delete(CacheKey.USER_NAME + username);
+            jwtUserService.removeByUserName(username);
         } catch (Exception e) {
 
         }

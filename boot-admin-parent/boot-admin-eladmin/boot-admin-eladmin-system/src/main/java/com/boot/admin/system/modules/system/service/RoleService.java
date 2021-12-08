@@ -255,7 +255,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      * @param user 用户信息
      * @return 权限信息
      */
-    @Cached(name = CacheKey.ROLE_AUTH, key = "#user.id")
     public List<GrantedAuthority> mapToGrantedAuthorities(UserVO user) {
         Set<String> permissions = new HashSet<>();
         // 如果是管理员直接返回
@@ -335,10 +334,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         List<UserDO> users = userMapper.findByRoleId(id);
         if (CollectionUtil.isNotEmpty(users)) {
             users.forEach(item -> jwtUserService.removeByUserName(item.getUsername()));
-            Set<Long> userIds = users.stream().map(UserDO::getId).collect(Collectors.toSet());
-            redisService.delByKeys(CacheKey.DATE_USER_ID, userIds);
-            redisService.delByKeys(CacheKey.MENU_ID, userIds);
-            redisService.delByKeys(CacheKey.ROLE_AUTH, userIds);
         }
         redisService.delete(CacheKey.ROLE_ID + id);
     }
