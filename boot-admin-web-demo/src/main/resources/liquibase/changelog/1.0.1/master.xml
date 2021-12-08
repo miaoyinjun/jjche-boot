@@ -4,7 +4,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="changelog/1.0.0/master.xml" relativeToChangelogFile="true"/>
-    <include file="changelog/1.0.1/master.xml" relativeToChangelogFile="true"/>
-
+    <include file="xml/20211208_001_update_menu_student.xml" relativeToChangelogFile="true"/>
+    <changeSet  author="miaoyj"  id="1.0.1">
+        <tagDatabase  tag="1.0.1"/>
+    </changeSet>
 </databaseChangeLog>
