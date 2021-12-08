@@ -19,7 +19,7 @@
     </div>
     <!--表格渲染-->
     <el-table ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler" :row-class-name="tableRowClassName">
-      <el-table-column type="expand">
+      <el-table-column type="expand" label="参数">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="请求地址">

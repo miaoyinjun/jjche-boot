@@ -20,10 +20,9 @@ import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.util.MybatisUtil;
-import com.boot.admin.system.modules.system.domain.DeptDO;
-import com.boot.admin.system.modules.system.domain.UserDO;
 import com.boot.admin.system.modules.system.api.dto.DeptDTO;
 import com.boot.admin.system.modules.system.api.dto.DeptQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.domain.DeptDO;
 import com.boot.admin.system.modules.system.mapper.DeptMapper;
 import com.boot.admin.system.modules.system.mapper.RoleMapper;
 import com.boot.admin.system.modules.system.mapper.UserMapper;
@@ -370,9 +369,7 @@ public class DeptService extends MyServiceImpl<DeptMapper, DeptDO> {
      * @param id /
      */
     public void delCaches(Long id) {
-        List<UserDO> users = userRepository.findByDeptRoleId(id);
         // 删除数据权限
-        redisService.delByKeys(CacheKey.DATE_USER_ID, users.stream().map(UserDO::getId).collect(Collectors.toSet()));
         redisService.delete(CacheKey.DEPT_ID + id);
     }
 
