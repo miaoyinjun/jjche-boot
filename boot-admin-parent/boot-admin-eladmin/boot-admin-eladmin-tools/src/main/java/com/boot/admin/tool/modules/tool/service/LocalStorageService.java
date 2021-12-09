@@ -2,7 +2,7 @@ package com.boot.admin.tool.modules.tool.service;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.boot.admin.common.annotation.EncryptField;
 import com.boot.admin.common.annotation.EncryptMethod;
 import com.boot.admin.common.enums.FileType;
@@ -10,6 +10,7 @@ import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.tool.modules.tool.config.FileProperties;
 import com.boot.admin.tool.modules.tool.domain.LocalStorageDO;
@@ -54,8 +55,8 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(LocalStorageQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(LocalStorageQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(name LIKE {0} OR suffix LIKE {0} OR type LIKE {0})", "%" + blurry + "%");
@@ -71,7 +72,7 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
      * @return /
      */
     public MyPage<LocalStorageDTO> pageQuery(LocalStorageQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<LocalStorageDTO> list = localStorageMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -85,7 +86,7 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
      * @return /
      */
     public List<LocalStorageDTO> queryAll(LocalStorageQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return localStorageMapper.toVO(this.list(queryWrapper));
     }
 

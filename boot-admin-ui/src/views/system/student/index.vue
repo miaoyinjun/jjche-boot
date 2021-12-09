@@ -105,7 +105,7 @@ export default {
   mixins: [presenter(), header(), form(defaultForm), crud()],
   dicts: ['course_status'],
   cruds() {
-    return CRUD({ title: '用户', url: 'students', idField: 'id', sort: 'id DESC', crudMethod: { ...crudStudent }})
+    return CRUD({ title: '用户', url: 'students', idField: 'id', crudMethod: { ...crudStudent }})
   },
   data() {
     return {

@@ -78,7 +78,7 @@ export default {
   cruds() {
     return [
       Crud({
-        title: '字典详情', url: 'sys/dictDetail', query: { dictName: '' }, sort: ['id desc'],
+        title: '字典详情', url: 'sys/dictDetail', query: { dictName: '' },
         crudMethod: { ...crudDictDetail },
         optShow: {
           add: true,

@@ -4,14 +4,12 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import com.boot.admin.mybatis.aop.SortAspect;
 import com.boot.admin.mybatis.extension.MySqlInjector;
 import com.boot.admin.mybatis.handler.MyMetaObjectHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import tk.mybatis.orderbyhelper.OrderByHelper;
 
 /**
  * <p>
@@ -23,7 +21,7 @@ import tk.mybatis.orderbyhelper.OrderByHelper;
  * @since 2020-07-09
  */
 @Configuration
-@Import({MyMetaObjectHandler.class, MySqlInjector.class, SortAspect.class})
+@Import({MyMetaObjectHandler.class, MySqlInjector.class})
 @EnableTransactionManagement
 public class MybatisAutoConfiguration {
     /**
@@ -49,16 +47,16 @@ public class MybatisAutoConfiguration {
 //        interceptor.addInnerInterceptor(dataPermissionInterceptor);
         return interceptor;
     }
-
-    /**
-     * <p>排序</p>
-     *
-     * @return a {@link tk.mybatis.orderbyhelper.OrderByHelper} object.
-     */
-    @Bean
-    public OrderByHelper orderByHelper() {
-        return new OrderByHelper();
-    }
+//
+//    /**
+//     * <p>排序</p>
+//     *
+//     * @return a {@link tk.mybatis.orderbyhelper.OrderByHelper} object.
+//     */
+//    @Bean
+//    public OrderByHelper orderByHelper() {
+//        return new OrderByHelper();
+//    }
 
 //    /**
 //     * 数据权限插件

@@ -11,7 +11,6 @@ import cn.hutool.log.StaticLog;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
-import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.util.PwdCheckUtil;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
@@ -20,6 +19,7 @@ import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.AliYunSmsCodeProperties;
@@ -93,14 +93,14 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(UserQueryCriteriaDTO criteria) {
+    private LambdaQueryWrapper queryWrapper(UserQueryCriteriaDTO criteria) {
         Long deptId = criteria.getDeptId();
         if (!ObjectUtils.isEmpty(deptId)) {
             criteria.getDeptIds().add(deptId);
             criteria.getDeptIds().addAll(deptService.getDeptChildren(deptService.findByPid(deptId)));
         }
 
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(email LIKE {0} OR username LIKE {0} OR nick_name LIKE {0})", "%" + blurry + "%");
@@ -116,7 +116,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @return /
      */
     public MyPage<UserVO> queryAll(UserQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(page, queryWrapper);
         List<UserVO> list = userMapStruct.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -130,7 +130,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @return /
      */
     public List<UserDO> queryAll(UserQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.list(queryWrapper);
     }
 

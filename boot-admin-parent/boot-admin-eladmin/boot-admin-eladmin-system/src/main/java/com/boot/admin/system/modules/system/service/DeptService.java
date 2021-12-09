@@ -7,7 +7,6 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
@@ -100,8 +99,8 @@ public class DeptService extends MyServiceImpl<DeptMapper, DeptDO> {
             }
         }
 
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
-        queryWrapper.orderByAsc("dept_sort");
+        LambdaQueryWrapper<DeptDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
+        queryWrapper.orderByAsc(DeptDO::getDeptSort);
         List<DeptDO> doList = this.list(queryWrapper);
         List<DeptDTO> list = deptMapstruct.toVO(doList);
         // 如果为空，就代表为自定义权限或者本级权限，就需要去重，不理解可以注释掉，看查询结果

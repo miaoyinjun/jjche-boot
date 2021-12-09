@@ -10,20 +10,17 @@ import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionRuleDTO;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionRuleQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.api.enums.DataPermissionRuleSortEnum;
 import com.boot.admin.system.modules.system.api.vo.DataPermissionRuleVO;
 import com.boot.admin.system.modules.system.service.DataPermissionRuleService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -134,11 +131,8 @@ public class DataPermissionRuleController extends BaseController{
             type = LogType.SELECT, module = "数据规则"
     )
     public ResultWrapper<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
-                                                                 @ApiParam(value = "排序", required = true)
-                            @NotNull(message = "排序字段不正确")
-                            @RequestParam DataPermissionRuleSortEnum sort,
                                                                  @Validated DataPermissionRuleQueryCriteriaDTO query){
-        return ResultWrapper.ok(sysDataPermissionRuleService.pageQuery(page, sort, query));
+        return ResultWrapper.ok(sysDataPermissionRuleService.pageQuery(page, query));
     }
 
 }

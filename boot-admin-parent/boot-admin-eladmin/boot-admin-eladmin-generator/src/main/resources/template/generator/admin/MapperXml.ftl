@@ -21,8 +21,4 @@
     <select id="pageQuery" resultType="${packageApi}.vo.${className}VO">
         <include refid="querySql"/>
     </select>
-
-    <select id="queryAll" resultType="${packageService}.domain.${className}DO">
-        <include refid="querySql"/>
-    </select>
 </mapper>

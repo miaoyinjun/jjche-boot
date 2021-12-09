@@ -4,17 +4,16 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.dto.PermissionDataRuleDTO;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionRuleDTO;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionRuleQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionRuleRoleQueryCriteriaDTO;
-import com.boot.admin.system.modules.system.api.enums.DataPermissionRuleSortEnum;
 import com.boot.admin.system.modules.system.api.vo.DataPermissionRuleVO;
 import com.boot.admin.system.modules.system.domain.DataPermissionRuleDO;
 import com.boot.admin.system.modules.system.mapper.DataPermissionRuleMapper;
@@ -111,9 +110,9 @@ public class DataPermissionRuleService extends MyServiceImpl<DataPermissionRuleM
      * @param page  分页
      * @return DataPermissionRuleVO 分页
      */
-    public MyPage<DataPermissionRuleVO> pageQuery(PageParam page, DataPermissionRuleSortEnum sort, DataPermissionRuleQueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        return this.baseMapper.pageQuery(page, sort, queryWrapper);
+    public MyPage<DataPermissionRuleVO> pageQuery(PageParam page, DataPermissionRuleQueryCriteriaDTO query) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(query, SortEnum.ID_DESC);
+        return this.baseMapper.pageQuery(page, queryWrapper);
     }
 
     /**
@@ -141,7 +140,7 @@ public class DataPermissionRuleService extends MyServiceImpl<DataPermissionRuleM
     public MyPage<DataPermissionRuleVO> pageByMenuIdAndRoleId(PageParam page, DataPermissionRuleRoleQueryCriteriaDTO query) {
         DataPermissionRuleQueryCriteriaDTO newQuery = new DataPermissionRuleQueryCriteriaDTO();
         newQuery.setMenuId(query.getMenuId());
-        MyPage<DataPermissionRuleVO> myPage = this.pageQuery(page, DataPermissionRuleSortEnum.ID_DESC, newQuery);
+        MyPage<DataPermissionRuleVO> myPage = this.pageQuery(page, newQuery);
         if (myPage != null) {
             List<DataPermissionRuleVO> records = myPage.getRecords();
             if (CollUtil.isNotEmpty(records)) {
