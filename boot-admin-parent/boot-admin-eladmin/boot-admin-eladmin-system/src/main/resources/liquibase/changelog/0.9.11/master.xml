@@ -1,0 +1,11 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="xml/202112009_001_add_column_tb_sys_log.xml" relativeToChangelogFile="true"/>
+    <changeSet  author="miaoyj"  id="0.9.11">
+        <tagDatabase  tag="0.9.11"/>
+    </changeSet>
+</databaseChangeLog>

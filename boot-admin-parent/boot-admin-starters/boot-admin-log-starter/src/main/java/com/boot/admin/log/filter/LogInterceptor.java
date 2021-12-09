@@ -1,5 +1,6 @@
 package com.boot.admin.log.filter;
 
+import com.boot.admin.common.constant.LogConstant;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,15 +20,13 @@ import java.util.UUID;
  */
 public class LogInterceptor implements HandlerInterceptor {
 
-    private final static String REQUEST_ID = "requestId";
-
     /** {@inheritDoc} */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 //        String xForwardedForHeader = httpServletRequest.getHeader("X-Forwarded-For");
 //        String remoteIp = httpServletRequest.getRemoteAddr();
         String uuid = UUID.randomUUID().toString();
-        MDC.put(REQUEST_ID, uuid);
+        MDC.put(LogConstant.REQUEST_ID, uuid);
         return true;
     }
 
@@ -35,7 +34,7 @@ public class LogInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
 //        String uuid = MDC.get(REQUEST_ID);
-        MDC.remove(REQUEST_ID);
+        MDC.remove(LogConstant.REQUEST_ID);
     }
 
     /** {@inheritDoc} */
