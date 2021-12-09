@@ -16,8 +16,8 @@ import java.sql.Timestamp;
  * </p>
  *
  * @author miaoyj
- * @since 2021-04-28
  * @version 1.0.0-SNAPSHOT
+ * @since 2021-04-28
  */
 @Data
 @SuperBuilder
@@ -151,4 +151,9 @@ public class LogRecord {
      * 条件
      */
     private String condition;
+
+    /**
+     * 请求id
+     */
+    private String requestId;
 }

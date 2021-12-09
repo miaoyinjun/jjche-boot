@@ -63,7 +63,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
         LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (cn.hutool.core.util.StrUtil.isNotBlank(blurry)) {
-            queryWrapper.apply("(username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0})", "%" + blurry + "%");
+            queryWrapper.apply("(username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0} OR request_id LIKE {0})", "%" + blurry + "%");
         }
         return queryWrapper;
     }

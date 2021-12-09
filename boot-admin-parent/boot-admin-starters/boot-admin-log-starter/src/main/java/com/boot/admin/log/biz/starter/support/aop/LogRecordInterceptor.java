@@ -11,6 +11,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
+import com.boot.admin.common.constant.LogConstant;
 import com.boot.admin.common.pojo.AbstractResultWrapper;
 import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.common.util.ThrowableUtil;
@@ -27,6 +28,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.MDC;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpHeaders;
@@ -150,6 +152,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         boolean success = methodExecuteResult.isSuccess();
         //执行前
         LogRecord logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
+        logRecord.setRequestId(MDC.get(LogConstant.REQUEST_ID));
         Throwable throwable = methodExecuteResult.getThrowable();
         //异常数据
         if (throwable != null) {
