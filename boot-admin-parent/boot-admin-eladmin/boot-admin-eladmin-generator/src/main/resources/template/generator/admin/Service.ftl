@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import ${packageApi}.dto.${className}QueryCriteriaDTO;
 import com.boot.admin.mybatis.param.MyPage;
 import java.util.*;
-import ${packageApi}.enums.${className}SortEnum;
 
 /**
 * <p>
@@ -68,36 +67,33 @@ public interface I${className}Service extends IMyService<${className}DO> {
     * 查询数据分页
     * </p>
     * @param query 条件
-    * @param sort 排序
     * @param page 分页
     * @return ${className}VO 分页
     * @author ${author}
     * @since ${date}
     */
-    MyPage<${className}VO> pageQuery(PageParam page, ${className}SortEnum sort, ${className}QueryCriteriaDTO query);
+    MyPage<${className}VO> pageQuery(PageParam page, ${className}QueryCriteriaDTO query);
 
     /**
     * <p>
     * 查询所有数据不分页
     * </p>
-    * @param sort 排序
     * @param query 条件
     * @return ${className}VO 列表对象
     * @author ${author}
     * @since ${date}
     */
-    List<${className}VO> listQueryAll(${className}SortEnum sort, ${className}QueryCriteriaDTO query);
+    List<${className}VO> listQueryAll(${className}QueryCriteriaDTO query);
 
     /**
     * <p>
     * 导出数据
     * </p>
-    * @param sort 排序
     * @param query 条件
     * @author ${author}
     * @since ${date}
     */
-    void download(${className}SortEnum sort, ${className}QueryCriteriaDTO query);
+    void download(${className}QueryCriteriaDTO query);
 
 
 }

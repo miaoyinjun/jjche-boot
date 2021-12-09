@@ -1,11 +1,12 @@
 package com.boot.admin.system.modules.mnt.service;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.mnt.domain.DeployHistoryDO;
 import com.boot.admin.system.modules.mnt.dto.DeployHistoryDTO;
@@ -33,6 +34,7 @@ public class DeployHistoryService extends MyServiceImpl<DeployHistoryMapper, Dep
 
     private final DeployHistoryMapStruct deployHistoryMapper;
 
+
     /**
      * <p>
      * 获取列表查询语句
@@ -41,8 +43,8 @@ public class DeployHistoryService extends MyServiceImpl<DeployHistoryMapper, Dep
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(DeployHistoryQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(DeployHistoryQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(appName LIKE {0} OR ip LIKE {0} OR deployUser LIKE {0})", "%" + blurry + "%");
@@ -58,7 +60,7 @@ public class DeployHistoryService extends MyServiceImpl<DeployHistoryMapper, Dep
      * @return /
      */
     public MyPage queryAll(DeployHistoryQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<DeployHistoryDTO> list = deployHistoryMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -72,7 +74,7 @@ public class DeployHistoryService extends MyServiceImpl<DeployHistoryMapper, Dep
      * @return /
      */
     public List<DeployHistoryDTO> queryAll(DeployHistoryQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return deployHistoryMapper.toVO(this.list(queryWrapper));
     }
 

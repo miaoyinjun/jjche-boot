@@ -1,12 +1,13 @@
 package com.boot.admin.system.modules.mnt.service;
 
 import cn.hutool.core.lang.Assert;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.security.dto.UserVO;
 import com.boot.admin.system.modules.mnt.domain.AppDO;
@@ -36,6 +37,18 @@ public class AppService extends MyServiceImpl<AppMapper, AppDO> {
     private final AppMapStruct appMapStruct;
 
     /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param criteria 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(AppQueryCriteriaDTO criteria) {
+        return MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
+    }
+
+    /**
      * 分页查询
      *
      * @param criteria 条件
@@ -43,7 +56,7 @@ public class AppService extends MyServiceImpl<AppMapper, AppDO> {
      * @return /
      */
     public MyPage queryAll(AppQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<UserVO> list = appMapStruct.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -57,7 +70,7 @@ public class AppService extends MyServiceImpl<AppMapper, AppDO> {
      * @return /
      */
     public List<AppDTO> queryAll(AppQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return appMapStruct.toVO(this.list(queryWrapper));
     }
 

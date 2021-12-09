@@ -3,12 +3,13 @@ package com.boot.admin.system.modules.mnt.service;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.mnt.domain.AppDO;
 import com.boot.admin.system.modules.mnt.domain.DeployDO;
@@ -57,6 +58,18 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
 
 
     /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param criteria 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(DeployQueryCriteriaDTO criteria) {
+        return MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
+    }
+
+    /**
      * 分页查询
      *
      * @param criteria 条件
@@ -64,7 +77,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
      * @return /
      */
     public MyPage queryAll(DeployQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<DeployDTO> list = deployMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -78,7 +91,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
      * @return /
      */
     public List<DeployDTO> queryAll(DeployQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return deployMapper.toVO(this.list(queryWrapper));
     }
 

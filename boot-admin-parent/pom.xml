@@ -298,11 +298,6 @@
                 <version>${mapstruct.version}</version>
             </dependency>
             <dependency>
-                <groupId>tk.mybatis</groupId>
-                <artifactId>orderby-helper</artifactId>
-                <version>0.0.2</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-pool2</artifactId>
                 <version>${commons-pool2.version}</version>

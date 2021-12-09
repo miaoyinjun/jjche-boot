@@ -25,6 +25,7 @@ import com.boot.admin.log.modules.logging.vo.LogVO;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
@@ -58,8 +59,8 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(LogQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(LogQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (cn.hutool.core.util.StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(username LIKE {0} OR description LIKE {0} OR address LIKE {0} OR request_ip LIKE {0} OR method LIKE {0} OR params LIKE {0} OR detail LIKE {0} OR url LIKE {0} OR module LIKE {0} OR biz_no LIKE {0} OR biz_key LIKE {0})", "%" + blurry + "%");
@@ -75,7 +76,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @return /
      */
     public MyPage<LogVO> queryAll(LogQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<LogVO> list = logSmallMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -89,7 +90,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @return /
      */
     public List<LogVO> queryAll(LogQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return logSmallMapper.toVO(this.list(queryWrapper));
     }
 
@@ -194,8 +195,8 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      *
      * @param bizKey 业务标识
      * @param bizNo  业务主键
+     * @param page   a {@link com.boot.admin.mybatis.param.PageParam} object.
      * @return 日志
-     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
      */
     public MyPage<LogDO> listByBizKeyAndBizNo(PageParam page, String bizKey, String bizNo) {
         LambdaQueryWrapper<LogDO> queryWrapper = new LambdaQueryWrapper<>();
@@ -204,7 +205,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
         queryWrapper.eq(LogDO::getCategory, LogCategoryType.OPERATING);
         queryWrapper.in(LogDO::getLogType, CollUtil.newHashSet(LogType.ADD, LogType.UPDATE, LogType.DELETE));
         queryWrapper.apply("FIND_IN_SET({0}, biz_no)", bizNo);
-        queryWrapper.orderByDesc(LogDO::getGmtCreate);
+        queryWrapper.orderByDesc(LogDO::getId);
         return this.page(page, queryWrapper);
     }
 

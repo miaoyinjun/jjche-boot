@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.boot.admin.mybatis.base.MyBaseMapper;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
-import com.boot.admin.system.modules.system.api.enums.DataPermissionRuleRoleSortEnum;
 import com.boot.admin.system.modules.system.api.vo.DataPermissionRuleRoleVO;
 import com.boot.admin.system.modules.system.domain.DataPermissionRuleRoleDO;
 import org.apache.ibatis.annotations.Param;
@@ -29,20 +28,18 @@ public interface DataPermissionRuleRoleMapper extends MyBaseMapper<DataPermissio
      * </p>
      *
      * @param page 分页
-     * @param sort 排序
      * @param wrapper 自定义sql
      * @return 分页VO
      */
-    MyPage<DataPermissionRuleRoleVO> pageQuery(PageParam page, DataPermissionRuleRoleSortEnum sort, @Param(Constants.WRAPPER) Wrapper wrapper);
+    MyPage<DataPermissionRuleRoleVO> pageQuery(PageParam page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
     /**
      * <p>
      * 查询全部
      * </p>
      *
-     * @param sort 排序
      * @param wrapper 自定义sql
      * @return DO
      */
-    List<DataPermissionRuleRoleDO> queryAll(DataPermissionRuleRoleSortEnum sort, @Param(Constants.WRAPPER) Wrapper wrapper);
+    List<DataPermissionRuleRoleDO> queryAll(@Param(Constants.WRAPPER) Wrapper wrapper);
 }

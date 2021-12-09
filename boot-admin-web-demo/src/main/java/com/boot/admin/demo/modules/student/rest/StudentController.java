@@ -10,7 +10,6 @@ import com.boot.admin.demo.constant.ApiVersion;
 import com.boot.admin.demo.modules.student.api.dto.StudentDTO;
 import com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
 import com.boot.admin.demo.modules.student.api.enums.CourseEnum;
-import com.boot.admin.demo.modules.student.api.enums.StudentSortEnum;
 import com.boot.admin.demo.modules.student.api.vo.StudentVO;
 import com.boot.admin.demo.modules.student.service.StudentService;
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -28,7 +27,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 /**
@@ -121,24 +119,19 @@ public class StudentController extends BaseController {
     /**
      * <p>download.</p>
      *
-     * @param sort     a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
      * @param criteria a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      */
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ApiOperation(value = "学生-导出", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    public void download(@ApiParam(value = "排序", required = true)
-                         @NotNull(message = "排序字段不正确")
-                         @RequestParam StudentSortEnum sort,
-                         StudentQueryCriteriaDTO criteria) {
-        studentService.download(sort, criteria);
+    public void download(StudentQueryCriteriaDTO criteria) {
+        studentService.download(criteria);
     }
 
     /**
      * <p>pageQuery.</p>
      *
      * @param page   a {@link com.boot.admin.mybatis.param.PageParam} object.
-     * @param sort   a {@link com.boot.admin.demo.modules.student.api.enums.StudentSortEnum} object.
      * @param query  a {@link com.boot.admin.demo.modules.student.api.dto.StudentQueryCriteriaDTO} object.
      * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
@@ -147,13 +140,10 @@ public class StudentController extends BaseController {
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
     public ResultWrapper<MyPage<StudentVO>> pageQuery(PageParam page,
-                                                      @ApiParam(value = "排序", required = true)
-                                                      @NotNull(message = "排序字段不正确")
-                                                      @RequestParam StudentSortEnum sort,
                                                       @ApiParam(value = "课程")
                                                       @RequestParam(required = false) CourseEnum course,
                                                       @Validated StudentQueryCriteriaDTO query) {
-        return ResultWrapper.ok(studentService.pageQuery(page, sort, course, query));
+        return ResultWrapper.ok(studentService.pageQuery(page, course, query));
     }
 
 }
