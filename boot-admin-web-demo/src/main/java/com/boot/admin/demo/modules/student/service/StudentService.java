@@ -119,7 +119,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * @return StudentVO 分页
      * @param course a {@link com.boot.admin.demo.modules.student.api.enums.CourseEnum} object.
      */
-    public MyPage<StudentVO> pageQuery(PageParam page, CourseEnum course, StudentQueryCriteriaDTO query) {
+    public MyPage<StudentVO> page(PageParam page, CourseEnum course, StudentQueryCriteriaDTO query) {
         LambdaQueryWrapper<StudentDO> queryWrapper = queryWrapper(query);
         if (course != null) {
             queryWrapper.eq(StudentDO::getCourse, course);
@@ -135,7 +135,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * @param query 条件
      * @return StudentVO 列表对象
      */
-    public List<StudentVO> listQueryAll(StudentQueryCriteriaDTO query) {
+    public List<StudentVO> list(StudentQueryCriteriaDTO query) {
         LambdaQueryWrapper queryWrapper = queryWrapper(query);
         List<StudentDO> list = this.list(queryWrapper);
         return studentMapStruct.toVO(list);
@@ -150,7 +150,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      */
     public void download(StudentQueryCriteriaDTO query) {
         List<Map<String, Object>> list = new ArrayList<>();
-        List<StudentVO> all = this.listQueryAll(query);
+        List<StudentVO> all = this.list(query);
         for (StudentVO student : all) {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("姓名", student.getName());

@@ -101,7 +101,7 @@ public class ${className}Controller extends BaseController{
     @PreAuthorize("@el.check('${changeClassName}:list')")
     public ResultWrapper<MyPage<${className}VO>> pageQuery(PageParam page,
                             @Validated ${className}QueryCriteriaDTO query){
-        return ResultWrapper.ok(${changeClassName}Service.pageQuery(page, query));
+        return ResultWrapper.ok(${changeClassName}Service.page(page, query));
     }
 
 }

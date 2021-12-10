@@ -139,7 +139,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     * @param page 分页
     * @return ${className}VO 分页
     */
-    public MyPage<${className}VO> pageQuery(PageParam page, ${className}QueryCriteriaDTO query) {
+    public MyPage<${className}VO> page(PageParam page, ${className}QueryCriteriaDTO query) {
         LambdaQueryWrapper<${className}DO> queryWrapper = queryWrapper(query);
         return this.baseMapper.pageQuery(page, queryWrapper);
     }
@@ -151,7 +151,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     * @param query 条件
     * @return ${className}VO 列表对象
     */
-    public List<${className}VO> listQueryAll(${className}QueryCriteriaDTO query){
+    public List<${className}VO> list(${className}QueryCriteriaDTO query){
         LambdaQueryWrapper<${className}DO> queryWrapper = queryWrapper(query);
         List<${className}DO> list = this.list(queryWrapper);
         return ${changeClassName}MapStruct.toVO(list);
@@ -165,7 +165,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     */
     public void download(${className}QueryCriteriaDTO query) {
         List<Map<String, Object>> list = new ArrayList<>();
-        List<${className}VO> all = this.listQueryAll(query);
+        List<${className}VO> all = this.list(query);
         for (${className}VO ${changeClassName} : all) {
             Map<String,Object> map = new LinkedHashMap<>();
         <#list columns as column>
