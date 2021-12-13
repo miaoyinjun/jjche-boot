@@ -106,7 +106,6 @@ public class DataPermissionRuleService extends MyServiceImpl<DataPermissionRuleM
      * </p>
      *
      * @param query 条件
-     * @param sort  排序
      * @param page  分页
      * @return DataPermissionRuleVO 分页
      */

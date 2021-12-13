@@ -119,7 +119,6 @@ public class DataPermissionRuleController extends BaseController{
      * <p>pageQuery.</p>
      *
      * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
-     * @param sort a {@link com.boot.admin.system.modules.system.api.enums.DataPermissionRuleSortEnum} object.
      * @param query a {@link com.boot.admin.system.modules.system.api.dto.DataPermissionRuleQueryCriteriaDTO} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */

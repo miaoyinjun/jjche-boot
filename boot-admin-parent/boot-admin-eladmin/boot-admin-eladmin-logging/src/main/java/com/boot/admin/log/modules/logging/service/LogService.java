@@ -174,6 +174,8 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
 
     /**
      * 删除N个月之前的数据
+     *
+     * @param month 月
      */
     @Transactional(rollbackFor = Exception.class)
     public void delMonth(Integer month) {

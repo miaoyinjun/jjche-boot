@@ -83,7 +83,6 @@ public class DataPermissionFieldRoleService extends MyServiceImpl<DataPermission
      * 查询所有数据不分页
      * </p>
      *
-     * @param sort  排序
      * @param query 条件
      * @return DataPermissionFieldRoleVO 列表对象
      */

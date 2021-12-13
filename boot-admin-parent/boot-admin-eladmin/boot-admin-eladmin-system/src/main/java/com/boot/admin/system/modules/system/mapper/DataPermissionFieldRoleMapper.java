@@ -28,7 +28,6 @@ public interface DataPermissionFieldRoleMapper extends MyBaseMapper<DataPermissi
      * </p>
      *
      * @param page    分页
-     * @param sort    排序
      * @param wrapper 自定义sql
      * @return 分页VO
      */
@@ -39,7 +38,6 @@ public interface DataPermissionFieldRoleMapper extends MyBaseMapper<DataPermissi
      * 查询全部
      * </p>
      *
-     * @param sort    排序
      * @param wrapper 自定义sql
      * @return DO
      */
