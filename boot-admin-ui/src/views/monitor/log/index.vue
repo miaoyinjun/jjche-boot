@@ -126,7 +126,7 @@ export default {
       })
     },
     confirmDelAll() {
-      this.$confirm(`确认清空6个月之前的操作日志吗?`, '提示', {
+      this.$confirm(`确认清空所有操作日志吗?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
