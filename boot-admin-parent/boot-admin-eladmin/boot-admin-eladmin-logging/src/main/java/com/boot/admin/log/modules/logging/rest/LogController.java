@@ -102,10 +102,10 @@ public class LogController extends BaseController {
      */
     @DeleteMapping(value = "/del")
     @LogRecordAnnotation(
-            value = "清空6个月之前的操作日志", category = LogCategoryType.MANAGER,
+            value = "清空3个月之前的操作日志", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "日志"
     )
-    @ApiOperation("清空6个月之前的操作日志")
+    @ApiOperation("清空3个月之前的操作日志")
     @PreAuthorize("@el.check('log:del')")
     public ResultWrapper delAllInfoLog() {
         logService.delAll();

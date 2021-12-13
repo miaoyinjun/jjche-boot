@@ -4,9 +4,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="xml/202112009_001_add_column_tb_sys_log.xml" relativeToChangelogFile="true"/>
-    <include file="xml/202112013_001_add_sys_quartz_job.xml" relativeToChangelogFile="true"/>
-    <changeSet  author="miaoyj"  id="0.9.11">
-        <tagDatabase  tag="0.9.11"/>
+    <changeSet id="202112013_001_add_sys_quartz_job" author="miaoyj">
+        <sqlFile path="sql/202112013_001_add_sys_quartz_job.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/202112013_001_add_sys_quartz_job_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
     </changeSet>
+
 </databaseChangeLog>

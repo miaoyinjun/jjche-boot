@@ -46,10 +46,6 @@ public class DictDetailController extends BaseController {
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询详情", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "字典"
-    )
     @ApiOperation("查询字典详情")
     @GetMapping
     public ResultWrapper<MyPage<DictDetailDTO>> query(DictDetailQueryCriteriaDTO criteria, PageParam pageable) {
@@ -62,10 +58,6 @@ public class DictDetailController extends BaseController {
      * @param dictName a {@link java.lang.String} object.
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询多个字典详情", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "字典"
-    )
     @ApiOperation("查询多个字典详情")
     @GetMapping(value = "/map")
     public ResultWrapper<Map<String, List<DictDetailDTO>>> getDictDetailMaps(@RequestParam String dictName) {

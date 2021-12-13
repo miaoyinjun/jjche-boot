@@ -163,8 +163,21 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void delAll() {
-        //删除6个月之前的数据
-        DateTime dateTime = DateUtil.offsetMonth(DateUtil.date(), -6);
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.select("id");
+        List<String> ids = this.listObjs(queryWrapper, a -> {
+            return a.toString();
+        });
+        this.removeByIds(ids);
+    }
+
+
+    /**
+     * 删除N个月之前的数据
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delMonth(Integer month) {
+        DateTime dateTime = DateUtil.offsetMonth(DateUtil.date(), month);
         LambdaQueryWrapper<LogDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.le(LogDO::getGmtCreate, dateTime);
         this.remove(queryWrapper);
