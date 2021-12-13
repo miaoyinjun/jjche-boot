@@ -2,12 +2,12 @@ package com.boot.admin.system.modules.mnt.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.mnt.domain.ServerDeployDO;
 import com.boot.admin.system.modules.mnt.dto.ServerDeployDTO;
@@ -44,8 +44,8 @@ public class ServerDeployService extends MyServiceImpl<ServerDeployMapper, Serve
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(ServerDeployQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(ServerDeployQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(name LIKE {0} OR ip LIKE {0} OR account LIKE {0})", "%" + blurry + "%");
@@ -61,7 +61,7 @@ public class ServerDeployService extends MyServiceImpl<ServerDeployMapper, Serve
      * @return /
      */
     public MyPage queryAll(ServerDeployQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<ServerDeployDTO> list = serverDeployMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -75,7 +75,7 @@ public class ServerDeployService extends MyServiceImpl<ServerDeployMapper, Serve
      * @return /
      */
     public List<ServerDeployDTO> queryAll(ServerDeployQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.list(queryWrapper);
     }
 

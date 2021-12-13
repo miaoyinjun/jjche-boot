@@ -27,7 +27,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import cn.hutool.core.lang.Assert;
-import ${packageApi}.enums.${className}SortEnum;
+import com.boot.admin.mybatis.param.SortEnum;
 
 /**
 * <p>
@@ -43,11 +43,24 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
 
     private final ${className}MapStruct ${changeClassName}MapStruct;
 
+    /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param query 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(${className}QueryCriteriaDTO query) {
+        return MybatisUtil.assemblyLambdaQueryWrapper(query, SortEnum.ID_DESC);
+    }
+
    /**
    * <p>
    * 创建
    * </p>
    * @param dto 创建对象
+   * @return id
    */
     @Transactional(rollbackFor = Exception.class)
     public Long save(${className}DTO dto) {
@@ -123,26 +136,24 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     * 查询数据分页
     * </p>
     * @param query 条件
-    * @param sort 排序
     * @param page 分页
     * @return ${className}VO 分页
     */
-    public MyPage<${className}VO> pageQuery(PageParam page, ${className}SortEnum sort, ${className}QueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        return this.baseMapper.pageQuery(page, sort, queryWrapper);
+    public MyPage<${className}VO> page(PageParam page, ${className}QueryCriteriaDTO query) {
+        LambdaQueryWrapper<${className}DO> queryWrapper = queryWrapper(query);
+        return this.baseMapper.pageQuery(page, queryWrapper);
     }
 
     /**
     * <p>
     * 查询所有数据不分页
     * </p>
-    * @param sort 排序
     * @param query 条件
     * @return ${className}VO 列表对象
     */
-    public List<${className}VO> listQueryAll(${className}SortEnum sort, ${className}QueryCriteriaDTO query){
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        List<${className}DO> list = this.baseMapper.queryAll(sort, queryWrapper);
+    public List<${className}VO> list(${className}QueryCriteriaDTO query){
+        LambdaQueryWrapper<${className}DO> queryWrapper = queryWrapper(query);
+        List<${className}DO> list = this.list(queryWrapper);
         return ${changeClassName}MapStruct.toVO(list);
     }
 
@@ -150,12 +161,11 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     * <p>
     * 导出数据
     * </p>
-    * @param sort 排序
     * @param query 条件
     */
-    public void download(${className}SortEnum sort, ${className}QueryCriteriaDTO query) {
+    public void download(${className}QueryCriteriaDTO query) {
         List<Map<String, Object>> list = new ArrayList<>();
-        List<${className}VO> all = this.listQueryAll(sort, query);
+        List<${className}VO> all = this.list(query);
         for (${className}VO ${changeClassName} : all) {
             Map<String,Object> map = new LinkedHashMap<>();
         <#list columns as column>

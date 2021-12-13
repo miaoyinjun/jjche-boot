@@ -8,7 +8,6 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
@@ -65,13 +64,13 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(MenuQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(MenuQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper<MenuDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(title LIKE {0} OR component LIKE {0} OR permission LIKE {0})", "%" + blurry + "%");
         }
-        queryWrapper.orderByAsc("menu_sort");
+        queryWrapper.orderByAsc(MenuDO::getMenuSort);
         return queryWrapper;
     }
 
@@ -100,7 +99,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
                 }
             }
         }
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return menuMapStruct.toVO(this.list(queryWrapper));
     }
 
@@ -112,7 +111,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
      * @return a {@link com.boot.admin.mybatis.param.PageParam} object.
      */
     public MyPage<MenuDTO> queryPage(MenuQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<MenuDTO> list = menuMapStruct.toVO(myPage.getRecords());
         myPage.setNewRecords(list);

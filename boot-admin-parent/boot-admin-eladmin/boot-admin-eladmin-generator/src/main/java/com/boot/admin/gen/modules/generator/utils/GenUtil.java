@@ -73,7 +73,7 @@ public class GenUtil {
         templateNames.add("QueryCriteria");
         templateNames.add("ServiceImpl");
         templateNames.add("MapStruct");
-        templateNames.add("SortEnum");
+//        templateNames.add("SortEnum");
         templateNames.add("ApiVersion");
         templateNames.add("MenuRoleSql");
         return templateNames;

@@ -63,11 +63,6 @@ public class DictController extends BaseController {
      *
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "字典"
-    )
-    @ApiOperation("查询字典")
     @GetMapping(value = "/all")
     @PreAuthorize("@el.check('dict:list')")
     public ResultWrapper<List<DictDTO>> queryAll() {
@@ -81,10 +76,6 @@ public class DictController extends BaseController {
      * @param pageable /
      * @return a {@link com.boot.admin.core.wrapper.response.ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "字典"
-    )
     @ApiOperation("查询字典")
     @GetMapping
     @PreAuthorize("@el.check('dict:list')")

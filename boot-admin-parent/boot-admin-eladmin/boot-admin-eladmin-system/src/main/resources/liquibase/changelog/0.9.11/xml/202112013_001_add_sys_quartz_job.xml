@@ -1,0 +1,14 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="202112013_001_add_sys_quartz_job" author="miaoyj">
+        <sqlFile path="sql/202112013_001_add_sys_quartz_job.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/202112013_001_add_sys_quartz_job_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

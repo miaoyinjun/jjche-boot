@@ -6,7 +6,6 @@ import com.boot.admin.common.dto.PermissionDataRuleDTO;
 import com.boot.admin.mybatis.base.MyBaseMapper;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
-import com.boot.admin.system.modules.system.api.enums.DataPermissionRuleSortEnum;
 import com.boot.admin.system.modules.system.api.vo.DataPermissionRuleVO;
 import com.boot.admin.system.modules.system.domain.DataPermissionRuleDO;
 import org.apache.ibatis.annotations.Param;
@@ -30,22 +29,20 @@ public interface DataPermissionRuleMapper extends MyBaseMapper<DataPermissionRul
      * </p>
      *
      * @param page    分页
-     * @param sort    排序
      * @param wrapper 自定义sql
      * @return 分页VO
      */
-    MyPage<DataPermissionRuleVO> pageQuery(PageParam page, DataPermissionRuleSortEnum sort, @Param(Constants.WRAPPER) Wrapper wrapper);
+    MyPage<DataPermissionRuleVO> pageQuery(PageParam page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
     /**
      * <p>
      * 查询全部
      * </p>
      *
-     * @param sort    排序
      * @param wrapper 自定义sql
      * @return DO
      */
-    List<DataPermissionRuleDO> queryAll(DataPermissionRuleSortEnum sort, @Param(Constants.WRAPPER) Wrapper wrapper);
+    List<DataPermissionRuleDO> queryAll(@Param(Constants.WRAPPER) Wrapper wrapper);
 
     /**
      * <p>

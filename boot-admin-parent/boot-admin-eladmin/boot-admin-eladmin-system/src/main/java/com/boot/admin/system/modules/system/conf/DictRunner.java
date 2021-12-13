@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  *
  * @author miaoyj
  * @since 2021-12-03
- * @version 1.0.3
+ * @version 1.0.4-SNAPSHOT
  */
 @Component
 @RequiredArgsConstructor

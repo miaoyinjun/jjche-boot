@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSON;
 import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.util.ValidationUtil;
@@ -13,6 +12,7 @@ import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.tool.modules.tool.domain.QiniuConfigDO;
 import com.boot.admin.tool.modules.tool.domain.QiniuContentDO;
@@ -84,6 +84,19 @@ public class QiNiuService extends MyServiceImpl<QiNiuConfigMapper, QiniuConfigDO
         return qiniuConfig;
     }
 
+
+    /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param criteria 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(QiniuQueryCriteriaDTO criteria) {
+        return MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
+    }
+
     /**
      * 分页查询
      *
@@ -92,7 +105,7 @@ public class QiNiuService extends MyServiceImpl<QiNiuConfigMapper, QiniuConfigDO
      * @return /
      */
     public MyPage queryAll(QiniuQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.page(pageable, queryWrapper);
     }
 
@@ -103,7 +116,7 @@ public class QiNiuService extends MyServiceImpl<QiNiuConfigMapper, QiniuConfigDO
      * @return /
      */
     public List<QiniuContentDO> queryAll(QiniuQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.list(queryWrapper);
     }
 

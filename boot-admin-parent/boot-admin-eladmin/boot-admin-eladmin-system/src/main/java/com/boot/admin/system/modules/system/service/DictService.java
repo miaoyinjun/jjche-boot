@@ -2,7 +2,6 @@ package com.boot.admin.system.modules.system.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.util.ValidationUtil;
@@ -10,10 +9,11 @@ import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
-import com.boot.admin.system.modules.system.domain.DictDO;
 import com.boot.admin.system.modules.system.api.dto.DictDTO;
 import com.boot.admin.system.modules.system.api.dto.DictQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.domain.DictDO;
 import com.boot.admin.system.modules.system.mapper.DictMapper;
 import com.boot.admin.system.modules.system.mapstruct.DictMapStruct;
 import lombok.RequiredArgsConstructor;
@@ -46,8 +46,8 @@ public class DictService extends MyServiceImpl<DictMapper, DictDO> {
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(DictQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(DictQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(name LIKE {0} OR description LIKE {0})", "%" + blurry + "%");
@@ -63,7 +63,7 @@ public class DictService extends MyServiceImpl<DictMapper, DictDO> {
      * @return /
      */
     public MyPage queryAll(DictQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage<DictDO> myPage = this.page(pageable, queryWrapper);
         List<DictDTO> list = dictMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -77,7 +77,7 @@ public class DictService extends MyServiceImpl<DictMapper, DictDO> {
      * @return /
      */
     public List<DictDTO> queryAll(DictQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return dictMapper.toVO(this.list(queryWrapper));
     }
 

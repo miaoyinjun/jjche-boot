@@ -7,7 +7,9 @@ import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.boot.admin.common.annotation.QueryCriteria;
 import com.boot.admin.common.dto.BaseQueryCriteriaDTO;
 import com.boot.admin.common.dto.PermissionDataRuleDTO;
@@ -27,6 +29,54 @@ import java.util.*;
  */
 public class MybatisUtil {
 
+
+    /**
+     * <p>
+     * 组装排序queryWrapper
+     * </p>
+     *
+     * @param query    查询参数
+     * @return /
+     */
+    public static LambdaQueryWrapper assemblyLambdaQueryWrapper(BaseQueryCriteriaDTO query) {
+        return assemblyLambdaQueryWrapper(query, null);
+    }
+
+    /**
+     * <p>
+     * 组装排序queryWrapper
+     * </p>
+     *
+     * @param query    查询参数
+     * @param sortEnum 排序枚举
+     * @return /
+     */
+    public static LambdaQueryWrapper assemblyLambdaQueryWrapper(BaseQueryCriteriaDTO query,
+                                                               Enum sortEnum) {
+        QueryWrapper queryWrapper = assemblyQueryWrapper(query);
+        //id DESC
+        if (ObjectUtil.isNotNull(sortEnum)) {
+            Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>) sortEnum.getClass();
+            Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, "value");
+            String sortSql = enumMap.get(sortEnum.name()).toString();
+            List<String> sortList = StrUtil.split(sortSql, StrPool.C_SPACE);
+            if (CollUtil.size(sortList) == 2) {
+                String columnName = CollUtil.getFirst(sortList);
+                String sort = CollUtil.getLast(sortList);
+                boolean isSort = StrUtil.endWithIgnoreCase(sortSql, "ASC")
+                        || StrUtil.endWithIgnoreCase(sortSql, "DESC");
+                if (isSort) {
+                    if (StrUtil.equalsIgnoreCase(sort, "ASC")) {
+                        queryWrapper.orderByAsc(columnName);
+                    } else {
+                        queryWrapper.orderByDesc(columnName);
+                    }
+                }
+            }
+        }
+        return queryWrapper.lambda();
+    }
+
     /**
      * <p>
      * 组装queryWrapper
@@ -35,22 +85,9 @@ public class MybatisUtil {
      * @param query 查询参数
      * @return /
      */
+    @Deprecated
     public static QueryWrapper assemblyQueryWrapper(BaseQueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        String sort = query.getSort();
-        //id DESC
-        if (StrUtil.isNotBlank(sort)) {
-            List<String> sortList = StrUtil.split(sort, StrPool.C_SPACE);
-            if (CollUtil.size(sortList) == 2) {
-                String columnName = CollUtil.getFirst(sortList);
-                String order = CollUtil.getLast(sortList);
-                if (StrUtil.equalsIgnoreCase(order, "asc")) {
-                    queryWrapper.orderByAsc(columnName);
-                } else {
-                    queryWrapper.orderByDesc(columnName);
-                }
-            }
-        }
+        QueryWrapper queryWrapper = Wrappers.query();
         //权限字段
         List<PermissionDataRuleDTO> permissionDataRuleList = query.getPermissionDataRuleList();
         if (CollUtil.isNotEmpty(permissionDataRuleList)) {

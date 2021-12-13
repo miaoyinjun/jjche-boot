@@ -121,8 +121,8 @@ public class VersionService extends MyServiceImpl<VersionMapper, VersionDO> {
      * @return VersionVO 分页
      */
     public MyPage<VersionVO> queryAll(VersionQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
-        queryWrapper.orderByDesc(CollUtil.newArrayList("is_activated", "id"));
+        LambdaQueryWrapper<VersionDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
+        queryWrapper.orderByDesc(CollUtil.newArrayList(VersionDO::getIsActivated, VersionDO::getId));
         return this.baseMapper.pageQuery(page, queryWrapper);
     }
 

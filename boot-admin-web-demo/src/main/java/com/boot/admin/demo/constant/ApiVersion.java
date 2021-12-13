@@ -18,4 +18,10 @@ public interface ApiVersion {
     * 版本1.0.0 {@value}
     */
     String VERSION_1_0_0 = "1.0.0版本-20201126";
+
+    /**
+    * 版本111版本-20211209 {@value}
+    */
+    String VERSION_111 = "111版本-20211209";
+
 }

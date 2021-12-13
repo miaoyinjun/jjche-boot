@@ -7,7 +7,6 @@ import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.Cached;
 import com.alicp.jetcache.anno.CreateCache;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.common.util.ValidationUtil;
@@ -63,8 +62,8 @@ public class DictDetailService extends MyServiceImpl<DictDetailMapper, DictDetai
                 criteria.setDictId(0L);
             }
         }
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
-        queryWrapper.orderByAsc("dict_sort");
+        LambdaQueryWrapper<DictDetailDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
+        queryWrapper.orderByAsc(DictDetailDO::getDictSort);
         MyPage<DictDetailDO> myPage = this.page(pageable, queryWrapper);
         List<DictDetailDTO> list = dictDetailMapper.toVO(myPage.getRecords());
         Long dictId = criteria.getDictId();

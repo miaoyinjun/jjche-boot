@@ -8,12 +8,9 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
-import com.alicp.jetcache.anno.CacheInvalidate;
-import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
-import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.util.PwdCheckUtil;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
@@ -22,6 +19,7 @@ import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.AliYunSmsCodeProperties;
@@ -95,14 +93,14 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(UserQueryCriteriaDTO criteria) {
+    private LambdaQueryWrapper queryWrapper(UserQueryCriteriaDTO criteria) {
         Long deptId = criteria.getDeptId();
         if (!ObjectUtils.isEmpty(deptId)) {
             criteria.getDeptIds().add(deptId);
             criteria.getDeptIds().addAll(deptService.getDeptChildren(deptService.findByPid(deptId)));
         }
 
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(email LIKE {0} OR username LIKE {0} OR nick_name LIKE {0})", "%" + blurry + "%");
@@ -118,7 +116,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @return /
      */
     public MyPage<UserVO> queryAll(UserQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(page, queryWrapper);
         List<UserVO> list = userMapStruct.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -132,7 +130,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @return /
      */
     public List<UserDO> queryAll(UserQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.list(queryWrapper);
     }
 
@@ -142,7 +140,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param id ID
      * @return /
      */
-    @Cached(name = CacheKey.USER_ID, key = "#id")
     public UserVO findById(long id) {
         UserDO user = this.getById(id);
         ValidationUtil.isNull(user.getId(), "UserDO", "id", id);
@@ -246,13 +243,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         isUserEqual = user3 != null && !user.getId().equals(user3.getId());
         Assert.isFalse(isUserEqual, resources.getPhone() + "已存在");
 
-        redisService.delete(CacheKey.DATE_USER_ID + resources.getId());
-        redisService.delete(CacheKey.MENU_USER_ID + resources.getId());
-        redisService.delete(CacheKey.ROLE_AUTH + resources.getId());
-        // 如果用户名称修改
-        if (!resources.getUsername().equals(user.getUsername())) {
-            redisService.delete(CacheKey.USER_NAME + user.getUsername());
-        }
         // 如果用户被禁用，则清除用户登录信息
         if (!resources.getEnabled()) {
             onlineUserService.kickOutForUsername(resources.getUsername());
@@ -268,9 +258,9 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
 
         updateUserAndJobAndRole(resources);
         // 清除缓存
-        delCaches(user.getId(), user.getUsername());
-        delCaches(user.getId(), user.getPhone());
-        delCaches(user.getId(), user.getEmail());
+        flushCache(user.getUsername());
+        flushCache(user.getPhone());
+        flushCache(user.getEmail());
     }
 
     /**
@@ -297,9 +287,9 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
     public void saveUser(UserDO user) {
         this.saveOrUpdate(user);
         // 清除缓存
-        delCaches(user.getId(), user.getUsername());
-        delCaches(user.getId(), user.getPhone());
-        delCaches(user.getId(), user.getEmail());
+        flushCache(user.getUsername());
+        flushCache(user.getPhone());
+        flushCache(user.getEmail());
     }
 
     /**
@@ -308,7 +298,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param resources a {@link com.boot.admin.system.modules.system.domain.UserDO} object.
      * @param userName  /
      */
-    @CacheInvalidate(name = CacheKey.USER_NAME, key = "#userName")
     @Transactional(rollbackFor = Exception.class)
     public void updateCenter(UserDO resources, String userName) {
         UserDO user = this.getById(resources.getId());
@@ -332,9 +321,9 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         for (Long id : ids) {
             // 清理缓存
             UserVO user = findById(id);
-            delCaches(id, user.getUsername());
-            delCaches(id, user.getPhone());
-            delCaches(id, user.getEmail());
+            flushCache(user.getUsername());
+            flushCache(user.getPhone());
+            flushCache(user.getEmail());
             this.removeById(id);
         }
     }
@@ -345,7 +334,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param userName /
      * @return /
      */
-    @Cached(name = CacheKey.USER_NAME, key = "#userName")
     public UserVO findByName(String userName) {
         UserDO user = this.getByUsername(userName);
         return userMapStruct.toVO(user);
@@ -360,7 +348,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
     @Transactional(rollbackFor = Exception.class)
     public void updatePass(String username, String pass) {
         this.baseMapper.updatePass(username, pass, new Date());
-        redisService.delete(CacheKey.USER_NAME + username);
         flushCache(username);
     }
 
@@ -511,7 +498,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param userName      用户名
      * @return /
      */
-    @CacheInvalidate(name = CacheKey.USER_NAME, key = "#userName")
     public String updateAvatar(MultipartFile multipartFile, String userName) {
         UserDO user = this.getByUsername(SecurityUtils.getCurrentUsername());
         String username = user.getUsername();
@@ -536,8 +522,8 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
     @Transactional(rollbackFor = Exception.class)
     public void updateEmail(String username, String email) {
         this.baseMapper.updateEmail(username, email);
-        redisService.delete(CacheKey.USER_NAME + username);
         flushCache(username);
+        flushCache(email);
     }
 
     /**
@@ -583,18 +569,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
             list.add(map);
         }
         FileUtil.downloadExcel(list, response);
-    }
-
-    /**
-     * 清理缓存
-     *
-     * @param id       /
-     * @param username a {@link java.lang.String} object.
-     */
-    public void delCaches(Long id, String username) {
-        redisService.delete(CacheKey.USER_ID + id);
-        redisService.delete(CacheKey.USER_NAME + username);
-        flushCache(username);
     }
 
     /**
