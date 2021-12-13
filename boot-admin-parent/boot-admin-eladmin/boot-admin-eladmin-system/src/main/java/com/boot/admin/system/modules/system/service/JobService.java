@@ -2,16 +2,15 @@ package com.boot.admin.system.modules.system.service;
 
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
 import com.boot.admin.mybatis.util.MybatisUtil;
-import com.boot.admin.system.modules.system.domain.JobDO;
 import com.boot.admin.system.modules.system.api.dto.JobDTO;
 import com.boot.admin.system.modules.system.api.dto.JobQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.domain.JobDO;
 import com.boot.admin.system.modules.system.mapper.JobMapper;
 import com.boot.admin.system.modules.system.mapstruct.JobMapStruct;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +37,20 @@ public class JobService extends MyServiceImpl<JobMapper, JobDO> {
 
 
     /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param criteria 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(JobQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper<JobDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
+        queryWrapper.orderByAsc(JobDO::getJobSort);
+        return queryWrapper;
+    }
+
+    /**
      * 分页查询
      *
      * @param criteria 条件
@@ -45,7 +58,7 @@ public class JobService extends MyServiceImpl<JobMapper, JobDO> {
      * @return /
      */
     public MyPage queryAll(JobQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper<JobDO> queryWrapper = queryWrapper(criteria);
         MyPage<JobDO> myPage = this.page(page, queryWrapper);
         List<JobDTO> list = jobMapstruct.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -59,7 +72,7 @@ public class JobService extends MyServiceImpl<JobMapper, JobDO> {
      * @return /
      */
     public List<JobDO> queryAll(JobQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.list(queryWrapper);
     }
 

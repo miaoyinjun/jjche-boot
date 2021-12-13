@@ -1,10 +1,10 @@
 package com.boot.admin.system.modules.security.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.boot.admin.system.modules.system.service.*;
 import com.boot.admin.security.dto.JwtUserDto;
 import com.boot.admin.security.dto.UserVO;
 import com.boot.admin.security.service.JwtUserService;
+import com.boot.admin.system.modules.system.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -34,7 +34,9 @@ public abstract class AbstractUserDetailsService implements UserDetailsService {
      */
     abstract UserVO findUserDto(String username);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JwtUserDto loadUserByUsername(String username) {
         JwtUserDto jwtUserDto = jwtUserService.getByUserName(username);
@@ -46,7 +48,16 @@ public abstract class AbstractUserDetailsService implements UserDetailsService {
                         dataService.getDataScope(user),
                         roleService.mapToGrantedAuthorities(user)
                 );
-                jwtUserService.putByUserName(username, jwtUserDto);
+                //防止用户状态不正常时被缓存
+                Boolean enabled = user.getEnabled();
+                Boolean isAccountNonExpired = user.getIsAccountNonExpired();
+                Boolean isAccountNonLocked = user.getIsAccountNonLocked();
+                Boolean isCredentialsNonExpired = user.getIsCredentialsNonExpired();
+                if (enabled && isAccountNonExpired && isAccountNonLocked && isCredentialsNonExpired) {
+                    jwtUserService.putByUserName(username, jwtUserDto);
+                }else{
+                    jwtUserService.removeByUserName(username);
+                }
             }
         }
         return jwtUserDto;

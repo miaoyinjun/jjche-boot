@@ -1,5 +1,6 @@
 package com.boot.admin.core.util;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import com.boot.admin.common.constant.EnvConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -12,8 +13,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>SpringContextHolder class.</p>
@@ -225,19 +228,34 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
     public static void appLog(ConfigurableApplicationContext application) {
         try {
             Environment env = application.getEnvironment();
+            String serverPort = env.getProperty("server.port");
+            String contextPath = Optional
+                    .ofNullable(env.getProperty("server.servlet.context-path"))
+                    .filter(StrUtil::isNotBlank)
+                    .orElse("/");
+            String hostAddress = "localhost";
+            try {
+                hostAddress = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                log.warn("The host name could not be determined, using `localhost` as fallback");
+            }
+
             StaticLog.info("\n----------------------------------------------------------\n\t" +
-                            "Application '{}' is running [{}] ! Access URLs:\n\t" +
-                            "Local: \t\thttp://localhost:{}\n\t" +
-                            "External: \thttp://{}:{}\n\t" +
-                            "Doc:       \thttp://{}:{}/sba/api/doc.html\n" +
-                            "----------------------------------------------------------",
+                            "Application '{}' is running! Access URLs:\n\t" +
+                            "Local: \t\thttp://localhost:{}{}\n\t" +
+                            "External: \thttp://{}:{}{}\n\t" +
+                            "Doc:       \thttp://{}:{}{}sba/api/doc.html\n\t" +
+                            "Profile(s): {}\n----------------------------------------------------------",
                     env.getProperty("spring.application.name"),
-                    env.getProperty("spring.profiles.active"),
-                    env.getProperty("server.port"),
-                    InetAddress.getLocalHost().getHostAddress(),
-                    env.getProperty("server.port"),
-                    InetAddress.getLocalHost().getHostAddress(),
-                    env.getProperty("server.port"));
+                    serverPort,
+                    contextPath,
+                    hostAddress,
+                    serverPort,
+                    contextPath,
+                    hostAddress,
+                    serverPort,
+                    contextPath,
+                    env.getActiveProfiles().length == 0 ? env.getDefaultProfiles() : env.getActiveProfiles());
         } catch (Exception e) {
             e.printStackTrace();
         }

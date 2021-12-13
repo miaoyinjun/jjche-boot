@@ -20,7 +20,7 @@
         <include refid="querySql"/>
     </select>
 
-    <select id="queryAll" resultType="com.boot.admin.demo.modules.student.domain.StudentDO">
+    <select id="queryAll" resultType="com.boot.admin.demo.modules.student.api.vo.StudentVO">
         <include refid="querySql"/>
     </select>
 </mapper>

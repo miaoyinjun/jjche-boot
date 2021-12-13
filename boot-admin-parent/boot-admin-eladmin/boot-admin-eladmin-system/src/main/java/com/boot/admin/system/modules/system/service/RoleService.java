@@ -7,7 +7,6 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.constant.SecurityConstant;
@@ -80,12 +79,13 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      * @param criteria 条件
      * @return sql
      */
-    private QueryWrapper queryWrapper(RoleQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+    private LambdaQueryWrapper queryWrapper(RoleQueryCriteriaDTO criteria) {
+        LambdaQueryWrapper<RoleDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
         String blurry = criteria.getBlurry();
         if (StrUtil.isNotBlank(blurry)) {
             queryWrapper.apply("(name LIKE {0} OR description LIKE {0})", "%" + blurry + "%");
         }
+        queryWrapper.orderByAsc(RoleDO::getLevel);
         return queryWrapper;
     }
 
@@ -96,7 +96,7 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      * @return /
      */
     public List<RoleDTO> queryAll(RoleQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return roleMapper.toVO(this.list(queryWrapper));
     }
 
@@ -108,7 +108,7 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      * @return /
      */
     public MyPage<RoleDTO> queryAll(RoleQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = queryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage<RoleDO> myPage = this.baseMapper.pageQuery(page, queryWrapper);
         List<RoleDO> roleList = myPage.getRecords();
         if (CollUtil.isNotEmpty(roleList)) {
@@ -255,7 +255,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      * @param user 用户信息
      * @return 权限信息
      */
-    @Cached(name = CacheKey.ROLE_AUTH, key = "#user.id")
     public List<GrantedAuthority> mapToGrantedAuthorities(UserVO user) {
         Set<String> permissions = new HashSet<>();
         // 如果是管理员直接返回
@@ -335,10 +334,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         List<UserDO> users = userMapper.findByRoleId(id);
         if (CollectionUtil.isNotEmpty(users)) {
             users.forEach(item -> jwtUserService.removeByUserName(item.getUsername()));
-            Set<Long> userIds = users.stream().map(UserDO::getId).collect(Collectors.toSet());
-            redisService.delByKeys(CacheKey.DATE_USER_ID, userIds);
-            redisService.delByKeys(CacheKey.MENU_ID, userIds);
-            redisService.delByKeys(CacheKey.ROLE_AUTH, userIds);
         }
         redisService.delete(CacheKey.ROLE_ID + id);
     }

@@ -3,7 +3,6 @@ package com.boot.admin.system.modules.quartz.service;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.util.StrUtil;
 import com.boot.admin.common.util.ValidationUtil;
@@ -11,6 +10,7 @@ import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.quartz.domain.QuartzJobDO;
 import com.boot.admin.system.modules.quartz.domain.QuartzLogDO;
@@ -43,6 +43,19 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
     private final QuartzManage quartzManage;
     private final RedisService redisService;
 
+
+    /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param criteria 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(JobQueryCriteriaDTO criteria) {
+        return MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
+    }
+
     /**
      * 分页查询
      *
@@ -51,8 +64,8 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
      * @return /
      */
     public MyPage<QuartzJobDO> queryAll(JobQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
-        return this.baseMapper.pageQuery(page, queryWrapper);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
+        return this.page(page, queryWrapper);
     }
 
     /**
@@ -63,7 +76,7 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
      * @return /
      */
     public MyPage<QuartzLogDO> queryAllLog(JobQueryCriteriaDTO criteria, PageParam page) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.quartzLogMapper.pageQuery(page, queryWrapper);
     }
 
@@ -74,7 +87,7 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
      * @return /
      */
     public List<QuartzJobDO> queryAll(JobQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.baseMapper.queryAll(queryWrapper);
     }
 
@@ -85,7 +98,7 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
      * @return /
      */
     public List<QuartzLogDO> queryAllLog(JobQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return this.quartzLogMapper.queryAll(queryWrapper);
     }
 

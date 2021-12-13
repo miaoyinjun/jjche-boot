@@ -4,18 +4,17 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.extra.spring.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldRoleDTO;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionFieldRoleQueryCriteriaDTO;
 import com.boot.admin.system.modules.system.api.dto.DataPermissionFiledRoleSelectedDTO;
-import com.boot.admin.system.modules.system.api.enums.DataPermissionFieldRoleSortEnum;
 import com.boot.admin.system.modules.system.api.vo.DataPermissionFieldRoleVO;
 import com.boot.admin.system.modules.system.domain.DataPermissionFieldDO;
 import com.boot.admin.system.modules.system.domain.DataPermissionFieldRoleDO;
@@ -84,13 +83,12 @@ public class DataPermissionFieldRoleService extends MyServiceImpl<DataPermission
      * 查询所有数据不分页
      * </p>
      *
-     * @param sort  排序
      * @param query 条件
      * @return DataPermissionFieldRoleVO 列表对象
      */
-    public List<DataPermissionFieldRoleVO> listQueryAll(DataPermissionFieldRoleSortEnum sort, DataPermissionFieldRoleQueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        List<DataPermissionFieldRoleDO> list = this.baseMapper.queryAll(sort, queryWrapper);
+    public List<DataPermissionFieldRoleVO> listQueryAll(DataPermissionFieldRoleQueryCriteriaDTO query) {
+        LambdaQueryWrapper queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(query, SortEnum.ID_DESC);;
+        List<DataPermissionFieldRoleDO> list = this.baseMapper.queryAll(queryWrapper);
         return sysDataPermissionFieldRoleMapStruct.toVO(list);
     }
 
@@ -125,12 +123,12 @@ public class DataPermissionFieldRoleService extends MyServiceImpl<DataPermission
         //查询字段表
         DataPermissionFieldQueryCriteriaDTO fileQueryCriteria = new DataPermissionFieldQueryCriteriaDTO();
         fileQueryCriteria.setMenuId(query.getMenuId());
-        QueryWrapper fileRolequeryWrapper = MybatisUtil.assemblyQueryWrapper(fileQueryCriteria);
+        LambdaQueryWrapper fileRolequeryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(fileQueryCriteria, SortEnum.ID_DESC);
         MyPage<DataPermissionFieldDO> filedPage = dataPermissionFieldService.page(page, fileRolequeryWrapper);
         if (filedPage != null) {
             List<DataPermissionFieldDO> filedList = filedPage.getRecords();
             if (CollUtil.isNotEmpty(filedList)) {
-                List<DataPermissionFieldRoleVO> list = this.listQueryAll(null, query);
+                List<DataPermissionFieldRoleVO> list = this.listQueryAll(query);
 
                 for (DataPermissionFieldDO fieldDO : filedList) {
                     Long fieldId = fieldDO.getId();

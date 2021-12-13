@@ -3,7 +3,6 @@ package com.boot.admin.system.modules.system.service;
 import cn.hutool.core.lang.Assert;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
@@ -48,8 +47,8 @@ public class DataPermissionFieldService extends MyServiceImpl<DataPermissionFiel
      * @return /
      */
     public MyPage pageQuery(PageParam pageable, DataPermissionFieldQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
-        queryWrapper.orderByAsc("sort");
+        LambdaQueryWrapper<DataPermissionFieldDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
+        queryWrapper.orderByAsc(DataPermissionFieldDO::getSort);
         MyPage<DataPermissionFieldDO> myPage = this.page(pageable, queryWrapper);
         List<DataPermissionFieldVO> list = dataPermissionFieldMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);

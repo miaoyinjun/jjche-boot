@@ -55,7 +55,6 @@ export default {
         title: '数据字段详情',
         url: 'sys/data_permission_field_roles',
         query: { menuId: '', roleId: '' },
-        sort: ['id DESC'],
         crudMethod: { ...crudDataPermissionField },
         optShow: {
           add: true,

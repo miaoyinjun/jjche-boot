@@ -2,6 +2,7 @@ package com.boot.admin.system.modules.security.listener;
 
 import com.boot.admin.property.AdminProperties;
 import com.boot.admin.property.PasswordProperties;
+import com.boot.admin.security.service.JwtUserService;
 import com.boot.admin.system.modules.system.domain.UserDO;
 import com.boot.admin.system.modules.system.service.UserService;
 import com.boot.admin.system.modules.system.mapstruct.UserMapStruct;
@@ -28,6 +29,8 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
     private AdminProperties adminProperties;
     @Autowired
     private UserMapStruct userMapper;
+    @Autowired
+    private JwtUserService jwtUserService;
 
     /** {@inheritDoc} */
     @Override
@@ -46,6 +49,7 @@ public class AuthenticationFailureListener implements ApplicationListener<Authen
             // 超出失败pwdFailsMaxCount次，锁定账户
             if (fails >= password.getFailsMaxCount()) {
                 user.setIsAccountNonLocked(false);
+                jwtUserService.removeByUserName(username);
             }
             userService.saveUser(user);
         }

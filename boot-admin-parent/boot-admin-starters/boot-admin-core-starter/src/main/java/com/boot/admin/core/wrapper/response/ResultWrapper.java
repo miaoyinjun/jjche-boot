@@ -1,11 +1,13 @@
 package com.boot.admin.core.wrapper.response;
 
+import com.boot.admin.common.constant.LogConstant;
 import com.boot.admin.common.pojo.AbstractResultWrapper;
 import com.boot.admin.core.wrapper.constant.HttpStatusConstant;
 import com.boot.admin.core.wrapper.enums.ResultWrapperCodeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.slf4j.MDC;
 
 import java.io.Serializable;
 
@@ -113,16 +115,6 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
         return ResultWrapperCodeEnum.SUCCESS.getCode() == this.code;
     }
 
-    /**
-     * Wrap.
-     *
-     * @param <E>      the element type
-     * @param codeEnum the codeEnum
-     * @return the wrapper
-     */
-    private static <E> ResultWrapper<E> wrap(ResultWrapperCodeEnum codeEnum) {
-        return new ResultWrapper<>(codeEnum.getCode(), codeEnum.getMsg(), null);
-    }
 
     /**
      * Wrap.
@@ -133,7 +125,18 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @return the wrapper
      */
     private static <E> ResultWrapper<E> wrap(ResultWrapperCodeEnum codeEnum, String message) {
-        return new ResultWrapper<>(codeEnum.getCode(), message, null);
+        return new ResultWrapper(codeEnum.getCode(), message, MDC.get(LogConstant.REQUEST_ID));
+    }
+
+    /**
+     * Wrap.
+     *
+     * @param <E>      the element type
+     * @param codeEnum the codeEnum
+     * @return the wrapper
+     */
+    private static <E> ResultWrapper<E> wrap(ResultWrapperCodeEnum codeEnum) {
+        return wrap(codeEnum, codeEnum.getMsg());
     }
 
     /**

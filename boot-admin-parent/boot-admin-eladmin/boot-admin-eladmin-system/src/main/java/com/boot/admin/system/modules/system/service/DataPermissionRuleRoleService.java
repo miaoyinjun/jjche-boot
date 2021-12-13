@@ -1,9 +1,9 @@
 package com.boot.admin.system.modules.system.service;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
@@ -89,9 +89,9 @@ public class DataPermissionRuleRoleService extends MyServiceImpl<DataPermissionR
      * @return /
      */
     public List<Long> listPermissionRuleIdsByMenuIdAndRoleId(DataPermissionRuleRoleQueryCriteriaDTO query) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(query);
-        queryWrapper.select("data_permission_rule_id");
-        return this.listObjs(queryWrapper);
+        LambdaQueryWrapper<DataPermissionRuleRoleDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(query);
+        queryWrapper.select(DataPermissionRuleRoleDO::getDataPermissionRuleId);
+        return Convert.toList(Long.class, this.listObjs(queryWrapper));
     }
 
     /**

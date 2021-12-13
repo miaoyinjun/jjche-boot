@@ -4,7 +4,6 @@ import ${packageApi}.vo.${className}VO;
 import ${packageService}.service.${className}Service;
 import ${packageApi}.dto.${className}QueryCriteriaDTO;
 import ${packageApi}.dto.${className}DTO;
-import ${packageApi}.enums.${className}SortEnum;
 import ${packagePath}.constant.ApiVersion;
 
 import com.boot.admin.log.biz.starter.annotation.LogRecordAnnotation;
@@ -93,22 +92,16 @@ public class ${className}Controller extends BaseController{
     @ApiOperation(value = "${apiAlias}-导出", tags = ApiVersion.${apiVersionConstant})
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PreAuthorize("@el.check('${changeClassName}:list')")
-    public void download(@ApiParam(value = "排序", required = true)
-                        @NotNull(message = "排序字段不正确")
-                        @RequestParam ${className}SortEnum sort,
-                        @Validated ${className}QueryCriteriaDTO criteria) {
-        ${changeClassName}Service.download(sort, criteria);
+    public void download(@Validated ${className}QueryCriteriaDTO criteria) {
+        ${changeClassName}Service.download(criteria);
     }
 
     @GetMapping
     @ApiOperation(value = "${apiAlias}-列表", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:list')")
     public ResultWrapper<MyPage<${className}VO>> pageQuery(PageParam page,
-                            @ApiParam(value = "排序", required = true)
-                            @NotNull(message = "排序字段不正确")
-                            @RequestParam ${className}SortEnum sort,
                             @Validated ${className}QueryCriteriaDTO query){
-        return ResultWrapper.ok(${changeClassName}Service.pageQuery(page, sort, query));
+        return ResultWrapper.ok(${changeClassName}Service.page(page, query));
     }
 
 }

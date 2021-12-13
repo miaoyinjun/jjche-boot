@@ -7,7 +7,6 @@ import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
@@ -20,10 +19,9 @@ import com.boot.admin.core.util.SecurityUtils;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.util.MybatisUtil;
-import com.boot.admin.system.modules.system.domain.DeptDO;
-import com.boot.admin.system.modules.system.domain.UserDO;
 import com.boot.admin.system.modules.system.api.dto.DeptDTO;
 import com.boot.admin.system.modules.system.api.dto.DeptQueryCriteriaDTO;
+import com.boot.admin.system.modules.system.domain.DeptDO;
 import com.boot.admin.system.modules.system.mapper.DeptMapper;
 import com.boot.admin.system.modules.system.mapper.RoleMapper;
 import com.boot.admin.system.modules.system.mapper.UserMapper;
@@ -101,8 +99,8 @@ public class DeptService extends MyServiceImpl<DeptMapper, DeptDO> {
             }
         }
 
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
-        queryWrapper.orderByAsc("dept_sort");
+        LambdaQueryWrapper<DeptDO> queryWrapper = MybatisUtil.assemblyLambdaQueryWrapper(criteria);
+        queryWrapper.orderByAsc(DeptDO::getDeptSort);
         List<DeptDO> doList = this.list(queryWrapper);
         List<DeptDTO> list = deptMapstruct.toVO(doList);
         // 如果为空，就代表为自定义权限或者本级权限，就需要去重，不理解可以注释掉，看查询结果
@@ -370,9 +368,7 @@ public class DeptService extends MyServiceImpl<DeptMapper, DeptDO> {
      * @param id /
      */
     public void delCaches(Long id) {
-        List<UserDO> users = userRepository.findByDeptRoleId(id);
         // 删除数据权限
-        redisService.delByKeys(CacheKey.DATE_USER_ID, users.stream().map(UserDO::getId).collect(Collectors.toSet()));
         redisService.delete(CacheKey.DEPT_ID + id);
     }
 

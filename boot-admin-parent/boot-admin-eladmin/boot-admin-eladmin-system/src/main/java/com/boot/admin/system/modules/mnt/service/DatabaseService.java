@@ -1,11 +1,12 @@
 package com.boot.admin.system.modules.mnt.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
 import com.boot.admin.mybatis.param.MyPage;
 import com.boot.admin.mybatis.param.PageParam;
+import com.boot.admin.mybatis.param.SortEnum;
 import com.boot.admin.mybatis.util.MybatisUtil;
 import com.boot.admin.system.modules.mnt.domain.DatabaseDO;
 import com.boot.admin.system.modules.mnt.dto.DatabaseDTO;
@@ -35,6 +36,19 @@ import java.util.*;
 public class DatabaseService extends MyServiceImpl<DatabaseMapper, DatabaseDO> {
     private final DatabaseMapStruct databaseMapper;
 
+
+    /**
+     * <p>
+     * 获取列表查询语句
+     * </p>
+     *
+     * @param criteria 条件
+     * @return sql
+     */
+    private LambdaQueryWrapper queryWrapper(DatabaseQueryCriteriaDTO criteria) {
+        return MybatisUtil.assemblyLambdaQueryWrapper(criteria, SortEnum.ID_DESC);
+    }
+
     /**
      * 分页查询
      *
@@ -43,7 +57,7 @@ public class DatabaseService extends MyServiceImpl<DatabaseMapper, DatabaseDO> {
      * @return /
      */
     public MyPage queryAll(DatabaseQueryCriteriaDTO criteria, PageParam pageable) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         MyPage myPage = this.page(pageable, queryWrapper);
         List<DatabaseDTO> list = databaseMapper.toVO(myPage.getRecords());
         myPage.setNewRecords(list);
@@ -57,7 +71,7 @@ public class DatabaseService extends MyServiceImpl<DatabaseMapper, DatabaseDO> {
      * @return /
      */
     public List<DatabaseDTO> queryAll(DatabaseQueryCriteriaDTO criteria) {
-        QueryWrapper queryWrapper = MybatisUtil.assemblyQueryWrapper(criteria);
+        LambdaQueryWrapper queryWrapper = queryWrapper(criteria);
         return databaseMapper.toVO(this.list(queryWrapper));
     }
 
