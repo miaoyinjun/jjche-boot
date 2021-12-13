@@ -23,6 +23,7 @@ public class LogTask {
      * <p>
      * 清空N个月之前的操作日志
      * </p>
+     @param month 月
      */
     public void cleanLogs(String month) {
         logService.delMonth(NumberUtil.parseInt(month));
