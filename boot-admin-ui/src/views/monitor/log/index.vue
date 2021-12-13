@@ -34,7 +34,7 @@
           </el-form>
         </template>
       </el-table-column>
-      <el-table-column prop="module" label="模块" />
+      <el-table-column prop="module" label="模块" :show-overflow-tooltip="true"/>
       <el-table-column :show-overflow-tooltip="true" prop="category" label="分类" >
         <template slot-scope="scope">
           <span>{{ parseCategory(scope.row.category) }}</span>

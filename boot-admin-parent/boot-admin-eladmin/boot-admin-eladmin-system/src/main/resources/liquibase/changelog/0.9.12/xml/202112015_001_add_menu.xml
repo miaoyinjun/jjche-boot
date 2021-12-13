@@ -4,10 +4,11 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-
-    <include file="0.9.0/master.xml" relativeToChangelogFile="true"/>
-    <include file="0.9.11/master.xml" relativeToChangelogFile="true"/>
-    <include file="0.9.12/master.xml" relativeToChangelogFile="true"/>
-    <include file="liquibase/master.xml" relativeToChangelogFile="false"/>
+    <changeSet id="202112015_001_add_menu" author="miaoyj">
+        <sqlFile path="sql/202112015_001_add_menu.sql" relativeToChangelogFile="true"/>
+        <rollback>
+            <sqlFile path="sql/202112015_001_add_menu_rollback.sql" relativeToChangelogFile="true"/>
+        </rollback>
+    </changeSet>
 
 </databaseChangeLog>
