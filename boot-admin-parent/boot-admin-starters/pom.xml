@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.boot.admin</groupId>
         <artifactId>boot-admin-parent</artifactId>
-        <version>1.0.4-SNAPSHOT</version>
+        <version>1.0.4</version>
     </parent>
 
     <artifactId>boot-admin-starters</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.4-SNAPSHOT</version>
+    <version>1.0.4</version>
 
     <modules>
         <module>boot-admin-core-starter</module>
