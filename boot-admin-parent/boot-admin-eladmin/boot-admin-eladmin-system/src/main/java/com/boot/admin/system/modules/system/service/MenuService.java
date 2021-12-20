@@ -206,6 +206,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
     public List<MenuDO> findByPid(Long pId) {
         LambdaQueryWrapper<MenuDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(MenuDO::getPid, pId);
+        queryWrapper.orderByAsc(MenuDO::getMenuSort);
         return this.list(queryWrapper);
     }
 
@@ -219,6 +220,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
     public List<MenuDO> findByPidIsNull() {
         LambdaQueryWrapper<MenuDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.isNull(MenuDO::getPid);
+        queryWrapper.orderByAsc(MenuDO::getMenuSort);
         return this.list(queryWrapper);
     }
 
