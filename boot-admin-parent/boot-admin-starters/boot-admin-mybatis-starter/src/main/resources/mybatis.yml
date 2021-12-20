@@ -34,7 +34,7 @@ spring:
 
 mybatis-plus:
   typeEnumsPackage: com.boot.*.*.modules.*.api.enums;
-  typeAliasesPackage: com.boot.*.*.modules.*.domain;com.boot.*.*.modules.*.api.dto;com.boot.*.*.modules.*.api.vo;
+  typeAliasesPackage: com.boot.*.*.modules.*.domain;com.boot.*.*.modules.*.api.vo;
   global-config:
     banner: false
   mapper-locations: classpath*:com/boot/*/*/modules/*/mapper/*.xml

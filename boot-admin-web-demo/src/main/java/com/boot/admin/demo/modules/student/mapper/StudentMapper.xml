@@ -16,11 +16,11 @@
 <!--        </choose>-->
     </sql>
 
-    <select id="pageQuery" resultType="com.boot.admin.demo.modules.student.api.vo.StudentVO">
+    <select id="pageQuery" resultType="StudentVO">
         <include refid="querySql"/>
     </select>
 
-    <select id="queryAll" resultType="com.boot.admin.demo.modules.student.api.vo.StudentVO">
+    <select id="queryAll" resultType="StudentVO">
         <include refid="querySql"/>
     </select>
 </mapper>
