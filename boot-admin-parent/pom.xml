@@ -17,7 +17,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <build.plugins.plugin.version>3.0.0-M1</build.plugins.plugin.version>
 
-        <spring.boot.starter.version>2.5.7</spring.boot.starter.version>
+        <spring.boot.starter.version>2.5.8</spring.boot.starter.version>
         <spring.boot.admin.starter.version>2.5.4</spring.boot.admin.starter.version>
         <maven.plugin.version>3.6.0</maven.plugin.version>
         <screw.version>1.0.4</screw.version>
