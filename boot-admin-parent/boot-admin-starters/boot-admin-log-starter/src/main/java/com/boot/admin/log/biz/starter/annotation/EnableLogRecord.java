@@ -22,16 +22,20 @@ import java.lang.annotation.*;
 public @interface EnableLogRecord {
 
     /**
+     * <p>
      * 租户
+     * </p>
+     *
+     * @return /
      */
     String tenant();
 
     /**
-     * Indicate how caching advice should be applied. The default is
-     * {@link AdviceMode#PROXY}.
+     * <p>
+     * 代理方式
+     * </p>
      *
-     * @return 代理方式
-     * @see AdviceMode
+     * @return /
      */
     AdviceMode mode() default AdviceMode.PROXY;
 }
