@@ -8,6 +8,7 @@
     <include file="0.9.0/master.xml" relativeToChangelogFile="true"/>
     <include file="0.9.11/master.xml" relativeToChangelogFile="true"/>
     <include file="0.9.12/master.xml" relativeToChangelogFile="true"/>
+    <include file="0.9.13/master.xml" relativeToChangelogFile="true"/>
     <include file="liquibase/master.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
