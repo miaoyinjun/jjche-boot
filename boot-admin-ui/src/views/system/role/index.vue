@@ -18,6 +18,9 @@
         <el-form-item label="角色名称" prop="name">
           <el-input v-model="form.name" style="width: 380px;"/>
         </el-form-item>
+        <el-form-item label="角色标识" prop="code">
+          <el-input v-model="form.code" style="width: 380px;" :disabled="form.id > 0"/>
+        </el-form-item>        
         <el-form-item label="角色级别" prop="level">
           <el-input-number v-model.number="form.level" :min="1" controls-position="right" style="width: 145px;"/>
         </el-form-item>
@@ -62,7 +65,8 @@
                     @current-change="handleCurrentChange">
             <el-table-column :selectable="checkboxT" type="selection" width="55"/>
             <el-table-column prop="name" label="名称"/>
-            <el-table-column prop="dataScopeValue" label="数据权限"/>
+            <el-table-column prop="code" label="角色标识"/>
+            <el-table-column prop="dataScopeValue" label="数据范围"/>
             <el-table-column prop="level" label="角色级别"/>
             <el-table-column :show-overflow-tooltip="true" prop="description" label="描述"/>
             <el-table-column :show-overflow-tooltip="true" width="135px" prop="gmtCreate" label="创建日期">
@@ -167,7 +171,7 @@ import DateRangePicker from '@/components/DateRangePicker'
 import dataPermissionRule from './dataPermissionRule'
 import dataPermissionField from './dataPermissionField'
 
-const defaultForm = { id: null, name: null, depts: [], description: null, dataScope: 'DATA_SCOPE_ALL', level: 3 }
+const defaultForm = { id: null, name: null, code: null, depts: [], description: null, dataScope: 'DATA_SCOPE_ALL', level: 3 }
 export default {
   name: 'Role',
   components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule, dataPermissionField },
@@ -201,6 +205,9 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入名称', trigger: 'blur' }
+        ],
+        code: [
+          { required: true, message: '请输入标识', trigger: 'blur' }
         ],
         permission: [
           { required: true, message: '请输入权限', trigger: 'blur' }

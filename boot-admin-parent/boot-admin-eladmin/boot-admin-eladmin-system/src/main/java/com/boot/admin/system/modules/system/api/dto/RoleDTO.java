@@ -32,5 +32,7 @@ public class RoleDTO implements Serializable {
 
     private String description;
 
+    private String code;
+
     private Timestamp gmtCreate;
 }
