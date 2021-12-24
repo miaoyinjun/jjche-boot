@@ -68,7 +68,8 @@ export default {
   data() {
     return {
       Avatar: Avatar,
-      dialogVisible: false
+      dialogVisible: false,
+      title: defaultSettings.title
     }
   },
   computed: {
@@ -95,7 +96,7 @@ export default {
       this.$store.dispatch('app/toggleSideBar')
     },
     open() {
-      this.$confirm('您确定要退出'+defaultSettings.title+'吗?', '提示', {
+      this.$confirm(`您确定要退出${this.title}吗?`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

@@ -165,6 +165,20 @@ export default {
           this.loading = true
           this.$store.dispatch('Login', user).then(() => {
             this.loading = false
+            const hour = new Date().getHours()
+            const thisTime =
+             hour < 8
+             ? '早上好'
+            : hour <= 11
+            ? '上午好'
+            : hour <= 13
+            ? '中午好'
+            : hour < 18
+            ? '下午好'
+            : '晚上好'
+            
+            this.$notify({title: `${thisTime}！`, message: `欢迎登录${this.title}`, type: 'success'})  
+
             const isTipResetPwd = store.getters.user.isTipResetPwd
             if (isTipResetPwd) {
               MessageBox.confirm('登录密码即将过期，是否去修改密码', '系统提示', {
