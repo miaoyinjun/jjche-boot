@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 10/09/2021 17:06:49
+ Date: 27/12/2021 16:24:25
 */
 
 SET NAMES utf8mb4;
@@ -35,6 +35,7 @@ CREATE TABLE `code_column_config` (
   `query_type` varchar(255) DEFAULT NULL,
   `remark` varchar(255) DEFAULT NULL,
   `date_annotation` varchar(255) DEFAULT NULL,
+  `max_length` int(11) DEFAULT NULL COMMENT '最大长度',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='代码生成字段信息存储';
 
@@ -204,6 +205,7 @@ CREATE TABLE `sys_data_permission_field` (
   `name` varchar(255) NOT NULL COMMENT '名称',
   `code` varchar(255) NOT NULL COMMENT '标识',
   `sort` int(5) NOT NULL COMMENT '排序',
+  `is_activated` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否有效 1是 0否',
   `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
   `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -225,6 +227,8 @@ CREATE TABLE `sys_data_permission_field_role` (
   `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
   `menu_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '菜单ID',
   `data_permission_field_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '菜单数据字段权限ID',
+  `is_accessible` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否可见 1是 0否',
+  `is_editable` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否可编辑 1是 0否',
   `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
   `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -234,6 +238,51 @@ CREATE TABLE `sys_data_permission_field_role` (
 
 -- ----------------------------
 -- Records of sys_data_permission_field_role
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_data_permission_rule
+-- ----------------------------
+CREATE TABLE `sys_data_permission_rule` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
+  `name` varchar(255) NOT NULL COMMENT '名称',
+  `condition` varchar(50) NOT NULL COMMENT '条件',
+  `column` varchar(50) DEFAULT NULL COMMENT '列名',
+  `value` varchar(500) DEFAULT NULL COMMENT '规则值',
+  `is_activated` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否有效 1是 0否',
+  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
+  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据规则表';
+
+-- ----------------------------
+-- Records of sys_data_permission_rule
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_data_permission_rule_role
+-- ----------------------------
+CREATE TABLE `sys_data_permission_rule_role` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
+  `menu_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '菜单ID',
+  `data_permission_rule_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '数据规则权限ID',
+  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
+  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单数据规则权限角色表';
+
+-- ----------------------------
+-- Records of sys_data_permission_rule_role
 -- ----------------------------
 BEGIN;
 COMMIT;
@@ -280,7 +329,7 @@ CREATE TABLE `sys_dict` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典';
 
 -- ----------------------------
 -- Records of sys_dict
@@ -289,6 +338,7 @@ BEGIN;
 INSERT INTO `sys_dict` VALUES (1, 'user_status', '用户状态', 'System', 'System', '2019-10-27 20:31:36', '2021-09-10 16:55:06');
 INSERT INTO `sys_dict` VALUES (4, 'dept_status', '部门状态', 'System', 'System', '2019-10-27 20:31:36', '2021-09-10 16:55:06');
 INSERT INTO `sys_dict` VALUES (5, 'job_status', '岗位状态', 'System', 'System', '2019-10-27 20:31:36', '2021-09-10 16:55:06');
+INSERT INTO `sys_dict` VALUES (6, 'dataPermissionRule_condition', '数据规则-条件', 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 COMMIT;
 
 -- ----------------------------
@@ -305,7 +355,7 @@ CREATE TABLE `sys_dict_detail` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典详情';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典详情';
 
 -- ----------------------------
 -- Records of sys_dict_detail
@@ -317,6 +367,20 @@ INSERT INTO `sys_dict_detail` VALUES (3, 4, '启用', 'true', 1, 'System', 'Syst
 INSERT INTO `sys_dict_detail` VALUES (4, 4, '停用', 'false', 2, 'System', 'System', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
 INSERT INTO `sys_dict_detail` VALUES (5, 5, '启用', 'true', 1, 'System', 'System', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
 INSERT INTO `sys_dict_detail` VALUES (6, 5, '停用', 'false', 2, 'System', 'System', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
+INSERT INTO `sys_dict_detail` VALUES (7, 6, '等于', 'EQUAL', 1, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (8, 6, '不等于', 'NE', 2, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (9, 6, '大于', 'GT', 3, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (10, 6, '大于等于', 'GE', 4, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (11, 6, '小于', 'LT', 5, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (12, 6, '小于等于', 'LE', 6, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (13, 6, '全模糊', 'LIKE', 7, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (14, 6, '左模糊', 'LEFT_LIKE', 8, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (15, 6, '右模糊', 'RIGHT_LIKE', 9, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (16, 6, '区间', 'BETWEEN', 10, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (17, 6, '包含', 'IN', 11, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (18, 6, '不为空', 'NOT_NULL', 12, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (19, 6, '为空', 'IS_NULL', 13, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (20, 6, '自定义SQL片段', 'USE_SQL_RULES', 14, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 COMMIT;
 
 -- ----------------------------
@@ -371,6 +435,7 @@ CREATE TABLE `sys_log` (
   `result` text COMMENT '结果',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `is_success` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否成功：0:否, 1:是',
+  `request_id` varchar(255) DEFAULT NULL COMMENT '请求id',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `inx_log_type` (`log_type`(5)) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=3537 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统日志';
@@ -404,7 +469,7 @@ CREATE TABLE `sys_menu` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -415,7 +480,7 @@ INSERT INTO `sys_menu` VALUES (2, 1, 3, 1, '用户管理', 'User', 'system/user/
 INSERT INTO `sys_menu` VALUES (3, 1, 3, 1, '角色管理', 'Role', 'system/role/index', 3, 'role', 'role', b'0', b'0', b'0', 'roles:list', 'System', 'System', '2018-12-18 15:16:07', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (5, 1, 3, 1, '菜单管理', 'Menu', 'system/menu/index', 5, 'menu', 'menu', b'0', b'0', b'0', 'menu:list', 'System', 'System', '2018-12-18 15:17:28', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (6, NULL, 5, 0, '系统监控', NULL, NULL, 10, 'monitor', 'monitor', b'0', b'0', b'0', NULL, 'System', 'System', '2018-12-18 15:17:48', '2021-09-10 16:55:06');
-INSERT INTO `sys_menu` VALUES (7, 6, 0, 1, '操作日志', 'Log', 'monitor/log/index', 11, 'log', 'logs', b'0', b'1', b'0', NULL, 'System', 'System', '2018-12-18 15:18:26', '2021-09-10 16:55:06');
+INSERT INTO `sys_menu` VALUES (7, 6, 0, 1, '操作日志', 'Log', 'monitor/log/index', 11, 'log', 'logs', b'0', b'1', b'0', 'log:list', 'System', 'System', '2018-12-18 15:18:26', '2021-12-27 16:23:30');
 INSERT INTO `sys_menu` VALUES (9, 6, 0, 1, 'SQL监控', 'Sql', 'monitor/sql/index', 18, 'sqlMonitor', 'druid', b'0', b'0', b'0', NULL, 'System', 'System', '2018-12-18 15:19:34', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (10, NULL, 5, 0, '组件管理', NULL, NULL, 50, 'zujian', 'components', b'0', b'0', b'0', NULL, 'System', 'System', '2018-12-19 13:38:16', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (11, 10, 0, 1, '图标库', 'Icons', 'components/icons/index', 51, 'icon', 'icon', b'0', b'0', b'0', NULL, 'System', 'System', '2018-12-19 13:38:49', '2021-09-10 16:55:06');
@@ -424,7 +489,7 @@ INSERT INTO `sys_menu` VALUES (15, 10, 0, 1, '富文本', 'Editor', 'components/
 INSERT INTO `sys_menu` VALUES (18, 36, 3, 1, '存储管理', 'Storage', 'tools/storage/index', 34, 'qiniu', 'storage', b'0', b'0', b'0', 'storage:list', 'System', 'System', '2018-12-31 11:12:15', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (19, 36, 0, 1, '支付宝工具', 'AliPay', 'tools/aliPay/index', 37, 'alipay', 'aliPay', b'0', b'0', b'0', NULL, 'System', 'System', '2018-12-31 14:52:38', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (28, 1, 3, 1, '任务调度', 'Timing', 'system/timing/index', 9, 'timing', 'timing', b'0', b'0', b'0', 'timing:list', 'System', 'System', '2019-01-07 20:34:40', '2021-09-10 16:55:06');
-INSERT INTO `sys_menu` VALUES (30, 36, 0, 1, '代码生成', 'GeneratorIndex', 'generator/index', 32, 'dev', 'generator', b'0', b'1', b'0', NULL, 'System', 'System', '2019-01-11 15:45:55', '2021-09-10 16:55:06');
+INSERT INTO `sys_menu` VALUES (30, 36, 2, 1, '代码生成', 'GeneratorIndex', 'generator/index', 32, 'dev', 'generator', b'0', b'1', b'0', 'generator:list', 'System', 'System', '2019-01-11 15:45:55', '2021-12-27 16:23:30');
 INSERT INTO `sys_menu` VALUES (33, 10, 0, 1, 'Markdown', 'Markdown', 'components/MarkDown', 53, 'markdown', 'markdown', b'0', b'0', b'0', NULL, 'System', 'System', '2019-03-08 13:46:44', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (34, 10, 0, 1, 'Yaml编辑器', 'YamlEdit', 'components/YamlEdit', 54, 'dev', 'yaml', b'0', b'0', b'0', NULL, 'System', 'System', '2019-03-08 15:49:40', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (35, 1, 3, 1, '部门管理', 'Dept', 'system/dept/index', 6, 'dept', 'dept', b'0', b'0', b'0', 'dept:list', 'System', 'System', '2019-03-25 09:46:00', '2021-09-10 16:55:06');
@@ -432,7 +497,7 @@ INSERT INTO `sys_menu` VALUES (36, NULL, 7, 0, '系统工具', NULL, '', 30, 'sy
 INSERT INTO `sys_menu` VALUES (37, 1, 3, 1, '岗位管理', 'Job', 'system/job/index', 7, 'Steve-Jobs', 'job', b'0', b'0', b'0', 'job:list', 'System', 'System', '2019-03-29 13:51:18', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (38, 36, 0, 1, '接口文档', 'Swagger', 'tools/swagger/index', 36, 'swagger', 'swagger2', b'0', b'0', b'0', NULL, 'System', 'System', '2019-03-29 19:57:53', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (39, 1, 3, 1, '字典管理', 'Dict', 'system/dict/index', 8, 'dictionary', 'dict', b'0', b'0', b'0', 'dict:list', 'System', 'System', '2019-04-10 11:49:04', '2021-09-10 16:55:06');
-INSERT INTO `sys_menu` VALUES (41, 6, 0, 1, '在线用户', 'OnlineUser', 'monitor/online/index', 10, 'Steve-Jobs', 'online', b'0', b'0', b'0', NULL, 'System', 'System', '2019-10-26 22:08:43', '2021-09-10 16:55:06');
+INSERT INTO `sys_menu` VALUES (41, 6, 0, 1, '在线用户', 'OnlineUser', 'monitor/online/index', 10, 'Steve-Jobs', 'online', b'0', b'0', b'0', 'online:list', 'System', 'System', '2019-10-26 22:08:43', '2021-12-27 16:23:30');
 INSERT INTO `sys_menu` VALUES (44, 2, 0, 2, '用户新增', NULL, '', 2, '', '', b'0', b'0', b'0', 'user:add', 'System', 'System', '2019-10-29 10:59:46', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (45, 2, 0, 2, '用户编辑', NULL, '', 3, '', '', b'0', b'0', b'0', 'user:edit', 'System', 'System', '2019-10-29 11:00:08', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (46, 2, 0, 2, '用户删除', NULL, '', 4, '', '', b'0', b'0', b'0', 'user:del', 'System', 'System', '2019-10-29 11:00:23', '2021-09-10 16:55:06');
@@ -481,12 +546,14 @@ INSERT INTO `sys_menu` VALUES (113, 98, 0, 2, '数据库编辑', NULL, '', 999, 
 INSERT INTO `sys_menu` VALUES (114, 98, 0, 2, '数据库删除', NULL, '', 999, '', '', b'0', b'0', b'0', 'database:del', 'System', 'System', '2019-11-17 11:13:14', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (116, 36, 0, 1, '生成预览', 'Preview', 'generator/preview', 999, 'java', 'generator/preview/:tableName', b'0', b'1', b'1', NULL, 'System', 'System', '2019-11-26 14:54:36', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (118, 6, 0, 1, '应用监控', 'Sba', 'monitor/sba/index', 19, 'app', 'sba', b'0', b'0', b'0', NULL, 'admin', 'admin', '2020-10-30 09:07:50', '2021-09-10 16:55:06');
-INSERT INTO `sys_menu` VALUES (119, 1, 0, 1, '数据权限管理', 'DataPermission', 'system/data_permission/index', 6, 'permission', 'data_permission', b'0', b'0', b'0', 'data_permission:list', 'admin', 'admin', '2020-10-30 09:07:50', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (121, 6, 0, 1, '缓存监控', 'CacheMonitor', 'monitor/cache/index', 20, 'redis', 'cache', b'0', b'0', b'0', 'monitor:list', 'admin', 'admin', '2020-12-24 17:54:40', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (122, 1, 3, 1, '版本管理', 'VersionList', 'system/version/index', 10, 'tree', 'Version', b'0', b'0', b'0', 'version:list', 'admin', 'admin', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (123, 122, 0, 2, '版本新增', 'version_add', '', 5, '', '', b'0', b'0', b'0', 'version:add', 'admin', 'admin', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (124, 122, 0, 2, '版本编辑', 'version_edit', '', 5, '', '', b'0', b'0', b'0', 'version:edit', 'admin', 'admin', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
 INSERT INTO `sys_menu` VALUES (125, 122, 0, 2, '版本删除', 'version_del', '', 5, '', '', b'0', b'0', b'0', 'version:del', 'admin', 'admin', '2021-09-10 16:55:06', '2021-09-10 16:55:06');
+INSERT INTO `sys_menu` VALUES (126, 41, 0, 2, '强退', 'online_del', '', 5, '', '', b'0', b'0', b'0', 'online:del', 'admin', 'admin', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_menu` VALUES (127, 7, 0, 2, '清空', 'log_del', '', 5, '', '', b'0', b'0', b'0', 'log:del', 'admin', 'admin', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_menu` VALUES (128, NULL, 0, 0, '首页', 'Dashboard', 'Layout', 0, 'index', 'dashboard', b'0', b'0', b'0', 'dashboard:list', 'admin', 'admin', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 COMMIT;
 
 -- ----------------------------
@@ -510,7 +577,7 @@ CREATE TABLE `sys_quartz_job` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='定时任务';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='定时任务';
 
 -- ----------------------------
 -- Records of sys_quartz_job
@@ -524,6 +591,7 @@ INSERT INTO `sys_quartz_job` VALUES (7, 'userTask', '0 51 23 ? * *', b'0', '用�
 INSERT INTO `sys_quartz_job` VALUES (8, 'userTask', '0 52 23 ? * *', b'0', '用户密码过期检查', 'credentialsExpired', NULL, '用户密码长时间未修改，密码过期', 'admin', '', NULL, b'0', 'admin', 'admin', '2021-01-07 09:12:41', '2021-01-07 09:12:41');
 INSERT INTO `sys_quartz_job` VALUES (9, 'userTask', '0 53 23 ? * *', b'0', '用户密码过期检查', 'credentialsExpiredAdvanceDayMustReset', NULL, '密码过期前N天设置必须修改密码', 'admin', '', NULL, b'0', 'admin', 'admin', '2021-01-07 09:12:41', '2021-01-07 09:12:41');
 INSERT INTO `sys_quartz_job` VALUES (10, 'userTask', '0 54 23 ? * *', b'0', '用户密码过期检查', 'credentialsExpiredAdvanceDayTipReset', NULL, '提前N天提醒用户修改密码', 'admin', '', NULL, b'0', 'admin', 'admin', '2021-01-07 09:12:41', '2021-01-07 09:12:41');
+INSERT INTO `sys_quartz_job` VALUES (11, 'logTask', '0 55 23 ? * *', b'0', '清空N个月之前的操作日志', 'cleanLogs', '-3', '清空N个月之前的操作日志', 'admin', NULL, NULL, b'0', 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 COMMIT;
 
 -- ----------------------------
@@ -555,6 +623,7 @@ COMMIT;
 CREATE TABLE `sys_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '名称',
+  `code` varchar(50) NOT NULL COMMENT '标识',
   `level` int(255) DEFAULT NULL COMMENT '角色级别',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `data_scope` varchar(255) DEFAULT NULL COMMENT '数据权限',
@@ -562,15 +631,16 @@ CREATE TABLE `sys_role` (
   `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `ux_code` (`code`) USING BTREE COMMENT '标识唯一索引'
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='角色表';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_role` VALUES (1, '超级管理员', 1, '-', 'DATA_SCOPE_ALL', 'System', 'System', '2018-11-23 11:04:37', '2020-08-06 16:10:24');
-INSERT INTO `sys_role` VALUES (2, '普通用户', 2, '-', 'DATA_SCOPE_CUSTOM', 'System', 'System', '2018-11-23 13:09:06', '2020-09-05 10:45:12');
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 'ROLE_ADMIN', 1, '-', 'DATA_SCOPE_ALL', 'System', 'System', '2018-11-23 11:04:37', '2021-12-27 16:23:30');
+INSERT INTO `sys_role` VALUES (2, '演示角色', 'ROLE_DEMO', 2, '-', 'DATA_SCOPE_CUSTOM', 'System', 'System', '2018-11-23 13:09:06', '2021-12-27 16:23:30');
 COMMIT;
 
 -- ----------------------------
@@ -633,6 +703,7 @@ INSERT INTO `sys_roles_menus` VALUES (19, 2);
 INSERT INTO `sys_roles_menus` VALUES (28, 1);
 INSERT INTO `sys_roles_menus` VALUES (28, 2);
 INSERT INTO `sys_roles_menus` VALUES (30, 1);
+INSERT INTO `sys_roles_menus` VALUES (30, 2);
 INSERT INTO `sys_roles_menus` VALUES (32, 1);
 INSERT INTO `sys_roles_menus` VALUES (33, 1);
 INSERT INTO `sys_roles_menus` VALUES (33, 2);
@@ -649,9 +720,14 @@ INSERT INTO `sys_roles_menus` VALUES (38, 2);
 INSERT INTO `sys_roles_menus` VALUES (39, 1);
 INSERT INTO `sys_roles_menus` VALUES (39, 2);
 INSERT INTO `sys_roles_menus` VALUES (41, 1);
+INSERT INTO `sys_roles_menus` VALUES (41, 2);
+INSERT INTO `sys_roles_menus` VALUES (77, 2);
+INSERT INTO `sys_roles_menus` VALUES (78, 2);
+INSERT INTO `sys_roles_menus` VALUES (79, 2);
 INSERT INTO `sys_roles_menus` VALUES (80, 1);
 INSERT INTO `sys_roles_menus` VALUES (80, 2);
 INSERT INTO `sys_roles_menus` VALUES (82, 1);
+INSERT INTO `sys_roles_menus` VALUES (82, 2);
 INSERT INTO `sys_roles_menus` VALUES (83, 1);
 INSERT INTO `sys_roles_menus` VALUES (83, 2);
 INSERT INTO `sys_roles_menus` VALUES (90, 1);
@@ -659,14 +735,20 @@ INSERT INTO `sys_roles_menus` VALUES (90, 2);
 INSERT INTO `sys_roles_menus` VALUES (92, 1);
 INSERT INTO `sys_roles_menus` VALUES (92, 2);
 INSERT INTO `sys_roles_menus` VALUES (93, 1);
+INSERT INTO `sys_roles_menus` VALUES (93, 2);
 INSERT INTO `sys_roles_menus` VALUES (94, 1);
+INSERT INTO `sys_roles_menus` VALUES (94, 2);
 INSERT INTO `sys_roles_menus` VALUES (97, 1);
+INSERT INTO `sys_roles_menus` VALUES (97, 2);
 INSERT INTO `sys_roles_menus` VALUES (98, 1);
+INSERT INTO `sys_roles_menus` VALUES (98, 2);
 INSERT INTO `sys_roles_menus` VALUES (116, 1);
+INSERT INTO `sys_roles_menus` VALUES (116, 2);
 INSERT INTO `sys_roles_menus` VALUES (118, 1);
 INSERT INTO `sys_roles_menus` VALUES (118, 2);
-INSERT INTO `sys_roles_menus` VALUES (119, 1);
 INSERT INTO `sys_roles_menus` VALUES (121, 1);
+INSERT INTO `sys_roles_menus` VALUES (121, 2);
+INSERT INTO `sys_roles_menus` VALUES (122, 2);
 COMMIT;
 
 -- ----------------------------

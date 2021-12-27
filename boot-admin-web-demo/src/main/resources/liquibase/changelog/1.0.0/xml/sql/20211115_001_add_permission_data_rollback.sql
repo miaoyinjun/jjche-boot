@@ -10,7 +10,7 @@ DELETE FROM `sys_roles_menus` WHERE
 		menu_id = (SELECT id FROM sys_menu WHERE `permission` = 'student:del')
 		)
 		AND
-		role_id = (SELECT id FROM sys_role WHERE `name` = '普通用户');
+		role_id = (SELECT id FROM sys_role WHERE `code` = 'ROLE_DEMO');
 
 -- 删除数据
 DELETE FROM sys_data_permission_rule;

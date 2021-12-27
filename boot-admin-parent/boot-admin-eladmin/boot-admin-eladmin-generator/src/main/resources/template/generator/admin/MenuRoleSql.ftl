@@ -16,10 +16,10 @@ INSERT INTO `sys_menu`(pid, sub_count, type, title, `name`, component, menu_sort
 -- 添加菜单-角色关联
 INSERT INTO `sys_roles_menus`
 	VALUES
-		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:list'), (SELECT id FROM sys_role WHERE `name` = '超级管理员')),
-		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:add'), (SELECT id FROM sys_role WHERE `name` = '超级管理员')),
-		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:edit'), (SELECT id FROM sys_role WHERE `name` = '超级管理员')),
-		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:del'), (SELECT id FROM sys_role WHERE `name` = '超级管理员'));
+		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:list'), (SELECT id FROM sys_role WHERE `code` = 'ROLE_ADMIN')),
+		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:add'), (SELECT id FROM sys_role WHERE `code` = 'ROLE_ADMIN')),
+		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:edit'), (SELECT id FROM sys_role WHERE `code` = 'ROLE_ADMIN')),
+		((SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:del'), (SELECT id FROM sys_role WHERE `code` = 'ROLE_ADMIN'));
 
 -- 删除菜单--回滚
 
@@ -33,7 +33,7 @@ INSERT INTO `sys_roles_menus`
 -- 		menu_id = (SELECT id FROM sys_menu WHERE `permission` = '${changeClassName}:del')
 -- 		)
 -- 		AND
--- 		role_id = (SELECT id FROM sys_role WHERE `name` = '超级管理员')
+-- 		role_id = (SELECT id FROM sys_role WHERE `code` = 'ROLE_ADMIN')
 -- ;
 
 -- DELETE FROM `sys_menu` WHERE
