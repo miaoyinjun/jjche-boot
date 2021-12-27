@@ -1,1 +1,0 @@
-DELETE FROM sys_menu WHERE title = '首页';

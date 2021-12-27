@@ -290,21 +290,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         permissions = roles.stream().flatMap(role -> role.getMenus().stream())
                 .filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
                 .map(MenuDO::getPermission).collect(Collectors.toSet());
-        //列权限同菜单一同返回
-//        Set<Long> roleIds = roles.stream().map(RoleDO::getId).collect(Collectors.toSet());
-//        List<DataPermissionFieldVO> permissionDataFieldDTOList =
-//                dataPermissionFieldService.selectByRoleIdsAndPermission(roleIds, permissions);
-//        if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
-//            for (DataPermissionFieldVO vo : permissionDataFieldDTOList) {
-//                String permission = StrUtil.format("{}:{}:", vo.getMenuPermission(), vo.getCode());
-//                if (vo.getIsAccessible()) {
-//                    permissions.add(StrUtil.format("{}accessible", permission));
-//                }
-//                if (vo.getIsEditable()) {
-//                    permissions.add(StrUtil.format("{}editable", permission));
-//                }
-//            }
-//        }
         return permissions.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

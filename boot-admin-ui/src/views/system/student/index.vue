@@ -5,7 +5,7 @@
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
         <el-input v-model="query.name" clearable placeholder="姓名" style="width: 185px;" class="filter-item" @keyup.enter.native="crud.toQuery" />
-        <el-select v-model="query.course" filterable clearable placeholder="课程类型">
+        <el-select v-model="query.course" filterable clearable placeholder="课程类型" class="filter-item">
           <el-option
             v-for="item in dict.course_status"
             :key="item.id"
@@ -96,7 +96,6 @@ import udOperation from '@crud/UD.operation'
 import pagination from '@crud/Pagination'
 import DateRangePicker from '@/components/DateRangePicker'
 import log from '@/components/Log'
-import Settings from '../../../settings'
 
 const defaultForm = { id: null, name: null, age: null, deptId: null, course: '102' }
 export default {
@@ -148,7 +147,7 @@ export default {
           this.$refs.log.crud.toQuery()
         }
       })
-    },
+    }
   }
 }
 </script>
