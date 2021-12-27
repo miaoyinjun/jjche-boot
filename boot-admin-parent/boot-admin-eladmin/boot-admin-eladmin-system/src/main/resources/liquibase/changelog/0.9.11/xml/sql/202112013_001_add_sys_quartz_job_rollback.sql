@@ -1,1 +1,0 @@
-DELETE FROM `sys_quartz_job` WHERE bean_name = 'logTask';

@@ -1,1 +1,0 @@
-ALTER TABLE `sys_log` DROP COLUMN `request_id`;

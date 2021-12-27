@@ -94,7 +94,11 @@ public @interface BizLog {
     String parameterKeyDesc() default "主键ID";
 
     /**
+     * <p>
      * 参数主键类型
+     * </p>
+     *
+     * @return /
      */
     Class parameterKeyType() default Serializable.class;
 

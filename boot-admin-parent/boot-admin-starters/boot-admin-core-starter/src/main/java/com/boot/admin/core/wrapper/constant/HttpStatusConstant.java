@@ -45,7 +45,7 @@ public interface HttpStatusConstant {
     /**
      * 内部错误 {@value}
      */
-    String MSG_UNKNOWN_ERROR = "系统异常";
+    String MSG_UNKNOWN_ERROR = "系统未知错误,请反馈给管理员";
 
     /**
      * 参数错误 {@value}
