@@ -1,6 +1,5 @@
 package com.boot.admin.security.security;
 
-import cn.hutool.core.date.DateField;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.Date;
 
 /**
  * <p>TokenProvider class.</p>
@@ -123,20 +121,26 @@ public class TokenProvider implements InitializingBean {
      * @param onlineUserDto a {@link com.boot.admin.security.dto.OnlineUserDto} object.
      */
     public void checkRenewal(String tokenKey, OnlineUserDto onlineUserDto) {
-        //更新最后访问时间
-        onlineUserDto.setLastAccessTime(new Date());
-        redisService.objectSetObject(tokenKey, onlineUserDto);
-        // 判断是否续期token,计算token的过期时间
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
-        long time = redisService.getExpire(tokenKey);
-        Date expireDate = DateUtil.offset(new Date(), DateField.MILLISECOND, (int) time);
-        // 判断当前时间与过期时间的时间差
-        long differ = expireDate.getTime() - System.currentTimeMillis();
-        // 如果在续期检查的范围内，则续期
-        if (differ <= securityJwtProperties.getDetect()) {
-            long renew = securityJwtProperties.getTokenValidityInMilliSeconds();
-            redisService.setExpire(tokenKey, renew);
-        }
+        long renew = securityJwtProperties.getTokenValidityInMilliSeconds();
+
+        //更新最后访问时间，由于每次都要修改token缓存，所以判断是否续期token减少redis操作的目的就没意义了
+        onlineUserDto.setLastAccessTime(DateUtil.date());
+        redisService.objectSetObject(tokenKey, onlineUserDto, renew);
+
+        /**
+         // 判断是否续期token,计算token的过期时间
+         long time = redisService.getExpire(tokenKey);
+         Date expireDate = DateUtil.offset(new Date(), DateField.MILLISECOND, (int) time);
+         // 判断当前时间与过期时间的时间差
+         long differ = expireDate.getTime() - System.currentTimeMillis();
+         // 如果在续期检查的范围内，则续期
+         if (differ <= securityJwtProperties.getDetect()) {
+         long renew = securityJwtProperties.getTokenValidityInMilliSeconds();
+         redisService.setExpire(tokenKey, renew);
+         }
+         */
+
     }
 
     /**

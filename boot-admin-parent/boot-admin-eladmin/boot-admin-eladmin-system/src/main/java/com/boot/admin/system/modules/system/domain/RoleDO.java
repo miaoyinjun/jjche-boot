@@ -45,4 +45,8 @@ public class RoleDO extends BaseEntity {
 
     @ApiModelProperty(value = "描述")
     private String description;
+
+    @NotBlank(message = "标识 不能为空")
+    @ApiModelProperty(value = "标识")
+    private String code;
 }

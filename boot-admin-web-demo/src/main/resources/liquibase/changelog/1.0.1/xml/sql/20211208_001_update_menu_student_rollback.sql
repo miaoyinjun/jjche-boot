@@ -1,1 +1,0 @@
-UPDATE sys_menu SET title = '代码生成-学生测试' WHERE name = 'StudentMenu';

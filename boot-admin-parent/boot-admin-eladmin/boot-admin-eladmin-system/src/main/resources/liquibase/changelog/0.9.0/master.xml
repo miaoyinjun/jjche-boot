@@ -5,15 +5,4 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <include file="xml/20200922_001_init.xml" relativeToChangelogFile="true"/>
-    <include file="xml/202110027_001_add_tb_sys_data_permission_rule.xml" relativeToChangelogFile="true"/>
-    <include file="xml/202111002_001_udpate_tb_sys_data_permission_field.xml" relativeToChangelogFile="true"/>
-    <include file="xml/202111012_001_udpate_tb_sys_data_permission_field_role.xml" relativeToChangelogFile="true"/>
-    <changeSet  author="miaoyj"  id="0.9.0">
-        <tagDatabase  tag="0.9.0"/>
-    </changeSet>
-    <include file="xml/202111022_001_add_column_tb_code_column_config.xml" relativeToChangelogFile="true"/>
-    <include file="xml/202112002_001_tb_sys_menu_update.xml" relativeToChangelogFile="true"/>
-    <changeSet  author="miaoyj"  id="0.9.1">
-        <tagDatabase  tag="0.9.1"/>
-    </changeSet>
 </databaseChangeLog>

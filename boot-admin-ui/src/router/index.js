@@ -74,15 +74,18 @@ export const loadMenus = (next, to) => {
     asyncRouter.push({ path: '*', redirect: '/404', hidden: true })
     store.dispatch('GenerateRoutes', asyncRouter).then(() => { // 存储路由
       router.addRoutes(asyncRouter) // 动态添加可访问路由表
-
-      if (to.path === '/dashboard') {
-        const children = asyncRouter[0].children
-        if (children.length > 0) {
-          const name = children[0].name
-          next({ name, replace: true })
+      const firstRouter = asyncRouter[0]
+      //防止用户没有首页权限，而且通过登录默认进入首页
+      if (to.path === '/dashboard' && firstRouter.path != '/dashboard') {
+        const firstChildren = firstRouter.children
+        let name = firstRouter.name
+        if (firstChildren.length > 0) {
+          name = firstChildren[0].name
         }
+        next({ name, replace: true })
+      } else {
+        next({ ...to, replace: true })
       }
-      next({ ...to, replace: true })
     })
   })
 }

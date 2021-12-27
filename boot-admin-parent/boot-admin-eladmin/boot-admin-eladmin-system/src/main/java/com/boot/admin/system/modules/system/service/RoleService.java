@@ -10,6 +10,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.boot.admin.cache.service.RedisService;
 import com.boot.admin.common.constant.CacheKey;
 import com.boot.admin.common.constant.SecurityConstant;
+import com.boot.admin.common.enums.DataScopeEnum;
 import com.boot.admin.common.util.ValidationUtil;
 import com.boot.admin.core.util.FileUtil;
 import com.boot.admin.mybatis.base.service.MyServiceImpl;
@@ -129,6 +130,12 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
             }
         }
         List<RoleDTO> list = roleMapper.toVO(roleList);
+        for (RoleDTO roleDTO : list) {
+            DataScopeEnum dataScope = roleDTO.getDataScope();
+            if (dataScope != null) {
+                roleDTO.setDataScopeValue(dataScope.getValue());
+            }
+        }
         MyPage<RoleDTO> resultPage = new MyPage<>();
         resultPage.setRecords(list);
         resultPage.setPages(myPage.getPages());
@@ -157,7 +164,9 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      */
     public void create(RoleDO resources) {
         RoleDO role = this.findByName(resources.getName());
-        Assert.isNull(role, resources.getName() + "已存在");
+        Assert.isNull(role, StrUtil.format("名称：{}已存在", resources.getName()));
+        role = this.findByCode(resources.getCode());
+        Assert.isNull(role, StrUtil.format("标识：{}已存在", resources.getCode()));
         this.save(resources);
         List<Long> deptIds = resources.getDepts().stream().map(DeptDO::getId).collect(Collectors.toList());
         this.updateRoleAndDept(resources.getId(), deptIds);
@@ -174,6 +183,20 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
     public RoleDO findByName(String name) {
         LambdaQueryWrapper<RoleDO> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RoleDO::getName, name);
+        return this.getOne(queryWrapper);
+    }
+
+    /**
+     * <p>
+     * 根据标识查询
+     * </p>
+     *
+     * @param code 标识
+     * @return /
+     */
+    public RoleDO findByCode(String code) {
+        LambdaQueryWrapper<RoleDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(RoleDO::getCode, code);
         return this.getOne(queryWrapper);
     }
 
@@ -267,21 +290,6 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         permissions = roles.stream().flatMap(role -> role.getMenus().stream())
                 .filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
                 .map(MenuDO::getPermission).collect(Collectors.toSet());
-        //列权限同菜单一同返回
-//        Set<Long> roleIds = roles.stream().map(RoleDO::getId).collect(Collectors.toSet());
-//        List<DataPermissionFieldVO> permissionDataFieldDTOList =
-//                dataPermissionFieldService.selectByRoleIdsAndPermission(roleIds, permissions);
-//        if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
-//            for (DataPermissionFieldVO vo : permissionDataFieldDTOList) {
-//                String permission = StrUtil.format("{}:{}:", vo.getMenuPermission(), vo.getCode());
-//                if (vo.getIsAccessible()) {
-//                    permissions.add(StrUtil.format("{}accessible", permission));
-//                }
-//                if (vo.getIsEditable()) {
-//                    permissions.add(StrUtil.format("{}editable", permission));
-//                }
-//            }
-//        }
         return permissions.stream().map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
