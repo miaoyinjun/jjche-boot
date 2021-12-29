@@ -5,25 +5,37 @@
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
         <el-input
-         v-model="query.blurry" size="small" clearable placeholder="输入名称或者描述搜索" style="width: 200px;"
-                  class="filter-item" @keyup.enter.native="crud.toQuery"/>
-        <date-range-picker v-model="query.gmtCreate" class="date-item"/>
-        <rrOperation/>
+          v-model="query.blurry"
+          size="small"
+          clearable
+          placeholder="输入名称或者描述搜索"
+          style="width: 200px;"
+          class="filter-item"
+          @keyup.enter.native="crud.toQuery"
+        />
+        <date-range-picker v-model="query.gmtCreate" class="date-item" />
+        <rrOperation />
       </div>
-      <crudOperation :permission="permission"/>
+      <crudOperation :permission="permission" />
     </div>
     <!-- 表单渲染 -->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU"
-               :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="520px">
+    <el-dialog
+      append-to-body
+      :close-on-click-modal="false"
+      :before-close="crud.cancelCU"
+      :visible.sync="crud.status.cu > 0"
+      :title="crud.status.title"
+      width="520px"
+    >
       <el-form ref="form" :inline="true" :model="form" :rules="rules" size="small" label-width="80px">
         <el-form-item label="角色名称" prop="name">
-          <el-input v-model="form.name" style="width: 380px;"/>
+          <el-input v-model="form.name" style="width: 380px;" />
         </el-form-item>
         <el-form-item label="角色标识" prop="code">
-          <el-input v-model="form.code" style="width: 380px;" :disabled="form.id > 0"/>
-        </el-form-item>        
+          <el-input v-model="form.code" style="width: 380px;" :disabled="form.id > 0" />
+        </el-form-item>
         <el-form-item label="角色级别" prop="level">
-          <el-input-number v-model.number="form.level" :min="1" controls-position="right" style="width: 145px;"/>
+          <el-input-number v-model.number="form.level" :min="1" controls-position="right" style="width: 145px;" />
         </el-form-item>
         <el-form-item label="数据范围" prop="dataScope">
           <el-select v-model="form.dataScope" style="width: 140px" placeholder="请选择数据范围" @change="changeScope">
@@ -46,7 +58,7 @@
           />
         </el-form-item>
         <el-form-item label="描述信息" prop="description">
-          <el-input v-model="form.description" style="width: 380px;" rows="5" type="textarea"/>
+          <el-input v-model="form.description" style="width: 380px;" rows="5" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -61,22 +73,34 @@
           <div slot="header" class="clearfix">
             <span class="role-span">角色列表</span>
           </div>
-          <el-table stripe ref="table" v-loading="crud.loading" highlight-current-row style="width: 100%;"
-                    :data="crud.data" @selection-change="crud.selectionChangeHandler"
-                    @current-change="handleCurrentChange">
-            <el-table-column :selectable="checkboxT" type="selection" width="55"/>
-            <el-table-column prop="name" label="名称"/>
-            <el-table-column prop="code" label="角色标识"/>
-            <el-table-column prop="dataScopeValue" label="数据范围"/>
-            <el-table-column prop="level" label="角色级别"/>
-            <el-table-column :show-overflow-tooltip="true" prop="description" label="描述"/>
+          <el-table
+            ref="table"
+            v-loading="crud.loading"
+            stripe
+            highlight-current-row
+            style="width: 100%;"
+            :data="crud.data"
+            @selection-change="crud.selectionChangeHandler"
+            @current-change="handleCurrentChange"
+          >
+            <el-table-column :selectable="checkboxT" type="selection" width="55" />
+            <el-table-column prop="name" label="名称" />
+            <el-table-column prop="code" label="角色标识" />
+            <el-table-column prop="dataScopeValue" label="数据范围" />
+            <el-table-column prop="level" label="角色级别" />
+            <el-table-column :show-overflow-tooltip="true" prop="description" label="描述" />
             <el-table-column :show-overflow-tooltip="true" width="135px" prop="gmtCreate" label="创建日期">
               <template slot-scope="scope">
                 <span>{{ parseTime(scope.row.gmtCreate) }}</span>
               </template>
             </el-table-column>
-            <el-table-column v-permission="['admin','roles:edit','roles:del']" label="操作" width="130px" align="center"
-                             fixed="right">
+            <el-table-column
+              v-permission="['admin','roles:edit','roles:del']"
+              label="操作"
+              width="130px"
+              align="center"
+              fixed="right"
+            >
               <template slot-scope="scope">
                 <udOperation
                   v-if="scope.row.level >= level"
@@ -87,7 +111,7 @@
             </el-table-column>
           </el-table>
           <!--分页组件-->
-          <pagination/>
+          <pagination />
         </el-card>
       </el-col>
       <!-- 菜单授权 -->
@@ -126,7 +150,7 @@
           >
             <span slot-scope="{ node, data }" class="data-permission-filed-tree-node">
               <span>{{ node.label }}</span>
-              <span v-if="data.isDataPermission" class="el-icon-s-fold" style="color: red;"/>
+              <span v-if="data.isDataPermission" class="el-icon-s-fold" style="color: red;" />
             </span>
           </el-tree>
         </el-card>
@@ -136,23 +160,24 @@
     <el-drawer
       title="数据权限"
       :visible.sync="dataPermissionVisible"
+      size="20%"
       @open="handleDataPermissionOpen()"
-      size="20%">
+    >
 
-        <div style="margin-left: 20px">
-          <el-tabs v-model="DataPermissionActiveName" @tab-click="handleTabDataPermissionClick">
-          
-            <el-tab-pane label="数据规则" name="dataPermissionRule">
-              <dataPermissionRule ref="dataPermissionRule" :permission="permission"/>
-            </el-tab-pane>
-      
-            <el-tab-pane label="数据字段" name="dataPermissionField">
-              <dataPermissionField ref="dataPermissionField" :permission="permission"/>
-            </el-tab-pane>
-    
-          </el-tabs>
-        </div>
-        </el-drawer>
+      <div style="margin-left: 20px">
+        <el-tabs v-model="DataPermissionActiveName" @tab-click="handleTabDataPermissionClick">
+
+          <el-tab-pane label="数据规则" name="dataPermissionRule">
+            <dataPermissionRule ref="dataPermissionRule" :permission="permission" />
+          </el-tab-pane>
+
+          <el-tab-pane label="数据字段" name="dataPermissionField">
+            <dataPermissionField ref="dataPermissionField" :permission="permission" />
+          </el-tab-pane>
+
+        </el-tabs>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -177,7 +202,7 @@ export default {
   name: 'Role',
   components: { Treeselect, pagination, crudOperation, rrOperation, udOperation, DateRangePicker, dataPermissionRule, dataPermissionField },
   cruds() {
-    return Crud({ title: '角色', url: 'sys/roles', crudMethod: { ...crudRoles } })
+    return Crud({ title: '角色', url: 'sys/roles', crudMethod: { ...crudRoles }})
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
@@ -396,10 +421,10 @@ export default {
         this.nodeMenuId = data.id
       }
     },
-    getDataPermissionRuleData(){
-          this.$refs.dataPermissionRule.query.menuId = this.nodeMenuId
-          this.$refs.dataPermissionRule.query.roleId = this.currentId
-          this.$refs.dataPermissionRule.crud.toQuery()
+    getDataPermissionRuleData() {
+      this.$refs.dataPermissionRule.query.menuId = this.nodeMenuId
+      this.$refs.dataPermissionRule.query.roleId = this.currentId
+      this.$refs.dataPermissionRule.crud.toQuery()
     },
     handleDataPermissionOpen() {
       this.$nextTick(() => {
@@ -409,11 +434,11 @@ export default {
       })
     },
     handleTabDataPermissionClick(tab, event) {
-      if(tab.name === 'dataPermissionField'){
-          this.$refs.dataPermissionField.query.menuId = this.nodeMenuId
-          this.$refs.dataPermissionField.query.roleId = this.currentId
-          this.$refs.dataPermissionField.crud.toQuery()
-      }else{
+      if (tab.name === 'dataPermissionField') {
+        this.$refs.dataPermissionField.query.menuId = this.nodeMenuId
+        this.$refs.dataPermissionField.query.roleId = this.currentId
+        this.$refs.dataPermissionField.crud.toQuery()
+      } else {
         this.getDataPermissionRuleData()
       }
     }

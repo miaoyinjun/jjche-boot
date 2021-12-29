@@ -46,7 +46,7 @@
         </div>
       </el-dialog>
       <!--表格渲染-->
-      <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
+      <el-table ref="table" v-loading="crud.loading" stripe :data="crud.data" style="width: 100%;" @selection-change="crud.selectionChangeHandler">
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name" :show-overflow-tooltip="true" label="文件名">
           <template slot-scope="scope">
