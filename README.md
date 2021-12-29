@@ -1,6 +1,6 @@
 ## boot-admin
 
-企业级快速开发平台，前后端分离设计，基于SpringBoot2.x、Spring Security，JWT，MyBatis-plus，Vue，在线代码生成器一键生成前后端代码，帮助开发者节省70%的重复工作，更专注业务，节省开发成本，100%开源。
+企业级快速开发平台，前后端分离设计，基于SpringBoot2.x、Spring Security，JWT，MyBatis-plus，Vue，在线代码生成器一键生成前后端代码，API接口快速开发利器，帮助开发者节省70%的重复工作，更专注业务，节省开发成本，100%开源。
 
 ### 技术文档
 
