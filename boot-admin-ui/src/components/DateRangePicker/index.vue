@@ -16,11 +16,11 @@ export default {
     },
     defaultTime: {
       type: Array,
-      default: _ => ['00:00:00', '23:59:59']
+      default: (_) => ['00:00:00', '23:59:59']
     },
     pickerOptions: {
       type: DatePickerOptions,
-      default: _ => {
+      default: (_) => {
         return { shortcuts: calendarShortcuts }
       }
     },

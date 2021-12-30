@@ -5,7 +5,7 @@
     :page-size.sync="page.pageSize"
     :total="page.total"
     :current-page.sync="page.pageIndex"
-    style="margin-top: 8px;"
+    style="margin-top: 8px"
     layout="sizes, total,prev, pager, next"
     @size-change="crud.sizeChangeHandler($event)"
     @current-change="crud.pageChangeHandler"

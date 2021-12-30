@@ -53,7 +53,13 @@
             <span class="svg-container">
               <vab-icon :icon="['fas', 'shield-alt']" />
             </span>
-            <el-input v-model="form.code" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter.native="handleLogin" />
+            <el-input
+              v-model="form.code"
+              auto-complete="off"
+              placeholder="验证码"
+              style="width: 63%"
+              @keyup.enter.native="handleLogin"
+            />
             <div class="login-code">
               <img :src="codeUrl" @click="getCode">
             </div>
@@ -73,7 +79,9 @@
     <div v-if="$store.state.settings.showFooter" id="el-login-footer">
       <span v-html="$store.state.settings.footerTxt" />
       <span> ⋅ </span>
-      <a href="http://www.beian.miit.gov.cn" target="_blank">{{ $store.state.settings.caseNumber }}</a>
+      <a href="http://www.beian.miit.gov.cn" target="_blank">{{
+        $store.state.settings.caseNumber
+      }}</a>
       <span>v:{{ $store.state.settings.versionNumber }}</span>
     </div>
   </div>
@@ -110,8 +118,12 @@ export default {
         uuid: ''
       },
       rules: {
-        username: [{ required: true, trigger: 'blur', message: '用户名不能为空' }],
-        password: [{ required: true, trigger: 'blur', message: '密码不能为空' }],
+        username: [
+          { required: true, trigger: 'blur', message: '用户名不能为空' }
+        ],
+        password: [
+          { required: true, trigger: 'blur', message: '密码不能为空' }
+        ],
         code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
       },
       loading: false,
@@ -139,7 +151,7 @@ export default {
   },
   methods: {
     getCode() {
-      getCodeImg().then(res => {
+      getCodeImg().then((res) => {
         this.codeUrl = res.img
         this.form.uuid = res.uuid
       })
@@ -163,30 +175,51 @@ export default {
         user.password = encrypt(user.password)
         if (valid) {
           this.loading = true
-          this.$store.dispatch('Login', user).then(() => {
-            this.loading = false
-            const hour = new Date().getHours()
-            const thisTime = hour < 8 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
-            this.$notify({ title: `${thisTime}！`, message: `欢迎登录${this.title}`, type: 'success' })
-            const isTipResetPwd = store.getters.user.isTipResetPwd
-            if (isTipResetPwd) {
-              MessageBox.confirm('登录密码即将过期，是否去修改密码', '系统提示', {
-                confirmButtonText: '修改密码',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }
-              ).then(() => {
-                this.$router.push({ path: '/user/center' })
-              }).catch(() => {
-                this.$router.push({ path: this.redirect || '/' })
+          this.$store
+            .dispatch('Login', user)
+            .then(() => {
+              this.loading = false
+              const hour = new Date().getHours()
+              const thisTime =
+                hour < 8
+                  ? '早上好'
+                  : hour <= 11
+                    ? '上午好'
+                    : hour <= 13
+                      ? '中午好'
+                      : hour < 18
+                        ? '下午好'
+                        : '晚上好'
+              this.$notify({
+                title: `${thisTime}！`,
+                message: `欢迎登录${this.title}`,
+                type: 'success'
               })
-            } else {
-              this.$router.push({ path: this.redirect || '/' })
-            }
-          }).catch(() => {
-            this.loading = false
-            this.getCode()
-          })
+              const isTipResetPwd = store.getters.user.isTipResetPwd
+              if (isTipResetPwd) {
+                MessageBox.confirm(
+                  '登录密码即将过期，是否去修改密码',
+                  '系统提示',
+                  {
+                    confirmButtonText: '修改密码',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                  }
+                )
+                  .then(() => {
+                    this.$router.push({ path: '/user/center' })
+                  })
+                  .catch(() => {
+                    this.$router.push({ path: this.redirect || '/' })
+                  })
+              } else {
+                this.$router.push({ path: this.redirect || '/' })
+              }
+            })
+            .catch(() => {
+              this.loading = false
+              this.getCode()
+            })
         } else {
           return false
         }
@@ -211,7 +244,8 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url('~@/assets/images/background.jpg') center center fixed no-repeat;
+  background: url('~@/assets/images/background.jpg') center center fixed
+    no-repeat;
   background-size: cover;
 
   .title {
@@ -355,7 +389,7 @@ export default {
 
       img {
         cursor: pointer;
-        vertical-align: middle
+        vertical-align: middle;
       }
     }
   }

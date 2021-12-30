@@ -1,5 +1,10 @@
 <template>
-  <div v-loading="!show" element-loading-text="数据加载中..." :style="!show ? 'height: 500px' : 'height: 100%'" class="app-container">
+  <div
+    v-loading="!show"
+    element-loading-text="数据加载中..."
+    :style="!show ? 'height: 500px' : 'height: 100%'"
+    class="app-container"
+  >
     <div>
       <el-col :span="24" class="card-box">
         <el-card>
@@ -9,33 +14,87 @@
               <tbody>
                 <tr>
                   <td><div class="cell">Redis版本</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.redis_version }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.redis_version }}
+                    </div>
+                  </td>
                   <td><div class="cell">运行模式</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.redis_mode == "standalone" ? "单机" : "集群" }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{
+                        cache.info.redis_mode == 'standalone' ? '单机' : '集群'
+                      }}
+                    </div>
+                  </td>
                   <td><div class="cell">端口</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.tcp_port }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.tcp_port }}
+                    </div>
+                  </td>
                   <td><div class="cell">客户端数</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.connected_clients }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.connected_clients }}
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td><div class="cell">运行时间(天)</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.uptime_in_days }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.uptime_in_days }}
+                    </div>
+                  </td>
                   <td><div class="cell">使用内存</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.used_memory_human }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.used_memory_human }}
+                    </div>
+                  </td>
                   <td><div class="cell">使用CPU</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ parseFloat(cache.info.used_cpu_user_children).toFixed(2) }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{
+                        parseFloat(cache.info.used_cpu_user_children).toFixed(2)
+                      }}
+                    </div>
+                  </td>
                   <td><div class="cell">内存配置</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.maxmemory_human }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.maxmemory_human }}
+                    </div>
+                  </td>
                 </tr>
                 <tr>
                   <td><div class="cell">AOF是否开启</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.aof_enabled == "0" ? "否" : "是" }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.aof_enabled == '0' ? '否' : '是' }}
+                    </div>
+                  </td>
                   <td><div class="cell">RDB是否成功</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.rdb_last_bgsave_status }}</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.rdb_last_bgsave_status }}
+                    </div>
+                  </td>
                   <td><div class="cell">Key数量</div></td>
-                  <td><div v-if="cache.dbSize" class="cell">{{ cache.dbSize }} </div></td>
+                  <td>
+                    <div v-if="cache.dbSize" class="cell">
+                      {{ cache.dbSize }}
+                    </div>
+                  </td>
                   <td><div class="cell">网络入口/出口</div></td>
-                  <td><div v-if="cache.info" class="cell">{{ cache.info.instantaneous_input_kbps }}kps/{{ cache.info.instantaneous_output_kbps }}kps</div></td>
+                  <td>
+                    <div v-if="cache.info" class="cell">
+                      {{ cache.info.instantaneous_input_kbps }}kps/{{
+                        cache.info.instantaneous_output_kbps
+                      }}kps
+                    </div>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -99,7 +158,7 @@ export default {
   methods: {
     /** 查缓存询信息 */
     init() {
-      initData(this.url, {}).then(data => {
+      initData(this.url, {}).then((data) => {
         this.cache = data
         this.show = true
         this.commandstats = echarts.init(this.$refs.commandstats, 'macarons')

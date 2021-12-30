@@ -1,13 +1,31 @@
 <template>
-  <el-dialog append-to-body :close-on-click-modal="false" :visible.sync="dialog" title="系统还原" width="800px">
+  <el-dialog
+    append-to-body
+    :close-on-click-modal="false"
+    :visible.sync="dialog"
+    title="系统还原"
+    width="800px"
+  >
     <!--工具栏-->
     <div class="head-container">
       <date-range-picker v-model="query.gmtCreate" class="date-item" />
-      <el-button class="filter-item" size="mini" type="success" icon="el-icon-search" @click="toQuery">搜索</el-button>
+      <el-button
+        class="filter-item"
+        size="mini"
+        type="success"
+        icon="el-icon-search"
+        @click="toQuery"
+      >搜索</el-button>
     </div>
     <el-form size="small" label-width="80px">
       <!--表格渲染-->
-      <el-table stripe v-loading="loading" :data="data" style="width: 100%" @row-click="showRow">
+      <el-table
+        v-loading="loading"
+        stripe
+        :data="data"
+        style="width: 100%"
+        @row-click="showRow"
+      >
         <el-table-column width="30px">
           <template slot-scope="scope">
             <el-radio v-model="radio" :label="scope.$index" />
@@ -25,7 +43,12 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="text" @click="cancel">取消</el-button>
-      <el-button v-permission="['admin','deploy:add']" :loading="submitLoading" type="primary" @click="doSubmit">确认</el-button>
+      <el-button
+        v-permission="['admin', 'deploy:add']"
+        :loading="submitLoading"
+        type="primary"
+        @click="doSubmit"
+      >确认</el-button>
     </div>
     <!--分页组件-->
     <el-pagination
@@ -92,13 +115,13 @@ export default {
       } else {
         this.submitLoading = true
         reducte(JSON.stringify(this.data[this.radio]))
-          .then(res => {
+          .then((res) => {
             this.dialog = false
             this.submitLoading = false
             this.appNames = ''
             this.$parent.crud.toQuery()
           })
-          .catch(err => {
+          .catch((err) => {
             this.submitLoading = false
             console.log('error:' + err.response.data.message)
           })
@@ -108,5 +131,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
