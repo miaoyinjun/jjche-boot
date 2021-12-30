@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
 
         } finally {
             log.setExceptionStack(ThrowableUtil.getStackTrace(e));
-            StaticLog.error("全局异常信息 :{}", log);
+            StaticLog.error("全局异常信息 :{}", JSONUtil.toJsonPrettyStr(log));
             alarmDingTalkService.sendAlarm("全局异常");
         }
         return ResultWrapper.error();

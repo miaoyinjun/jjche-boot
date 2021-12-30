@@ -19,7 +19,7 @@ export function del(ids) {
 export function activated(id) {
   return request({
     url: 'sys/versions/' + id,
-    method: 'put',
+    method: 'put'
   })
 }
 
@@ -45,4 +45,4 @@ export function latest() {
   })
 }
 
-export default { add, edit, del, get, latest}
+export default { add, edit, del, get, latest }

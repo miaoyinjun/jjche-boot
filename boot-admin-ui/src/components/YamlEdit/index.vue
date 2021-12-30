@@ -50,7 +50,7 @@ export default {
     })
     this.editor.setSize('auto', this.height)
     this.editor.setValue(this.value)
-    this.editor.on('change', cm => {
+    this.editor.on('change', (cm) => {
       this.$emit('changed', cm.getValue())
       this.$emit('input', cm.getValue())
     })
@@ -64,18 +64,18 @@ export default {
 </script>
 
 <style scoped>
-  .json-editor{
-    height: 100%;
-    margin-bottom: 10px;
-  }
-  .json-editor >>> .CodeMirror {
-    font-size: 13px;
-    overflow-y:auto;
-    font-weight:normal
-  }
-  .json-editor >>> .CodeMirror-scroll{
-  }
-  .json-editor >>> .cm-s-rubyblue span.cm-string {
-    color: #F08047;
-  }
+.json-editor {
+  height: 100%;
+  margin-bottom: 10px;
+}
+.json-editor >>> .CodeMirror {
+  font-size: 13px;
+  overflow-y: auto;
+  font-weight: normal;
+}
+.json-editor >>> .CodeMirror-scroll {
+}
+.json-editor >>> .cm-s-rubyblue span.cm-string {
+  color: #f08047;
+}
 </style>

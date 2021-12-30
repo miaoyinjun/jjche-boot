@@ -6,19 +6,24 @@
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            用户数
-          </div>
-          <count-to :start-val="0" :end-val="count.todayUserCount" :duration="2600" class="card-panel-num" />
+          <div class="card-panel-text">用户数</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.todayUserCount"
+            :duration="2600"
+            class="card-panel-num"
+          />
         </div>
 
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            总用户数
-          </div>
-          <count-to :start-val="0" :end-val="count.totalUserCount" :duration="2600" class="card-panel-num" />
+          <div class="card-panel-text">总用户数</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.totalUserCount"
+            :duration="2600"
+            class="card-panel-num"
+          />
         </div>
-
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
@@ -27,17 +32,23 @@
           <svg-icon icon-class="ipvisits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            登录IV
-          </div>
-          <count-to :start-val="0" :end-val="count.todayLoginIv" :duration="3000" class="card-panel-num" />
+          <div class="card-panel-text">登录IV</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.todayLoginIv"
+            :duration="3000"
+            class="card-panel-num"
+          />
         </div>
 
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            总登录IV
-          </div>
-          <count-to :start-val="0" :end-val="count.totalLoginIv" :duration="3000" class="card-panel-num" />
+          <div class="card-panel-text">总登录IV</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.totalLoginIv"
+            :duration="3000"
+            class="card-panel-num"
+          />
         </div>
       </div>
     </el-col>
@@ -47,17 +58,23 @@
           <svg-icon icon-class="visits" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            登录PV
-          </div>
-          <count-to :start-val="0" :end-val="count.todayLoginPv" :duration="3200" class="card-panel-num" />
+          <div class="card-panel-text">登录PV</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.todayLoginPv"
+            :duration="3200"
+            class="card-panel-num"
+          />
         </div>
 
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            总登录PV
-          </div>
-          <count-to :start-val="0" :end-val="count.todayLoginPv" :duration="3200" class="card-panel-num" />
+          <div class="card-panel-text">总登录PV</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.todayLoginPv"
+            :duration="3200"
+            class="card-panel-num"
+          />
         </div>
       </div>
     </el-col>
@@ -67,17 +84,23 @@
           <svg-icon icon-class="tab" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            页面访问PV
-          </div>
-          <count-to :start-val="0" :end-val="count.todayPv" :duration="3600" class="card-panel-num" />
+          <div class="card-panel-text">页面访问PV</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.todayPv"
+            :duration="3600"
+            class="card-panel-num"
+          />
         </div>
 
         <div class="card-panel-description">
-          <div class="card-panel-text">
-            总页面访问PV
-          </div>
-          <count-to :start-val="0" :end-val="count.todayPv" :duration="3600" class="card-panel-num" />
+          <div class="card-panel-text">总页面访问PV</div>
+          <count-to
+            :start-val="0"
+            :end-val="count.todayPv"
+            :duration="3600"
+            class="card-panel-num"
+          />
         </div>
       </div>
     </el-col>
@@ -88,9 +111,12 @@
 import CountTo from 'vue-count-to'
 import { count } from '@/api/dashboard/dashboard'
 export default {
+  components: {
+    CountTo
+  },
   data() {
     return {
-      count:{
+      count: {
         totalUserCount: 0,
         todayUserCount: 0,
         totalPv: 0,
@@ -98,25 +124,22 @@ export default {
         totalLoginPv: 0,
         todayLoginPv: 0,
         totalLoginIv: 0,
-        todayLoginIv: 0,
+        todayLoginIv: 0
       }
-      }
-    },
-  components: {
-    CountTo
+    }
+  },
+  created() {
+    this.getCount()
   },
   methods: {
     handleSetLineChartData(type) {
       this.$emit('handleSetLineChartData', type)
     },
     getCount() {
-      count().then(res => {
+      count().then((res) => {
         this.count = res
       })
-    },
-  },
-  created() {
-    this.getCount()
+    }
   }
 }
 </script>
@@ -137,8 +160,8 @@ export default {
     overflow: hidden;
     color: #666;
     background: #fff;
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
 
     &:hover {
       .card-panel-icon-wrapper {
@@ -158,7 +181,7 @@ export default {
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #34bfa3;
       }
     }
 
@@ -175,7 +198,7 @@ export default {
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #34bfa3;
     }
 
     .card-panel-icon-wrapper {
@@ -211,7 +234,7 @@ export default {
   }
 }
 
-@media (max-width:550px) {
+@media (max-width: 550px) {
   .card-panel-description {
     display: none;
   }

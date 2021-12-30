@@ -4,14 +4,28 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.blurry" clearable placeholder="输入搜索内容" style="width: 200px" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input
+          v-model="query.blurry"
+          clearable
+          placeholder="输入搜索内容"
+          style="width: 200px"
+          class="filter-item"
+          @keyup.enter.native="crud.toQuery"
+        />
         <date-range-picker v-model="query.gmtCreate" class="date-item" />
         <rrOperation />
       </div>
       <crudOperation :permission="permission" />
     </div>
     <!--表格渲染-->
-    <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" style="width: 100%" @selection-change="crud.selectionChangeHandler">
+    <el-table
+      ref="table"
+      v-loading="crud.loading"
+      stripe
+      :data="crud.data"
+      style="width: 100%"
+      @selection-change="crud.selectionChangeHandler"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column prop="appName" label="应用名称" />
       <el-table-column prop="ip" label="部署IP" />
@@ -21,20 +35,39 @@
           <span>{{ parseTime(scope.row.gmtCreate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-permission="['admin','deployHistory:del']" label="操作" width="100px" align="center">
+      <el-table-column
+        v-permission="['admin', 'deployHistory:del']"
+        label="操作"
+        width="100px"
+        align="center"
+      >
         <template slot-scope="scope">
           <el-popover
             :ref="scope.row.id"
-            v-permission="['admin','deployHistory:del']"
+            v-permission="['admin', 'deployHistory:del']"
             placement="top"
             width="180"
           >
             <p>确定删除本条数据吗？</p>
             <div style="text-align: right; margin: 0">
-              <el-button size="mini" type="text" @click="$refs[scope.row.id].doClose()">取消</el-button>
-              <el-button :loading="delLoading" type="primary" size="mini" @click="delMethod(scope.row.id)">确定</el-button>
+              <el-button
+                size="mini"
+                type="text"
+                @click="$refs[scope.row.id].doClose()"
+              >取消</el-button>
+              <el-button
+                :loading="delLoading"
+                type="primary"
+                size="mini"
+                @click="delMethod(scope.row.id)"
+              >确定</el-button>
             </div>
-            <el-button slot="reference" type="danger" icon="el-icon-delete" size="mini" />
+            <el-button
+              slot="reference"
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+            />
           </el-popover>
         </template>
       </el-table-column>
@@ -56,7 +89,11 @@ export default {
   name: 'DeployHistory',
   components: { pagination, crudOperation, rrOperation, DateRangePicker },
   cruds() {
-    return Crud({ title: '部署历史', url: 'sys/deployHistory', crudMethod: { del }})
+    return Crud({
+      title: '部署历史',
+      url: 'sys/deployHistory',
+      crudMethod: { del }
+    })
   },
   mixins: [presenter(), header()],
   data() {
@@ -78,20 +115,21 @@ export default {
   methods: {
     delMethod(id) {
       this.delLoading = true
-      del([id]).then(() => {
-        this.delLoading = false
-        this.$refs[id].doClose()
-        this.crud.dleChangePage(1)
-        this.crud.delSuccessNotify()
-        this.crud.toQuery()
-      }).catch(() => {
-        this.delLoading = false
-        this.$refs[id].doClose()
-      })
+      del([id])
+        .then(() => {
+          this.delLoading = false
+          this.$refs[id].doClose()
+          this.crud.dleChangePage(1)
+          this.crud.delSuccessNotify()
+          this.crud.toQuery()
+        })
+        .catch(() => {
+          this.delLoading = false
+          this.$refs[id].doClose()
+        })
     }
   }
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

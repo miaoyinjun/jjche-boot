@@ -61,18 +61,18 @@ export default {
 </script>
 
 <style scoped>
-  .json-editor{
-    height: 100%;
-    margin-bottom: 10px;
-  }
-  .json-editor >>> .CodeMirror {
-    font-size: 14px;
-    overflow-y:auto;
-    font-weight:normal
-  }
-  .json-editor >>> .CodeMirror-scroll{
-  }
-  .json-editor >>> .cm-s-rubyblue span.cm-string {
-    color: #F08047;
-  }
+.json-editor {
+  height: 100%;
+  margin-bottom: 10px;
+}
+.json-editor >>> .CodeMirror {
+  font-size: 14px;
+  overflow-y: auto;
+  font-weight: normal;
+}
+.json-editor >>> .CodeMirror-scroll {
+}
+.json-editor >>> .cm-s-rubyblue span.cm-string {
+  color: #f08047;
+}
 </style>

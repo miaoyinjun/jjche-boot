@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
           // 登录时未拉取 菜单，在此处拉取
         } else if (store.getters.loadMenus) {
           // 修改成false，防止死循环
-          store.dispatch('updateLoadMenus').then(res => {})
+          store.dispatch('updateLoadMenus').then(res => { })
           loadMenus(next, to)
         } else {
           next()
@@ -75,8 +75,8 @@ export const loadMenus = (next, to) => {
     store.dispatch('GenerateRoutes', asyncRouter).then(() => { // 存储路由
       router.addRoutes(asyncRouter) // 动态添加可访问路由表
       const firstRouter = asyncRouter[0]
-      //防止用户没有首页权限，而且通过登录默认进入首页
-      if (to.path === '/dashboard' && firstRouter.path != '/dashboard') {
+      // 防止用户没有首页权限，而且通过登录默认进入首页
+      if (to.path === '/dashboard' && firstRouter.path !== '/dashboard') {
         const firstChildren = firstRouter.children
         let name = firstRouter.name
         if (firstChildren.length > 0) {

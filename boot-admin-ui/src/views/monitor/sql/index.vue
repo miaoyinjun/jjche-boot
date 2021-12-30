@@ -8,9 +8,7 @@ export default {
   name: 'Sql',
   components: { elFrame },
   computed: {
-    ...mapGetters([
-      'sqlApi'
-    ])
+    ...mapGetters(['sqlApi'])
   }
 }
 </script>

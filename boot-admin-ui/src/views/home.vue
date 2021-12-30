@@ -1,10 +1,11 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-editor-container">
-
       <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-      <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <el-row
+        style="background: #fff; padding: 16px 16px 0; margin-bottom: 32px"
+      >
         <line-chart :chart-data="lineChartData" />
       </el-row>
       <el-row :gutter="32">
@@ -77,21 +78,21 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .dashboard-editor-container {
-    padding: 32px;
-    background-color: rgb(240, 242, 245);
-    position: relative;
+.dashboard-editor-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
+  position: relative;
 
-    .chart-wrapper {
-      background: #fff;
-      padding: 16px 16px 0;
-      margin-bottom: 32px;
-    }
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
   }
+}
 
-  @media (max-width:1024px) {
-    .chart-wrapper {
-      padding: 8px;
-    }
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    padding: 8px;
   }
+}
 </style>

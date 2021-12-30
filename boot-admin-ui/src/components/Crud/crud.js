@@ -24,7 +24,7 @@ function CRUD(options) {
     // 表格头部数据
     meta: [],
     // 详情字段数据
-    metaDetail: [],    
+    metaDetail: [],
     // 选择项
     selections: [],
     // 待查询的对象
@@ -196,7 +196,7 @@ function CRUD(options) {
       if (crud.crudMethod.get != null) {
         crud.resetForm()
         return crud.crudMethod.get(data.id).then((resData) => {
-          if(resData != null && resData.meta != null){
+          if (resData != null && resData.meta != null) {
             crud.metaDetail = resData.meta
             resData = resData.records[0]
           }
@@ -316,7 +316,7 @@ function CRUD(options) {
       const defaultForm = crud.defaultForm
 
       for (const key in crud.form) {
-        if (!defaultForm.hasOwnProperty(key)) {
+        if (!Object.prototype.hasOwnProperty.call(defaultForm, key)) {
           crud.form[key] = undefined
           delete crud.form[key]
         }
@@ -450,7 +450,7 @@ function CRUD(options) {
       const form = data || (typeof crud.defaultForm === 'object' ? JSON.parse(JSON.stringify(crud.defaultForm)) : crud.defaultForm.apply(crud.findVM('form')))
       const crudFrom = crud.form
       for (const key in form) {
-        if (crudFrom.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(crudFrom, key)) {
           crudFrom[key] = form[key]
         } else {
           Vue.set(crudFrom, key, form[key])
@@ -464,16 +464,16 @@ function CRUD(options) {
       const dataStatus = {}
 
       function resetStatus(datas) {
-        if(datas){
+        if (datas) {
           datas.forEach(e => {
-          dataStatus[crud.getDataId(e)] = {
-            delete: 0,
-            edit: 0
-          }
+            dataStatus[crud.getDataId(e)] = {
+              delete: 0,
+              edit: 0
+            }
             if (e.children) {
               resetStatus(e.children)
             }
-          })  
+          })
         }
       }
 
@@ -586,29 +586,29 @@ function CRUD(options) {
     * 判断详细是否可访问
     * @param {*} fieldName 字段名
     */
-    metaDetailIsAccessible(fieldName){
-      if(fieldName != null){
+    metaDetailIsAccessible(fieldName) {
+      if (fieldName != null) {
         const data = this.metaDetail.filter(item => item.code === fieldName)
-        if(data != null && data.length > 0){
-          return data[0].isAccessible;
+        if (data != null && data.length > 0) {
+          return data[0].isAccessible
         }
       }
-      return true;
+      return true
     },
 
     /**
     * 判断详细是否可编辑
     * @param {*} fieldName 字段名
     */
-    metaDetailIsEditable(fieldName){
-      if(fieldName != null){
+    metaDetailIsEditable(fieldName) {
+      if (fieldName != null) {
         const data = this.metaDetail.filter(item => item.code === fieldName)
-        if(data != null && data.length > 0){
-          return data[0].isEditable;
+        if (data != null && data.length > 0) {
+          return data[0].isEditable
         }
       }
-      return true;
-    }    
+      return true
+    }
   }
   const crud = Object.assign({}, data)
   // 可观测化
@@ -697,7 +697,7 @@ function mergeOptions(src, opts) {
     ...src
   }
   for (const key in src) {
-    if (opts.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(opts, key)) {
       optsRet[key] = opts[key]
     }
   }
