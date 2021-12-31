@@ -8,9 +8,7 @@ export default {
   name: 'Swagger',
   components: { elFrame },
   computed: {
-    ...mapGetters([
-      'swaggerApi'
-    ])
+    ...mapGetters(['swaggerApi'])
   }
 }
 </script>

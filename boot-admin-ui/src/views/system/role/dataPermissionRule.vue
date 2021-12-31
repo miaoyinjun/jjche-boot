@@ -2,10 +2,10 @@
   <div>
     <div>
       <el-button
-        v-permission="['admin','roles:edit']"
+        v-permission="['admin', 'roles:edit']"
         class="filter-item"
         size="mini"
-        style="float: right;margin-right: 10px;padding: 4px 10px"
+        style="float: right; margin-right: 10px; padding: 4px 10px"
         type="primary"
         icon="el-icon-check"
         :loading="dataPermissionRuleLoading"
@@ -13,13 +13,24 @@
       >保存
       </el-button>
       <!--表格渲染-->
-      <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" highlight-current-row style="width: 100%;"
-                @selection-change="crud.selectionChangeHandler">
-        <el-table-column type="selection" width="55" :selectable="checkSelectable"/>
-        <el-table-column prop="name" label="名称"/>
+      <el-table
+        ref="table"
+        v-loading="crud.loading"
+        stripe
+        :data="crud.data"
+        highlight-current-row
+        style="width: 100%"
+        @selection-change="crud.selectionChangeHandler"
+      >
+        <el-table-column
+          type="selection"
+          width="55"
+          :selectable="checkSelectable"
+        />
+        <el-table-column prop="name" label="名称" />
       </el-table>
       <!--分页组件-->
-      <pagination/>
+      <pagination />
     </div>
   </div>
 </template>
@@ -49,10 +60,7 @@ export default {
       })
     ]
   },
-  mixins: [
-    presenter(),
-    header()
-  ],
+  mixins: [presenter(), header()],
   data() {
     return {
       dataPermissionRuleLoading: false
@@ -62,26 +70,33 @@ export default {
     // 新增前合并dictId
     [Crud.HOOK.afterRefresh]() {
       // 获取选中
-        this.crud.data.forEach(val => {
-            if (val.isSelected) {
-              this.crud.getTable().toggleRowSelection(val)
-            }
-        })
+      this.crud.data.forEach((val) => {
+        if (val.isSelected) {
+          this.crud.getTable().toggleRowSelection(val)
+        }
+      })
     },
     saveChecked() {
       this.dataPermissionRuleLoading = true
       const ids = []
-      this.crud.selections.forEach(val => {
+      this.crud.selections.forEach((val) => {
         ids.push(this.crud.getDataId(val))
       })
-      const params = { roleId: this.query.roleId, menuId: this.query.menuId, dataPermissionRuleIdList: ids }
-      crudDataPermissionRule.add(params).then(() => {
-        this.crud.notify('保存成功', Crud.NOTIFICATION_TYPE.SUCCESS)
-        this.dataPermissionRuleLoading = false
-      }).catch(err => {
-        this.dataPermissionRuleLoading = false
-        console.log(err.response.data.message)
-      })
+      const params = {
+        roleId: this.query.roleId,
+        menuId: this.query.menuId,
+        dataPermissionRuleIdList: ids
+      }
+      crudDataPermissionRule
+        .add(params)
+        .then(() => {
+          this.crud.notify('保存成功', Crud.NOTIFICATION_TYPE.SUCCESS)
+          this.dataPermissionRuleLoading = false
+        })
+        .catch((err) => {
+          this.dataPermissionRuleLoading = false
+          console.log(err.response.data.message)
+        })
     },
     checkSelectable(row) {
       return row.isActivated === true

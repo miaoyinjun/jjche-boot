@@ -2,7 +2,11 @@
   <div class="app-container">
     <p class="warn-content">
       Markdown 基于
-      <el-link type="primary" href="https://github.com/hinesboy/mavonEditor" target="_blank">MavonEditor</el-link>
+      <el-link
+        type="primary"
+        href="https://github.com/hinesboy/mavonEditor"
+        target="_blank"
+      >MavonEditor</el-link>
     </p>
     <mavon-editor ref="md" :style="'height:' + height" @imgAdd="imgAdd" />
   </div>
@@ -19,10 +23,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'imagesUploadApi',
-      'baseApi'
-    ])
+    ...mapGetters(['imagesUploadApi', 'baseApi'])
   },
   mounted() {
     const that = this
@@ -32,7 +33,7 @@ export default {
   },
   methods: {
     imgAdd(pos, $file) {
-      upload(this.imagesUploadApi, $file).then(res => {
+      upload(this.imagesUploadApi, $file).then((res) => {
         const url = res.data.data[0].path
         this.$refs.md.$img2Url(pos, url)
       })
@@ -41,5 +42,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

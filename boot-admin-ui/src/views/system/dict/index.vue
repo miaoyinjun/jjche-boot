@@ -1,54 +1,101 @@
 <template>
   <div class="app-container">
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible="crud.status.cu > 0"
-               :title="crud.status.title" width="500px">
-      <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
+    <el-dialog
+      append-to-body
+      :close-on-click-modal="false"
+      :before-close="crud.cancelCU"
+      :visible="crud.status.cu > 0"
+      :title="crud.status.title"
+      width="500px"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        size="small"
+        label-width="80px"
+      >
         <el-form-item label="字典名称" prop="name">
-          <el-input v-model="form.name" style="width: 370px;"/>
+          <el-input v-model="form.name" style="width: 370px" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="form.description" style="width: 370px;"/>
+          <el-input v-model="form.description" style="width: 370px" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="text" @click="crud.cancelCU">取消</el-button>
-        <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+        <el-button
+          :loading="crud.status.cu === 2"
+          type="primary"
+          @click="crud.submitCU"
+        >确认</el-button>
       </div>
     </el-dialog>
     <!-- 字典列表 -->
     <el-row :gutter="10">
-      <el-col :xs="24" :sm="24" :md="10" :lg="11" :xl="11" style="margin-bottom: 10px">
+      <el-col
+        :xs="24"
+        :sm="24"
+        :md="10"
+        :lg="11"
+        :xl="11"
+        style="margin-bottom: 10px"
+      >
         <el-card class="box-card">
           <!--工具栏-->
           <div class="head-container">
             <div v-if="crud.props.searchToggle">
               <!-- 搜索 -->
-              <el-input v-model="query.blurry" clearable size="small" placeholder="输入名称或者描述搜索" style="width: 200px;"
-                        class="filter-item" @keyup.enter.native="crud.toQuery"/>
-              <rrOperation/>
+              <el-input
+                v-model="query.blurry"
+                clearable
+                size="small"
+                placeholder="输入名称或者描述搜索"
+                style="width: 200px"
+                class="filter-item"
+                @keyup.enter.native="crud.toQuery"
+              />
+              <rrOperation />
             </div>
-            <crudOperation :permission="permission"/>
+            <crudOperation :permission="permission" />
           </div>
           <!--表格渲染-->
-          <el-table stripe ref="table" v-loading="crud.loading" :data="crud.data" highlight-current-row
-                    style="width: 100%;" @selection-change="crud.selectionChangeHandler"
-                    @current-change="handleCurrentChange">
-            <el-table-column type="selection" width="55"/>
-            <el-table-column :show-overflow-tooltip="true" prop="name" label="名称"/>
-            <el-table-column :show-overflow-tooltip="true" prop="description" label="描述"/>
-            <el-table-column v-permission="['admin','dict:edit','dict:del']" label="操作" width="130px" align="center"
-                             fixed="right">
+          <el-table
+            ref="table"
+            v-loading="crud.loading"
+            stripe
+            :data="crud.data"
+            highlight-current-row
+            style="width: 100%"
+            @selection-change="crud.selectionChangeHandler"
+            @current-change="handleCurrentChange"
+          >
+            <el-table-column type="selection" width="55" />
+            <el-table-column
+              :show-overflow-tooltip="true"
+              prop="name"
+              label="名称"
+            />
+            <el-table-column
+              :show-overflow-tooltip="true"
+              prop="description"
+              label="描述"
+            />
+            <el-table-column
+              v-permission="['admin', 'dict:edit', 'dict:del']"
+              label="操作"
+              width="130px"
+              align="center"
+              fixed="right"
+            >
               <template slot-scope="scope">
-                <udOperation
-                  :data="scope.row"
-                  :permission="permission"
-                />
+                <udOperation :data="scope.row" :permission="permission" />
               </template>
             </el-table-column>
           </el-table>
           <!--分页组件-->
-          <pagination/>
+          <pagination />
         </el-card>
       </el-col>
       <!-- 字典详情列表 -->
@@ -57,18 +104,21 @@
           <div slot="header" class="clearfix">
             <span>字典详情</span>
             <el-button
-              v-if="checkPermission(['admin','dict:add'])
-              && this.$refs.dictDetail && this.$refs.dictDetail.dictId"
+              v-if="
+                checkPermission(['admin', 'dict:add']) &&
+                  this.$refs.dictDetail &&
+                  this.$refs.dictDetail.dictId
+              "
               class="filter-item"
               size="mini"
-              style="float: right;padding: 4px 10px"
+              style="float: right; padding: 4px 10px"
               type="primary"
               icon="el-icon-plus"
               @click="$refs.dictDetail && $refs.dictDetail.crud.toAdd()"
             >新增
             </el-button>
           </div>
-          <dictDetail ref="dictDetail" :permission="permission"/>
+          <dictDetail ref="dictDetail" :permission="permission" />
         </el-card>
       </el-col>
     </el-row>
@@ -90,10 +140,16 @@ const defaultForm = { id: null, name: null, description: null, dictDetails: [] }
 
 export default {
   name: 'Dict',
-  components: { crudOperation, pagination, rrOperation, udOperation, dictDetail },
+  components: {
+    crudOperation,
+    pagination,
+    rrOperation,
+    udOperation,
+    dictDetail
+  },
   cruds() {
     return [
-      Crud({ title: '字典', url: 'sys/dict', crudMethod: { ...crudDict } })
+      Crud({ title: '字典', url: 'sys/dict', crudMethod: { ...crudDict }})
     ]
   },
   mixins: [presenter(), header(), form(defaultForm)],
@@ -104,9 +160,7 @@ export default {
         { key: 'description', display_name: '描述' }
       ],
       rules: {
-        name: [
-          { required: true, message: '请输入名称', trigger: 'blur' }
-        ]
+        name: [{ required: true, message: '请输入名称', trigger: 'blur' }]
       },
       permission: {
         add: ['admin', 'dict:add'],
@@ -137,5 +191,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
