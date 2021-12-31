@@ -5,7 +5,7 @@
  * 阿债 https://gitee.com/azhai/datetime.js
  */
 
-Date.prototype.toMidnight = function() {
+Date.prototype.toMidnight = function () {
   this.setHours(0)
   this.setMinutes(0)
   this.setSeconds(0)
@@ -13,34 +13,34 @@ Date.prototype.toMidnight = function() {
   return this
 }
 
-Date.prototype.daysAgo = function(days, midnight) {
+Date.prototype.daysAgo = function (days, midnight) {
   days = days ? days - 0 : 0
   const date = new Date(this.getTime() - days * 8.64E7)
   return midnight ? date.toMidnight() : date
 }
 
-Date.prototype.monthBegin = function(offset) {
+Date.prototype.monthBegin = function (offset) {
   offset = offset ? offset - 0 : 0
   const days = this.getDate() - 1 - offset
   return this.daysAgo(days, true)
 }
 
-Date.prototype.quarterBegin = function() {
+Date.prototype.quarterBegin = function () {
   const month = this.getMonth() - this.getMonth() % 3
   return new Date(this.getFullYear(), month, 1).toMidnight()
 }
 
-Date.prototype.yearBegin = function() {
+Date.prototype.yearBegin = function () {
   return new Date(this.getFullYear(), 0, 1).toMidnight()
 }
 
-Date.prototype.strftime = function(format, local) {
+Date.prototype.strftime = function (format, local) {
   if (!format) {
     const str = new Date(this.getTime() + 2.88E7).toISOString()
     return str.substr(0, 16).replace('T', ' ')
   }
   local = local && local.startsWith('zh') ? 'zh' : 'en'
-  const padZero = function(str, len) {
+  const padZero = function (str, len) {
     const pads = len - str.toString().length
     return (pads && pads > 0 ? '0'.repeat(pads) : '') + str
   }
@@ -51,7 +51,7 @@ Date.prototype.strftime = function(format, local) {
   format = format.replace('%r', '%H:%M:%S %p')
   format = format.replace('%c', '%a %b %e %H:%M:%S %Y')
   const _this = this
-  return format.replace(/%[A-Za-z%]/g, function(f) {
+  return format.replace(/%[A-Za-z%]/g, function (f) {
     let ans = f
     switch (f) {
       case '%%':
@@ -169,7 +169,7 @@ Date.prototype.strftime = function(format, local) {
   })
 }
 
-Date.prototype.humanize = function(local) {
+Date.prototype.humanize = function (local) {
   local = local && local.startsWith('zh') ? 'zh' : 'en'
   const result = this.strftime('', local)
   const days = (Date.today() - this.toMidnight().getTime()) / 8.64E7

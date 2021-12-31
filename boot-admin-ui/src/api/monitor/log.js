@@ -20,3 +20,4 @@ export function getModules() {
     method: 'get'
   })
 }
+export default { getErrDetail, delAllInfo, getModules }

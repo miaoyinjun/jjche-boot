@@ -8,9 +8,7 @@ export default {
   name: 'Sba',
   components: { elFrame },
   computed: {
-    ...mapGetters([
-      'sbaApi'
-    ])
+    ...mapGetters(['sbaApi'])
   }
 }
 </script>

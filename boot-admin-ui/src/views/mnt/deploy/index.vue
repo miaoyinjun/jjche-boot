@@ -4,14 +4,21 @@
     <div class="head-container">
       <div v-if="crud.props.searchToggle">
         <!-- 搜索 -->
-        <el-input v-model="query.appName" clearable placeholder="输入应用名称查询" style="width: 200px" class="filter-item" @keyup.enter.native="crud.toQuery" />
+        <el-input
+          v-model="query.appName"
+          clearable
+          placeholder="输入应用名称查询"
+          style="width: 200px"
+          class="filter-item"
+          @keyup.enter.native="crud.toQuery"
+        />
         <date-range-picker v-model="query.gmtCreate" class="date-item" />
         <rrOperation />
       </div>
       <crudOperation :permission="permission">
         <template slot="right">
           <el-button
-            v-permission="['admin','deploy:add']"
+            v-permission="['admin', 'deploy:add']"
             :disabled="!selectIndex"
             class="filter-item"
             size="mini"
@@ -21,7 +28,7 @@
           >系统还原
           </el-button>
           <el-button
-            v-permission="['admin','deploy:add']"
+            v-permission="['admin', 'deploy:add']"
             :disabled="!selectIndex"
             class="filter-item"
             size="mini"
@@ -31,7 +38,7 @@
           >状态查询
           </el-button>
           <el-button
-            v-permission="['admin','deploy:add']"
+            v-permission="['admin', 'deploy:add']"
             :disabled="!selectIndex"
             class="filter-item"
             size="mini"
@@ -41,7 +48,7 @@
           >启动
           </el-button>
           <el-button
-            v-permission="['admin','deploy:add']"
+            v-permission="['admin', 'deploy:add']"
             :disabled="!selectIndex"
             class="filter-item"
             size="mini"
@@ -51,7 +58,7 @@
           >停止
           </el-button>
           <el-button
-            v-permission="['admin','deploy:add']"
+            v-permission="['admin', 'deploy:add']"
             :disabled="!selectIndex"
             class="filter-item"
             size="mini"
@@ -64,29 +71,73 @@
       </crudOperation>
     </div>
     <!--表单组件-->
-    <el-dialog append-to-body :close-on-click-modal="false" :before-close="crud.cancelCU" :visible.sync="crud.status.cu > 0" :title="crud.status.title" width="500px">
-      <el-form ref="form" :model="form" :rules="rules" size="small" label-width="80px">
+    <el-dialog
+      append-to-body
+      :close-on-click-modal="false"
+      :before-close="crud.cancelCU"
+      :visible.sync="crud.status.cu > 0"
+      :title="crud.status.title"
+      width="500px"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        size="small"
+        label-width="80px"
+      >
         <el-form-item label="应用" prop="app.id">
-          <el-select v-model.number="form.app.id" placeholder="请选择" style="width: 370px">
-            <el-option v-for="item in apps" :key="item.id" :label="item.name" :value="item.id" />
+          <el-select
+            v-model.number="form.app.id"
+            placeholder="请选择"
+            style="width: 370px"
+          >
+            <el-option
+              v-for="item in apps"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="服务器" prop="deploys">
-          <el-select v-model="form.deploys" multiple placeholder="请选择" style="width: 370px">
-            <el-option v-for="item in servers" :key="item.id" :label="item.name" :value="item.id" />
+          <el-select
+            v-model="form.deploys"
+            multiple
+            placeholder="请选择"
+            style="width: 370px"
+          >
+            <el-option
+              v-for="item in servers"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="text" @click="crud.cancelCU">取消</el-button>
-        <el-button :loading="crud.status.cu === 2" type="primary" @click="crud.submitCU">确认</el-button>
+        <el-button
+          :loading="crud.status.cu === 2"
+          type="primary"
+          @click="crud.submitCU"
+        >确认</el-button>
       </div>
     </el-dialog>
     <!--统还原组件-->
     <fForm ref="sysRestore" :key="times" :app-name="appName" />
     <dForm ref="deploy" />
     <!--表格渲染-->
-    <el-table ref="table" v-loading="crud.loading" :data="crud.data" highlight-current-row stripe style="width: 100%" @selection-change="handleCurrentChange">
+    <el-table
+      ref="table"
+      v-loading="crud.loading"
+      :data="crud.data"
+      highlight-current-row
+      stripe
+      style="width: 100%"
+      @selection-change="handleCurrentChange"
+    >
       <el-table-column type="selection" width="55" />
       <el-table-column prop="app.name" label="应用名称" />
       <el-table-column prop="servers" label="服务器列表" />
@@ -95,12 +146,14 @@
           <span>{{ parseTime(scope.row.gmtCreate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-permission="['admin','deploy:edit','deploy:del']" label="操作" width="150px" align="center">
+      <el-table-column
+        v-permission="['admin', 'deploy:edit', 'deploy:del']"
+        label="操作"
+        width="150px"
+        align="center"
+      >
         <template slot-scope="scope">
-          <udOperation
-            :data="scope.row"
-            :permission="permission"
-          />
+          <udOperation :data="scope.row" :permission="permission" />
         </template>
       </el-table-column>
     </el-table>
@@ -123,15 +176,34 @@ import DateRangePicker from '@/components/DateRangePicker'
 const defaultForm = { id: null, app: { id: null }, deploys: [] }
 export default {
   name: 'Deploy',
-  components: { dForm, fForm, pagination, crudOperation, rrOperation, udOperation, DateRangePicker },
+  components: {
+    dForm,
+    fForm,
+    pagination,
+    crudOperation,
+    rrOperation,
+    udOperation,
+    DateRangePicker
+  },
   cruds() {
-    return Crud({ title: '部署', url: 'sys/deploy', crudMethod: { ...crudDeploy }})
+    return Crud({
+      title: '部署',
+      url: 'sys/deploy',
+      crudMethod: { ...crudDeploy }
+    })
   },
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
     return {
-      currentRow: {}, selectIndex: '', appName: '', urlHistory: '',
-      times: 0, appId: '', deployId: '', apps: [], servers: [],
+      currentRow: {},
+      selectIndex: '',
+      appName: '',
+      urlHistory: '',
+      times: 0,
+      appId: '',
+      deployId: '',
+      apps: [],
+      servers: [],
       permission: {
         add: ['admin', 'deploy:add'],
         edit: ['admin', 'deploy:edit'],
@@ -139,7 +211,12 @@ export default {
       },
       rules: {
         'app.id': [
-          { required: true, message: '应用不能为空', trigger: 'blur', type: 'number' }
+          {
+            required: true,
+            message: '应用不能为空',
+            trigger: 'blur',
+            type: 'number'
+          }
         ],
         deploys: [
           { required: true, message: '服务器不能为空', trigger: 'blur' }
@@ -194,34 +271,34 @@ export default {
       }
     },
     startServer() {
-      crudDeploy.startServer(JSON.stringify(this.currentRow))
-        .then(res => {
-        })
-        .catch(err => {
+      crudDeploy
+        .startServer(JSON.stringify(this.currentRow))
+        .then((res) => {})
+        .catch((err) => {
           console.log('error:' + err.response.data.message)
         })
     },
     stopServer() {
-      crudDeploy.stopServer(JSON.stringify(this.currentRow))
-        .then(res => {
-        })
-        .catch(err => {
+      crudDeploy
+        .stopServer(JSON.stringify(this.currentRow))
+        .then((res) => {})
+        .catch((err) => {
           console.log('error:' + err.response.data.message)
         })
     },
     serverStatus() {
-      crudDeploy.serverStatus(JSON.stringify(this.currentRow))
-        .then(res => {
-        })
-        .catch(err => {
+      crudDeploy
+        .serverStatus(JSON.stringify(this.currentRow))
+        .then((res) => {})
+        .catch((err) => {
           console.log('error:' + err.response.data.message)
         })
     },
     initSelect() {
-      crudDeploy.getApps().then(res => {
+      crudDeploy.getApps().then((res) => {
         this.apps = res.records
       })
-      crudDeploy.getServers().then(res => {
+      crudDeploy.getServers().then((res) => {
         this.servers = res.records
       })
     }
@@ -229,5 +306,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

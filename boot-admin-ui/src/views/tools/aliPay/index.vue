@@ -1,5 +1,5 @@
 <template>
-  <el-tabs v-model="activeName" style="padding-left: 5px;">
+  <el-tabs v-model="activeName" style="padding-left: 5px">
     <el-tab-pane label="参数配置" name="first">
       <Config />
     </el-tab-pane>
@@ -14,7 +14,7 @@
 如需付款测试，请使用
 账号：uuxesw9745@sandbox.com
 密码与支付密码：111111</pre>
-        <blockquote class="my-blockquote"> 支付设置</blockquote>
+        <blockquote class="my-blockquote">支付设置</blockquote>
         <pre class="my-code">
 // 支付提供两个接口，
 // PC端与手机端，并且在前端使用代码识别
@@ -44,5 +44,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

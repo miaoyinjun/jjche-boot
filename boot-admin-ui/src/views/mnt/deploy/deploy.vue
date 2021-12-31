@@ -1,5 +1,11 @@
 <template>
-  <el-dialog append-to-body :close-on-click-modal="false" :visible.sync="dialog" title="应用部署" width="400px">
+  <el-dialog
+    append-to-body
+    :close-on-click-modal="false"
+    :visible.sync="dialog"
+    title="应用部署"
+    width="400px"
+  >
     <el-form ref="form" :model="form" :rules="rules" size="small">
       <el-upload
         :action="deployUploadApi"
@@ -15,7 +21,9 @@
           将文件拖到此处，或
           <em>点击上传</em>
         </div>
-        <div slot="tip" class="el-upload__tip">多个应用上传文件名称为all.zip,数据库更新脚本扩展名为.sql,上传成功后系统自动部署系统。</div>
+        <div slot="tip" class="el-upload__tip">
+          多个应用上传文件名称为all.zip,数据库更新脚本扩展名为.sql,上传成功后系统自动部署系统。
+        </div>
       </el-upload>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -74,7 +82,7 @@ export default {
     },
     joinIp() {
       this.form.ip = ''
-      this.form.selectIp.forEach(ip => {
+      this.form.selectIp.forEach((ip) => {
         if (this.form.ip !== '') {
           this.form.ip += ','
         }
@@ -84,7 +92,7 @@ export default {
     doAdd() {
       this.joinIp()
       add(this.form)
-        .then(res => {
+        .then((res) => {
           this.resetForm()
           this.$notify({
             title: '添加成功',
@@ -94,7 +102,7 @@ export default {
           this.loading = false
           this.$parent.init()
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false
           console.log(err.response.data.message)
         })
@@ -102,7 +110,7 @@ export default {
     doEdit() {
       this.joinIp()
       edit(this.form)
-        .then(res => {
+        .then((res) => {
           this.resetForm()
           this.$notify({
             title: '修改成功',
@@ -112,7 +120,7 @@ export default {
           this.loading = false
           this.$parent.init()
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false
           console.log(err.response.data.message)
         })
@@ -128,10 +136,10 @@ export default {
       }
     },
     initSelect() {
-      getApps().then(res => {
+      getApps().then((res) => {
         this.apps = res.records
       })
-      getServers().then(res => {
+      getServers().then((res) => {
         this.servers = res.records
       })
     },
@@ -149,7 +157,8 @@ export default {
     },
     initWebSocket() {
       const wsUriSuffix = '/sys/webSocket/deploy'
-      let currentUrl = 'ws://' + location.host + location.pathname + Settings.apiPrefix
+      let currentUrl =
+        'ws://' + location.host + location.pathname + Settings.apiPrefix
       currentUrl = currentUrl + wsUriSuffix
       this.websock = new WebSocket(currentUrl)
       this.websock.onerror = this.webSocketOnError
@@ -189,5 +198,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
