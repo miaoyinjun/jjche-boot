@@ -1,0 +1,6 @@
+logging:
+  level:
+    root: INFO
+  file:
+    path: ${JJCHE_LOG_PATH:./logs}
+    name: all.log

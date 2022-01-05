@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jjcheframework.boot</groupId>
+        <artifactId>jjche-boot-parent</artifactId>
+        <version>1.0.8-SNAPSHOT</version>
+    </parent>
+
+    <name>jjche-boot-web-demo</name>
+    <description>jjche-boot演示</description>
+
+    <groupId>org.jjche.demo</groupId>
+    <artifactId>jjche-boot-web-demo</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.8-SNAPSHOT</version>
+
+    <properties>
+        <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
+        <docker.namespace>jjche-boot</docker.namespace>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-eladmin-system</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+            </plugin>
+            <!-- docker的maven插件 -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <!--                <executions>-->
+                <!--                    <execution>-->
+                <!--                        <id>default</id>-->
+                <!--                        <phase>package</phase>-->
+                <!--                        <goals>-->
+                <!--                            <goal>build</goal>-->
+                <!--                            &lt;!&ndash;                            <goal>push</goal>&ndash;&gt;-->
+                <!--                        </goals>-->
+                <!--                    </execution>-->
+                <!--                </executions>-->
+                <configuration>
+                    <repository>${docker.registry}/${docker.namespace}/${project.name}</repository>
+                    <tag>latest</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <dockerfile>./docker/Dockerfile</dockerfile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--     远程nexus仓库 -->
+    <!--    <repositories>-->
+    <!--        <repository>-->
+    <!--            <id>maven-releases</id>-->
+    <!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
+    <!--        </repository>-->
+    <!--        <repository>-->
+    <!--            <id>maven-snapshots</id>-->
+    <!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
+    <!--            <snapshots>-->
+    <!--                <updatePolicy>always</updatePolicy>-->
+    <!--            </snapshots>-->
+    <!--        </repository>-->
+    <!--    </repositories>-->
+    <!--    <pluginRepositories>-->
+    <!--        <pluginRepository>-->
+    <!--            <id>maven-releases</id>-->
+    <!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
+    <!--        </pluginRepository>-->
+    <!--        <pluginRepository>-->
+    <!--            <id>maven-snapshots</id>-->
+    <!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
+    <!--            <snapshots>-->
+    <!--                <updatePolicy>always</updatePolicy>-->
+    <!--            </snapshots>-->
+    <!--        </pluginRepository>-->
+    <!--    </pluginRepositories>-->
+</project>

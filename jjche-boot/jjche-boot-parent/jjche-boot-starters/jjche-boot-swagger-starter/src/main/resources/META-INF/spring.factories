@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=org.jjche.swagger.conf.SwaggerEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.jjche.swagger.SwaggerAutoConfiguration
