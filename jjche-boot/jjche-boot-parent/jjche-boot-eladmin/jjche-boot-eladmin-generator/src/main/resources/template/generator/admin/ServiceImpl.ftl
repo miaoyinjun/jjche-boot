@@ -18,8 +18,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import MybatisUtil;
-import MyServiceImpl;
+import org.jjche.mybatis.util.MybatisUtil;
+import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.param.MyPage;
 import ${packageService}.mapstruct.${className}MapStruct;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -27,7 +27,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import cn.hutool.core.lang.Assert;
-import SortEnum;
+import org.jjche.mybatis.param.SortEnum;
 
 /**
 * <p>
