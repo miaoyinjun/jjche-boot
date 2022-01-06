@@ -495,10 +495,10 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * 修改头像
      *
      * @param multipartFile 文件
-     * @param userName      用户名
      * @return /
      */
-    public String updateAvatar(MultipartFile multipartFile, String userName) {
+    @Transactional(rollbackFor = Exception.class)
+    public String updateAvatar(MultipartFile multipartFile) {
         UserDO user = this.getByUsername(SecurityUtils.getCurrentUsername());
         String username = user.getUsername();
         String oldPath = user.getAvatarPath();

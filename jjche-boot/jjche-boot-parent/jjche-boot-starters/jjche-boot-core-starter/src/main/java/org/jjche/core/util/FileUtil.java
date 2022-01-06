@@ -63,7 +63,7 @@ public class FileUtil extends org.jjche.common.util.FileUtil {
             // 检测是否存在目录
             if (!dest.getParentFile().exists()) {
                 if (!dest.getParentFile().mkdirs()) {
-                    System.out.println("was not successful.");
+                    StaticLog.warn("was not successful.");
                 }
             }
             // 文件写入
