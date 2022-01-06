@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=aorg.jjche.sba.conf.SbaEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=aorg.jjche.sba.SbaAutoConfiguration

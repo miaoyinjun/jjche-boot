@@ -1,2 +1,0 @@
-org.springframework.boot.env.EnvironmentPostProcessor=com.boot.admin.security.env.SecurityEnvironmentPostProcessor
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.boot.admin.security.SecurityAutoConfiguration

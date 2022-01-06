@@ -1,0 +1,4 @@
+jjche:
+  filter:
+    encryption:
+      type: MD5

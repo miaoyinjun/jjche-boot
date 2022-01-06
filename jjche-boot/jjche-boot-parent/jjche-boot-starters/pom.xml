@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jjcheframework.boot</groupId>
+        <artifactId>jjche-boot-parent</artifactId>
+        <version>1.0.9-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>jjche-boot-starters</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.9-SNAPSHOT</version>
+
+    <modules>
+        <module>jjche-boot-core-starter</module>
+        <module>jjche-boot-cache-starter</module>
+        <module>jjche-boot-filter-starter</module>
+        <module>jjche-boot-security-starter</module>
+        <module>jjche-boot-log-starter</module>
+        <module>jjche-boot-mybatis-starter</module>
+        <module>jjche-boot-sba-starter</module>
+        <module>jjche-boot-swagger-starter</module>
+        <module>jjche-boot-jackson-starter</module>
+        <!--        <module>jjche-boot-xxl-job-client-starter</module>-->
+    </modules>
+
+</project>

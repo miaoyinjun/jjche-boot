@@ -1,0 +1,3 @@
+logging:
+  level:
+    org.jjche.*.modules.*.feign: debug
