@@ -1,0 +1,9 @@
+jjche:
+  filter:
+    encryption:
+      api:
+        enabled: false
+        filter-urls:
+          - ${jjche.core.api.path.global-prefix}/**
+      field:
+        secret-key: ${JJCHE_FILTER_ENCRYPTION_FIELD_SECRET_KEY:YgnE7hAjiifYFibD}

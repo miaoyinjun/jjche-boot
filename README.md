@@ -1,4 +1,4 @@
-## boot-admin
+## jjche-boot
 
 企业级快速开发平台，前后端分离设计，基于SpringBoot2.x、Spring Security，JWT，MyBatis-plus，Vue，在线代码生成器一键生成前后端代码，API接口快速开发利器，帮助开发者节省70%的重复工作，更专注业务，节省开发成本，100%开源。
 
@@ -8,17 +8,7 @@
 
 ​			**应用监控/接口文档**：账号：admin，密码：123456
 
-
-
-### 技术文档：https://miaoyinjun.gitee.io/boot-admin-book/
-
-
-### 项目源码
-
-| 源码   | 地址                                     |
-| ------ | ---------------------------------------- |
-| gitee  | https://gitee.com/miaoyinjun/boot-admin  |
-| github | https://github.com/miaoyinjun/boot-admin |
+### 技术文档：https://miaoyinjun.gitee.io/jjche-boot-book/
 
 ### 项目介绍
 
@@ -99,75 +89,76 @@
 
 ### 模块说明
 
-> boot-admin
+> jjche-boot
 >
-> > boot-admin-parent  --  父模块
+> > jjche-boot-ui -- 前端
 > >
-> > > boot-admin-common  --  通用定义
->
-> >> boot-admin-eladmin  --  基础业务
->
-> >>> boot-admin-eladmin-generator  --  代码生成
->
-> >>> boot-admin-eladmin-logging  --  日志
->
-> >>> boot-admin-eladmin-system  --  系统
->
-> >>> boot-admin-eladmin-tools  --  工具
->
-> >> boot-admin-starters  --  组件增强
+> > jjche-boot --后端
 > >
-> >> > boot-admin-cache-starter  --  缓存
+> > > jjche-boot-web-demo -- 入口
+> > >
+> > > jjche-boot-parent -- 父模块
+> > >
+> > > > jjche-boot-common -- 通用定义
+> >
+> > > > jjche-boot-eladmin -- 基础业务
+> >
+> > > > > jjche-boot-eladmin-generator -- 代码生成
+> >
+> > > > > jjche-boot-eladmin-logging -- 日志
+> >
+> > > > > jjche-boot-eladmin-system -- 系统
+> >
+> > > > > jjche-boot-eladmin-tools -- 工具
+> >
+> > > > jjche-boot-starters -- 组件增强
+> > >
+> > > > > jjche-boot-cache-starter -- 缓存
+> >
+> > > > > jjche-boot-core-starter -- 核心
+> >
+> > > > > jjche-boot-filter-starter -- 安全过滤器
+> >
+> > > > > jjche-boot-jackson-starter -- jackson定义
+> >
+> > > > > jjche-boot-log-starter -- 日志
+> >
+> > > > > jjche-boot-mybatis-starter -- mybatis定义
+> >
+> > > > > jjche-boot-sba-starter -- spring-boot-admin增强
+> >
+> > > > > jjche-boot-security-starter -- 安全
+> >
+> > > > > jjche-boot-swagger-starter -- swagger增强
 >
-> >>> boot-admin-core-starter  --  核心
->
-> >>> boot-admin-filter-starter  --  安全过滤器
->
-> >>> boot-admin-jackson-starter  --  jackson定义
->
-> >>> boot-admin-log-starter  --  日志
->
-> >>> boot-admin-mybatis-starter  --  mybatis定义
->
-> >>> boot-admin-sba-starter  --  spring-boot-admin增强
->
-> >>> boot-admin-security-starter  --  安全
->
-> >>> boot-admin-swagger-starter  --  swagger增强
->
-> > boot-admin-ui  --  前端
->
-> > boot-admin-web-demo  --  入口
 
 
 
-![image-20210916171732597](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210916171732597.png)
+![image-20210916171732597](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20210916171732597.png)
 
-![image-20210916171752707](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210916171752707.png)
+![image-20210916171752707](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20210916171752707.png)
 
-![image-20211208135706365](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211208135706365.png)
+![image-20211208135706365](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211208135706365.png)
 
-![image-20211208134446909](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211208134446909.png)
+![image-20211208134446909](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211208134446909.png)
 
-![image-20211208135631192](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211208135631192.png)
+![image-20211208135631192](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211208135631192.png)
 
-![image-20210918105646982](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210918105646982.png)
+![image-20211208135759032](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211208135759032.png)
 
-![image-20211208135759032](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211208135759032.png)
+![image-20211111145248092](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211111145248092.png)
 
-![image-20211208135821105](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211208135821105.png)
+![image-20211111152519726](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211111152519726.png)
 
-![image-20211111145248092](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211111145248092.png)
+![image-20211122161617315](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211122161617315.png)
 
-![image-20211111152519726](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211111152519726.png)
+![image-20210926170407498](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20210926170407498.png)
 
-![image-20211122161617315](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211122161617315.png)
+![image-20211202181126329](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20211202181126329.png)
 
-![image-20210927154722486](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210927154722486.png)
+![image-20210927154722486](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20210927154722486.png)
 
-![image-20210926170407498](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20210926170407498.png)
-
-![image-20211202181126329](https://miaoyinjun.gitee.io/boot-admin-book/assets/image-20211202181126329.png)
+![image-20210918105646982](https://miaoyinjun.gitee.io/jjche-boot-book/assets/image-20210918105646982.png)
 
 ## 特别鸣谢
 
@@ -198,19 +189,11 @@
 ## TODO
 
 1. 首页-监控，pv，uv
-2. 前端-清除缓存
-3. 后端返回菜单优化
-4. 集成springCloud
-5. k8s
-6. istio
+2. 后端返回菜单优化
+3. 集成springCloud
+4. k8s
+5. istio
 
 ## 支持
 
 如果您喜欢该项目，请给项目**点亮⭐️**，让更多的开发者看到
-
-如果您还想支持一下，请作者喝杯 **咖啡**吧🤓
-
-|                       支付宝                       |                             微信                             |
-| :------------------------------------------------: | :----------------------------------------------------------: |
-| ![1640670237773__01](https://miaoyinjun.gitee.io/boot-admin-book/assets/1640670237773__01.jpg) | ![mm_facetoface_collect_qrcode_1640667560388__01__01](https://miaoyinjun.gitee.io/boot-admin-book/assets/mm_facetoface_collect_qrcode_1640667560388__01__01.png) |
-

@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=org.jjche.filter.env.FilterEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.jjche.filter.FilterAutoConfiguration

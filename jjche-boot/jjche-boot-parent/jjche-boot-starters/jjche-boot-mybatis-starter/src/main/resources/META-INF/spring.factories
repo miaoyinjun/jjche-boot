@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=org.jjche.mybatis.env.MybatisEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.jjche.mybatis.MybatisAutoConfiguration
