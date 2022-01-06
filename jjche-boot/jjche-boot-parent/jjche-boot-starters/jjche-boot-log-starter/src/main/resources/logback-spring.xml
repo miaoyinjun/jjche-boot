@@ -7,6 +7,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 <configuration debug="false" scan="true">
     <!--    <springProperty scope="context" name="logName" source="spring.application.name"/>-->
     <springProperty scope="context" name="logPath" source="logging.file.path" defaultValue="./logs"/>
+    <springProperty scope="context" name="maxHistory" source="logging.file.max_history" defaultValue="90"/>
     <springProperty scope="context" name="level" source="logging.level.root" defaultValue="INFO"/>
     <contextName>Logbackwebadmin</contextName>
     <!--特别注意!!!   定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
@@ -37,32 +38,6 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
             <charset>UTF-8</charset>
         </encoder>
     </appender>
-    <!-- DEBUG_FILE配置 -->
-    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>DEBUG</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <file>${log_home}/debug.log</file>
-        <!--根据时间来制定滚动策略，即负责滚动也负责触发滚动。-->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- fileNamePattern 归档模式 %d 表示按时间归档 yyyy-MM-dd_HH-mm 表示按分钟进行归档 i%表示按日志大小进行归档 -->
-            <fileNamePattern>${log_home}/zips/debug/debug_%d{yyyy-MM-dd}.%i.log.zip
-            </fileNamePattern>
-            <!-- 保留文件的最大数量 1 表示 只存1分钟前的归档记录 当 归档是根据月份进行归档 maxHistory=1
-                表示只保存最近一个月的归档记录 -->
-            <maxHistory>30</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- 设置文件大于多少后进行压缩归档 -->
-                <maxFileSize>100MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{requestId}] %-5level %logger{50} - %msg%n</pattern>
-            <charset>UTF-8</charset> <!-- 设置字符集 -->
-        </encoder>
-    </appender>
     <!-- INFO_FILE配置 -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -78,7 +53,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
             </fileNamePattern>
             <!-- 保留文件的最大数量 1 表示 只存1分钟前的归档记录 当 归档是根据月份进行归档 maxHistory=1
                 表示只保存最近一个月的归档记录 -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 设置文件大于多少后进行压缩归档 -->
@@ -105,7 +80,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
             </fileNamePattern>
             <!-- 保留文件的最大数量 1 表示 只存1分钟前的归档记录 当 归档是根据月份进行归档 maxHistory=1
                 表示只保存最近一个月的归档记录 -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 设置文件大于多少后进行压缩归档 -->
@@ -131,7 +106,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
             <fileNamePattern>${log_home}/zips/error/error_%d{yyyy-MM-dd}.%i.log.zip
             </fileNamePattern>
             <!-- 保留文件的最大数量 -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 设置文件大于多少后进行压缩归档 -->
@@ -155,7 +130,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
             <fileNamePattern>${log_home}/zips/all/all_%d{yyyy-MM-dd}.%i.log.zip
             </fileNamePattern>
             <!-- 保留文件的最大数量 -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>${maxHistory}</maxHistory>
             <timeBasedFileNamingAndTriggeringPolicy
                     class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <!-- 设置文件大于多少后进行压缩归档 -->
