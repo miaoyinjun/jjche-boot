@@ -24,8 +24,8 @@ import java.util.*;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.ApiParam;
 import javax.validation.constraints.NotNull;
-import LogType;
-import LogCategoryType;
+import org.jjche.common.enums.LogType;
+import org.jjche.common.enums.LogCategoryType;
 import javax.validation.Valid;
 
 /**
