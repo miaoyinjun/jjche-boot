@@ -5,7 +5,7 @@
     <groupId>org.jjcheframework.boot</groupId>
     <artifactId>jjche-boot-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.8-SNAPSHOT</version>
+    <version>1.0.9-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -51,49 +51,49 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-core-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-sba-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-swagger-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-log-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-mybatis-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cache-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-filter-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-security-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.jjcheframework.boot</groupId>-->
@@ -103,12 +103,12 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-jackson-starter</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-system</artifactId>
-                <version>1.0.8-SNAPSHOT</version>
+                <version>1.0.9-SNAPSHOT</version>
             </dependency>
 
             <dependency>
