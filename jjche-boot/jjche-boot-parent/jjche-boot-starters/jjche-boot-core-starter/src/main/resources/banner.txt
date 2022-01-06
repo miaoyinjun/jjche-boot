@@ -1,0 +1,9 @@
+     ██╗     ██╗ ██████╗██╗  ██╗███████╗
+     ██║     ██║██╔════╝██║  ██║██╔════╝
+     ██║     ██║██║     ███████║█████╗
+██   ██║██   ██║██║     ██╔══██║██╔══╝
+╚█████╔╝╚█████╔╝╚██████╗██║  ██║███████╗
+ ╚════╝  ╚════╝  ╚═════╝╚═╝  ╚═╝╚══════╝
+
+${AnsiColor.BRIGHT_BLUE}:: jjche-boot 🤓  :: Running Spring Boot ${spring-boot.version} ::
+:: https://gitee.com/miaoyinjun/jjche-boot ::${AnsiColor.DEFAULT}

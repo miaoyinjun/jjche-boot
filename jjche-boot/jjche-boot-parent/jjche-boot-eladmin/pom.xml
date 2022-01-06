@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>jjche-boot-eladmin</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.8-SNAPSHOT</version>
+
+    <modules>
+        <module>jjche-boot-eladmin-generator</module>
+        <module>jjche-boot-eladmin-tools</module>
+        <module>jjche-boot-eladmin-logging</module>
+        <module>jjche-boot-eladmin-system</module>
+    </modules>
+
+    <parent>
+        <groupId>org.jjcheframework.boot</groupId>
+        <artifactId>jjche-boot-parent</artifactId>
+        <version>1.0.8-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+
+        <!--Spring boot Web容器-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--Spring boot 测试-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--spring boot 集成redis所需common-pool2-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!-- Swagger UI 相关 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.swagger</groupId>
+                    <artifactId>swagger-models</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-models</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.lionsoul</groupId>
+            <artifactId>ip2region</artifactId>
+        </dependency>
+        <!--lombok插件-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--mapStruct依赖-->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
+
+        <!-- Java图形验证码 -->
+        <dependency>
+            <groupId>com.github.whvcse</groupId>
+            <artifactId>easy-captcha</artifactId>
+        </dependency>
+
+        <!-- 解析客户端操作系统、浏览器信息 -->
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+        <!--Spring boot 安全框架-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-core-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-mybatis-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-security-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-jackson-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-swagger-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-sba-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-log-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-cache-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-filter-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-eladmin-generator</artifactId>
+                <version>1.0.8-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-eladmin-tools</artifactId>
+                <version>1.0.8-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-eladmin-logging</artifactId>
+                <version>1.0.8-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
