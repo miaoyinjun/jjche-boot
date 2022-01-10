@@ -67,11 +67,6 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.lionsoul</groupId>
-            <artifactId>ip2region</artifactId>
-        </dependency>
         <!--lombok插件-->
         <dependency>
             <groupId>org.projectlombok</groupId>

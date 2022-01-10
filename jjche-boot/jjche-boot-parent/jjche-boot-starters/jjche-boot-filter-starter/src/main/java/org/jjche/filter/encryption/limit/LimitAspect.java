@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jjche.common.annotation.Limit;
 import org.jjche.common.enums.LimitType;
+import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -60,7 +61,7 @@ public class LimitAspect {
         String key = limit.key();
         if (StrUtil.isEmpty(key)) {
             if (limitType == LimitType.IP) {
-                key = StrUtil.getIp(request);
+                key = HttpUtil.getIp(request);
             } else {
                 key = signatureMethod.getName();
             }
