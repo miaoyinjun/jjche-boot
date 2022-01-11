@@ -19,6 +19,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jjche.common.constant.LogConstant;
 import org.jjche.common.pojo.AbstractResultWrapper;
+import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.annotation.controller.ApiRestController;
@@ -349,11 +350,11 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
     public void setLogRecordHttpRequest(LogRecord logRecord, Object[] args) {
         try {
             HttpServletRequest request = RequestHolder.getHttpServletRequest();
-            String ip = StrUtil.getIp(request);
+            String ip = HttpUtil.getIp(request);
             String ua = request.getHeader(HttpHeaders.USER_AGENT);
             UserAgent userAgent = UserAgent.parseUserAgentString(ua);
-            logRecord.setBrowser(StrUtil.getBrowser(userAgent));
-            logRecord.setOs(StrUtil.getOs(userAgent));
+            logRecord.setBrowser(HttpUtil.getBrowser(userAgent));
+            logRecord.setOs(HttpUtil.getOs(userAgent));
             logRecord.setUserAgent(ua);
             logRecord.setRequestIp(ip);
 

@@ -3,7 +3,7 @@ package org.jjche.system.modules.system.service;
 import cn.hutool.core.date.BetweenFormatter;
 import cn.hutool.core.date.DateUtil;
 import org.jjche.common.constant.ElAdminConstant;
-import org.jjche.common.util.StrUtil;
+import org.jjche.common.util.HttpUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.system.modules.system.api.vo.MonitorVO;
 import org.springframework.stereotype.Service;
@@ -184,7 +184,7 @@ public class MonitorService {
         // 系统信息
         systemInfo.put("os", os.toString());
         systemInfo.put("day", formatBetween);
-        systemInfo.put("ip", StrUtil.getLocalIp());
+        systemInfo.put("ip", HttpUtil.getLocalIp());
         return systemInfo;
     }
 }

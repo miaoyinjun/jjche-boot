@@ -6,9 +6,9 @@
     <el-row>
       <el-col :span="12">
         <h1 class="text-jumbo text-ginormous">Oops!</h1>
-        <h2>系统升级中</h2>
+        <h2>502</h2>
         <ul class="list-unstyled">
-          <li>请稍等5分钟左右再试</li>
+          <li>欢迎浏览我们的网站，系统可能正在更新中，请稍候片刻。</li>
         </ul>
       </el-col>
       <el-col :span="12">

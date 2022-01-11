@@ -7,7 +7,6 @@ import org.jjche.cache.service.RedisService;
 import org.jjche.common.util.FileUtil;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
-import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.SecurityUtils;
 import org.jjche.security.dto.JwtUserDto;
 import org.jjche.security.dto.OnlineUserDto;
@@ -52,7 +51,7 @@ public class OnlineUserService {
         String dept = jwtUserDto.getUser().getDept().getName();
         String ip = ServletUtil.getClientIP(request);
         String browser = HttpUtil.getBrowser(request);
-        String address = StrUtil.getCityInfo(ip);
+        String address = HttpUtil.getCityInfo(ip);
         OnlineUserDto onlineUserDto = null;
         try {
             String publicKey = properties.getRsa().getPublicKey();

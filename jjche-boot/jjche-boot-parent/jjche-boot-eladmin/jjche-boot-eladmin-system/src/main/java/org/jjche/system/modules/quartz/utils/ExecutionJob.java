@@ -9,7 +9,6 @@ import cn.hutool.log.StaticLog;
 import com.alicp.jetcache.Cache;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.util.ThrowableUtil;
-import org.jjche.config.thread.ThreadPoolExecutorUtil;
 import org.jjche.core.util.SpringContextHolder;
 import org.jjche.system.modules.quartz.domain.QuartzJobDO;
 import org.jjche.system.modules.quartz.domain.QuartzLogDO;
@@ -25,8 +24,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -41,15 +41,11 @@ import java.util.concurrent.TimeUnit;
 public class ExecutionJob extends QuartzJobBean {
 
     /**
-     * 该处仅供参考
-     */
-    private final static ThreadPoolExecutor EXECUTOR = ThreadPoolExecutorUtil.getPoll();
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public void executeInternal(JobExecutionContext context) {
+        // 获取任务
         QuartzJobDO quartzJob = (QuartzJobDO) context.getMergedJobDataMap().get(QuartzJobDO.JOB_KEY);
         QuartzManage quartzManage = SpringContextHolder.getBean(QuartzManage.class);
         Cache quartzCache = quartzManage.quartzCache;
@@ -61,6 +57,9 @@ public class ExecutionJob extends QuartzJobBean {
     }
 
     private void executionJob(QuartzJobDO quartzJob, String uuid) {
+        // 创建单个线程
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
         // 获取spring bean
         QuartzLogMapper quartzLogMapper = SpringContextHolder.getBean(QuartzLogMapper.class);
         QuartzJobService quartzJobService = SpringContextHolder.getBean(QuartzJobService.class);
@@ -74,11 +73,9 @@ public class ExecutionJob extends QuartzJobBean {
         log.setCronExpression(quartzJob.getCronExpression());
         try {
             // 执行任务
-            StaticLog.warn("--------------------------------------------------------------");
-            StaticLog.warn("任务开始执行，任务名称：" + quartzJob.getJobName());
             QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(),
                     quartzJob.getParams());
-            Future<?> future = EXECUTOR.submit(task);
+            Future<?> future = executor.submit(task);
             future.get();
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
@@ -87,10 +84,9 @@ public class ExecutionJob extends QuartzJobBean {
             }
             // 任务状态
             log.setIsSuccess(true);
-            StaticLog.warn("任务执行完毕，任务名称：" + quartzJob.getJobName() + ", 执行时间：" + times + "毫秒");
-            StaticLog.warn("--------------------------------------------------------------");
+            StaticLog.info("任务执行成功，任务名称：" + quartzJob.getJobName() + ", 执行时间：" + times + "毫秒");
             // 判断是否存在子任务
-            if (quartzJob.getSubTask() != null) {
+            if (StrUtil.isNotBlank(quartzJob.getSubTask())) {
                 String subTask = quartzJob.getSubTask();
                 if (StrUtil.isNotBlank(subTask)) {
                     String[] tasks = subTask.split("[,，]");
@@ -102,8 +98,8 @@ public class ExecutionJob extends QuartzJobBean {
             if (org.jjche.common.util.StrUtil.isNotBlank(uuid)) {
                 redisService.setAddSetObject(uuid, false);
             }
-            StaticLog.warn("任务执行失败，任务名称：" + quartzJob.getJobName());
-            StaticLog.warn("--------------------------------------------------------------");
+            StaticLog.error("任务执行失败，任务名称：" + quartzJob.getJobName());
+            ;
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
             // 任务状态 0：成功 1：失败
@@ -123,6 +119,7 @@ public class ExecutionJob extends QuartzJobBean {
             }
         } finally {
             quartzLogMapper.insert(log);
+            executor.shutdown();
         }
     }
 

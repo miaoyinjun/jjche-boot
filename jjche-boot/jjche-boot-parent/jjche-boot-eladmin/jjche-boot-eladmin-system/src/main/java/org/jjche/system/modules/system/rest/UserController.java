@@ -245,8 +245,7 @@ public class UserController extends BaseController {
     )
     @PostMapping(value = "/updateAvatar")
     public ResultWrapper<String> updateAvatar(@RequestParam MultipartFile avatar) {
-        String userName = SecurityUtils.getCurrentUsername();
-        return ResultWrapper.ok(userService.updateAvatar(avatar, userName));
+        return ResultWrapper.ok(userService.updateAvatar(avatar));
     }
 
     /**

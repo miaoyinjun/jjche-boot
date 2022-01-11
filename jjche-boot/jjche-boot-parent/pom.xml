@@ -118,11 +118,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <dependency>
-                <groupId>ma.glasnost.orika</groupId>
-                <artifactId>orika-core</artifactId>
-                <version>1.5.4</version>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>ma.glasnost.orika</groupId>-->
+            <!--                <artifactId>orika-core</artifactId>-->
+            <!--                <version>1.5.4</version>-->
+            <!--            </dependency>-->
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>
                 <artifactId>jetcache-starter-redis-lettuce</artifactId>
@@ -282,10 +282,11 @@
                 <artifactId>easy-captcha</artifactId>
                 <version>1.6.2</version>
             </dependency>
+            <!-- ip2region IP库 -->
             <dependency>
-                <groupId>org.lionsoul</groupId>
-                <artifactId>ip2region</artifactId>
-                <version>1.7.2</version>
+                <groupId>net.dreamlu</groupId>
+                <artifactId>mica-ip2region</artifactId>
+                <version>2.5.6</version>
             </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
