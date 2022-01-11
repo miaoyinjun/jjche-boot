@@ -31,7 +31,7 @@ public class QuartzManage {
     public static final String JOB_NAME_LOCK = JOB_NAME + "LOCK:";
     @CreateCache(name = JOB_NAME_LOCK)
     public Cache<String, String> quartzCache;
-    @Resource(name = "scheduler")
+    @Resource
     private Scheduler scheduler;
 
     /**

@@ -205,6 +205,10 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
     @Transactional(rollbackFor = Exception.class)
     public void executionSubJob(String[] tasks) throws InterruptedException {
         for (String id : tasks) {
+            if (cn.hutool.core.util.StrUtil.isBlank(id)) {
+                // 如果是手动清除子任务id，会出现id为空字符串的问题
+                continue;
+            }
             QuartzJobDO quartzJob = findById(Long.parseLong(id));
             // 执行任务
             String uuid = IdUtil.simpleUUID();

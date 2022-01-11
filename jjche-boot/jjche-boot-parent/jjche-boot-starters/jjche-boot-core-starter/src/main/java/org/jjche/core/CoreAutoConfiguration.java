@@ -3,7 +3,6 @@ package org.jjche.core;
 import org.jjche.core.alarm.dd.AlarmDingTalkService;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.annotation.controller.SysRestController;
-import org.jjche.core.convert.OriKaMapper;
 import org.jjche.core.exception.GlobalExceptionHandler;
 import org.jjche.core.exception.RequestWrapperFilter;
 import org.jjche.core.property.CoreApiPathProperties;
@@ -26,7 +25,7 @@ import javax.annotation.Resource;
  * @version 1.0.0-SNAPSHOT
  * @since 2020-07-09
  */
-@Import({GlobalExceptionHandler.class, OriKaMapper.class,
+@Import({GlobalExceptionHandler.class,
         CoreProperties.class, cn.hutool.extra.spring.SpringUtil.class,
         RequestWrapperFilter.class, AlarmDingTalkService.class})
 @Configuration

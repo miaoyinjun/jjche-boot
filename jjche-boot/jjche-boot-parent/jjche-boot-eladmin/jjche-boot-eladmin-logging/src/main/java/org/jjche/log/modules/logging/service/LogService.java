@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogModule;
 import org.jjche.common.enums.LogType;
-import org.jjche.common.util.StrUtil;
+import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.core.util.SecurityUtils;
@@ -115,7 +115,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
     @Async
     @Transactional(rollbackFor = Exception.class)
     public void saveLog(LogDO log) {
-        log.setAddress(StrUtil.getCityInfo(log.getRequestIp()));
+        log.setAddress(HttpUtil.getCityInfo(log.getRequestIp()));
         this.save(log);
     }
 
