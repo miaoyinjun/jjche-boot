@@ -44,6 +44,7 @@
         <module>jjche-boot-common</module>
         <module>jjche-boot-starters</module>
         <module>jjche-boot-eladmin</module>
+        <module>jjche-cloud</module>
     </modules>
 
     <dependencyManagement>
