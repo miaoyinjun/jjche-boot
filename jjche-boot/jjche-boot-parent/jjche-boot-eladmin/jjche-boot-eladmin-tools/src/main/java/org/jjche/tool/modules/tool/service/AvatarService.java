@@ -1,6 +1,9 @@
 package org.jjche.tool.modules.tool.service;
 
+import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ArrayUtil;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.enums.FileType;
 import org.jjche.core.util.FileUtil;
 import org.jjche.tool.modules.tool.config.FileProperties;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,14 @@ public class AvatarService {
      * @return /
      */
     public File uploadAvatar(MultipartFile multipartFile) {
+        // 判断文件是否为图片
+        Assert.isTrue(ArrayUtil.isNotEmpty(multipartFile), "请选择图片");
+        // 文件大小验证
+        FileUtil.checkSize(properties.getAvatarMaxSize(), multipartFile.getSize());
+
+        String suffix = FileUtil.getExtensionName(multipartFile.getOriginalFilename());
+        Boolean isPic = FileType.IMAGE.equals(FileUtil.getFileType(suffix));
+        Assert.isTrue(isPic, "只能上传图片");
         return FileUtil.upload(multipartFile, properties.getPath().getAvatar());
     }
 }

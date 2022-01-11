@@ -272,7 +272,7 @@ public class FileUtil extends cn.hutool.core.io.FileUtil {
         try {
             in = new FileInputStream(file);
             try {
-                System.out.println(in.read(b));
+                in.read(b);
             } catch (IOException e) {
                 StaticLog.error(e.getMessage(), e);
             }

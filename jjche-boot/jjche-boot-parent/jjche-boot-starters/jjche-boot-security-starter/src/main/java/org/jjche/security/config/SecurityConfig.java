@@ -203,7 +203,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private Map<String, Set<String>> getAnonymousUrl(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, SecurityUrlProperties securityUrlProperties) {
-        Map<String, Set<String>> anonymousUrls = new HashMap<>(6);
+        Map<String, Set<String>> anonymousUrls = new HashMap<>(8);
         Set<String> get = new HashSet<>();
         Set<String> post = new HashSet<>();
         Set<String> put = new HashSet<>();
