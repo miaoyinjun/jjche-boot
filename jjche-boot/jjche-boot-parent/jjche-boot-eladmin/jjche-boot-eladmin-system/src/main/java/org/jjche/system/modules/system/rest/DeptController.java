@@ -46,10 +46,6 @@ public class DeptController extends BaseController {
      * @param criteria a {@link DeptQueryCriteriaDTO} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "部门"
-    )
     @ApiOperation("导出部门数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('dept:list')")
@@ -65,10 +61,6 @@ public class DeptController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "部门"
-    )
     @ApiOperation("查询部门")
     @GetMapping
     @PreAuthorize("@el.check('user:list','dept:list')")
@@ -87,10 +79,6 @@ public class DeptController extends BaseController {
      * @param ids a {@link java.util.List} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "部门"
-    )
     @ApiOperation("查询部门:根据ID获取同级与上级数据")
     @PostMapping("/superior")
     @PreAuthorize("@el.check('user:list','dept:list')")

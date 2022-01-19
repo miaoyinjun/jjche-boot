@@ -25,7 +25,7 @@
         <!-- docker -->
         <docker.maven.verion>1.4.13</docker.maven.verion>
 
-        <hutool.version>5.7.11</hutool.version>
+        <hutool.version>5.7.19</hutool.version>
         <mybatis.plus.version>3.4.3.3</mybatis.plus.version>
         <liquibase.version>4.4.3</liquibase.version>
         <jjwt.version>0.11.1</jjwt.version>

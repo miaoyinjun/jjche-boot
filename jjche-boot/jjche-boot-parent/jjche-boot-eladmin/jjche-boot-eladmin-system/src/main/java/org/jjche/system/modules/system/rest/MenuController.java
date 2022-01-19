@@ -52,10 +52,6 @@ public class MenuController extends BaseController {
      * @param criteria a {@link MenuQueryCriteriaDTO} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "菜单"
-    )
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('menu:list')")
@@ -120,10 +116,6 @@ public class MenuController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "菜单"
-    )
     @ApiOperation("查询菜单")
     @GetMapping
     @PreAuthorize("@el.check('menu:list')")
@@ -142,10 +134,6 @@ public class MenuController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询分页", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "菜单"
-    )
     @ApiOperation("查询菜单分页")
     @GetMapping("/page")
     @PreAuthorize("@el.check('menu:list')")
@@ -159,10 +147,6 @@ public class MenuController extends BaseController {
      * @param ids a {@link java.util.List} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "菜单"
-    )
     @ApiOperation("查询菜单:根据ID获取同级与上级数据")
     @PostMapping("/superior")
     @PreAuthorize("@el.check('menu:list')")

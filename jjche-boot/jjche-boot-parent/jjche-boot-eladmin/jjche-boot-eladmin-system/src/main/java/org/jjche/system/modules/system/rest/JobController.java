@@ -45,10 +45,6 @@ public class JobController extends BaseController {
      * @param criteria a {@link JobQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出岗位数据", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "岗位"
-    )
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('job:list')")
     public void download(HttpServletResponse response, JobQueryCriteriaDTO criteria) throws IOException {
@@ -62,10 +58,6 @@ public class JobController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "岗位"
-    )
     @ApiOperation("查询岗位")
     @GetMapping
     @PreAuthorize("@el.check('job:list','user:list')")

@@ -3,14 +3,11 @@ package org.jjche.system.modules.security.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.jjche.common.enums.LogCategoryType;
-import org.jjche.common.enums.LogType;
 import org.jjche.common.util.PageUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.wrapper.response.ResultWrapper;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.mybatis.param.MyPage;
 import org.jjche.mybatis.param.PageParam;
 import org.jjche.security.dto.OnlineUserDto;
@@ -66,10 +63,6 @@ public class OnlineController extends BaseController {
      * @param filter   a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "在线用户"
-    )
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('online:list')")

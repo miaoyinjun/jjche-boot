@@ -68,10 +68,6 @@ public class DataPermissionFieldRoleController extends BaseController {
     @GetMapping
     @ApiOperation(value = "数据字段角色-列表")
     @PreAuthorize("@el.check('roles:list')")
-    @LogRecordAnnotation(
-            value = "列表", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据字段角色"
-    )
     public ResultWrapper<MyPage<DataPermissionFieldRoleVO>> pageQuery(PageParam page,
                                                                       @Validated DataPermissionFieldRoleQueryCriteriaDTO query) {
         return ResultWrapper.ok(sysDataPermissionFieldRoleService.page(page, query));
