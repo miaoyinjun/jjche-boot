@@ -44,10 +44,6 @@ public class DeployHistoryController extends BaseController {
      * @param criteria a {@link DeployHistoryQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "部署历史"
-    )
     @ApiOperation("导出部署历史数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('deployHistory:list')")
@@ -62,10 +58,6 @@ public class DeployHistoryController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "部署历史"
-    )
     @ApiOperation(value = "查询部署历史")
     @GetMapping
     @PreAuthorize("@el.check('deployHistory:list')")

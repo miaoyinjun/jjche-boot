@@ -46,10 +46,6 @@ public class QuartzJobController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "定时"
-    )
     @ApiOperation("查询定时任务")
     @GetMapping
     @PreAuthorize("@el.check('timing:list')")
@@ -64,10 +60,6 @@ public class QuartzJobController extends BaseController {
      * @param criteria a {@link JobQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "定时"
-    )
     @ApiOperation("导出任务数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('timing:list')")
@@ -82,10 +74,6 @@ public class QuartzJobController extends BaseController {
      * @param criteria a {@link JobQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出任务日志", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "定时"
-    )
     @ApiOperation("导出日志数据")
     @GetMapping(value = "/logs/download")
     @PreAuthorize("@el.check('timing:list')")
@@ -168,10 +156,6 @@ public class QuartzJobController extends BaseController {
      * @param id a {@link java.lang.Long} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询单个", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "定时"
-    )
     @GetMapping("/{id}")
     @PreAuthorize("@el.check('timing:list')")
     public ResultWrapper<QuartzJobDO> getById(@PathVariable Long id) {

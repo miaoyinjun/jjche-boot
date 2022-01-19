@@ -52,10 +52,6 @@ public class DatabaseController extends BaseController {
      * @param criteria a {@link DatabaseQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据库"
-    )
     @ApiOperation("导出数据库数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('database:list')")
@@ -70,10 +66,6 @@ public class DatabaseController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据库"
-    )
     @ApiOperation(value = "查询数据库")
     @GetMapping
     @PreAuthorize("@el.check('database:list')")
@@ -141,10 +133,6 @@ public class DatabaseController extends BaseController {
      * @param resources a {@link DatabaseDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "测试链接", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据库"
-    )
     @ApiOperation(value = "测试数据库链接")
     @PostMapping("/testConnect")
     @PreAuthorize("@el.check('database:testConnect')")

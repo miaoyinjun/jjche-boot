@@ -68,10 +68,6 @@ public class UserController extends BaseController {
      * @param criteria a {@link UserQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出用户数据", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "用户"
-    )
     @ApiOperation("导出用户数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('user:list')")
@@ -87,10 +83,6 @@ public class UserController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "用户"
-    )
     @ApiOperation("查询用户")
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
