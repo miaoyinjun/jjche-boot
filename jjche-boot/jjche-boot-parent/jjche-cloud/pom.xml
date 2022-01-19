@@ -7,6 +7,11 @@
     <packaging>pom</packaging>
     <version>1.0.9-SNAPSHOT</version>
 
+    <properties>
+        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
+    </properties>
+
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-boot-parent</artifactId>
@@ -15,6 +20,7 @@
 
     <modules>
         <module>jjche-cloud-nacos</module>
+        <module>jjche-cloud-starter</module>
     </modules>
 
 </project>

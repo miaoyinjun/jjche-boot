@@ -27,4 +27,9 @@ public interface SecurityConstant {
      * Constant <code>ADMIN_PERMISSION="admin"</code>
      */
     String ADMIN_PERMISSION = "admin";
+
+    /**
+     * 认证header
+     */
+    String HEADER_AUTH = "Authorization";
 }

@@ -3,6 +3,8 @@ package org.jjche.demo;
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 
 /**
@@ -13,6 +15,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @since 2020-06-18 9:16
  */
 @SpringBootApplication
+@EnableFeignClients
+@EnableDiscoveryClient
 public class Application {
     /**
      * 入口

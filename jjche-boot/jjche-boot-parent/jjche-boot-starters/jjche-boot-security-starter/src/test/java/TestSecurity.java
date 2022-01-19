@@ -1,6 +1,7 @@
 import cn.hutool.http.HttpStatus;
 import controller.SecurityController;
 import dto.LoginDTO;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.core.wrapper.enums.ResultWrapperCodeEnum;
 import org.jjche.core.wrapper.response.ResultWrapper;
 import org.junit.jupiter.api.Test;
@@ -148,7 +149,7 @@ public class TestSecurity {
 
         /**不允许访问*/
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
+        headers.add(SecurityConstant.HEADER_AUTH, "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 
         wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/not_allow", HttpMethod.GET, requestEntity, ResultWrapper.class);
