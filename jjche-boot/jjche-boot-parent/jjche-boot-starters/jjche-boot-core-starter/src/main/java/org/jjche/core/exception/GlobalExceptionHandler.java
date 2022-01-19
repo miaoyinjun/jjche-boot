@@ -2,6 +2,8 @@ package org.jjche.core.exception;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +12,7 @@ import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.alarm.dd.AlarmDingTalkService;
 import org.jjche.core.wrapper.response.ResultWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
@@ -64,7 +67,10 @@ public class GlobalExceptionHandler {
         try {
             if (request != null && request instanceof ContentCachingRequestWrapper) {
                 ContentCachingRequestWrapper wrapper = (ContentCachingRequestWrapper) request;
-                log.setBrowser(HttpUtil.getBrowser(wrapper));
+                String ua = wrapper.getHeader(HttpHeaders.USER_AGENT);
+                UserAgent userAgent = UserAgentUtil.parse(ua);
+                log.setBrowser(HttpUtil.getBrowser(userAgent));
+                log.setBrowser(HttpUtil.getOs(userAgent));
                 log.setRequestIp(ServletUtil.getClientIP(wrapper));
                 log.setRequestUri(wrapper.getRequestURI());
                 log.setRequestMethod(wrapper.getMethod());

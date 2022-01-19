@@ -95,12 +95,6 @@
             <artifactId>easy-captcha</artifactId>
         </dependency>
 
-        <!-- 解析客户端操作系统、浏览器信息 -->
-        <dependency>
-            <groupId>eu.bitwalker</groupId>
-            <artifactId>UserAgentUtils</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
