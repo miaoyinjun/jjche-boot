@@ -19,7 +19,7 @@
         <build.plugins.plugin.version>3.0.0-M1</build.plugins.plugin.version>
 
         <spring.boot.starter.version>2.5.8</spring.boot.starter.version>
-        <spring-cloud.version>2021.0.0</spring-cloud.version>
+        <spring-cloud.version>2020.0.5</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <spring.boot.admin.starter.version>2.5.4</spring.boot.admin.starter.version>
         <maven.plugin.version>3.6.0</maven.plugin.version>
