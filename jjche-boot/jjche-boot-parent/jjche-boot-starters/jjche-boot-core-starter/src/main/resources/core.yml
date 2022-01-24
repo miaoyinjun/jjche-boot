@@ -28,9 +28,9 @@ jasypt:
 feign:
   compression:
     request:
-      enabled: true
+      enabled: false
     response:
-      enabled: true
+      enabled: false
   client:
     config:
       default:
