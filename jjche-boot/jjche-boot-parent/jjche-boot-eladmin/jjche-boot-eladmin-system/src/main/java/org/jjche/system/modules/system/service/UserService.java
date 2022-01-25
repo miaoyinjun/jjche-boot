@@ -33,7 +33,6 @@ import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.security.UserTypeEnum;
 import org.jjche.security.service.JwtUserService;
-import org.jjche.security.service.OnlineUserService;
 import org.jjche.system.modules.system.api.dto.UserDTO;
 import org.jjche.system.modules.system.api.dto.UserQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.*;
@@ -74,7 +73,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
     private final UserRoleMapper userRoleMapper;
     private final UserMapStruct userMapStruct;
     private final RedisService redisService;
-    private final OnlineUserService onlineUserService;
+    private final SysBaseAPI sysBaseAPI;
     private final AvatarService avatarService;
     private final JwtUserService jwtUserService;
     private final AdminProperties adminConfig;
@@ -245,7 +244,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
 
         // 如果用户被禁用，则清除用户登录信息
         if (!resources.getEnabled()) {
-            onlineUserService.kickOutForUsername(resources.getUsername());
+            sysBaseAPI.kickOutForUsername(resources.getUsername());
         }
         user.setUsername(resources.getUsername());
         user.setEmail(resources.getEmail());
@@ -478,14 +477,14 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         String token = tokenProvider.createToken(authentication.getName(), userTypeEnum);
         final JwtUserDto jwtUserDto = (JwtUserDto) authentication.getPrincipal();
         // 保存在线信息
-        onlineUserService.save(jwtUserDto, token, request);
+        sysBaseAPI.save(jwtUserDto, token, request);
         // 返回 token 与 用户信息
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         LoginVO loginVO = new LoginVO(jwtUserDto, securityJwtProperties.getTokenStartWith() + token);
         SecurityLoginProperties loginProperties = properties.getLogin();
         if (loginProperties.isSingle()) {
             //踢掉之前已经登录的token
-            onlineUserService.checkLoginOnUser(authentication.getName(), token);
+            sysBaseAPI.checkLoginOnUser(authentication.getName(), token);
         }
         this.updateLastLoginTimeAndCleanPwdFailsCount(loginVO.getUser().getUser().getId());
         return loginVO;

@@ -9,8 +9,8 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.dto.OnlineUserDTO;
 import org.jjche.security.auth.sms.SmsCodeAuthenticationToken;
-import org.jjche.security.dto.OnlineUserDto;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.springframework.beans.factory.InitializingBean;
@@ -120,9 +120,9 @@ public class TokenProvider implements InitializingBean {
      * <p>checkRenewal.</p>
      *
      * @param tokenKey      需要检查的tokenKey
-     * @param onlineUserDto a {@link OnlineUserDto} object.
+     * @param onlineUserDto a {@link OnlineUserDTO} object.
      */
-    public void checkRenewal(String tokenKey, OnlineUserDto onlineUserDto) {
+    public void checkRenewal(String tokenKey, OnlineUserDTO onlineUserDto) {
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         long renew = securityJwtProperties.getTokenValidityInMilliSeconds();
 

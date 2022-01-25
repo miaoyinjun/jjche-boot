@@ -7,7 +7,6 @@ import org.jjche.security.handler.JwtAuthenticationEntryPoint;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.service.JwtUserServiceImpl;
-import org.jjche.security.service.OnlineUserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -25,8 +24,7 @@ import org.springframework.context.annotation.Import;
         SecurityProperties.class,
         JwtAuthenticationAccessDeniedHandler.class,
         JwtAuthenticationEntryPoint.class, SecurityConfig.class,
-        OnlineUserService.class, TokenProvider.class, ElPermissionConfig.class,
-        JwtUserServiceImpl.class
+        TokenProvider.class, ElPermissionConfig.class, JwtUserServiceImpl.class
 })
 public class SecurityAutoConfiguration {
 }

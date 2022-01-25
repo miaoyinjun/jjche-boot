@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogModule;
 import org.jjche.common.enums.LogType;
@@ -28,7 +29,6 @@ import org.jjche.security.dto.SmsCodeDTO;
 import org.jjche.security.property.*;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.security.UserTypeEnum;
-import org.jjche.security.service.OnlineUserService;
 import org.jjche.system.modules.security.vo.LoginCodeVO;
 import org.jjche.system.modules.system.service.UserService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -55,7 +55,7 @@ import javax.validation.Valid;
 public class AuthorizationController extends BaseController {
     private final SecurityProperties properties;
     private final RedisService redisService;
-    private final OnlineUserService onlineUserService;
+    private final CommonAPI commonAPI;
     private final UserService userService;
     private final TokenProvider tokenProvider;
 
@@ -163,7 +163,7 @@ public class AuthorizationController extends BaseController {
     @ApiOperation("退出登录")
     @AnonymousDeleteMapping(value = "/logout")
     public ResultWrapper logout(HttpServletRequest request) {
-        onlineUserService.logout(tokenProvider.getToken(request));
+        commonAPI.logoutOnlineUser(tokenProvider.getToken(request));
         return ResultWrapper.ok();
     }
 }

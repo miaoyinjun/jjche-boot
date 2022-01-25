@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
-import org.jjche.cache.service.RedisService;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.security.annotation.AnonymousAccess;
 import org.jjche.security.auth.sms.SmsCodeAuthenticationProvider;
@@ -15,7 +15,6 @@ import org.jjche.security.property.SecurityRoleUrlProperties;
 import org.jjche.security.property.SecurityUrlProperties;
 import org.jjche.security.security.TokenConfigurer;
 import org.jjche.security.security.TokenProvider;
-import org.jjche.security.service.OnlineUserService;
 import org.jjche.security.util.RequestMethodEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -62,8 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAuthenticationAccessDeniedHandler jwtAccessDeniedHandler;
     private final ApplicationContext applicationContext;
     private final SecurityProperties properties;
-    private final OnlineUserService onlineUserService;
-    private final RedisService redisService;
+    private final CommonAPI commonAPI;
     private final UserDetailsService userDetailsService;
     private final UserDetailsService smsUserDetailsService;
 
@@ -275,7 +273,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private TokenConfigurer securityConfigurerAdapter() {
-        return new TokenConfigurer(tokenProvider, properties, onlineUserService, redisService);
+        return new TokenConfigurer(tokenProvider, properties, commonAPI);
     }
 
 
