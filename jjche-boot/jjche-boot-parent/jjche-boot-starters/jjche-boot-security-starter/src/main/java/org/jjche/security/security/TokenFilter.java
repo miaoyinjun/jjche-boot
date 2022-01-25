@@ -2,11 +2,10 @@ package org.jjche.security.security;
 
 import cn.hutool.core.util.StrUtil;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.jjche.cache.service.RedisService;
-import org.jjche.security.dto.OnlineUserDto;
+import org.jjche.common.api.CommonAPI;
+import org.jjche.common.dto.OnlineUserDTO;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
-import org.jjche.security.service.OnlineUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -33,23 +32,20 @@ public class TokenFilter extends GenericFilterBean {
 
     private final TokenProvider tokenProvider;
     private final SecurityProperties properties;
-    private final OnlineUserService onlineUserService;
-    private final RedisService redisService;
+    private final CommonAPI commonAPI;
 
     /**
      * <p>Constructor for TokenFilter.</p>
      *
-     * @param tokenProvider     Token
-     * @param properties        JWT
-     * @param onlineUserService 用户在线
-     * @param redisService      a {@link RedisService} object.
+     * @param tokenProvider Token
+     * @param properties    JWT
+     * @param commonAPI     api
      */
     public TokenFilter(TokenProvider tokenProvider, SecurityProperties properties,
-                       OnlineUserService onlineUserService, RedisService redisService) {
+                       CommonAPI commonAPI) {
         this.properties = properties;
-        this.onlineUserService = onlineUserService;
+        this.commonAPI = commonAPI;
         this.tokenProvider = tokenProvider;
-        this.redisService = redisService;
     }
 
     /**
@@ -62,19 +58,19 @@ public class TokenFilter extends GenericFilterBean {
         String token = resolveToken(httpServletRequest);
         // 对于 Token 为空的不需要去查 Redis
         if (StrUtil.isNotBlank(token)) {
-            OnlineUserDto onlineUserDto = null;
+            OnlineUserDTO onlineUserDto = null;
             boolean cleanUserCache = false;
             String tokenKey = null;
             try {
                 SecurityJwtProperties securityJwtProperties = properties.getJwt();
                 tokenKey = securityJwtProperties.getOnlineKey() + token;
-                onlineUserDto = onlineUserService.getOne(tokenKey);
+                onlineUserDto = commonAPI.getOnlineUser(tokenKey);
             } catch (ExpiredJwtException e) {
                 log.error(e.getMessage());
                 cleanUserCache = true;
             } finally {
                 if (cleanUserCache || Objects.isNull(onlineUserDto)) {
-                    onlineUserService.logout(token);
+                    commonAPI.logoutOnlineUser(token);
                 }
             }
             if (onlineUserDto != null && StringUtils.hasText(token)) {

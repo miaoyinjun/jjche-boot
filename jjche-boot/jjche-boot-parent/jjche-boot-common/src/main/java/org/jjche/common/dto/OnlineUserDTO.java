@@ -1,4 +1,4 @@
-package org.jjche.security.dto;
+package org.jjche.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,15 +7,17 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 /**
+ * <p>
  * 在线用户
+ * </p>
  *
- * @author Zheng Jie
- * @version 1.0.8-SNAPSHOT
+ * @author miaoyj
+ * @since 2022-01-25
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OnlineUserDto {
+public class OnlineUserDTO {
 
     /**
      * 用户名

@@ -1,18 +1,21 @@
 package org.jjche.system.modules.security.rest;
 
-import cn.hutool.core.collection.CollUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.dto.OnlineUserDTO;
+import org.jjche.common.enums.LogCategoryType;
+import org.jjche.common.enums.LogType;
+import org.jjche.common.util.PageUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.mybatis.param.MyPage;
 import org.jjche.mybatis.param.PageParam;
-import org.jjche.security.dto.OnlineUserDto;
 import org.jjche.security.property.SecurityProperties;
-import org.jjche.security.service.OnlineUserService;
+import org.jjche.system.modules.system.service.SysBaseAPI;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +37,7 @@ import java.util.Set;
 @SysRestController("/auth/online")
 public class OnlineController extends BaseController {
 
-    private final OnlineUserService onlineUserService;
+    private final SysBaseAPI sysBaseAPI;
     private final SecurityProperties securityProperties;
 
     /**
@@ -48,11 +51,11 @@ public class OnlineController extends BaseController {
     @GetMapping
     @PreAuthorize("@el.check('online:list')")
     public ResultWrapper query(String filter, PageParam pageable) {
-        List<OnlineUserDto> onlineUserDtos = onlineUserService.getAll(filter);
-        List<OnlineUserDto> list = CollUtil.page((int) pageable.getPageIndex() - 1, (int) pageable.getPageSize(), onlineUserDtos);
+        List<OnlineUserDTO> onlineUserDTOS = sysBaseAPI.getAll(filter);
+        List<OnlineUserDTO> list = PageUtil.startPage(onlineUserDTOS, (int) pageable.getPageIndex(), (int) pageable.getPageSize());
         MyPage myPage = new MyPage();
         myPage.setRecords(list);
-        myPage.setTotal(onlineUserDtos.size());
+        myPage.setTotal(onlineUserDTOS.size());
         return ResultWrapper.ok(myPage);
     }
 
@@ -63,11 +66,15 @@ public class OnlineController extends BaseController {
      * @param filter   a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
+    @LogRecordAnnotation(
+            value = "导出", category = LogCategoryType.MANAGER,
+            type = LogType.SELECT, module = "在线用户"
+    )
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('online:list')")
     public void download(HttpServletResponse response, String filter) throws IOException {
-        onlineUserService.download(onlineUserService.getAll(filter), response);
+        sysBaseAPI.download(sysBaseAPI.getAll(filter), response);
     }
 
     /**
@@ -85,7 +92,7 @@ public class OnlineController extends BaseController {
             String privateKey = securityProperties.getRsa().getPrivateKey();
             // 解密Key
             key = RsaUtils.decryptByPrivateKey(privateKey, key);
-            onlineUserService.kickOut(key);
+            sysBaseAPI.kickOut(key);
         }
         return ResultWrapper.ok();
     }

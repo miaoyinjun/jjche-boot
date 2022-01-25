@@ -1,19 +1,20 @@
-package org.jjche.security.service;
+package org.jjche.system.modules.system.service;
 
 import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.http.useragent.UserAgent;
-import cn.hutool.http.useragent.UserAgentUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.dto.OnlineUserDTO;
+import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.common.util.FileUtil;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
+import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.SecurityUtils;
 import org.jjche.security.dto.JwtUserDto;
-import org.jjche.security.dto.OnlineUserDto;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
+import org.jjche.security.service.JwtUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
@@ -25,15 +26,16 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * <p>OnlineUserService class.</p>
+ * <p>
+ * 本地操作
+ * </p>
  *
- * @author Zheng Jie
- * @version 1.0.8-SNAPSHOT
- * @since 2019年10月26日21:56:27
+ * @author miaoyj
+ * @since 2022-01-25
  */
 @Service
 @Slf4j
-public class OnlineUserService {
+public class SysBaseAPI implements ISysBaseAPI {
 
     @Autowired
     private SecurityProperties properties;
@@ -52,17 +54,16 @@ public class OnlineUserService {
     public void save(JwtUserDto jwtUserDto, String token, HttpServletRequest request) {
         String dept = jwtUserDto.getUser().getDept().getName();
         String ip = ServletUtil.getClientIP(request);
-        String address = HttpUtil.getCityInfo(ip);
-        OnlineUserDto onlineUserDto = null;
+        String browser = HttpUtil.getBrowser(request);
+        String address = StrUtil.getCityInfo(ip);
+        OnlineUserDTO onlineUserDto = null;
         try {
             String publicKey = properties.getRsa().getPublicKey();
             String encryptToken = RsaUtils.encryptBypPublicKey(publicKey, token);
-            String ua = request.getHeader(HttpHeaders.USER_AGENT);
-            UserAgent userAgent = UserAgentUtil.parse(ua);
-            String browser = HttpUtil.getBrowser(userAgent);
-            String os = HttpUtil.getOs(userAgent);
-            onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername(),
-                    jwtUserDto.getUser().getNickName(), dept, browser, ua, os, ip, address,
+            String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
+            String os = HttpUtil.getUserAgent(request).getOs().getName();
+            onlineUserDto = new OnlineUserDTO(jwtUserDto.getUsername(),
+                    jwtUserDto.getUser().getNickName(), dept, browser, userAgent, os, ip, address,
                     encryptToken, new Date(), new Date());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -77,22 +78,22 @@ public class OnlineUserService {
      * @param filter /
      * @return /
      */
-    public List<OnlineUserDto> getAll(String filter) {
+    public List<OnlineUserDTO> getAll(String filter) {
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         Set<String> keys = redisService.keys(securityJwtProperties.getOnlineKey());
-        List<OnlineUserDto> onlineUserDtos = new ArrayList<>();
+        List<OnlineUserDTO> onlineUserDTOS = new ArrayList<>();
         for (String key : keys) {
-            OnlineUserDto onlineUserDto = redisService.objectGetObject(key, OnlineUserDto.class);
+            OnlineUserDTO onlineUserDto = redisService.objectGetObject(key, OnlineUserDTO.class);
             if (StringUtils.isNotBlank(filter)) {
                 if (onlineUserDto.toString().contains(filter)) {
-                    onlineUserDtos.add(onlineUserDto);
+                    onlineUserDTOS.add(onlineUserDto);
                 }
             } else {
-                onlineUserDtos.add(onlineUserDto);
+                onlineUserDTOS.add(onlineUserDto);
             }
         }
-        onlineUserDtos.sort((o1, o2) -> o2.getLastAccessTime().compareTo(o1.getLastAccessTime()));
-        return onlineUserDtos;
+        onlineUserDTOS.sort((o1, o2) -> o2.getLastAccessTime().compareTo(o1.getLastAccessTime()));
+        return onlineUserDTOS;
     }
 
     /**
@@ -107,32 +108,15 @@ public class OnlineUserService {
     }
 
     /**
-     * 退出登录
-     *
-     * @param token /
-     */
-    public void logout(String token) {
-        try {
-            String username = SecurityUtils.getCurrentUsername();
-            SecurityJwtProperties securityJwtProperties = properties.getJwt();
-            String key = securityJwtProperties.getOnlineKey() + token;
-            redisService.delete(key);
-            jwtUserService.removeByUserName(username);
-        } catch (Exception e) {
-
-        }
-    }
-
-    /**
      * 导出
      *
      * @param all      /
      * @param response /
      * @throws java.io.IOException if any.
      */
-    public void download(List<OnlineUserDto> all, HttpServletResponse response) throws IOException {
+    public void download(List<OnlineUserDTO> all, HttpServletResponse response) throws IOException {
         List<Map<String, Object>> list = new ArrayList<>();
-        for (OnlineUserDto user : all) {
+        for (OnlineUserDTO user : all) {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("用户名", user.getUserName());
             map.put("部门", user.getDept());
@@ -146,27 +130,17 @@ public class OnlineUserService {
     }
 
     /**
-     * 查询用户
-     *
-     * @param key /
-     * @return /
-     */
-    public OnlineUserDto getOne(String key) {
-        return redisService.objectGetObject(key, OnlineUserDto.class);
-    }
-
-    /**
      * 检测用户是否在之前已经登录，已经登录踢下线
      *
      * @param userName   用户名
      * @param igoreToken a {@link java.lang.String} object.
      */
     public void checkLoginOnUser(String userName, String igoreToken) {
-        List<OnlineUserDto> onlineUserDtos = getAll(userName);
-        if (onlineUserDtos == null || onlineUserDtos.isEmpty()) {
+        List<OnlineUserDTO> onlineUserDTOS = getAll(userName);
+        if (onlineUserDTOS == null || onlineUserDTOS.isEmpty()) {
             return;
         }
-        for (OnlineUserDto onlineUserDto : onlineUserDtos) {
+        for (OnlineUserDTO onlineUserDto : onlineUserDTOS) {
             if (onlineUserDto.getUserName().equals(userName)) {
                 try {
                     String privateKey = properties.getRsa().getPrivateKey();
@@ -190,14 +164,28 @@ public class OnlineUserService {
      */
     @Async
     public void kickOutForUsername(String username) {
-        List<OnlineUserDto> onlineUsers = getAll(username);
+        List<OnlineUserDTO> onlineUsers = getAll(username);
         String privateKey = properties.getRsa().getPrivateKey();
-        for (OnlineUserDto onlineUser : onlineUsers) {
+        for (OnlineUserDTO onlineUser : onlineUsers) {
             if (onlineUser.getUserName().equals(username)) {
                 // 解密Key
                 String token = RsaUtils.decryptByPrivateKey(privateKey, onlineUser.getKey());
                 kickOut(token);
             }
         }
+    }
+
+    @Override
+    public OnlineUserDTO getOnlineUser(String tokenKey) {
+        return redisService.objectGetObject(tokenKey, OnlineUserDTO.class);
+    }
+
+    @Override
+    public void logoutOnlineUser(String token) {
+        String username = SecurityUtils.getCurrentUsername();
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String key = securityJwtProperties.getOnlineKey() + token;
+        redisService.delete(key);
+        jwtUserService.removeByUserName(username);
     }
 }

@@ -44,6 +44,7 @@
     </properties>
 
     <modules>
+        <module>jjche-boot-base-api</module>
         <module>jjche-boot-common</module>
         <module>jjche-boot-starters</module>
         <module>jjche-boot-eladmin</module>
@@ -77,13 +78,16 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
                 <version>1.1.1-SNAPSHOT</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-system-local-api</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-core-starter</artifactId>
@@ -356,11 +360,6 @@
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
                 <version>1.21</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>3.0.2</version>
             </dependency>
             <dependency>
                 <groupId>com.deepoove</groupId>

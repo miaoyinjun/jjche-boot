@@ -20,6 +20,10 @@
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-eladmin-logging</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-system-local-api</artifactId>
+        </dependency>
         <!-- tools 模块包含了 common 和 logging 模块 -->
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
