@@ -3,15 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>jjche-boot-starters</artifactId>
+    <packaging>pom</packaging>
+    <version>1.1.1-SNAPSHOT</version>
+
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-boot-parent</artifactId>
         <version>1.1.1-SNAPSHOT</version>
     </parent>
-
-    <artifactId>jjche-boot-starters</artifactId>
-    <packaging>pom</packaging>
-    <version>1.1.1-SNAPSHOT</version>
 
     <modules>
         <module>jjche-boot-core-starter</module>
@@ -25,6 +25,8 @@
         <module>jjche-boot-jackson-starter</module>
         <!--        <module>jjche-boot-xxl-job-client-starter</module>-->
         <module>jjche-boot-cloud-starter</module>
+        <module>jjche-boot-starter</module>
+        <module>jjche-boot-system-starter</module>
     </modules>
 
 </project>

@@ -3,12 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.jjcheframework.boot</groupId>
-        <artifactId>jjche-boot-parent</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
-    </parent>
-
     <name>jjche-boot-web-demo</name>
     <description>jjche-boot演示</description>
 
@@ -16,6 +10,12 @@
     <artifactId>jjche-boot-web-demo</artifactId>
     <packaging>jar</packaging>
     <version>1.1.1-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.jjcheframework.boot</groupId>
+        <artifactId>jjche-boot-parent</artifactId>
+        <version>1.1.1-SNAPSHOT</version>
+    </parent>
 
     <properties>
         <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
@@ -25,7 +25,7 @@
     <dependencies>
         <!--        <dependency>-->
         <!--            <groupId>org.jjcheframework.boot</groupId>-->
-        <!--            <artifactId>jjche-boot-eladmin-system</artifactId>-->
+        <!--            <artifactId>jjche-boot-system-starter</artifactId>-->
         <!--        </dependency>-->
         <!--        cloud-->
         <dependency>

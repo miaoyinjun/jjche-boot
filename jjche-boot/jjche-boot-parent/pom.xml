@@ -46,7 +46,6 @@
     <modules>
         <module>jjche-boot-base-api</module>
         <module>jjche-boot-common</module>
-        <module>jjche-boot-starter</module>
         <module>jjche-boot-starters</module>
         <module>jjche-boot-eladmin</module>
         <module>jjche-cloud</module>
@@ -158,7 +157,7 @@
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-eladmin-system</artifactId>
+                <artifactId>jjche-boot-system-starter</artifactId>
                 <version>1.1.1-SNAPSHOT</version>
             </dependency>
 
