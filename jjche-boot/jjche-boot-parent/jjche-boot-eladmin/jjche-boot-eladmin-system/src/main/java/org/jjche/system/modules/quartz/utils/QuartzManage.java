@@ -1,8 +1,8 @@
 package org.jjche.system.modules.quartz.utils;
 
+import cn.hutool.log.StaticLog;
 import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.system.modules.quartz.domain.QuartzJobDO;
 import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
@@ -20,7 +20,6 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-07
  */
-@Slf4j
 @Component
 public class QuartzManage {
 
@@ -65,7 +64,7 @@ public class QuartzManage {
                 pauseJob(quartzJob);
             }
         } catch (Exception e) {
-            log.error("创建定时任务失败", e);
+            StaticLog.error("创建定时任务失败", e);
             throw new IllegalArgumentException("创建定时任务失败");
         }
     }
@@ -96,7 +95,7 @@ public class QuartzManage {
                 pauseJob(quartzJob);
             }
         } catch (Exception e) {
-            log.error("更新定时任务失败", e);
+            StaticLog.error("更新定时任务失败", e);
             throw new IllegalArgumentException("更新定时任务失败");
         }
 
@@ -113,7 +112,7 @@ public class QuartzManage {
             scheduler.pauseJob(jobKey);
             scheduler.deleteJob(jobKey);
         } catch (Exception e) {
-            log.error("删除定时任务失败", e);
+            StaticLog.error("删除定时任务失败", e);
             throw new IllegalArgumentException("删除定时任务失败");
         }
     }
@@ -134,7 +133,7 @@ public class QuartzManage {
             JobKey jobKey = JobKey.jobKey(JOB_NAME + quartzJob.getId());
             scheduler.resumeJob(jobKey);
         } catch (Exception e) {
-            log.error("恢复定时任务失败", e);
+            StaticLog.error("恢复定时任务失败", e);
             throw new IllegalArgumentException("恢复定时任务失败");
         }
     }
@@ -157,7 +156,7 @@ public class QuartzManage {
             JobKey jobKey = JobKey.jobKey(JOB_NAME + quartzJob.getId());
             scheduler.triggerJob(jobKey, dataMap);
         } catch (Exception e) {
-            log.error("定时任务执行失败", e);
+            StaticLog.error("定时任务执行失败", e);
             throw new IllegalArgumentException("定时任务执行失败");
         }
     }
@@ -172,7 +171,7 @@ public class QuartzManage {
             JobKey jobKey = JobKey.jobKey(JOB_NAME + quartzJob.getId());
             scheduler.pauseJob(jobKey);
         } catch (Exception e) {
-            log.error("定时任务暂停失败", e);
+            StaticLog.error("定时任务暂停失败", e);
             throw new IllegalArgumentException("定时任务暂停失败");
         }
     }

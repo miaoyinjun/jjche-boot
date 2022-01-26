@@ -1,7 +1,7 @@
 package org.jjche.system.modules.mnt.websocket;
 
+import cn.hutool.log.StaticLog;
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -19,7 +19,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @since 2019-08-10 15:46
  */
 @ServerEndpoint("/api/sys/webSocket/{sid}")
-@Slf4j
 @Component
 public class WebSocketServer {
 
@@ -47,7 +46,7 @@ public class WebSocketServer {
      */
     public static void sendInfo(SocketMsg socketMsg, @PathParam("sid") String sid) throws IOException {
         String message = JSONObject.toJSONString(socketMsg);
-        log.info("推送消息到" + sid + "，推送内容:" + message);
+        StaticLog.info("推送消息到" + sid + "，推送内容:" + message);
         for (WebSocketServer item : webSocketSet) {
             try {
                 //这里可以设定只推送给这个sid的，为null则全部推送
@@ -96,13 +95,13 @@ public class WebSocketServer {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("收到来" + sid + "的信息:" + message);
+        StaticLog.info("收到来" + sid + "的信息:" + message);
         //群发消息
         for (WebSocketServer item : webSocketSet) {
             try {
                 item.sendMessage(message);
             } catch (IOException e) {
-                log.error(e.getMessage(), e);
+                StaticLog.error(e.getMessage(), e);
             }
         }
     }
@@ -115,7 +114,7 @@ public class WebSocketServer {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        log.error("发生错误");
+        StaticLog.error("发生错误");
         error.printStackTrace();
     }
 

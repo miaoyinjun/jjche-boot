@@ -1,5 +1,6 @@
-package jjche.cloud.config;
+package org.jjche.cloud.config;
 
+import cn.hutool.log.StaticLog;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
@@ -11,7 +12,6 @@ import feign.RequestInterceptor;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.common.constant.SecurityConstant;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -34,7 +34,6 @@ import java.util.List;
 
 @ConditionalOnClass(Feign.class)
 @AutoConfigureBefore(FeignAutoConfiguration.class)
-@Slf4j
 @Configuration
 public class FeignConfig {
 
@@ -44,13 +43,13 @@ public class FeignConfig {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if (null != attributes) {
                 HttpServletRequest request = attributes.getRequest();
-                log.debug("Feign request: {}", request.getRequestURI());
+                StaticLog.debug("Feign request: {}", request.getRequestURI());
                 // 将token信息放入header中
                 String token = request.getHeader(SecurityConstant.HEADER_AUTH);
                 if (token == null || "".equals(token)) {
                     token = request.getParameter("token");
                 }
-                log.debug("Feign request token: {}", token);
+                StaticLog.debug("Feign request token: {}", token);
                 requestTemplate.header(SecurityConstant.HEADER_AUTH, token);
 
                 //根据URL地址过滤请求 【字典表参数签名验证】

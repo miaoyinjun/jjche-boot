@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class CloudStudentController extends BaseController {
 
-    private final JeecgHelloApi jeecgHelloApi;
+    private JeecgHelloApi jeecgHelloApi;
 
     @ApiOperation(value = "服务端")
     @GetMapping(value = "server")

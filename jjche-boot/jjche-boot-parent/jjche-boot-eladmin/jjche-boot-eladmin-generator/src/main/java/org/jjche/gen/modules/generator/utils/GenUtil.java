@@ -8,7 +8,6 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.extra.template.*;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.core.util.FileUtil;
 import org.jjche.gen.modules.generator.domain.ColumnInfoDO;
 import org.jjche.gen.modules.generator.domain.GenConfigDO;
@@ -31,8 +30,6 @@ import static org.jjche.core.util.FileUtil.SYS_TEM_DIR;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-02
  */
-@Slf4j
-@SuppressWarnings({"unchecked", "all"})
 public class GenUtil {
 
     /**

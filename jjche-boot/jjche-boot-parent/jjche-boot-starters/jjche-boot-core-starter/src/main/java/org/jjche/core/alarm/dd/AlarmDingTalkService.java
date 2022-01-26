@@ -27,7 +27,7 @@ public class AlarmDingTalkService {
     private String appName;
     @Autowired
     private CoreProperties coreProperties;
-    @Autowired
+//    @Autowired
     private DingTalkFeignClient dingTalkFeignClient;
 
     /**

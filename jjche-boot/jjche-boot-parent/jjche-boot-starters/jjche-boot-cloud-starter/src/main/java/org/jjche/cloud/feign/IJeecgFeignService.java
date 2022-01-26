@@ -1,4 +1,4 @@
-package jjche.cloud.feign;
+package org.jjche.cloud.feign;
 
 public interface IJeecgFeignService {
 

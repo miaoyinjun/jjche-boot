@@ -1,9 +1,9 @@
 package org.jjche.system.modules.mnt.util;
 
+import cn.hutool.log.StaticLog;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.util.StringUtils;
 import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -23,7 +23,6 @@ import java.util.List;
  * @author /
  * @version 1.0.8-SNAPSHOT
  */
-@Slf4j
 public class SqlUtils {
 
     private static DataSource getDataSource(String jdbcUrl, String userName, String password) {
@@ -60,7 +59,7 @@ public class SqlUtils {
         try {
             druidDataSource.init();
         } catch (SQLException e) {
-            log.error("Exception during pool initialization", e);
+            StaticLog.error("Exception during pool initialization", e);
             throw new RuntimeException(e.getMessage());
         }
 
@@ -77,11 +76,11 @@ public class SqlUtils {
         try {
             int timeOut = 5;
             if (null == connection || connection.isClosed() || !connection.isValid(timeOut)) {
-                log.info("connection is closed or invalid, retry get connection!");
+                StaticLog.info("connection is closed or invalid, retry get connection!");
                 connection = dataSource.getConnection();
             }
         } catch (Exception e) {
-            log.error("create connection error, jdbcUrl: {}", jdbcUrl);
+            StaticLog.error("create connection error, jdbcUrl: {}", jdbcUrl);
             throw new RuntimeException("create connection error, jdbcUrl: " + jdbcUrl);
         }
         return connection;
@@ -92,8 +91,8 @@ public class SqlUtils {
             try {
                 connection.close();
             } catch (Exception e) {
-                log.error(e.getMessage(), e);
-                log.error("connection close error：" + e.getMessage());
+                StaticLog.error(e.getMessage(), e);
+                StaticLog.error("connection close error：" + e.getMessage());
             }
         }
     }
@@ -114,7 +113,7 @@ public class SqlUtils {
                 return true;
             }
         } catch (Exception e) {
-            log.info("Get connection failed:" + e.getMessage());
+            StaticLog.info("Get connection failed:" + e.getMessage());
         } finally {
             releaseConnection(connection);
         }
@@ -136,7 +135,7 @@ public class SqlUtils {
         try {
             result = batchExecute(connection, readSqlList(sqlFile));
         } catch (Exception e) {
-            log.error("sql脚本执行发生异常:{}", e.getMessage());
+            StaticLog.error("sql脚本执行发生异常:{}", e.getMessage());
             result = e.getMessage();
         } finally {
             releaseConnection(connection);
@@ -166,13 +165,13 @@ public class SqlUtils {
             }
             st.executeBatch();
         } catch (SQLException throwables) {
-            log.error(throwables.getMessage(), throwables);
+            StaticLog.error(throwables.getMessage(), throwables);
             result = throwables.getMessage();
         } finally {
             try {
                 st.close();
             } catch (SQLException throwables) {
-                log.error(throwables.getMessage(), throwables);
+                StaticLog.error(throwables.getMessage(), throwables);
             }
         }
         return result;
@@ -192,7 +191,6 @@ public class SqlUtils {
                 new FileInputStream(sqlFile), StandardCharsets.UTF_8))) {
             String tmp;
             while ((tmp = reader.readLine()) != null) {
-                log.info("line:{}", tmp);
                 if (tmp.endsWith(";")) {
                     sb.append(tmp);
                     sqlList.add(sb.toString());

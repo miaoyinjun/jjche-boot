@@ -1,17 +1,8 @@
 package org.jjche.common.api;
 
-import org.jjche.common.dto.OnlineUserDTO;
+import org.springframework.security.core.Authentication;
 
 public interface CommonAPI {
-    /**
-     * <p>
-     * 查询在线用户
-     * </p>
-     *
-     * @param tokenKey /
-     * @return /
-     */
-    OnlineUserDTO getOnlineUser(String tokenKey);
 
     /**
      * <p>
@@ -21,4 +12,13 @@ public interface CommonAPI {
      * @param token /
      */
     void logoutOnlineUser(String token);
+
+    /**
+     * <p>
+     * 获取认证
+     * </p>
+     *
+     * @return /
+     */
+    Authentication getCheckAuthentication();
 }

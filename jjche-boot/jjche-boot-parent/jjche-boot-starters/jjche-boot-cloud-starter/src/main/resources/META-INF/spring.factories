@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=org.jjche.cloud.env.CloudEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.jjche.cloud.CloudAutoConfiguration

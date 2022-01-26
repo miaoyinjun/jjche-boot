@@ -1,10 +1,10 @@
 package org.jjche.system.modules.mnt.util;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.log.StaticLog;
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,7 +19,6 @@ import java.util.Vector;
  * @author: ZhangHouYing
  * @since: 2019/8/10
  */
-@Slf4j
 public class ExecuteShellUtil {
 
     Session session;
@@ -41,7 +40,7 @@ public class ExecuteShellUtil {
             session.setConfig("StrictHostKeyChecking", "no");
             session.connect(3000);
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            StaticLog.error(e.getMessage(), e);
         }
 
     }
@@ -66,13 +65,13 @@ public class ExecuteShellUtil {
             printWriter.println(command);
             printWriter.println("exit");
             printWriter.flush();
-            log.info("The remote command is: ");
+            StaticLog.info("The remote command is: ");
             String line;
             while ((line = input.readLine()) != null) {
                 stdout.add(line);
             }
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            StaticLog.error(e.getMessage(), e);
             return -1;
         } finally {
             IoUtil.close(printWriter);

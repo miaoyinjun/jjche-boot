@@ -61,7 +61,6 @@
                 <scope>import</scope>
             </dependency>
 
-
             <!-- spring-cloud-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -78,6 +77,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>5.6.1</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
@@ -86,6 +93,11 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-local-api</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-system-cloud-api</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -148,7 +160,7 @@
             <!-- cloud -->
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-cloud-starter</artifactId>
+                <artifactId>jjche-boot-cloud-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <!--            <dependency>-->

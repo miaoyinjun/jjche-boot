@@ -4,7 +4,6 @@ import cn.hutool.core.lang.Assert;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.core.annotation.controller.SysRestController;
@@ -32,7 +31,6 @@ import java.util.Map;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-12-31
  */
-@Slf4j
 @SysRestController("aliPay")
 @RequiredArgsConstructor
 @Api(tags = "工具：支付宝管理")

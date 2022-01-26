@@ -1,4 +1,4 @@
-package jjche.cloud.feign.impl;
+package org.jjche.cloud.feign.impl;
 
 import cn.hutool.log.StaticLog;
 import feign.Client;
@@ -6,7 +6,7 @@ import feign.Contract;
 import feign.Feign;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
-import jjche.cloud.feign.IJeecgFeignService;
+import org.jjche.cloud.feign.IJeecgFeignService;
 import org.jjche.common.constant.SecurityConstant;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

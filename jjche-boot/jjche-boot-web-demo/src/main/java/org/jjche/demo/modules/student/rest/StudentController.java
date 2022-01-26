@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.BaseDTO;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
+import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.wrapper.response.ResultWrapper;
@@ -45,6 +46,7 @@ import java.util.Set;
 public class StudentController extends BaseController {
 
     private final StudentService studentService;
+    private final ISysBaseAPI sysBaseAPI;
 
     /**
      * <p>create.</p>
