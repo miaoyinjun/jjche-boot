@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
- * JeecgHelloApi
+ * JjcheHelloApi
  * </p>
  *
  * @author miaoyj
  * @since 2022-01-21
  */
-//@FeignClient(value = "jeecg-cloud-server", fallbackFactory = JeecgHelloFallback.class)
-public interface JeecgHelloApi {
+//@FeignClient(value = "jjche-cloud-server", fallbackFactory = JjcheHelloFallback.class)
+public interface JjcheHelloApi {
 
     /**
      * 根据service_path获取api配置信息

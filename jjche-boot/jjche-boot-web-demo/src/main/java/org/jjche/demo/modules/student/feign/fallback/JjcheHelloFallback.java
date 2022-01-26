@@ -1,6 +1,6 @@
 package org.jjche.demo.modules.student.feign.fallback;
 
-import org.jjche.demo.modules.student.feign.JeecgHelloApi;
+import org.jjche.demo.modules.student.feign.JjcheHelloApi;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
  * @since 2022-01-21
  */
 @Component
-public class JeecgHelloFallback implements FallbackFactory<JeecgHelloApi> {
+public class JjcheHelloFallback implements FallbackFactory<JjcheHelloApi> {
 
     @Override
-    public JeecgHelloApi create(Throwable throwable) {
+    public JjcheHelloApi create(Throwable throwable) {
         return null;
     }
 }

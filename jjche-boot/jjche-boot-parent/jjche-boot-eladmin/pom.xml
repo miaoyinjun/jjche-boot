@@ -25,25 +25,4 @@
         </dependency>
     </dependencies>
 
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-eladmin-generator</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-eladmin-tools</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-eladmin-logging</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
 </project>

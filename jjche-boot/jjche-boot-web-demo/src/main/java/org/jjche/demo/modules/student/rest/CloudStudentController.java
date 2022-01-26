@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.wrapper.response.ResultWrapper;
-import org.jjche.demo.modules.student.feign.JeecgHelloApi;
+import org.jjche.demo.modules.student.feign.JjcheHelloApi;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class CloudStudentController extends BaseController {
 
-    private JeecgHelloApi jeecgHelloApi;
+    private JjcheHelloApi jjcheHelloApi;
 
     @ApiOperation(value = "服务端")
     @GetMapping(value = "server")

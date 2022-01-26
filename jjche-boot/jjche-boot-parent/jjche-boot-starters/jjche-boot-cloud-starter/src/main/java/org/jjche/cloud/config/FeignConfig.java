@@ -51,39 +51,9 @@ public class FeignConfig {
                 }
                 StaticLog.debug("Feign request token: {}", token);
                 requestTemplate.header(SecurityConstant.HEADER_AUTH, token);
-
-                //根据URL地址过滤请求 【字典表参数签名验证】
-//                if (PathMatcherUtil.matches(Arrays.asList(SignAuthConfiguration.urlList),requestTemplate.path())) {
-//                    try {
-//                        log.info("============================ [begin] fegin starter url ============================");
-//                        log.info(requestTemplate.path());
-//                        log.info(requestTemplate.method());
-//                        String queryLine = requestTemplate.queryLine();
-//                        if(queryLine!=null && queryLine.startsWith("?")){
-//                            queryLine = queryLine.substring(1);
-//                        }
-//                        log.info(queryLine);
-//                        if(requestTemplate.body()!=null){
-//                            log.info(new String(requestTemplate.body()));
-//                        }
-//                        SortedMap<String, String> allParams = HttpUtils.getAllParams(requestTemplate.path(),queryLine,requestTemplate.body(),requestTemplate.method());
-//                        String sign = SignUtil.getParamsSign(allParams);
-//                        log.info(" Feign request params sign: {}",sign);
-//                        log.info("============================ [end] fegin starter url ============================");
-//                        requestTemplate.header(CommonConstant.X_SIGN, sign);
-//                        requestTemplate.header(CommonConstant.X_TIMESTAMP, DateUtils.getCurrentTimestamp().toString());
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }else{
-//                String  token = UserTokenContext.getToken();
-//                log.debug("Feign request token: {}", token);
-//                requestTemplate.header(SecurityConstant.HEADER_AUTH, token);
             }
         };
     }
-
 
     /**
      * Feign 客户端的日志记录，默认级别为NONE
@@ -111,7 +81,6 @@ public class FeignConfig {
         return new SpringFormEncoder(new SpringEncoder(messageConverters));
     }
 
-    // update-begin--Author:sunjianlei Date:20210604 for： 给 Feign 添加 FastJson 的解析支持 ----------
     @Bean
     public Encoder feignEncoder() {
         return new SpringEncoder(feignHttpMessageConverter());
@@ -146,6 +115,4 @@ public class FeignConfig {
 
         return converter;
     }
-    // update-end--Author:sunjianlei Date:20210604 for： 给 Feign 添加 FastJson 的解析支持 ----------
-
 }
