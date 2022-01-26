@@ -18,9 +18,6 @@ public class TokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFi
 
     private final CommonAPI commonAPI;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void configure(HttpSecurity http) {
         TokenFilter customFilter = new TokenFilter(commonAPI);

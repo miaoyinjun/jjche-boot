@@ -187,7 +187,7 @@ public class SysBaseAPI implements ISysBaseAPI {
 
     @Override
     public void logoutOnlineUser(String token) {
-        String username = SecurityUtils.getCurrentUsername();
+        String username = SecurityUtils.getCurrentOrDefaultUsername();
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         String key = securityJwtProperties.getOnlineKey() + token;
         redisService.delete(key);

@@ -46,6 +46,7 @@
     <modules>
         <module>jjche-boot-base-api</module>
         <module>jjche-boot-common</module>
+        <module>jjche-boot-starter</module>
         <module>jjche-boot-starters</module>
         <module>jjche-boot-eladmin</module>
         <module>jjche-cloud</module>
@@ -84,7 +85,11 @@
                 <version>5.6.1</version>
             </dependency>
 
-
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-starter</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
@@ -105,10 +110,19 @@
                 <artifactId>jjche-boot-core-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
-
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-sba-starter</artifactId>
+                <artifactId>jjche-boot-mybatis-starter</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-security-starter</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-jackson-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -118,12 +132,12 @@
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-log-starter</artifactId>
+                <artifactId>jjche-boot-sba-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-mybatis-starter</artifactId>
+                <artifactId>jjche-boot-log-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -136,21 +150,11 @@
                 <artifactId>jjche-boot-filter-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
-            <dependency>
-                <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-security-starter</artifactId>
-                <version>1.0.9-SNAPSHOT</version>
-            </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.jjcheframework.boot</groupId>-->
             <!--                <artifactId>jjche-boot-xxl-job-client-starter</artifactId>-->
             <!--                <version>1.0.0-SNAPSHOT</version>-->
             <!--            </dependency>-->
-            <dependency>
-                <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-jackson-starter</artifactId>
-                <version>1.0.9-SNAPSHOT</version>
-            </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-system</artifactId>

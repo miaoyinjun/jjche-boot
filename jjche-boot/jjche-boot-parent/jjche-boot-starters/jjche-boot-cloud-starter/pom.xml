@@ -28,7 +28,7 @@
 
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
-            <artifactId>jjche-boot-eladmin-system</artifactId>
+            <artifactId>jjche-boot-starter</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>org.jjcheframework.boot</groupId>
