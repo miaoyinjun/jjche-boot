@@ -7,7 +7,7 @@
 
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
-        <artifactId>jjche-boot-parent</artifactId>
+        <artifactId>jjche-boot-starters</artifactId>
         <version>1.0.9-SNAPSHOT</version>
     </parent>
 

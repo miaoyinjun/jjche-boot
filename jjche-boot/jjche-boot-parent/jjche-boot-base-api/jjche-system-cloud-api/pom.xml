@@ -4,8 +4,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jjche-system-cloud-api</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0.9-SNAPSHOT</version>
 
     <parent>
         <groupId>org.jjcheframework.boot</groupId>

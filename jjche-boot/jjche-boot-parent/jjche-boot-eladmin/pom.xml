@@ -10,7 +10,6 @@
         <module>jjche-boot-eladmin-generator</module>
         <module>jjche-boot-eladmin-tools</module>
         <module>jjche-boot-eladmin-logging</module>
-        <module>jjche-boot-eladmin-system</module>
     </modules>
 
     <parent>
