@@ -46,6 +46,7 @@
     <modules>
         <module>jjche-boot-base-api</module>
         <module>jjche-boot-common</module>
+        <module>jjche-boot-starter</module>
         <module>jjche-boot-starters</module>
         <module>jjche-boot-eladmin</module>
         <module>jjche-cloud</module>
@@ -84,7 +85,11 @@
                 <version>5.6.1</version>
             </dependency>
 
-
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-starter</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
@@ -327,7 +332,6 @@
                 <artifactId>easy-captcha</artifactId>
                 <version>1.6.2</version>
             </dependency>
-            <!-- ip2region IP库 -->
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-ip2region</artifactId>
