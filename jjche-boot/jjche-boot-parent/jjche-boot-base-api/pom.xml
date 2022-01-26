@@ -9,6 +9,7 @@
 
     <modules>
         <module>jjche-system-local-api</module>
+        <module>jjche-system-cloud-api</module>
     </modules>
 
     <parent>

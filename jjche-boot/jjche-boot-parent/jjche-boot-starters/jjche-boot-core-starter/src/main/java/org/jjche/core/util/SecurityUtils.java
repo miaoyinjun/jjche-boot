@@ -1,7 +1,6 @@
 package org.jjche.core.util;
 
 import cn.hutool.json.JSONObject;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.constant.UserConstant;
 import org.jjche.common.pojo.DataScope;
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-17
  */
-@Slf4j
 public class SecurityUtils {
 
     /**

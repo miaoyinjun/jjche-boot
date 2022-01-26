@@ -23,20 +23,20 @@
     </properties>
 
     <dependencies>
+        <!--        <dependency>-->
+        <!--            <groupId>org.jjcheframework.boot</groupId>-->
+        <!--            <artifactId>jjche-boot-eladmin-system</artifactId>-->
+        <!--        </dependency>-->
+        <!--cloud-->
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
-            <artifactId>jjche-boot-eladmin-system</artifactId>
+            <artifactId>jjche-boot-cloud-starter</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- cloud -->
-        <dependency>
-            <groupId>org.jjcheframework.boot</groupId>
-            <artifactId>jjche-cloud-starter</artifactId>
         </dependency>
     </dependencies>
 

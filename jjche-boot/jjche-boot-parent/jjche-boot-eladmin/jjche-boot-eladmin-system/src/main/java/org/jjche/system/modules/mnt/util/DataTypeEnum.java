@@ -1,15 +1,11 @@
 package org.jjche.system.modules.mnt.util;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * <p>DataTypeEnum class.</p>
  *
  * @author /
  * @version 1.0.8-SNAPSHOT
  */
-@Slf4j
-@SuppressWarnings({"unchecked", "all"})
 public enum DataTypeEnum {
 
     /**

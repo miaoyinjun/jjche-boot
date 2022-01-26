@@ -1,6 +1,6 @@
 package org.jjche.config.thread;
 
-import lombok.extern.slf4j.Slf4j;
+import cn.hutool.log.StaticLog;
 import org.jjche.property.AdminProperties;
 import org.jjche.property.AsyncTaskPoolProperties;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
@@ -18,7 +18,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @version 1.0.8-SNAPSHOT
  * @since 2019年10月31日15:06:18
  */
-@Slf4j
 @Configuration
 public class AsyncTaskExecutePool implements AsyncConfigurer {
 
@@ -66,8 +65,8 @@ public class AsyncTaskExecutePool implements AsyncConfigurer {
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (throwable, method, objects) -> {
-            log.error("====" + throwable.getMessage() + "====", throwable);
-            log.error("exception method:" + method.getName());
+            StaticLog.error("====" + throwable.getMessage() + "====", throwable);
+            StaticLog.error("exception method:" + method.getName());
         };
     }
 }

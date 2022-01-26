@@ -3,6 +3,7 @@ package org.jjche;
 import org.jjche.common.constant.PackageConstant;
 import org.jjche.log.biz.starter.annotation.EnableLogRecord;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -16,5 +17,6 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 @MapperScan(PackageConstant.MAPPER_PATH_STAR)
 @EnableLogRecord(tenant = PackageConstant.BASE_PATH)
+@EnableFeignClients
 public class AdminAutoConfiguration {
 }

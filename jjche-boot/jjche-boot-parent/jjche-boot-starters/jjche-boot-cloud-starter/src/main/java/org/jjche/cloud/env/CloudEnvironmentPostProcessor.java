@@ -1,4 +1,4 @@
-package jjche.cloud.env;
+package org.jjche.cloud.env;
 
 import org.jjche.common.yml.CoreEnvironmentPostProcessor;
 

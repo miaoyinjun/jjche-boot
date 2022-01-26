@@ -7,7 +7,6 @@ import com.wf.captcha.base.Captcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.enums.LogCategoryType;
@@ -37,7 +36,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -48,7 +46,6 @@ import javax.validation.Valid;
  * @since 2018-11-23
  * 授权、根据token获取用户详细信息
  */
-@Slf4j
 @SysRestController("auth")
 @RequiredArgsConstructor
 @Api(tags = "系统：系统授权接口")
@@ -162,8 +159,8 @@ public class AuthorizationController extends BaseController {
      */
     @ApiOperation("退出登录")
     @AnonymousDeleteMapping(value = "/logout")
-    public ResultWrapper logout(HttpServletRequest request) {
-        commonAPI.logoutOnlineUser(tokenProvider.getToken(request));
+    public ResultWrapper logout() {
+        commonAPI.logoutOnlineUser(tokenProvider.resolveToken());
         return ResultWrapper.ok();
     }
 }

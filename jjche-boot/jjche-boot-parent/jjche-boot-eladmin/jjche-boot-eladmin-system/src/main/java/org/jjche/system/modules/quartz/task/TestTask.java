@@ -1,6 +1,6 @@
 package org.jjche.system.modules.quartz.task;
 
-import lombok.extern.slf4j.Slf4j;
+import cn.hutool.log.StaticLog;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-08
  */
-@Slf4j
 @Component
 public class TestTask {
 
@@ -18,7 +17,7 @@ public class TestTask {
      * <p>run.</p>
      */
     public void run() {
-        log.info("run 执行成功");
+        StaticLog.info("run 执行成功");
     }
 
     /**
@@ -27,13 +26,13 @@ public class TestTask {
      * @param str a {@link java.lang.String} object.
      */
     public void run1(String str) {
-        log.info("run1 执行成功，参数为： {}" + str);
+        StaticLog.info("run1 执行成功，参数为： {}" + str);
     }
 
     /**
      * <p>run2.</p>
      */
     public void run2() {
-        log.info("run2 执行成功");
+        StaticLog.info("run2 执行成功");
     }
 }

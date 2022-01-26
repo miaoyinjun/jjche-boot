@@ -1,6 +1,5 @@
 package org.jjche.system.modules.quartz.utils;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.util.ReflectionUtils;
@@ -14,7 +13,6 @@ import java.util.concurrent.Callable;
  * @author /
  * @version 1.0.8-SNAPSHOT
  */
-@Slf4j
 public class QuartzRunnable implements Callable {
 
     private final Object target;

@@ -3,9 +3,9 @@ package org.jjche.system.modules.mnt.service;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.log.StaticLog;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.core.util.FileUtil;
 import org.jjche.core.util.SecurityUtils;
 import org.jjche.mybatis.base.service.MyServiceImpl;
@@ -42,7 +42,6 @@ import java.util.*;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-08-24
  */
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
@@ -170,7 +169,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
             //上传文件
             msg = String.format("登陆到服务器:%s", ip);
             ScpClientUtil scpClientUtil = getScpClientUtil(ip);
-            log.info(msg);
+            StaticLog.info(msg);
             sendMsg(msg, MsgType.INFO);
             msg = String.format("上传文件到服务器:%s<br>目录:%s下，请稍等...", ip, uploadPath);
             sendMsg(msg, MsgType.INFO);
@@ -221,7 +220,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
         sb.append("mkdir -p ").append(backupPath);
         sb.append("mv -f ").append(fileSavePath);
         sb.append(appName).append(" ").append(backupPath);
-        log.info("备份应用脚本:" + sb.toString());
+        StaticLog.info("备份应用脚本:" + sb.toString());
         executeShellUtil.execute(sb.toString());
         //还原信息入库
         DeployHistoryDO deployHistory = new DeployHistoryDO();
@@ -285,7 +284,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
                 sb.append("<br>已停止!");
                 sendMsg(sb.toString(), MsgType.ERROR);
             }
-            log.info(sb.toString());
+            StaticLog.info(sb.toString());
             executeShellUtil.close();
         }
         return "执行完毕";
@@ -327,7 +326,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
                 sleep(6);
             }
             sendResultMsg(result, sb);
-            log.info(sb.toString());
+            StaticLog.info(sb.toString());
             executeShellUtil.close();
         }
         return "执行完毕";
@@ -358,7 +357,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
                 sb.append("<br>关闭成功!");
                 sendMsg(sb.toString(), MsgType.INFO);
             }
-            log.info(sb.toString());
+            StaticLog.info(sb.toString());
             executeShellUtil.close();
         }
         return "执行完毕";
@@ -388,7 +387,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
         String msg;
 
         msg = String.format("登陆到服务器:%s", ip);
-        log.info(msg);
+        StaticLog.info(msg);
         sendMsg(msg, MsgType.INFO);
         sendMsg("停止原来应用", MsgType.INFO);
         //停止应用

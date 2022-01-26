@@ -14,7 +14,6 @@ import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.property.SecurityRoleUrlProperties;
 import org.jjche.security.property.SecurityUrlProperties;
 import org.jjche.security.security.TokenConfigurer;
-import org.jjche.security.security.TokenProvider;
 import org.jjche.security.util.RequestMethodEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -56,7 +55,6 @@ import java.util.*;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static String ROLE_NAME_PREFIX = "ROLE_";
 
-    private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint authenticationErrorHandler;
     private final JwtAuthenticationAccessDeniedHandler jwtAccessDeniedHandler;
     private final ApplicationContext applicationContext;
@@ -273,7 +271,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private TokenConfigurer securityConfigurerAdapter() {
-        return new TokenConfigurer(tokenProvider, properties, commonAPI);
+        return new TokenConfigurer(commonAPI);
     }
 
 

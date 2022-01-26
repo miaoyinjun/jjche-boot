@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.*;
 import cn.hutool.log.StaticLog;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
@@ -52,7 +51,6 @@ import java.util.stream.Collectors;
  */
 @Aspect
 @Component
-@Slf4j
 public class PermissionDataAspect {
 
     @Autowired

@@ -2,7 +2,6 @@ package org.jjche.system.modules.mnt.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
@@ -30,7 +29,6 @@ import java.util.*;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-08-24
  */
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DatabaseService extends MyServiceImpl<DatabaseMapper, DatabaseDO> {

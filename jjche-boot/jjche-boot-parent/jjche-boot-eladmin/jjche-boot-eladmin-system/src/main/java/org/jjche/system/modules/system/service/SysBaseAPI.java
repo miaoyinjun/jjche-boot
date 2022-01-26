@@ -1,7 +1,11 @@
 package org.jjche.system.modules.system.service;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import lombok.extern.slf4j.Slf4j;
+import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.log.StaticLog;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.dto.OnlineUserDTO;
@@ -11,13 +15,20 @@ import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.SecurityUtils;
+import org.jjche.security.auth.sms.SmsCodeAuthenticationToken;
 import org.jjche.security.dto.JwtUserDto;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
+import org.jjche.security.security.TokenProvider;
+import org.jjche.security.security.UserTypeEnum;
 import org.jjche.security.service.JwtUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,7 +45,6 @@ import java.util.*;
  * @since 2022-01-25
  */
 @Service
-@Slf4j
 public class SysBaseAPI implements ISysBaseAPI {
 
     @Autowired
@@ -43,6 +53,8 @@ public class SysBaseAPI implements ISysBaseAPI {
     private RedisService redisService;
     @Autowired
     private JwtUserService jwtUserService;
+    @Autowired
+    private TokenProvider tokenProvider;
 
     /**
      * 保存在线用户信息
@@ -62,11 +74,9 @@ public class SysBaseAPI implements ISysBaseAPI {
             String encryptToken = RsaUtils.encryptBypPublicKey(publicKey, token);
             String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
             String os = HttpUtil.getUserAgent(request).getOs().getName();
-            onlineUserDto = new OnlineUserDTO(jwtUserDto.getUsername(),
-                    jwtUserDto.getUser().getNickName(), dept, browser, userAgent, os, ip, address,
-                    encryptToken, new Date(), new Date());
+            onlineUserDto = new OnlineUserDTO(jwtUserDto.getUsername(), jwtUserDto.getUser().getNickName(), dept, browser, userAgent, os, ip, address, encryptToken, new Date(), new Date());
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            StaticLog.error(e.getMessage(), e);
         }
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         redisService.objectSetObject(securityJwtProperties.getOnlineKey() + token, onlineUserDto, securityJwtProperties.getTokenValidityInMilliSeconds());
@@ -151,7 +161,7 @@ public class SysBaseAPI implements ISysBaseAPI {
                         this.kickOut(token);
                     }
                 } catch (Exception e) {
-                    log.error("checkUser is error", e);
+                    StaticLog.error("checkUser is error", e);
                 }
             }
         }
@@ -176,16 +186,112 @@ public class SysBaseAPI implements ISysBaseAPI {
     }
 
     @Override
-    public OnlineUserDTO getOnlineUser(String tokenKey) {
-        return redisService.objectGetObject(tokenKey, OnlineUserDTO.class);
-    }
-
-    @Override
     public void logoutOnlineUser(String token) {
         String username = SecurityUtils.getCurrentUsername();
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         String key = securityJwtProperties.getOnlineKey() + token;
         redisService.delete(key);
         jwtUserService.removeByUserName(username);
+    }
+
+    @Override
+    public Authentication getCheckAuthentication() {
+        Authentication authentication = null;
+        String token = tokenProvider.resolveToken();
+        // 对于 Token 为空的不需要去查 Redis
+        if (StrUtil.isNotBlank(token)) {
+            OnlineUserDTO onlineUserDto = null;
+            boolean cleanUserCache = false;
+            try {
+                onlineUserDto = this.getOnlineUser(token);
+            } catch (ExpiredJwtException e) {
+                StaticLog.error(e.getMessage());
+                cleanUserCache = true;
+            } finally {
+                if (cleanUserCache || Objects.isNull(onlineUserDto)) {
+                    this.logoutOnlineUser(token);
+                }
+            }
+            if (onlineUserDto != null && org.springframework.util.StringUtils.hasText(token)) {
+                authentication = this.getAuthentication(token, onlineUserDto);
+            }
+        }
+        return authentication;
+    }
+
+    /**
+     * <p>
+     * 获取认证
+     * </p>
+     *
+     * @param token         /
+     * @param onlineUserDto /
+     * @return /
+     */
+    private Authentication getAuthentication(String token, OnlineUserDTO onlineUserDto) {
+        Authentication authentication = null;
+        Claims claims = tokenProvider.getClaims(token);
+        String userType = claims.getIssuer();
+        String username = claims.getSubject();
+        //密码
+        if (cn.hutool.core.util.StrUtil.equals(UserTypeEnum.PWD.getValue(), userType)) {
+            //这里会自动调用对应userDetailService的loadUserByUsername方法，但需要传密码
+//            User principal = new User(claims.getSubject(), "******", new ArrayList<>());
+//            authentication = new UsernamePasswordAuthenticationToken(principal, "");
+            UserDetailsService userDetailsService = SpringUtil.getBean("userDetailsService");
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        }//短信
+        else if (cn.hutool.core.util.StrUtil.equals(UserTypeEnum.SMS.getValue(), userType)) {
+            authentication = new SmsCodeAuthenticationToken(username);
+        }
+        // Token 续期
+        this.checkRenewal(token, onlineUserDto);
+        return authentication;
+    }
+
+    /**
+     * <p>
+     * 检查token续期
+     * </p>
+     *
+     * @param token         /
+     * @param onlineUserDto /
+     */
+    private void checkRenewal(String token, OnlineUserDTO onlineUserDto) {
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String tokenKey = securityJwtProperties.getOnlineKey() + token;
+        long renew = securityJwtProperties.getTokenValidityInMilliSeconds();
+
+        //更新最后访问时间，由于每次都要修改token缓存，所以判断是否续期token减少redis操作的目的就没意义了
+        onlineUserDto.setLastAccessTime(DateUtil.date());
+        redisService.objectSetObject(tokenKey, onlineUserDto, renew);
+
+        /**
+         // 判断是否续期token,计算token的过期时间
+         long time = redisService.getExpire(tokenKey);
+         Date expireDate = DateUtil.offset(new Date(), DateField.MILLISECOND, (int) time);
+         // 判断当前时间与过期时间的时间差
+         long differ = expireDate.getTime() - System.currentTimeMillis();
+         // 如果在续期检查的范围内，则续期
+         if (differ <= securityJwtProperties.getDetect()) {
+         long renew = securityJwtProperties.getTokenValidityInMilliSeconds();
+         redisService.setExpire(tokenKey, renew);
+         }
+         */
+    }
+
+    /**
+     * <p>
+     * 获取在线用户
+     * </p>
+     *
+     * @param token /
+     * @return /
+     */
+    private OnlineUserDTO getOnlineUser(String token) {
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String tokenKey = securityJwtProperties.getOnlineKey() + token;
+        return redisService.objectGetObject(tokenKey, OnlineUserDTO.class);
     }
 }
