@@ -1,11 +1,12 @@
 package org.jjche.demo.modules.student.feign;
 
 import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.demo.modules.student.api.dto.StudentDTO;
+import org.jjche.demo.modules.student.api.vo.StudentVO;
 import org.jjche.demo.modules.student.feign.fallback.JjcheSysFallback;
-import org.jjche.security.dto.UserVO;
+import org.jjche.security.annotation.rest.AnonymousPostMapping;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * <p>
@@ -24,6 +25,6 @@ public interface JjcheSysApi {
      * @param name /
      * @return /
      */
-    @GetMapping(value = "/api/cloud/server")
-    ResultWrapper<UserVO> server(@RequestParam(value = "name") String name);
+    @AnonymousPostMapping(value = "/api/cloud/server")
+    ResultWrapper<StudentVO> server(@RequestBody StudentDTO studentDTO);
 }
