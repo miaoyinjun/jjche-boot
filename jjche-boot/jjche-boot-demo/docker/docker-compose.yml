@@ -34,7 +34,7 @@ services:
     ports:
       - ${JJCHE_REDIS_PORT_OUT}:${JJCHE_REDIS_PORT}
 
-  jjche-boot-web-demo:
+  jjche-boot-demo:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_WEB_NAME}:latest
     container_name: ${JJCHE_WEB_NAME}
     #    restart: always

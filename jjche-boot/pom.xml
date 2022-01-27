@@ -10,7 +10,7 @@
 
     <modules>
         <module>jjche-boot-parent</module>
-        <module>jjche-boot-web-demo</module>
+        <module>jjche-boot-demo</module>
         <!--        <module>jjche-boot-sba-server</module>-->
     </modules>
 

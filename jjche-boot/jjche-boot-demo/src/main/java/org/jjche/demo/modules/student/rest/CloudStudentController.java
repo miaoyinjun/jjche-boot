@@ -1,5 +1,6 @@
 package org.jjche.demo.modules.student.rest;
 
+import cn.hutool.core.date.DateUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -7,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.wrapper.response.ResultWrapper;
-import org.jjche.demo.modules.student.feign.JjcheHelloApi;
+import org.jjche.demo.modules.student.feign.JjcheSysApi;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.jjche.security.dto.UserVO;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -27,19 +28,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class CloudStudentController extends BaseController {
 
-    private JjcheHelloApi jjcheHelloApi;
+    private final JjcheSysApi jjcheSysApi;
 
     @ApiOperation(value = "服务端")
-    @GetMapping(value = "server")
-    public ResultWrapper<String> server(@RequestParam(value = "name") String name) {
-        return ResultWrapper.ok(name);
+    @AnonymousGetMapping(value = "server")
+    public ResultWrapper<UserVO> server(@RequestParam(value = "name") String name) {
+        UserVO userVO = new UserVO();
+        userVO.setNickName(name);
+        return ResultWrapper.ok(userVO);
     }
 
     @ApiOperation(value = "调用端")
     @AnonymousGetMapping(value = "client")
-    public ResultWrapper<String> client(@RequestParam(value = "name") String name) {
-        //TODO 测试token传递，使用了不同的redis
-        return ResultWrapper.ok("sss");
+    public ResultWrapper<UserVO> client(@RequestParam(value = "name") String name) {
+        return jjcheSysApi.server(name);
     }
 
+    @ApiOperation(value = "调用端2")
+    @AnonymousGetMapping(value = "client2")
+    public ResultWrapper<UserVO> client2(@RequestParam(value = "name") String name) {
+        UserVO userVO = new UserVO();
+        userVO.setNickName(name);
+        userVO.setGmtCreate(DateUtil.date().toTimestamp());
+        return ResultWrapper.ok(userVO);
+    }
 }
