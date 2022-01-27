@@ -35,7 +35,6 @@ jjche:
       exclude-default-urls:
         - /
         - /error
-        - ${spring.boot.admin.context-path:/sba}/**
         - /static/**
         - /*.ico
         - /*.html
