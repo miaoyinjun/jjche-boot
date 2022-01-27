@@ -1,4 +1,4 @@
-package org.jjche.system;
+package org.jjche.cloud;
 
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
