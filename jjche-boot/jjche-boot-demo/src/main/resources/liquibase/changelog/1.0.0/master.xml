@@ -9,8 +9,9 @@
     <include file="xml/20200702_003_add_col_student.xml" relativeToChangelogFile="true"/>
     <include file="xml/20200702_004_modify_col_length_student.xml" relativeToChangelogFile="true"/>
     <include file="xml/20200702_005_change_col_name_student.xml" relativeToChangelogFile="true"/>
-    <include file="xml/20200923_001_add_menu_role.xml" relativeToChangelogFile="true"/>
-    <include file="xml/20211115_001_add_permission_data.xml" relativeToChangelogFile="true"/>
+    <include file="xml/20200923_001_add_menu_role_main.xml" relativeToChangelogFile="true"/>
+    <include file="xml/20211115_001_add_permission_data_main.xml" relativeToChangelogFile="true"/>
+    <include file="xml/20220127_001_add_course_dict_main.xml" relativeToChangelogFile="true"/>
     <changeSet author="miaoyj" id="1.0.0">
         <tagDatabase tag="1.0.0"/>
     </changeSet>

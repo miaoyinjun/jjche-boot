@@ -4,6 +4,7 @@ target/
 # IDEA #
 .idea/
 *.iml
+*.log
 .flattened-pom.xml
 # Eclipse #
 .settings/
