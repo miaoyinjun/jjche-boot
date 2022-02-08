@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class CloudStudentController extends BaseController {
 
-    private final JjcheSysApi jjcheSysApi;
+    private JjcheSysApi jjcheSysApi;
 
     @ApiOperation(value = "服务端")
     @AnonymousPostMapping(value = "server")

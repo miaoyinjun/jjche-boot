@@ -1,4 +1,20 @@
 BEGIN;
+-- 删除菜单--回滚
+DELETE FROM `sys_roles_menus` WHERE
+		(menu_id = (SELECT id FROM sys_menu WHERE `permission` = 'student:list')
+		OR
+		menu_id = (SELECT id FROM sys_menu WHERE `permission` = 'student:add')
+		OR
+		menu_id = (SELECT id FROM sys_menu WHERE `permission` = 'student:edit')
+		OR
+		menu_id = (SELECT id FROM sys_menu WHERE `permission` = 'student:del')
+		)
+		AND
+		role_id = (SELECT id FROM sys_role WHERE `code` = 'ROLE_ADMIN');
+
+DELETE FROM `sys_menu` WHERE
+    title = '代码生成-学生测试' || title = '学生测试菜单新增' || title = '学生测试菜单编辑' || title = '学生测试菜单删除';
+;
 
 INSERT INTO `sys_menu`(pid, sub_count, type, title, `name`, component, menu_sort, icon, path, i_frame, `cache`, hidden, permission, created_by, updated_by, gmt_create, gmt_modified)
  VALUES (1, 1, 1, '代码生成-学生菜单', 'StudentMenu', 'system/student/index', 999, 'Steve-Jobs', 'student', b'0', b'0', b'0', 'student:list', 'admin', 'admin', '2020-11-10 14:08:10', '2021-09-10 16:55:06');
