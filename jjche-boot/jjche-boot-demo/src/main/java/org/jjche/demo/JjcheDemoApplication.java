@@ -13,7 +13,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @since 2020-06-18 9:16
  */
 @SpringBootApplication
-public class Application {
+public class JjcheDemoApplication {
     /**
      * 入口
      *
@@ -22,7 +22,7 @@ public class Application {
      * @since 2020-07-09
      */
     public static void main(String[] args) {
-        ConfigurableApplicationContext application = SpringApplication.run(Application.class, args);
+        ConfigurableApplicationContext application = SpringApplication.run(JjcheDemoApplication.class, args);
         SpringContextHolder.appLog(application);
     }
 }
