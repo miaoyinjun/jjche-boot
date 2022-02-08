@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.BaseDTO;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
-import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.wrapper.response.ResultWrapper;
@@ -22,6 +21,7 @@ import org.jjche.demo.modules.student.service.StudentService;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.mybatis.param.MyPage;
 import org.jjche.mybatis.param.PageParam;
+import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -46,7 +46,6 @@ import java.util.Set;
 public class StudentController extends BaseController {
 
     private final StudentService studentService;
-    private final ISysBaseAPI sysBaseAPI;
 
     /**
      * <p>create.</p>
@@ -138,7 +137,7 @@ public class StudentController extends BaseController {
      * @param course a {@link CourseEnum} object.
      * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
      */
-    @GetMapping
+    @AnonymousGetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
     public ResultWrapper<MyPage<StudentVO>> page(PageParam page,
