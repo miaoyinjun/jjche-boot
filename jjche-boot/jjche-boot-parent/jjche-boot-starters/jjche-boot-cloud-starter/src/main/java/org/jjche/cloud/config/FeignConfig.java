@@ -12,8 +12,10 @@ import feign.RequestInterceptor;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;
-import org.jjche.common.constant.SecurityConstant;
+import org.jjche.security.property.SecurityJwtProperties;
+import org.jjche.security.property.SecurityProperties;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
@@ -36,21 +38,25 @@ import java.util.List;
 @AutoConfigureBefore(FeignAutoConfiguration.class)
 @Configuration
 public class FeignConfig {
+    @Autowired
+    private SecurityProperties properties;
 
     @Bean
     public RequestInterceptor requestInterceptor() {
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String authHeader = securityJwtProperties.getHeader();
         return requestTemplate -> {
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             if (null != attributes) {
                 HttpServletRequest request = attributes.getRequest();
                 StaticLog.debug("Feign request: {}", request.getRequestURI());
                 // 将token信息放入header中
-                String token = request.getHeader(SecurityConstant.HEADER_AUTH);
+                String token = request.getHeader(authHeader);
                 if (token == null || "".equals(token)) {
                     token = request.getParameter("token");
                 }
                 StaticLog.debug("Feign request token: {}", token);
-                requestTemplate.header(SecurityConstant.HEADER_AUTH, token);
+                requestTemplate.header(authHeader, token);
             }
         };
     }
