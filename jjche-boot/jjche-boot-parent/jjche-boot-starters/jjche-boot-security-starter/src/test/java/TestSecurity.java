@@ -1,9 +1,10 @@
 import cn.hutool.http.HttpStatus;
 import controller.SecurityController;
 import dto.LoginDTO;
-import org.jjche.common.constant.SecurityConstant;
 import org.jjche.core.wrapper.enums.ResultWrapperCodeEnum;
 import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.security.property.SecurityJwtProperties;
+import org.jjche.security.property.SecurityProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,8 @@ public class TestSecurity {
     private int port;
     @Autowired
     private TestRestTemplate restTemplate;
+    @Autowired
+    private SecurityProperties properties;
 
     /**
      * <p>
@@ -35,6 +38,9 @@ public class TestSecurity {
      */
     @Test
     public void TestTokenError() {
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String authHeader = securityJwtProperties.getHeader();
+
         /**未提供token*/
         ResponseEntity<ResultWrapper> wrapperResponseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/security/test", ResultWrapper.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_UNAUTHORIZED);
@@ -45,7 +51,7 @@ public class TestSecurity {
 
         /**提供的token无法解析*/
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer dfsdfsdf");
+        headers.add(authHeader, "Bearer dfsdfsdf");
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 
         wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/test", HttpMethod.GET, requestEntity, ResultWrapper.class);
@@ -132,7 +138,10 @@ public class TestSecurity {
      * @since 2020-09-10
      */
     @Test
-    public void TestTokenAccessError() throws InterruptedException {
+    public void TestTokenAccessError() {
+        SecurityJwtProperties securityJwtProperties = properties.getJwt();
+        String authHeader = securityJwtProperties.getHeader();
+
         /**用户名密码正确*/
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.username);
@@ -149,7 +158,7 @@ public class TestSecurity {
 
         /**不允许访问*/
         HttpHeaders headers = new HttpHeaders();
-        headers.add(SecurityConstant.HEADER_AUTH, "Bearer " + token);
+        headers.add(authHeader, "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 
         wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/not_allow", HttpMethod.GET, requestEntity, ResultWrapper.class);
