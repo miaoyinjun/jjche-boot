@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.annotation.JacksonAllowNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -33,6 +34,7 @@ import java.util.TimeZone;
  * @version 1.0.0-SNAPSHOT
  * @since 2020-07-09
  */
+@Component
 public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConverter {
 
     /**
