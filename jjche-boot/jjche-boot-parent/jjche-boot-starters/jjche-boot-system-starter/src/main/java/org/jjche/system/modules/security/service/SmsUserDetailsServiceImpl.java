@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-05-11
  */
-@Service
+@Service("smsUserDetailsService")
 @ConditionalOnMissingBean(type = "smsUserDetailsService")
 public class SmsUserDetailsServiceImpl extends AbstractUserDetailsService {
 

@@ -1,4 +1,4 @@
-package org.jjche.security;
+package org.jjche.cloud.userservice;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.core.userdetails.UserDetails;
