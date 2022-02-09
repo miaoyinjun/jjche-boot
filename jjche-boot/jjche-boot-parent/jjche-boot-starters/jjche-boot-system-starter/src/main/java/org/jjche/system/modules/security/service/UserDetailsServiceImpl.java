@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-11-22
  */
-@Service
+@Service("userDetailsService")
 @ConditionalOnMissingBean(type = "userDetailsService")
 public class UserDetailsServiceImpl extends AbstractUserDetailsService {
     /**
