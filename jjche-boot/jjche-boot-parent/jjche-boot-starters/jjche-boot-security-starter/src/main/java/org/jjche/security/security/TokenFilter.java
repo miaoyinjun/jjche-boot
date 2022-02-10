@@ -36,7 +36,7 @@ public class TokenFilter extends GenericFilterBean {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
         //认证token
-        Authentication authentication = commonAPI.getCheckAuthentication();
+        Authentication authentication = (Authentication) commonAPI.getCheckAuthentication();
         if (authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

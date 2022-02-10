@@ -4,7 +4,6 @@ import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.ServiceNameConstant;
 import org.jjche.common.system.api.factory.SysBaseAPIFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,5 +27,5 @@ public interface ISysBaseAPI extends CommonAPI {
 
     @Override
     @GetMapping("/api/sys/base/getCheckAuthentication")
-    Authentication getCheckAuthentication();
+    Object getCheckAuthentication();
 }

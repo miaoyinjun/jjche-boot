@@ -3,7 +3,6 @@ package org.jjche.common.system.api.fallback;
 import cn.hutool.log.StaticLog;
 import lombok.Setter;
 import org.jjche.common.system.api.ISysBaseAPI;
-import org.springframework.security.core.Authentication;
 
 /**
  * <p>
@@ -23,7 +22,7 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     }
 
     @Override
-    public Authentication getCheckAuthentication() {
+    public Object getCheckAuthentication() {
         StaticLog.error("认证失败 {}", cause);
         return null;
     }
