@@ -1,7 +1,5 @@
 package org.jjche.common.api;
 
-import org.springframework.security.core.Authentication;
-
 public interface CommonAPI {
 
     /**
@@ -20,5 +18,5 @@ public interface CommonAPI {
      *
      * @return /
      */
-    Authentication getCheckAuthentication();
+    Object getCheckAuthentication();
 }
