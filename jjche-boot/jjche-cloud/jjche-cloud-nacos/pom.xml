@@ -24,10 +24,6 @@
         <version>1.0.9-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <nacos.version>2.0.3</nacos.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>io.springboot.nacos</groupId>
