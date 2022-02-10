@@ -41,6 +41,8 @@
         <mail.version>1.4.7</mail.version>
         <qiniu.version>7.8.0</qiniu.version>
         <alipay.version>4.9.153.ALL</alipay.version>
+        <nacos.version>2.0.3</nacos.version>
+
     </properties>
 
     <modules>
@@ -427,6 +429,12 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
                 <version>4.0.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
