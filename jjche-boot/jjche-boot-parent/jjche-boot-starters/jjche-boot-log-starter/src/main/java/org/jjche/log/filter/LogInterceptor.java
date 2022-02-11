@@ -29,6 +29,7 @@ public class LogInterceptor implements HandlerInterceptor {
 //        String remoteIp = httpServletRequest.getRemoteAddr();
         String uuid = UUID.randomUUID().toString();
         MDC.put(LogConstant.REQUEST_ID, uuid);
+        httpServletResponse.setHeader(LogConstant.REQUEST_ID, MDC.get(LogConstant.REQUEST_ID));
         return true;
     }
 

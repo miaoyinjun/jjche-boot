@@ -33,6 +33,9 @@
             <el-form-item label="请求地址">
               <span>{{ props.row.url }}</span>
             </el-form-item>
+            <el-form-item label="请求id">
+              <span>{{ props.row.requestId }}</span>
+            </el-form-item>
             <el-form-item label="请求方法">
               <span>{{ props.row.method }}</span>
             </el-form-item>
