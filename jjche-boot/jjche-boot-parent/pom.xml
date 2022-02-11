@@ -175,6 +175,11 @@
                 <artifactId>jjche-boot-userdetail-starter</artifactId>
                 <version>1.0.9-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-cloud-gateway</artifactId>
+                <version>1.0.9-SNAPSHOT</version>
+            </dependency>
             <!-- cloud -->
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
