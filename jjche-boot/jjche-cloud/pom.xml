@@ -16,6 +16,6 @@
     <modules>
         <module>jjche-cloud-nacos</module>
         <module>jjche-cloud-system</module>
+        <module>jjche-cloud-gateway</module>
     </modules>
-
 </project>

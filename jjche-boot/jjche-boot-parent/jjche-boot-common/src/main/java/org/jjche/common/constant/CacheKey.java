@@ -57,4 +57,9 @@ public interface CacheKey {
      * 数据字段，用户id
      */
     String PERMISSION_DATA_FIELD_USER_ID = "permission_data:field:userid:";
+
+    /**
+     * gateway路由缓存
+     */
+    String GATEWAY_ROUTES = "sys:cache:cloud:gateway_routes";
 }
