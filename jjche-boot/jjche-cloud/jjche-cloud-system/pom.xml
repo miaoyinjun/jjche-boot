@@ -30,36 +30,23 @@
     </parent>
 
     <dependencies>
-
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-system-starter</artifactId>
         </dependency>
-
-        <!--注册中心客户端-->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <!--配置中心客户端-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
-        </dependency>
-        <!-- feign -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <!-- 服务降级 -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-        </dependency>
-        <!-- LB 扩展 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-cloud-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jjcheframework.boot</groupId>
+                    <artifactId>jjche-system-cloud-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jjcheframework.boot</groupId>
+                    <artifactId>jjche-boot-userdetail-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

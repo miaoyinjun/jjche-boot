@@ -27,6 +27,7 @@
         <module>jjche-boot-cloud-starter</module>
         <module>jjche-boot-starter</module>
         <module>jjche-boot-system-starter</module>
+        <module>jjche-boot-userdetail-starter</module>
     </modules>
 
 </project>
