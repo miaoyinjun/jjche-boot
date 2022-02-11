@@ -35,6 +35,7 @@
     <el-table
       ref="table"
       v-loading="crud.loading"
+      highlight-current-row
       stripe
       :data="crud.data"
       style="width: 100%"

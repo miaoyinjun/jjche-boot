@@ -21,6 +21,7 @@
     <el-table
       ref="table"
       v-loading="crud.loading"
+      highlight-current-row
       :data="crud.data"
       style="width: 100%"
       :row-class-name="tableRowClassName"

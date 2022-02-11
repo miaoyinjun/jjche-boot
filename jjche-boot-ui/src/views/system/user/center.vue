@@ -109,6 +109,7 @@
             <el-tab-pane label="操作日志" name="second">
               <el-table
                 v-loading="loading"
+                highlight-current-row
                 stripe
                 :data="data"
                 style="width: 100%"
