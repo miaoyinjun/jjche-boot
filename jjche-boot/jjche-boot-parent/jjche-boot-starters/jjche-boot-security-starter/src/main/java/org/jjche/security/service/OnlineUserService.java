@@ -1,6 +1,8 @@
 package org.jjche.security.service;
 
 import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
@@ -50,16 +52,17 @@ public class OnlineUserService {
     public void save(JwtUserDto jwtUserDto, String token, HttpServletRequest request) {
         String dept = jwtUserDto.getUser().getDept().getName();
         String ip = ServletUtil.getClientIP(request);
-        String browser = HttpUtil.getBrowser(request);
         String address = HttpUtil.getCityInfo(ip);
         OnlineUserDto onlineUserDto = null;
         try {
             String publicKey = properties.getRsa().getPublicKey();
             String encryptToken = RsaUtils.encryptBypPublicKey(publicKey, token);
-            String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
-            String os = HttpUtil.getUserAgent(request).getOs().getName();
+            String ua = request.getHeader(HttpHeaders.USER_AGENT);
+            UserAgent userAgent = UserAgentUtil.parse(ua);
+            String browser = HttpUtil.getBrowser(userAgent);
+            String os = HttpUtil.getOs(userAgent);
             onlineUserDto = new OnlineUserDto(jwtUserDto.getUsername(),
-                    jwtUserDto.getUser().getNickName(), dept, browser, userAgent, os, ip, address,
+                    jwtUserDto.getUser().getNickName(), dept, browser, ua, os, ip, address,
                     encryptToken, new Date(), new Date());
         } catch (Exception e) {
             log.error(e.getMessage(), e);

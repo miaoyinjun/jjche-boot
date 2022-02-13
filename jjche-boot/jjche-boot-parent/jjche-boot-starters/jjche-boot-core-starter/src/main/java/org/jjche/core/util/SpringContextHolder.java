@@ -66,7 +66,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * @return 是否测试环境
      */
     public static boolean isQa() {
-        return getEnvActive().equalsIgnoreCase(EnvConstant.DEMO);
+        return getEnvActive().equalsIgnoreCase(EnvConstant.QA);
     }
 
     /**

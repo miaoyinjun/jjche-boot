@@ -4,7 +4,7 @@
 
     <artifactId>jjche-boot-eladmin</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.9-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 
     <modules>
         <module>jjche-boot-eladmin-generator</module>
@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-boot-parent</artifactId>
-        <version>1.0.9-SNAPSHOT</version>
+        <version>1.1.1-SNAPSHOT</version>
     </parent>
 
     <dependencies>
@@ -95,12 +95,6 @@
             <artifactId>easy-captcha</artifactId>
         </dependency>
 
-        <!-- 解析客户端操作系统、浏览器信息 -->
-        <dependency>
-            <groupId>eu.bitwalker</groupId>
-            <artifactId>UserAgentUtils</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
@@ -163,17 +157,17 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-generator</artifactId>
-                <version>1.0.9-SNAPSHOT</version>
+                <version>1.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-tools</artifactId>
-                <version>1.0.9-SNAPSHOT</version>
+                <version>1.1.1-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-logging</artifactId>
-                <version>1.0.9-SNAPSHOT</version>
+                <version>1.1.1-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

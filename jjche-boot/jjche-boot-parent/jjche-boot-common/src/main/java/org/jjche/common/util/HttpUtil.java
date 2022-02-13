@@ -2,12 +2,11 @@ package org.jjche.common.util;
 
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.http.useragent.Browser;
+import cn.hutool.http.useragent.OS;
 import cn.hutool.http.useragent.UserAgent;
-import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
-import eu.bitwalker.useragentutils.OperatingSystem;
 import lombok.SneakyThrows;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import net.dreamlu.mica.ip2region.core.IpInfo;
@@ -52,11 +51,11 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
     private static boolean ipLocal = true;
 
     private static String simplifyOperatingSystem(String operatingSystem) {
-        return OPERATING_SYSTEM.get().parallel().filter(b -> cn.hutool.core.util.StrUtil.containsIgnoreCase(operatingSystem, b)).findAny().orElse(operatingSystem);
+        return OPERATING_SYSTEM.get().parallel().filter(b -> StrUtil.containsIgnoreCase(operatingSystem, b)).findAny().orElse(operatingSystem);
     }
 
     private static String simplifyBrowser(String browser) {
-        return BROWSER.get().parallel().filter(b -> cn.hutool.core.util.StrUtil.containsIgnoreCase(browser, b)).findAny().orElse(browser);
+        return BROWSER.get().parallel().filter(b -> StrUtil.containsIgnoreCase(browser, b)).findAny().orElse(browser);
     }
 
 
@@ -139,11 +138,11 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * <p>
      * userAgent 请求
      *
-     * @param userAgent a {@link eu.bitwalker.useragentutils.UserAgent} object.
+     * @param userAgent a {@link cn.hutool.http.useragent.UserAgent} object.
      * @return a {@link java.lang.String} object.
      */
-    public static String getBrowser(eu.bitwalker.useragentutils.UserAgent userAgent) {
-        eu.bitwalker.useragentutils.Browser browser = userAgent.getBrowser();
+    public static String getBrowser(UserAgent userAgent) {
+        Browser browser = userAgent.getBrowser();
         if (browser != null) {
             return simplifyBrowser(browser.getName());
         } else {
@@ -183,11 +182,11 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
             // 如果没有发现 non-loopback地址.只能用最次选的方案
             InetAddress jdkSuppliedAddress = InetAddress.getLocalHost();
             if (jdkSuppliedAddress == null) {
-                return "unknown";
+                return UNKNOWN;
             }
             return jdkSuppliedAddress.getHostAddress();
         } catch (Exception e) {
-            return "unknown";
+            return UNKNOWN;
         }
     }
 
@@ -199,10 +198,10 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * @param userAgent 请求
      * @return 系统版本
      */
-    public static String getOs(eu.bitwalker.useragentutils.UserAgent userAgent) {
-        OperatingSystem operatingSystem = userAgent.getOperatingSystem();
-        if (operatingSystem != null) {
-            return simplifyOperatingSystem(operatingSystem.getName());
+    public static String getOs(UserAgent userAgent) {
+        OS os = userAgent.getOs();
+        if (os != null) {
+            return simplifyOperatingSystem(os.getName());
         } else {
             return UNKNOWN;
         }
@@ -244,36 +243,6 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
             }
         }
         return;
-    }
-
-    /**
-     * <p>
-     * 获取浏览器信息
-     * </p>
-     *
-     * @param request a {@link javax.servlet.http.HttpServletRequest} object.
-     * @return a {@link java.lang.String} object.
-     * @author miaoyj
-     * @since 2020-09-17
-     */
-    public static String getBrowser(HttpServletRequest request) {
-        UserAgent userAgent = getUserAgent(request);
-        Browser browser = userAgent.getBrowser();
-        return browser.getName();
-    }
-
-    /**
-     * <p>
-     * 获取用户代理
-     * </p>
-     *
-     * @param request a {@link javax.servlet.http.HttpServletRequest} object.
-     * @return userAgent
-     * @author miaoyj
-     * @since 2020-11-05
-     */
-    public static UserAgent getUserAgent(HttpServletRequest request) {
-        return UserAgentUtil.parse(request.getHeader("User-Agent"));
     }
 
 }

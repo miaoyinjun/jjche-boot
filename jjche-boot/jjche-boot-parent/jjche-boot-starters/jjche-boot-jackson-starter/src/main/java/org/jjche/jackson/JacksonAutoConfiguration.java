@@ -2,10 +2,6 @@ package org.jjche.jackson;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
-
-import java.util.List;
 
 /**
  * <p>
@@ -18,14 +14,14 @@ import java.util.List;
  */
 @Import({JacksonHttpMessageConverter.class})
 @Configuration
-public class JacksonAutoConfiguration extends WebMvcConfigurationSupport {
+public class JacksonAutoConfiguration {
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.configureMessageConverters(converters);
-        converters.add(new JacksonHttpMessageConverter());
-    }
+//    @Override
+//    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        super.configureMessageConverters(converters);
+//        converters.add(new JacksonHttpMessageConverter());
+//    }
 }

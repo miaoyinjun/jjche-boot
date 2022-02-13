@@ -75,10 +75,6 @@ public class QiniuController extends BaseController {
      * @param criteria a {@link QiniuQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "七牛云存储"
-    )
     @ApiOperation("导出数据")
     @GetMapping(value = "/download")
     public void download(HttpServletResponse response, QiniuQueryCriteriaDTO criteria) throws IOException {
@@ -92,10 +88,6 @@ public class QiniuController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询文件", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "七牛云存储"
-    )
     @ApiOperation("查询文件")
     @GetMapping
     public ResultWrapper<MyPage> query(QiniuQueryCriteriaDTO criteria, PageParam pageable) {
@@ -145,10 +137,6 @@ public class QiniuController extends BaseController {
      * @param id a {@link java.lang.Long} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "下载", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "七牛云存储"
-    )
     @ApiOperation("下载文件")
     @GetMapping(value = "/download/{id}")
     public ResultWrapper<Object> download(@PathVariable Long id) {

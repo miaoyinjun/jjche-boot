@@ -69,7 +69,7 @@ public class AuthorizationController extends BaseController {
     @ApiOperation("密码登录授权")
     @LogRecordAnnotation(
             value = "密码登录", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", isSaveParams = false
+            type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", saveParams = false
     )
     public ResultWrapper<LoginVO> login(@Validated @RequestBody AuthUserDto authUser) {
         SecurityRsaProperties rsaProperties = properties.getRsa();
@@ -99,7 +99,7 @@ public class AuthorizationController extends BaseController {
     @ApiOperation("短信登录授权")
     @LogRecordAnnotation(
             value = "短信登录", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", isSaveParams = false
+            type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false
     )
     public ResultWrapper<LoginVO> smslogin(@Validated @RequestBody AuthUserSmsDto dto) {
         return ResultWrapper.ok(userService.smslogin(dto));

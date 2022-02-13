@@ -27,7 +27,7 @@ public @interface LogRecordAnnotation {
      *
      * @return /
      */
-    boolean isSaveParams() default true;
+    boolean saveParams() default true;
 
     /**
      * <p>

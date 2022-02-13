@@ -50,6 +50,7 @@
     <!--表格渲染-->
     <el-table
       v-loading="loading"
+      highlight-current-row
       stripe
       :data="data"
       style="width: 100%; margin-top: -10px"

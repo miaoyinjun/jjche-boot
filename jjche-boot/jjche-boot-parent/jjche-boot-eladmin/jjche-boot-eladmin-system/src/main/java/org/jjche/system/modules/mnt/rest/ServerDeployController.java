@@ -44,10 +44,6 @@ public class ServerDeployController extends BaseController {
      * @param criteria a {@link ServerDeployQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "服务器"
-    )
     @ApiOperation("导出服务器数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('serverDeploy:list')")
@@ -62,10 +58,6 @@ public class ServerDeployController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "服务器"
-    )
     @ApiOperation(value = "查询服务器")
     @GetMapping
     @PreAuthorize("@el.check('serverDeploy:list')")
@@ -134,10 +126,6 @@ public class ServerDeployController extends BaseController {
      * @param resources a {@link ServerDeployDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "测试连接", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "服务器"
-    )
     @ApiOperation(value = "测试连接服务器")
     @PostMapping("/testConnect")
     @PreAuthorize("@el.check('serverDeploy:add')")

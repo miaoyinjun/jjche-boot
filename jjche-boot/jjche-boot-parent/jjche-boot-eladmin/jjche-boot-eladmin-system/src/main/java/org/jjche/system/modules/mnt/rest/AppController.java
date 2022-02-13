@@ -44,10 +44,6 @@ public class AppController extends BaseController {
      * @param criteria a {@link AppQueryCriteriaDTO} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
-            value = "导出", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "应用"
-    )
     @ApiOperation("导出应用数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('app:list')")
@@ -62,10 +58,6 @@ public class AppController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "应用"
-    )
     @ApiOperation(value = "查询应用")
     @GetMapping
     @PreAuthorize("@el.check('app:list')")
