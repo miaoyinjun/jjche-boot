@@ -12,5 +12,5 @@ public interface LogConstant {
     /**
      * 日志id {@value}
      */
-    String REQUEST_ID = "requestId";
+    String REQUEST_ID = "X-Request-Id";
 }

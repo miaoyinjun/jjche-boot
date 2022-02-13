@@ -21,6 +21,7 @@
     <el-table
       ref="table"
       v-loading="crud.loading"
+      highlight-current-row
       :data="crud.data"
       style="width: 100%"
       :row-class-name="tableRowClassName"
@@ -31,6 +32,9 @@
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item label="请求地址">
               <span>{{ props.row.url }}</span>
+            </el-form-item>
+            <el-form-item label="请求id">
+              <span>{{ props.row.requestId }}</span>
             </el-form-item>
             <el-form-item label="请求方法">
               <span>{{ props.row.method }}</span>

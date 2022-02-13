@@ -3,6 +3,7 @@ package org.jjche;
 import org.jjche.common.constant.PackageConstant;
 import org.jjche.log.biz.starter.annotation.EnableLogRecord;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * <p>
@@ -12,7 +13,7 @@ import org.mybatis.spring.annotation.MapperScan;
  * @author miaoyj
  * @since 2022-01-05
  */
-//@ComponentScan(excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {SecurityBasicAuthFilter.class})})
+@ComponentScan
 @MapperScan(PackageConstant.MAPPER_PATH_STAR)
 @EnableLogRecord(tenant = PackageConstant.BASE_PATH)
 public class AdminAutoConfiguration {

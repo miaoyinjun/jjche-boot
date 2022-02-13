@@ -40,6 +40,7 @@
           <el-form size="small" label-width="90px">
             <el-table
               v-loading="loading"
+              highlight-current-row
               stripe
               :data="data"
               :max-height="tableHeight"

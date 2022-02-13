@@ -124,4 +124,9 @@ public class LogVO implements Serializable {
      * 创建时间
      */
     private Timestamp gmtCreate;
+
+    /**
+     * 请求id
+     */
+    private String requestId;
 }
