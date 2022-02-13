@@ -80,10 +80,6 @@ public class VersionController extends BaseController {
      * @return a {@link ResultWrapper} object.
      */
     @GetMapping("/{id}")
-    @LogRecordAnnotation(
-            value = "查询单个", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "版本"
-    )
     @PreAuthorize("@el.check('version:list')")
     public ResultWrapper<VersionVO> getById(@PathVariable Long id) {
         return ResultWrapper.ok(this.versionService.getVoById(id));
@@ -97,10 +93,6 @@ public class VersionController extends BaseController {
      * @return a {@link ResultWrapper} object.
      */
     @GetMapping
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "版本"
-    )
     @PreAuthorize("@el.check('version:list')")
     public ResultWrapper<MyPage<VersionVO>> pageQuery(VersionQueryCriteriaDTO query, PageParam page) {
         return ResultWrapper.ok(versionService.queryAll(query, page));

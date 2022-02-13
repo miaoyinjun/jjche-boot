@@ -113,10 +113,6 @@ public class DataPermissionFieldController extends BaseController {
      * @param pageable /
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
-            value = "查询", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据字段"
-    )
     @ApiOperation("查询数据字段")
     @GetMapping
     @PreAuthorize("@el.check('menu:list')")

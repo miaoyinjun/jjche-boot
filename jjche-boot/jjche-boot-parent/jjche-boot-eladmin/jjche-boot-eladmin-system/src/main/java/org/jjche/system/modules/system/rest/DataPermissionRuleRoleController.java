@@ -73,10 +73,6 @@ public class DataPermissionRuleRoleController extends BaseController {
     @GetMapping
     @ApiOperation(value = "数据规则权限-列表")
     @PreAuthorize("@el.check('roles:list')")
-    @LogRecordAnnotation(
-            value = "列表", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据规则权限"
-    )
     public ResultWrapper<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
                                                                  @Validated DataPermissionRuleRoleQueryCriteriaDTO query) {
         return ResultWrapper.ok(sysDataPermissionRuleService.pageByMenuIdAndRoleId(page, query));

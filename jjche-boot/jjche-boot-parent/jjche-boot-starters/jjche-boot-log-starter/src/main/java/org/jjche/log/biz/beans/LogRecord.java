@@ -27,7 +27,7 @@ public class LogRecord {
     /**
      * 是否保存参数
      */
-    boolean isSaveParams;
+    boolean saveParams;
 
     /**
      * 是否成功

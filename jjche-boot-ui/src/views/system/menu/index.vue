@@ -203,6 +203,7 @@
     <el-table
       ref="table"
       v-loading="crud.loading"
+      highlight-current-row
       stripe
       lazy
       :load="getMenus"

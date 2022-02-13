@@ -107,10 +107,6 @@ public class DataPermissionRuleController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation(value = "数据规则-查询单个")
     @PreAuthorize("@el.check('menu:list')")
-    @LogRecordAnnotation(
-            value = "查询单个", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据规则"
-    )
     public ResultWrapper<DataPermissionRuleVO> getById(@PathVariable Long id) {
         return ResultWrapper.ok(this.sysDataPermissionRuleService.getVoById(id));
     }
@@ -125,10 +121,6 @@ public class DataPermissionRuleController extends BaseController {
     @GetMapping
     @ApiOperation(value = "数据规则-列表")
     @PreAuthorize("@el.check('menu:list')")
-    @LogRecordAnnotation(
-            value = "列表", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "数据规则"
-    )
     public ResultWrapper<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
                                                                  @Validated DataPermissionRuleQueryCriteriaDTO query) {
         return ResultWrapper.ok(sysDataPermissionRuleService.pageQuery(page, query));

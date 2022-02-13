@@ -21,6 +21,10 @@ public class BoxLog implements Serializable {
      */
     String browser;
     /**
+     * os name
+     */
+    String os;
+    /**
      * request uri
      */
     private String requestUri;

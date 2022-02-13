@@ -23,9 +23,9 @@ public @interface BizLog {
     /**
      * 是否保存参数
      *
-     * @return isSaveParams
+     * @return saveParams
      */
-    boolean isSaveParams() default true;
+    boolean saveParams() default true;
 
     LogType type() default LogType.SELECT;
 

@@ -3,11 +3,9 @@ package org.jjche.core.wrapper.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.jjche.common.constant.LogConstant;
 import org.jjche.common.pojo.AbstractResultWrapper;
 import org.jjche.core.wrapper.constant.HttpStatusConstant;
 import org.jjche.core.wrapper.enums.ResultWrapperCodeEnum;
-import org.slf4j.MDC;
 
 import java.io.Serializable;
 
@@ -81,7 +79,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @return the wrapper
      */
     private static <E> ResultWrapper<E> wrap(ResultWrapperCodeEnum codeEnum, String message) {
-        return new ResultWrapper(codeEnum.getCode(), message, MDC.get(LogConstant.REQUEST_ID));
+        return new ResultWrapper(codeEnum.getCode(), message);
     }
 
     /**

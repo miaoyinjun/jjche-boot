@@ -75,10 +75,6 @@ public class AliPayController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
-            value = "PC网页支付", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "支付宝"
-    )
     @ApiOperation("PC网页支付")
     @PostMapping(value = "/toPayAsPC")
     public ResultWrapper<String> toPayAsPc(@Validated @RequestBody TradeVO trade) throws Exception {
@@ -95,10 +91,6 @@ public class AliPayController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
-            value = "手机网页支付", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = "支付宝"
-    )
     @ApiOperation("手机网页支付")
     @PostMapping(value = "/toPayAsWeb")
     public ResultWrapper<String> toPayAsWeb(@Validated @RequestBody TradeVO trade) throws Exception {
