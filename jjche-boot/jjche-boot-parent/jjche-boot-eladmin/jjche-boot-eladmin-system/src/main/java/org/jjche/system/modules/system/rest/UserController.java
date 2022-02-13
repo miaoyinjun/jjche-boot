@@ -181,7 +181,7 @@ public class UserController extends BaseController {
      */
     @LogRecordAnnotation(
             value = "修改密码", category = LogCategoryType.MANAGER,
-            type = LogType.UPDATE, module = "用户", isSaveParams = false
+            type = LogType.UPDATE, module = "用户", saveParams = false
     )
     @ApiOperation("修改密码")
     @PostMapping(value = "/updatePass")
@@ -208,7 +208,7 @@ public class UserController extends BaseController {
      */
     @LogRecordAnnotation(
             value = "重置密码", category = LogCategoryType.MANAGER,
-            type = LogType.UPDATE, module = "用户", isSaveParams = false
+            type = LogType.UPDATE, module = "用户", saveParams = false
     )
     @ApiOperation("重置密码")
     @PreAuthorize("@el.check('admin')")
@@ -233,7 +233,7 @@ public class UserController extends BaseController {
      */
     @LogRecordAnnotation(
             value = "修改头像", category = LogCategoryType.MANAGER,
-            type = LogType.UPDATE, module = "用户", isSaveParams = false
+            type = LogType.UPDATE, module = "用户", saveParams = false
     )
     @PostMapping(value = "/updateAvatar")
     public ResultWrapper<String> updateAvatar(@RequestParam MultipartFile avatar) {
@@ -250,7 +250,7 @@ public class UserController extends BaseController {
      */
     @LogRecordAnnotation(
             value = "修改邮箱", category = LogCategoryType.MANAGER,
-            type = LogType.UPDATE, module = "用户", isSaveParams = false
+            type = LogType.UPDATE, module = "用户", saveParams = false
     )
     @ApiOperation("修改邮箱")
     @PostMapping(value = "/updateEmail/{code}")
