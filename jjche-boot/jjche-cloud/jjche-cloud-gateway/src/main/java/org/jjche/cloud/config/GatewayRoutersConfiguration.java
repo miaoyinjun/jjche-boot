@@ -57,27 +57,25 @@ public class GatewayRoutersConfiguration {
         NAMESPACE = namespace;
     }
 
-    @Value("${jeecg.route.config.data-id:#{null}}")
+    @Value("${spring.cloud.nacos.route.config.data-id:#{null}}")
     public void setRouteDataId(String dataId) {
         DATA_ID = dataId + ".json";
     }
 
-    @Value("${jeecg.route.config.group:DEFAULT_GROUP:#{null}}")
+    @Value("${spring.cloud.nacos.route.config.group:DEFAULT_GROUP:#{null}}")
     public void setRouteGroup(String routeGroup) {
         ROUTE_GROUP = routeGroup;
     }
 
-    @Value("${jeecg.route.config.data-type}")
+    @Value("${spring.cloud.nacos.route.config.data-type}")
     public void setDataType(String dataType) {
         DATA_TYPE = dataType;
     }
 
-    @Value("${spring.cloud.nacos.config.username}")
     public void setUsername(String username) {
         USERNAME = username;
     }
 
-    @Value("${spring.cloud.nacos.config.password}")
     public void setPassword(String password) {
         PASSWORD = password;
     }

@@ -1,37 +1,23 @@
 package org.jjche.cloud.loader;
 
-import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
-import org.jjche.cache.service.RedisService;
 import org.jjche.cloud.config.GatewayRoutersConfiguration;
 import org.jjche.cloud.config.RouterDataType;
 import org.jjche.common.base.BaseMap;
-import org.jjche.common.constant.CacheKey;
-import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
-import org.springframework.cloud.gateway.filter.FilterDefinition;
-import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.InMemoryRouteDefinitionRepository;
 import org.springframework.cloud.gateway.route.RouteDefinition;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -45,91 +31,14 @@ import java.util.concurrent.Executor;
 @Slf4j
 @Component
 @DependsOn({"gatewayRoutersConfiguration"})
-public class DynamicRouteLoader implements ApplicationEventPublisherAware {
-
-
-    private ApplicationEventPublisher publisher;
-
+public class DynamicRouteLoader {
     private InMemoryRouteDefinitionRepository repository;
-
     private DynamicRouteService dynamicRouteService;
-
     private ConfigService configService;
 
-    private RedisService redisService;
-
-
-    public DynamicRouteLoader(InMemoryRouteDefinitionRepository repository, DynamicRouteService dynamicRouteService, RedisService redisService) {
-
+    public DynamicRouteLoader(InMemoryRouteDefinitionRepository repository, DynamicRouteService dynamicRouteService) {
         this.repository = repository;
         this.dynamicRouteService = dynamicRouteService;
-        this.redisService = redisService;
-    }
-
-    /**
-     * redis中的信息需要处理下 转成RouteDefinition对象
-     * - id: login
-     * uri: lb://cloud-jeecg-system
-     * predicates:
-     * - Path=/jeecg-boot/sys/**,
-     *
-     * @param array
-     * @return
-     */
-
-    public static List<MyRouteDefinition> getRoutesByJson(JSONArray array) throws URISyntaxException {
-        List<MyRouteDefinition> ls = new ArrayList<>();
-        for (int i = 0; i < array.size(); i++) {
-            JSONObject obj = array.getJSONObject(i);
-            MyRouteDefinition route = new MyRouteDefinition();
-            route.setId(obj.getString("routerId"));
-            route.setStatus(obj.getInteger("status"));
-            Object uri = obj.get("uri");
-            if (uri == null) {
-                route.setUri(new URI("lb://" + obj.getString("name")));
-            } else {
-                route.setUri(new URI(obj.getString("uri")));
-            }
-            Object predicates = obj.get("predicates");
-            if (predicates != null) {
-                JSONArray list = JSON.parseArray(predicates.toString());
-                List<PredicateDefinition> predicateDefinitionList = new ArrayList<>();
-                for (Object map : list) {
-                    JSONObject json = (JSONObject) map;
-                    PredicateDefinition predicateDefinition = new PredicateDefinition();
-                    predicateDefinition.setName(json.getString("name"));
-                    JSONArray jsonArray = json.getJSONArray("args");
-                    for (int j = 0; j < jsonArray.size(); j++) {
-                        predicateDefinition.addArg("_genkey" + j, jsonArray.get(j).toString());
-                    }
-                    predicateDefinitionList.add(predicateDefinition);
-                }
-                route.setPredicates(predicateDefinitionList);
-            }
-
-            Object filters = obj.get("filters");
-            if (filters != null) {
-                JSONArray list = JSON.parseArray(filters.toString());
-                List<FilterDefinition> filterDefinitionList = new ArrayList<>();
-                if (ObjectUtil.isNotEmpty(list)) {
-                    for (Object map : list) {
-                        JSONObject json = (JSONObject) map;
-                        JSONArray jsonArray = json.getJSONArray("args");
-                        String name = json.getString("name");
-                        FilterDefinition filterDefinition = new FilterDefinition();
-                        for (Object o : jsonArray) {
-                            JSONObject params = (JSONObject) o;
-                            filterDefinition.addArg(params.getString("key"), params.get("value").toString());
-                        }
-                        filterDefinition.setName(name);
-                        filterDefinitionList.add(filterDefinition);
-                    }
-                    route.setFilters(filterDefinitionList);
-                }
-            }
-            ls.add(route);
-        }
-        return ls;
     }
 
     @PostConstruct
@@ -142,10 +51,6 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
         log.info("初始化路由，dataType：" + dataType);
         if (RouterDataType.nacos.toString().endsWith(dataType)) {
             loadRoutesByNacos();
-        }
-        //从数据库加载路由
-        if (RouterDataType.database.toString().endsWith(dataType)) {
-            loadRoutesByRedis(baseMap);
         }
     }
 
@@ -187,91 +92,8 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
             log.info("update route : {}", definition.toString());
             dynamicRouteService.add(definition);
         }
-        this.publisher.publishEvent(new RefreshRoutesEvent(this));
         dynamicRouteByNacosListener(GatewayRoutersConfiguration.DATA_ID, GatewayRoutersConfiguration.ROUTE_GROUP);
     }
-
-    /**
-     * 从redis中读取路由配置
-     *
-     * @return
-     */
-    private void loadRoutesByRedis(BaseMap baseMap) {
-        List<MyRouteDefinition> routes = Lists.newArrayList();
-        configService = createConfigService();
-        if (configService == null) {
-            log.warn("initConfigService fail");
-        }
-        Object configInfo = redisService.objectGetObject(CacheKey.GATEWAY_ROUTES, Object.class);
-        if (ObjectUtil.isNotEmpty(configInfo)) {
-            log.info("获取网关当前配置:\r\n{}", configInfo);
-            JSONArray array = JSON.parseArray(configInfo.toString());
-            try {
-                routes = getRoutesByJson(array);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-        for (MyRouteDefinition definition : routes) {
-            log.info("update route : {}", definition.toString());
-            Integer status = definition.getStatus();
-            if (status.equals(0)) {
-                dynamicRouteService.delete(definition.getId());
-            } else {
-                dynamicRouteService.add(definition);
-            }
-        }
-        if (ObjectUtils.isNotEmpty(baseMap)) {
-            String routerId = baseMap.get("routerId");
-            if (ObjectUtils.isNotEmpty(routerId)) {
-                dynamicRouteService.delete(routerId);
-            }
-        }
-        this.publisher.publishEvent(new RefreshRoutesEvent(this));
-    }
-
-
-//    private void loadRoutesByDataBase() {
-//        List<GatewayRouteVo> routeList = jdbcTemplate.query(SELECT_ROUTES, new RowMapper<GatewayRouteVo>() {
-//            @Override
-//            public GatewayRouteVo mapRow(ResultSet rs, int i) throws SQLException {
-//                GatewayRouteVo result = new GatewayRouteVo();
-//                result.setId(rs.getString("id"));
-//                result.setName(rs.getString("name"));
-//                result.setUri(rs.getString("uri"));
-//                result.setStatus(rs.getInt("status"));
-//                result.setRetryable(rs.getInt("retryable"));
-//                result.setPredicates(rs.getString("predicates"));
-//                result.setStripPrefix(rs.getInt("strip_prefix"));
-//                result.setPersist(rs.getInt("persist"));
-//                return result;
-//            }
-//        });
-//        if (ObjectUtil.isNotEmpty(routeList)) {
-//            // 加载路由
-//            routeList.forEach(route -> {
-//                RouteDefinition definition = new RouteDefinition();
-//                List<PredicateDefinition> predicatesList = Lists.newArrayList();
-//                List<FilterDefinition> filtersList = Lists.newArrayList();
-//                definition.setId(route.getId());
-//                String predicates = route.getPredicates();
-//                String filters = route.getFilters();
-//                if (StringUtils.isNotEmpty(predicates)) {
-//                    predicatesList = JSON.parseArray(predicates, PredicateDefinition.class);
-//                    definition.setPredicates(predicatesList);
-//                }
-//                if (StringUtils.isNotEmpty(filters)) {
-//                    filtersList = JSON.parseArray(filters, FilterDefinition.class);
-//                    definition.setFilters(filtersList);
-//                }
-//                URI uri = UriComponentsBuilder.fromUriString(route.getUri()).build().toUri();
-//                definition.setUri(uri);
-//                this.repository.save(Mono.just(definition)).subscribe();
-//            });
-//            log.info("加载路由:{}==============", routeList.size());
-//            Mono.empty();
-//        }
-//    }
 
     /**
      * 监听Nacos下发的动态路由配置
@@ -285,11 +107,9 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
                 @Override
                 public void receiveConfigInfo(String configInfo) {
                     log.info("进行网关更新:\n\r{}", configInfo);
-                    List<MyRouteDefinition> definitionList = JSON.parseArray(configInfo, MyRouteDefinition.class);
-                    for (MyRouteDefinition definition : definitionList) {
-                        log.info("update route : {}", definition.toString());
-                        dynamicRouteService.update(definition);
-                    }
+                    List<RouteDefinition> definitionList = JSON.parseArray(configInfo, RouteDefinition.class);
+                    log.info("update route : {}", definitionList.toString());
+                    dynamicRouteService.updateList(definitionList);
                 }
 
                 @Override
@@ -313,17 +133,10 @@ public class DynamicRouteLoader implements ApplicationEventPublisherAware {
             Properties properties = new Properties();
             properties.setProperty("serverAddr", GatewayRoutersConfiguration.SERVER_ADDR);
             properties.setProperty("namespace", GatewayRoutersConfiguration.NAMESPACE);
-            properties.setProperty("username", GatewayRoutersConfiguration.USERNAME);
-            properties.setProperty("password", GatewayRoutersConfiguration.PASSWORD);
             return configService = NacosFactory.createConfigService(properties);
         } catch (Exception e) {
             log.error("创建ConfigService异常", e);
             return null;
         }
-    }
-
-    @Override
-    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publisher = applicationEventPublisher;
     }
 }

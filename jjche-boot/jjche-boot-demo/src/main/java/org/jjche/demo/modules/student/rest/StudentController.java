@@ -137,7 +137,7 @@ public class StudentController extends BaseController {
      * @param course a {@link CourseEnum} object.
      * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
      */
-    @AnonymousGetMapping
+    @GetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
     public ResultWrapper<MyPage<StudentVO>> page(PageParam page,
@@ -147,4 +147,11 @@ public class StudentController extends BaseController {
         return ResultWrapper.ok(studentService.page(page, course, query));
     }
 
+    @AnonymousGetMapping("/test")
+    public ResultWrapper<MyPage<StudentVO>> test(PageParam page,
+                                                 @ApiParam(value = "课程")
+                                                 @RequestParam(required = false) CourseEnum course,
+                                                 @Validated StudentQueryCriteriaDTO query) {
+        return ResultWrapper.ok(studentService.page(page, course, query));
+    }
 }

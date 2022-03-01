@@ -18,7 +18,7 @@
 
     <name>jjche-cloud-system</name>
     <description>jjche-cloud系统服务</description>
-    <groupId>org.jjche.system</groupId>
+    <groupId>org.jjche.cloud</groupId>
     <artifactId>jjche-cloud-system</artifactId>
     <packaging>jar</packaging>
     <version>1.0.9-SNAPSHOT</version>
