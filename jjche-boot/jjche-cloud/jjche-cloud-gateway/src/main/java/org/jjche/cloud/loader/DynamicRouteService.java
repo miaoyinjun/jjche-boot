@@ -1,15 +1,19 @@
 package org.jjche.cloud.loader;
 
+import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.InMemoryRouteDefinitionRepository;
 import org.springframework.cloud.gateway.route.RouteDefinition;
+import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 /**
  * 动态更新路由网关service
@@ -24,10 +28,10 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
 
     @Autowired
     private RouteDefinitionWriter routeDefinitionWriter;
-
     @Autowired
     private InMemoryRouteDefinitionRepository repository;
-
+    @Autowired
+    private RouteDefinitionLocator routeDefinitionLocator;
     /**
      * 发布事件
      */
@@ -57,18 +61,40 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
     /**
      * 更新路由
      *
+     * @param definitions
+     * @return
+     */
+    public synchronized String updateList(List<RouteDefinition> definitions) {
+        log.info("gateway update route {}", definitions);
+        // 删除缓存routerDefinition
+        List<RouteDefinition> routeDefinitionsExits = routeDefinitionLocator.getRouteDefinitions().buffer().blockFirst();
+        if (CollUtil.isNotEmpty(routeDefinitionsExits)) {
+            routeDefinitionsExits.forEach(routeDefinition -> {
+                log.info("delete routeDefinition:{}", routeDefinition);
+                delete(routeDefinition.getId());
+            });
+        }
+        definitions.forEach(definition -> {
+            updateById(definition);
+        });
+        return "success";
+    }
+
+    /**
+     * 更新路由
+     *
      * @param definition
      * @return
      */
-    public synchronized String update(RouteDefinition definition) {
+    public synchronized String updateById(RouteDefinition definition) {
         try {
             log.info("gateway update route {}", definition);
-            //delete(definition.getId());
+            this.routeDefinitionWriter.delete(Mono.just(definition.getId()));
         } catch (Exception e) {
             return "update fail,not find route  routeId: " + definition.getId();
         }
         try {
-            repository.save(Mono.just(definition)).subscribe();
+            routeDefinitionWriter.save(Mono.just(definition)).subscribe();
             this.publisher.publishEvent(new RefreshRoutesEvent(this));
             return "success";
         } catch (Exception e) {
@@ -84,11 +110,9 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
      */
     public synchronized String add(RouteDefinition definition) {
         log.info("gateway add route {}", definition);
-        try {
-            repository.save(Mono.just(definition)).subscribe();
-        } catch (Exception e) {
-
-        }
+        routeDefinitionWriter.save(Mono.just(definition)).subscribe();
+        //todo 会卡住
+//        this.publisher.publishEvent(new RefreshRoutesEvent(this));
         return "success";
     }
 }
