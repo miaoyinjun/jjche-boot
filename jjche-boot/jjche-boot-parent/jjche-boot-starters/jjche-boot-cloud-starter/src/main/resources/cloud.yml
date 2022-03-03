@@ -26,3 +26,7 @@ feign:
       enabled: false
     response:
       enabled: false
+jjche:
+  swagger:
+    ignore-filter-path:
+      - /error.*
