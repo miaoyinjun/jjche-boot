@@ -2,6 +2,7 @@ package org.jjche.common.system.api.fallback;
 
 import cn.hutool.log.StaticLog;
 import lombok.Setter;
+import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.system.api.ISysBaseAPI;
 
 /**
@@ -22,7 +23,7 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     }
 
     @Override
-    public Object getCheckAuthentication() {
+    public JwtUserDto getUserDetails() {
         StaticLog.error("认证失败 {}", cause);
         return null;
     }

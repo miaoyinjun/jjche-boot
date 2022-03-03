@@ -1,6 +1,5 @@
 package org.jjche.cloud.config;
 
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.cloud.handler.HystrixFallbackHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +17,13 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 /**
- * @author scott
- * @date 2020/05/26
- * 路由配置信息
+ * <p>
+ * 路由定义
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-03-01
  */
-@Slf4j
 @Configuration
 public class GatewayRoutersConfiguration {
 

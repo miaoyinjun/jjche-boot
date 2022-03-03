@@ -6,7 +6,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Administrator
+ * <p>
+ * Sentinel过滤器
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-03-01
  */
 @Configuration
 public class SentinelFilterContextConfig {

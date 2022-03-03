@@ -1,6 +1,5 @@
 package org.jjche.cloud.filter;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -17,24 +16,23 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.addOriginalRequestUrl;
 
 /**
+ * <p>
+ * 全局token
+ * </p>
  *
+ * @author miaoyj
+ * @since 2022-03-01
  */
-@Slf4j
 @Component
 public class GlobalAccessTokenFilter implements GlobalFilter, Ordered {
-    public final static String X_ACCESS_TOKEN = "X-Access-Token";
     public final static String X_GATEWAY_BASE_PATH = "X_GATEWAY_BASE_PATH";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        String url = exchange.getRequest().getURI().getPath();
-//        log.info("  access url :  "+ url);
-
         String scheme = exchange.getRequest().getURI().getScheme();
         String host = exchange.getRequest().getURI().getHost();
         int port = exchange.getRequest().getURI().getPort();
         String basePath = scheme + "://" + host + ":" + port;
-//        log.info(" base path :  "+ basePath);
 
         // 1. 重写StripPrefix(获取真实的URL)
         addOriginalRequestUrl(exchange, exchange.getRequest().getURI());

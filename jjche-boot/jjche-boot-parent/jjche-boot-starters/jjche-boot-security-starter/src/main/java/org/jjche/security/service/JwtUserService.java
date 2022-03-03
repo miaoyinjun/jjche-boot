@@ -1,6 +1,6 @@
 package org.jjche.security.service;
 
-import org.jjche.security.dto.JwtUserDto;
+import org.jjche.common.dto.JwtUserDto;
 
 /**
  * <p>

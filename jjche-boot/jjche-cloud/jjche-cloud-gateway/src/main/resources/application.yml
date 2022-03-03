@@ -1,5 +1,5 @@
 server:
-  port: 9999
+  port: 8801
 spring:
   application:
     name: jjche-cloud-gateway

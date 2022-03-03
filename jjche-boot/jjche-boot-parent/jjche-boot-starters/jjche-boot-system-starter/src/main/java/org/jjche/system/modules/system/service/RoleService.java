@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.constant.CacheKey;
 import org.jjche.common.constant.SecurityConstant;
+import org.jjche.common.dto.RoleSmallDto;
+import org.jjche.common.dto.SimpleGrantedAuthorityDTO;
+import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.DataScopeEnum;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
@@ -18,8 +21,6 @@ import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.param.MyPage;
 import org.jjche.mybatis.param.PageParam;
 import org.jjche.mybatis.util.MybatisUtil;
-import org.jjche.security.dto.RoleSmallDto;
-import org.jjche.security.dto.UserVO;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.api.dto.RoleDTO;
 import org.jjche.system.modules.system.api.dto.RoleQueryCriteriaDTO;
@@ -30,8 +31,6 @@ import org.jjche.system.modules.system.mapper.RoleMenuMapper;
 import org.jjche.system.modules.system.mapper.UserMapper;
 import org.jjche.system.modules.system.mapstruct.RoleMapStruct;
 import org.jjche.system.modules.system.mapstruct.RoleSmallMapStruct;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -278,19 +277,19 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
      * @param user 用户信息
      * @return 权限信息
      */
-    public List<GrantedAuthority> mapToGrantedAuthorities(UserVO user) {
+    public List<SimpleGrantedAuthorityDTO> mapToGrantedAuthorities(UserVO user) {
         Set<String> permissions = new HashSet<>();
         // 如果是管理员直接返回
         if (user.getIsAdmin()) {
             permissions.add(SecurityConstant.ADMIN_PERMISSION);
-            return permissions.stream().map(SimpleGrantedAuthority::new)
+            return permissions.stream().map(SimpleGrantedAuthorityDTO::new)
                     .collect(Collectors.toList());
         }
         List<RoleDO> roles = this.baseMapper.selectByUserId(user.getId());
         permissions = roles.stream().flatMap(role -> role.getMenus().stream())
                 .filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
                 .map(MenuDO::getPermission).collect(Collectors.toSet());
-        return permissions.stream().map(SimpleGrantedAuthority::new)
+        return permissions.stream().map(SimpleGrantedAuthorityDTO::new)
                 .collect(Collectors.toList());
     }
 

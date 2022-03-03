@@ -3,9 +3,12 @@ package org.jjche.cloud.loader;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 
 /**
+ * <p>
  * 自定义RouteDefinition
+ * </p>
  *
- * @author zyf
+ * @author miaoyj
+ * @since 2022-03-01
  */
 public class MyRouteDefinition extends RouteDefinition {
     /**

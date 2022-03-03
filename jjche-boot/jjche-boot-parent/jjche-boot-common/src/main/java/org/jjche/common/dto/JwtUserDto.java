@@ -1,9 +1,8 @@
-package org.jjche.security.dto;
+package org.jjche.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.jjche.common.pojo.DataScope;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -23,8 +22,7 @@ public class JwtUserDto implements UserDetails {
     private final UserVO user;
 
     private final DataScope dataScope;
-    @JsonIgnore
-    private final List<GrantedAuthority> authorities;
+    private final List<SimpleGrantedAuthorityDTO> authorities;
 
     /**
      * <p>Constructor for JwtUserDto.</p>
@@ -33,7 +31,7 @@ public class JwtUserDto implements UserDetails {
      * @param dataScope   a {@link java.util.List} object.
      * @param authorities a {@link java.util.List} object.
      */
-    public JwtUserDto(UserVO user, DataScope dataScope, List<GrantedAuthority> authorities) {
+    public JwtUserDto(UserVO user, DataScope dataScope, List<SimpleGrantedAuthorityDTO> authorities) {
         this.user = user;
         this.dataScope = dataScope;
         this.authorities = authorities;
@@ -45,7 +43,11 @@ public class JwtUserDto implements UserDetails {
      * @return a {@link java.util.Set} object.
      */
     public Set<String> getRoles() {
-        return authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+        return authorities.stream().map(SimpleGrantedAuthorityDTO::getAuthority).collect(Collectors.toSet());
+    }
+
+    public void setRoles(Set<String> roles) {
+
     }
 
     /**

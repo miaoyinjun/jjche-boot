@@ -1,7 +1,7 @@
 package org.jjche.cloud.loader;
 
 import cn.hutool.core.collection.CollUtil;
-import lombok.extern.slf4j.Slf4j;
+import cn.hutool.log.StaticLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.InMemoryRouteDefinitionRepository;
@@ -16,13 +16,13 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
+ * <p>
  * 动态更新路由网关service
- * 1）实现一个Spring提供的事件推送接口ApplicationEventPublisherAware
- * 2）提供动态路由的基础方法，可通过获取bean操作该类的方法。该类提供新增路由、更新路由、删除路由，然后实现发布的功能。
+ * </p>
  *
- * @author zyf
+ * @author miaoyj
+ * @since 2022-03-01
  */
-@Slf4j
 @Service
 public class DynamicRouteService implements ApplicationEventPublisherAware {
 
@@ -64,13 +64,13 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
      * @param definitions
      * @return
      */
-    public synchronized String updateList(List<RouteDefinition> definitions) {
-        log.info("gateway update route {}", definitions);
+    public synchronized String updateList(List<MyRouteDefinition> definitions) {
+        StaticLog.info("gateway update route {}", definitions);
         // 删除缓存routerDefinition
         List<RouteDefinition> routeDefinitionsExits = routeDefinitionLocator.getRouteDefinitions().buffer().blockFirst();
         if (CollUtil.isNotEmpty(routeDefinitionsExits)) {
             routeDefinitionsExits.forEach(routeDefinition -> {
-                log.info("delete routeDefinition:{}", routeDefinition);
+                StaticLog.info("delete routeDefinition:{}", routeDefinition);
                 delete(routeDefinition.getId());
             });
         }
@@ -88,7 +88,7 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
      */
     public synchronized String updateById(RouteDefinition definition) {
         try {
-            log.info("gateway update route {}", definition);
+            StaticLog.info("gateway update route {}", definition);
             this.routeDefinitionWriter.delete(Mono.just(definition.getId()));
         } catch (Exception e) {
             return "update fail,not find route  routeId: " + definition.getId();
@@ -109,7 +109,7 @@ public class DynamicRouteService implements ApplicationEventPublisherAware {
      * @return
      */
     public synchronized String add(RouteDefinition definition) {
-        log.info("gateway add route {}", definition);
+        StaticLog.info("gateway add route {}", definition);
         routeDefinitionWriter.save(Mono.just(definition)).subscribe();
         //todo 会卡住
 //        this.publisher.publishEvent(new RefreshRoutesEvent(this));

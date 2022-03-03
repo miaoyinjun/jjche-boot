@@ -5,9 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 /**
+ * <p>
  * 响应超时熔断处理器
+ * </p>
  *
- * @author zyf
+ * @author miaoyj
+ * @since 2022-03-01
  */
 @RestController
 public class FallbackController {

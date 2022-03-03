@@ -2,8 +2,8 @@ package org.jjche.system.modules.security.service;
 
 import cn.hutool.core.util.ObjectUtil;
 import lombok.RequiredArgsConstructor;
-import org.jjche.security.dto.JwtUserDto;
-import org.jjche.security.dto.UserVO;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.UserVO;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.service.*;
 import org.springframework.security.core.userdetails.UserDetailsService;

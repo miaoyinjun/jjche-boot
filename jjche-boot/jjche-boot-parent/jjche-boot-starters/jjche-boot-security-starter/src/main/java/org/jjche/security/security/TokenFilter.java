@@ -1,6 +1,11 @@
 package org.jjche.security.security;
 
 import org.jjche.common.api.CommonAPI;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.UserVO;
+import org.jjche.common.enums.UserTypeEnum;
+import org.jjche.security.auth.sms.SmsCodeAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -33,12 +38,23 @@ public class TokenFilter extends GenericFilterBean {
      * {@inheritDoc}
      */
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         //认证token
-        Authentication authentication = (Authentication) commonAPI.getCheckAuthentication();
-        if (authentication != null) {
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        JwtUserDto userDetails = commonAPI.getUserDetails();
+        if (userDetails != null) {
+            Authentication authentication = null;
+            UserVO userVO = userDetails.getUser();
+            UserTypeEnum userType = userVO.getUserType();
+            //密码
+            if (UserTypeEnum.PWD == userType) {
+                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            }//短信
+            else if (UserTypeEnum.SMS == userType) {
+                authentication = new SmsCodeAuthenticationToken(userVO.getUsername());
+            }
+            if (authentication != null) {
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(servletRequest, servletResponse);
     }

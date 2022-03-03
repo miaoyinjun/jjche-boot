@@ -1,7 +1,8 @@
-package org.jjche.security.dto;
+package org.jjche.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.jjche.common.enums.UserTypeEnum;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -85,4 +86,6 @@ public class UserVO implements Serializable {
 
     @JsonIgnore
     private Boolean isAdmin;
+
+    private UserTypeEnum userType;
 }
