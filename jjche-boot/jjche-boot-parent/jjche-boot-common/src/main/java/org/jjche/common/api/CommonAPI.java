@@ -1,5 +1,7 @@
 package org.jjche.common.api;
 
+import org.jjche.common.dto.JwtUserDto;
+
 public interface CommonAPI {
 
     /**
@@ -18,5 +20,5 @@ public interface CommonAPI {
      *
      * @return /
      */
-    Object getCheckAuthentication();
+    JwtUserDto getUserDetails();
 }

@@ -2,6 +2,7 @@ package org.jjche.system.modules.system.rest;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
@@ -28,8 +29,8 @@ public class SysBaseController extends BaseController {
         this.sysBaseAPI.logoutOnlineUser(token);
     }
 
-    @AnonymousGetMapping("/getCheckAuthentication")
-    public Object getCheckAuthentication() {
-        return this.sysBaseAPI.getCheckAuthentication();
+    @AnonymousGetMapping("/getUserDetails")
+    public JwtUserDto getUserDetails() {
+        return this.sysBaseAPI.getUserDetails();
     }
 }

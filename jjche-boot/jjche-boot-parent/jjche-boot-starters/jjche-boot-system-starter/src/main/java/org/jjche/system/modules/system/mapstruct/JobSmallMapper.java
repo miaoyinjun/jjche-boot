@@ -1,7 +1,7 @@
 package org.jjche.system.modules.system.mapstruct;
 
+import org.jjche.common.dto.JobSmallDto;
 import org.jjche.core.base.BaseMapStruct;
-import org.jjche.security.dto.JobSmallDto;
 import org.jjche.system.modules.system.domain.JobDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

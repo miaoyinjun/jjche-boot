@@ -1,7 +1,7 @@
 package org.jjche.system.modules.system.api.dto;
 
 import lombok.Data;
-import org.jjche.security.dto.DeptSmallDto;
+import org.jjche.common.dto.DeptSmallDto;
 
 import java.io.Serializable;
 import java.util.List;

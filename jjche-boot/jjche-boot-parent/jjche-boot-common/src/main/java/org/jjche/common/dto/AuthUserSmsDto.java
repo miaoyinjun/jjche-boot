@@ -1,4 +1,4 @@
-package org.jjche.security.dto;
+package org.jjche.common.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;

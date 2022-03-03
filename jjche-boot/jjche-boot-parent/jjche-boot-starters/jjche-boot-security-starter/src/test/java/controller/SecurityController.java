@@ -1,10 +1,10 @@
 package controller;
 
 import dto.LoginDTO;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.core.wrapper.response.ResultWrapper;
-import org.jjche.security.dto.JwtUserDto;
 import org.jjche.security.security.TokenProvider;
-import org.jjche.security.security.UserTypeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

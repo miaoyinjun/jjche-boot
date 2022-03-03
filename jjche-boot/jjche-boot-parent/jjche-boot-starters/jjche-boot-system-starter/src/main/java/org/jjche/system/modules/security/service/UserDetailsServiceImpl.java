@@ -1,7 +1,8 @@
 package org.jjche.system.modules.security.service;
 
+import org.jjche.common.dto.UserVO;
+import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.core.wrapper.constant.HttpStatusConstant;
-import org.jjche.security.dto.UserVO;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.service.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +44,7 @@ public class UserDetailsServiceImpl extends AbstractUserDetailsService {
         if (userDto == null) {
             throw new UsernameNotFoundException(HttpStatusConstant.MSG_USERNAME_NOTFOUND_OR_BAD_CREDENTIALS);
         }
+        userDto.setUserType(UserTypeEnum.PWD);
         return userDto;
     }
 }

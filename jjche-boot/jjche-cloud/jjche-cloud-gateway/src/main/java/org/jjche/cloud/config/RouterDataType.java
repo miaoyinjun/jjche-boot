@@ -1,7 +1,12 @@
 package org.jjche.cloud.config;
 
 /**
+ * <p>
  * nocos配置方式枚举
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-03-01
  */
 public enum RouterDataType {
     /**

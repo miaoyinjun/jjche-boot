@@ -2,10 +2,10 @@ package org.jjche.system.modules.system.service;
 
 import cn.hutool.core.collection.CollUtil;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.dto.RoleSmallDto;
+import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.DataScopeEnum;
 import org.jjche.common.pojo.DataScope;
-import org.jjche.security.dto.RoleSmallDto;
-import org.jjche.security.dto.UserVO;
 import org.jjche.system.modules.system.domain.DeptDO;
 import org.springframework.stereotype.Service;
 

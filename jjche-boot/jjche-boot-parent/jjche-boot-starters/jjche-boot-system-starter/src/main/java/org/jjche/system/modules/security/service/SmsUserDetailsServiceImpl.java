@@ -1,7 +1,8 @@
 package org.jjche.system.modules.security.service;
 
 import cn.hutool.core.lang.Assert;
-import org.jjche.security.dto.UserVO;
+import org.jjche.common.dto.UserVO;
+import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.service.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,6 +46,7 @@ public class SmsUserDetailsServiceImpl extends AbstractUserDetailsService {
         Assert.notNull(user, "未找到该手机号用户");
         //重置用户名为手机号
         user.setUsername(username);
+        user.setUserType(UserTypeEnum.SMS);
         return user;
     }
 }

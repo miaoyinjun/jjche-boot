@@ -2,7 +2,6 @@ package org.jjche.cloud.handler;
 
 import com.alibaba.csp.sentinel.adapter.gateway.sc.callback.BlockRequestHandler;
 import com.alibaba.csp.sentinel.transport.config.TransportConfig;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,6 @@ import javax.annotation.PostConstruct;
  *
  * @author Administrator
  */
-@Slf4j
 @Component
 public class SentinelBlockRequestHandler implements BlockRequestHandler {
     @Autowired

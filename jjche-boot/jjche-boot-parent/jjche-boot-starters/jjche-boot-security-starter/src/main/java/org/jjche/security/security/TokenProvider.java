@@ -5,6 +5,7 @@ import cn.hutool.log.StaticLog;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.core.util.RequestHolder;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;

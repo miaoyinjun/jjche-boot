@@ -8,25 +8,22 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.OnlineUserDTO;
+import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.common.util.FileUtil;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.SecurityUtils;
-import org.jjche.security.auth.sms.SmsCodeAuthenticationToken;
-import org.jjche.security.dto.JwtUserDto;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
-import org.jjche.security.security.UserTypeEnum;
 import org.jjche.security.service.JwtUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -195,8 +192,8 @@ public class SysBaseAPI implements ISysBaseAPI {
     }
 
     @Override
-    public Authentication getCheckAuthentication() {
-        Authentication authentication = null;
+    public JwtUserDto getUserDetails() {
+        UserDetails userDetails = null;
         String token = tokenProvider.resolveToken();
         // 对于 Token 为空的不需要去查 Redis
         if (StrUtil.isNotBlank(token)) {
@@ -213,10 +210,10 @@ public class SysBaseAPI implements ISysBaseAPI {
                 }
             }
             if (onlineUserDto != null && org.springframework.util.StringUtils.hasText(token)) {
-                authentication = this.getAuthentication(token, onlineUserDto);
+                userDetails = this.getAuthentication(token, onlineUserDto);
             }
         }
-        return authentication;
+        return (JwtUserDto) userDetails;
     }
 
     /**
@@ -228,8 +225,8 @@ public class SysBaseAPI implements ISysBaseAPI {
      * @param onlineUserDto /
      * @return /
      */
-    private Authentication getAuthentication(String token, OnlineUserDTO onlineUserDto) {
-        Authentication authentication = null;
+    private UserDetails getAuthentication(String token, OnlineUserDTO onlineUserDto) {
+        UserDetails userDetails = null;
         Claims claims = tokenProvider.getClaims(token);
         String userType = claims.getIssuer();
         String username = claims.getSubject();
@@ -239,15 +236,11 @@ public class SysBaseAPI implements ISysBaseAPI {
 //            User principal = new User(claims.getSubject(), "******", new ArrayList<>());
 //            authentication = new UsernamePasswordAuthenticationToken(principal, "");
             UserDetailsService userDetailsService = SpringUtil.getBean("userDetailsService");
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        }//短信
-        else if (cn.hutool.core.util.StrUtil.equals(UserTypeEnum.SMS.getValue(), userType)) {
-            authentication = new SmsCodeAuthenticationToken(username);
+            userDetails = userDetailsService.loadUserByUsername(username);
         }
         // Token 续期
         this.checkRenewal(token, onlineUserDto);
-        return authentication;
+        return userDetails;
     }
 
     /**

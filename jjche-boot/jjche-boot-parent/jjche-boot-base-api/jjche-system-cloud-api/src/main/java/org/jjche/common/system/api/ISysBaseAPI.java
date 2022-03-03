@@ -2,6 +2,7 @@ package org.jjche.common.system.api;
 
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.ServiceNameConstant;
+import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.system.api.factory.SysBaseAPIFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,6 @@ public interface ISysBaseAPI extends CommonAPI {
     void logoutOnlineUser(@RequestParam("token") String token);
 
     @Override
-    @GetMapping("/api/sys/base/getCheckAuthentication")
-    Object getCheckAuthentication();
+    @GetMapping("/api/sys/base/getUserDetails")
+    JwtUserDto getUserDetails();
 }

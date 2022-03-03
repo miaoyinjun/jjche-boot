@@ -1,4 +1,4 @@
-package org.jjche.security.security;
+package org.jjche.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

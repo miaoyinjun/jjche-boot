@@ -1,13 +1,13 @@
 package org.jjche.cloud.loader;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.log.StaticLog;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
 import com.alibaba.nacos.api.exception.NacosException;
 import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.cloud.config.GatewayRoutersConfiguration;
 import org.jjche.cloud.config.RouterDataType;
 import org.jjche.common.base.BaseMap;
@@ -28,7 +28,6 @@ import java.util.concurrent.Executor;
  * @author : zyf
  * @date :2020-11-10
  */
-@Slf4j
 @Component
 @DependsOn({"gatewayRoutersConfiguration"})
 public class DynamicRouteLoader {
@@ -48,7 +47,7 @@ public class DynamicRouteLoader {
 
     public void init(BaseMap baseMap) {
         String dataType = GatewayRoutersConfiguration.DATA_TYPE;
-        log.info("初始化路由，dataType：" + dataType);
+        StaticLog.info("初始化路由，dataType：" + dataType);
         if (RouterDataType.nacos.toString().endsWith(dataType)) {
             loadRoutesByNacos();
         }
@@ -76,20 +75,20 @@ public class DynamicRouteLoader {
         List<RouteDefinition> routes = Lists.newArrayList();
         configService = createConfigService();
         if (configService == null) {
-            log.warn("initConfigService fail");
+            StaticLog.warn("initConfigService fail");
         }
         try {
             String configInfo = configService.getConfig(GatewayRoutersConfiguration.DATA_ID, GatewayRoutersConfiguration.ROUTE_GROUP, GatewayRoutersConfiguration.DEFAULT_TIMEOUT);
             if (StrUtil.isNotBlank(configInfo)) {
-                log.info("获取网关当前配置:\r\n{}", configInfo);
+                StaticLog.info("获取网关当前配置:\r\n{}", configInfo);
                 routes = JSON.parseArray(configInfo, RouteDefinition.class);
             }
         } catch (NacosException e) {
-            log.error("初始化网关路由时发生错误", e);
+            StaticLog.error("初始化网关路由时发生错误", e);
             e.printStackTrace();
         }
         for (RouteDefinition definition : routes) {
-            log.info("update route : {}", definition.toString());
+            StaticLog.info("update route : {}", definition.toString());
             dynamicRouteService.add(definition);
         }
         dynamicRouteByNacosListener(GatewayRoutersConfiguration.DATA_ID, GatewayRoutersConfiguration.ROUTE_GROUP);
@@ -106,20 +105,20 @@ public class DynamicRouteLoader {
             configService.addListener(dataId, group, new Listener() {
                 @Override
                 public void receiveConfigInfo(String configInfo) {
-                    log.info("进行网关更新:\n\r{}", configInfo);
-                    List<RouteDefinition> definitionList = JSON.parseArray(configInfo, RouteDefinition.class);
-                    log.info("update route : {}", definitionList.toString());
+                    StaticLog.info("进行网关更新:\n\r{}", configInfo);
+                    List<MyRouteDefinition> definitionList = JSON.parseArray(configInfo, MyRouteDefinition.class);
+                    StaticLog.info("update route : {}", definitionList.toString());
                     dynamicRouteService.updateList(definitionList);
                 }
 
                 @Override
                 public Executor getExecutor() {
-                    log.info("getExecutor\n\r");
+                    StaticLog.info("getExecutor\n\r");
                     return null;
                 }
             });
         } catch (Exception e) {
-            log.error("从nacos接收动态路由配置出错!!!", e);
+            StaticLog.error("从nacos接收动态路由配置出错!!!", e);
         }
     }
 
@@ -135,7 +134,7 @@ public class DynamicRouteLoader {
             properties.setProperty("namespace", GatewayRoutersConfiguration.NAMESPACE);
             return configService = NacosFactory.createConfigService(properties);
         } catch (Exception e) {
-            log.error("创建ConfigService异常", e);
+            StaticLog.error("创建ConfigService异常", e);
             return null;
         }
     }
