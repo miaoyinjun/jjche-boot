@@ -1,6 +1,6 @@
 package org.jjche.swagger.conf;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.jjche.common.constant.SwaggerConstant;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -17,8 +17,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 2020-07-09
  */
 public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
-    @Value("/sba/api")
-    private String swaggerDocumentPath;
 
     /**
      * {@inheritDoc}
@@ -32,7 +30,7 @@ public class SwaggerWebMvcConfigurer implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler(swaggerDocumentPath + "/**")
+        registry.addResourceHandler(SwaggerConstant.SWAGGER_2_URL_PREFIX + "/**")
                 .addResourceLocations("classpath:/META-INF/resources/");
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }

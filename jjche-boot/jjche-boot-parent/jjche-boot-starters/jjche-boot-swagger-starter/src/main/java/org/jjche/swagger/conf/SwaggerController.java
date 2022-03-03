@@ -1,5 +1,6 @@
 package org.jjche.swagger.conf;
 
+import org.jjche.common.constant.SwaggerConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @since 2020-07-09
  */
 @Controller
-@RequestMapping("/sba/api")
+@RequestMapping(SwaggerConstant.SWAGGER_2_URL_PREFIX)
 public class SwaggerController {
     /**
      * <p>resource</p>
