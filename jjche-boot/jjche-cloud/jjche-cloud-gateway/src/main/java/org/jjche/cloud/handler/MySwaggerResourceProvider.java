@@ -63,7 +63,7 @@ public class MySwaggerResourceProvider implements SwaggerResourcesProvider {
                 swaggerResource.setSwaggerVersion("2.0");
                 swaggerResource.setName(instance);
                 //Swagger排除监控
-                if (instance.indexOf("jeecg-cloud-monitor") == -1) {
+                if (instance.indexOf("jjche-cloud-monitor") == -1) {
                     resources.add(swaggerResource);
                 }
             }

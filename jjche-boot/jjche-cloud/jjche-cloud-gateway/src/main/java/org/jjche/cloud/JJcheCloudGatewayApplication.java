@@ -10,7 +10,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import javax.annotation.Resource;
 
 /**
- * @author jeecg
+ * <p>
+ * 入口
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-03-03
  */
 @EnableFeignClients
 @EnableDiscoveryClient
