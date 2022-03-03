@@ -1,14 +1,5 @@
 knife4j:
   enable: true
-  #  documents:
-  #    -
-  #      group: default
-  #      name: 前端手册
-  #      locations: classpath*:markdown/frontend/*
-  #    -
-  #      group: default
-  #      name: 后端手册
-  #      locations: classpath*:markdown/backend/*
   setting:
     enableSwaggerModels: false
     enableVersion: true

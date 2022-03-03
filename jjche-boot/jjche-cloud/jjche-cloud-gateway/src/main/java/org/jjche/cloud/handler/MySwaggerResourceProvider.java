@@ -1,6 +1,7 @@
 package org.jjche.cloud.handler;
 
 import cn.hutool.log.StaticLog;
+import org.jjche.common.constant.SwaggerConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -20,10 +21,6 @@ import java.util.Set;
 @Component
 @Primary
 public class MySwaggerResourceProvider implements SwaggerResourcesProvider {
-    /**
-     * swagger2默认的url后缀
-     */
-    private static final String SWAGGER2URL = "/v2/api-docs";
 
     /**
      * 网关路由
@@ -54,7 +51,7 @@ public class MySwaggerResourceProvider implements SwaggerResourcesProvider {
         Set<String> dealed = new HashSet<>();
         routeHosts.forEach(instance -> {
             // 拼接url
-            String url = "/" + instance.toLowerCase() + SWAGGER2URL;
+            String url = "/" + instance.toLowerCase() + SwaggerConstant.SWAGGER_2_URL;
             if (!dealed.contains(url)) {
                 dealed.add(url);
                 StaticLog.info(" Gateway add SwaggerResource: {}", url);
