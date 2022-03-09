@@ -27,6 +27,8 @@ feign:
     response:
       enabled: false
 jjche:
+  cloud:
+    enable: true
   swagger:
     ignore-filter-path:
       - /error.*
