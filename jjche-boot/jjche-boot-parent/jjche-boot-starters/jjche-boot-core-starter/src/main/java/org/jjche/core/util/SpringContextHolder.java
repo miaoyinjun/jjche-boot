@@ -84,11 +84,20 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * </p>
      *
      * @return 是否生产环境
-     * @author miaoyj
-     * @since 2020-09-29
      */
     public static boolean isProd() {
         return getEnvActive().equalsIgnoreCase(EnvConstant.PROD);
+    }
+
+    /**
+     * <p>
+     * 是否cloud环境
+     * </p>
+     *
+     * @return /
+     */
+    public static boolean isCloud() {
+        return getProperties("jjche.cloud.enable", Boolean.FALSE, Boolean.class);
     }
 
     /**
@@ -97,8 +106,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * </p>
      *
      * @return 环境名称
-     * @author miaoyj
-     * @since 2020-09-29
      */
     public static String getEnvActive() {
         String[] profiles = applicationContext.getEnvironment().getActiveProfiles();
@@ -146,6 +153,9 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         T result = defaultValue;
         try {
             result = getBean(Environment.class).getProperty(property, requiredType);
+            if (result == null) {
+                result = defaultValue;
+            }
         } catch (Exception ignored) {
         }
         return result;
@@ -198,8 +208,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * </p>
      *
      * @param application main
-     * @author miaoyj
-     * @since 2020-11-26
      */
     public static void appLog(ConfigurableApplicationContext application) {
         try {
