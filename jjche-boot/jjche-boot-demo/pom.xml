@@ -23,10 +23,10 @@
     </properties>
 
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.jjcheframework.boot</groupId>-->
-        <!--            <artifactId>jjche-boot-system-starter</artifactId>-->
-        <!--        </dependency>-->
+        <!--                <dependency>-->
+        <!--                    <groupId>org.jjcheframework.boot</groupId>-->
+        <!--                    <artifactId>jjche-boot-system-starter</artifactId>-->
+        <!--                </dependency>-->
 
         <!--spring-cloud-->
         <dependency>

@@ -20,13 +20,13 @@ import javax.annotation.Resource;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication
-public class JJcheCloudGatewayApplication implements CommandLineRunner {
+public class JjcheCloudGatewayApplication implements CommandLineRunner {
 
     @Resource
     private DynamicRouteLoader dynamicRouteLoader;
 
     public static void main(String[] args) {
-        SpringApplication.run(JJcheCloudGatewayApplication.class, args);
+        SpringApplication.run(JjcheCloudGatewayApplication.class, args);
     }
 
     /**
