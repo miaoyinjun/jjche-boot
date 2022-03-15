@@ -1,12 +1,12 @@
 package org.jjche.system.modules.security.rest;
 
+import cn.hutool.core.collection.CollUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.OnlineUserDTO;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
-import org.jjche.common.util.PageUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
@@ -52,7 +52,7 @@ public class OnlineController extends BaseController {
     @PreAuthorize("@el.check('online:list')")
     public ResultWrapper query(String filter, PageParam pageable) {
         List<OnlineUserDTO> onlineUserDTOS = sysBaseAPI.getAll(filter);
-        List<OnlineUserDTO> list = PageUtil.startPage(onlineUserDTOS, (int) pageable.getPageIndex(), (int) pageable.getPageSize());
+        List<OnlineUserDTO> list = CollUtil.page((int) pageable.getPageIndex() - 1, (int) pageable.getPageSize(), onlineUserDTOS);
         MyPage myPage = new MyPage();
         myPage.setRecords(list);
         myPage.setTotal(onlineUserDTOS.size());

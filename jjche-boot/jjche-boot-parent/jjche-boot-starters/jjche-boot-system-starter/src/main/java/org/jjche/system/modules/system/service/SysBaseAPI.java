@@ -3,6 +3,8 @@ package org.jjche.system.modules.system.service;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.log.StaticLog;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -63,15 +65,18 @@ public class SysBaseAPI implements ISysBaseAPI {
     public void save(JwtUserDto jwtUserDto, String token, HttpServletRequest request) {
         String dept = jwtUserDto.getUser().getDept().getName();
         String ip = ServletUtil.getClientIP(request);
-        String browser = HttpUtil.getBrowser(request);
-        String address = StrUtil.getCityInfo(ip);
+        String address = HttpUtil.getCityInfo(ip);
         OnlineUserDTO onlineUserDto = null;
         try {
             String publicKey = properties.getRsa().getPublicKey();
             String encryptToken = RsaUtils.encryptBypPublicKey(publicKey, token);
-            String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
-            String os = HttpUtil.getUserAgent(request).getOs().getName();
-            onlineUserDto = new OnlineUserDTO(jwtUserDto.getUsername(), jwtUserDto.getUser().getNickName(), dept, browser, userAgent, os, ip, address, encryptToken, new Date(), new Date());
+            String ua = request.getHeader(HttpHeaders.USER_AGENT);
+            UserAgent userAgent = UserAgentUtil.parse(ua);
+            String browser = HttpUtil.getBrowser(userAgent);
+            String os = HttpUtil.getOs(userAgent);
+            onlineUserDto = new OnlineUserDTO(jwtUserDto.getUsername(),
+                    jwtUserDto.getUser().getNickName(), dept, browser, ua, os, ip, address,
+                    encryptToken, new Date(), new Date());
         } catch (Exception e) {
             StaticLog.error(e.getMessage(), e);
         }
