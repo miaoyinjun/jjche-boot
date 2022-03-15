@@ -1,7 +1,7 @@
 package org.jjche.log.biz.service;
 
 
-import org.jjche.log.biz.beans.LogRecord;
+import org.jjche.common.dto.LogRecordDTO;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface ILogRecordService {
      *
      * @param logRecord 日志实体
      */
-    void record(LogRecord logRecord);
+    void record(LogRecordDTO logRecord);
 
     /**
      * 返回最多100条记录
@@ -28,7 +28,7 @@ public interface ILogRecordService {
      * @param bizKey 日志前缀+bizNo
      * @return 操作日志列表
      */
-    List<LogRecord> queryLog(String bizKey);
+    List<LogRecordDTO> queryLog(String bizKey);
 
     /**
      * 返回最多100条记录
@@ -36,5 +36,5 @@ public interface ILogRecordService {
      * @param bizNo 业务标识
      * @return 操作日志列表
      */
-    List<LogRecord> queryLogByBizNo(String bizNo);
+    List<LogRecordDTO> queryLogByBizNo(String bizNo);
 }

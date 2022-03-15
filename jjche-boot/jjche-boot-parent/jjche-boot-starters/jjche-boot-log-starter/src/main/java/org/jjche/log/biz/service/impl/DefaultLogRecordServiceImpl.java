@@ -2,7 +2,7 @@ package org.jjche.log.biz.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.log.StaticLog;
-import org.jjche.log.biz.beans.LogRecord;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.log.biz.service.ILogRecordService;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class DefaultLogRecordServiceImpl implements ILogRecordService {
      * {@inheritDoc}
      */
     @Override
-    public void record(LogRecord logRecord) {
+    public void record(LogRecordDTO logRecord) {
         StaticLog.info("【logRecord】log={}", logRecord);
     }
 
@@ -30,7 +30,7 @@ public class DefaultLogRecordServiceImpl implements ILogRecordService {
      * {@inheritDoc}
      */
     @Override
-    public List<LogRecord> queryLog(String bizKey) {
+    public List<LogRecordDTO> queryLog(String bizKey) {
         return CollUtil.newArrayList();
     }
 
@@ -38,7 +38,7 @@ public class DefaultLogRecordServiceImpl implements ILogRecordService {
      * {@inheritDoc}
      */
     @Override
-    public List<LogRecord> queryLogByBizNo(String bizNo) {
+    public List<LogRecordDTO> queryLogByBizNo(String bizNo) {
         return CollUtil.newArrayList();
     }
 }

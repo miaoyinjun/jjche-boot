@@ -11,6 +11,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.dto.OnlineUserDTO;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.system.api.ISysBaseAPI;
@@ -19,6 +20,9 @@ import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.SecurityUtils;
+import org.jjche.log.modules.logging.domain.LogDO;
+import org.jjche.log.modules.logging.mapstruct.LogRecordMapStruct;
+import org.jjche.log.modules.logging.service.LogService;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
@@ -30,6 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -54,6 +59,10 @@ public class SysBaseAPI implements ISysBaseAPI {
     private JwtUserService jwtUserService;
     @Autowired
     private TokenProvider tokenProvider;
+    @Resource
+    private LogService logService;
+    @Resource
+    private LogRecordMapStruct logRecordMapper;
 
     /**
      * 保存在线用户信息
@@ -219,6 +228,12 @@ public class SysBaseAPI implements ISysBaseAPI {
             }
         }
         return (JwtUserDto) userDetails;
+    }
+
+    @Override
+    public void recordLog(LogRecordDTO logRecord) {
+        LogDO log = logRecordMapper.toLog(logRecord);
+        logService.saveLog(log);
     }
 
     /**

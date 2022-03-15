@@ -1,6 +1,7 @@
 package org.jjche.common.api;
 
 import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.LogRecordDTO;
 
 public interface CommonAPI {
 
@@ -21,4 +22,6 @@ public interface CommonAPI {
      * @return /
      */
     JwtUserDto getUserDetails();
+
+    void recordLog(LogRecordDTO logRecord);
 }

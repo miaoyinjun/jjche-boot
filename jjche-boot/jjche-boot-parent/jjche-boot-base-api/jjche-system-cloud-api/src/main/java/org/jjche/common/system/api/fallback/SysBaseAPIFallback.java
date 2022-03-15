@@ -3,6 +3,7 @@ package org.jjche.common.system.api.fallback;
 import cn.hutool.log.StaticLog;
 import lombok.Setter;
 import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.system.api.ISysBaseAPI;
 
 /**
@@ -26,5 +27,10 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     public JwtUserDto getUserDetails() {
         StaticLog.error("认证失败 {}", cause);
         return null;
+    }
+
+    @Override
+    public void recordLog(LogRecordDTO logRecord) {
+        StaticLog.error("保存日志失败 {}", cause);
     }
 }

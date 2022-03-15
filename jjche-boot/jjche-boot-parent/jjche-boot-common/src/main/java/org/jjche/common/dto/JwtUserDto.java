@@ -2,6 +2,7 @@ package org.jjche.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.jjche.common.pojo.DataScope;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,12 +18,13 @@ import java.util.stream.Collectors;
  * @since 2018-11-23
  */
 @Data
+@NoArgsConstructor
 public class JwtUserDto implements UserDetails {
 
-    private final UserVO user;
+    private UserVO user = null;
 
-    private final DataScope dataScope;
-    private final List<SimpleGrantedAuthorityDTO> authorities;
+    private DataScope dataScope = null;
+    private List<SimpleGrantedAuthorityDTO> authorities = null;
 
     /**
      * <p>Constructor for JwtUserDto.</p>

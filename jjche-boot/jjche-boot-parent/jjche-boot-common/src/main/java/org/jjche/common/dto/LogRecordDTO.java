@@ -1,4 +1,4 @@
-package org.jjche.log.biz.beans;
+package org.jjche.common.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -22,7 +23,7 @@ import java.sql.Timestamp;
 @Data
 @SuperBuilder
 @NoArgsConstructor
-public class LogRecord {
+public class LogRecordDTO implements Serializable {
 
     /**
      * 是否保存参数

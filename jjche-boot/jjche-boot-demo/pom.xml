@@ -23,16 +23,17 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jjcheframework.boot</groupId>
-            <artifactId>jjche-boot-system-starter</artifactId>
-        </dependency>
+        <!--spring-boot-->
+        <!--                <dependency>-->
+        <!--                    <groupId>org.jjcheframework.boot</groupId>-->
+        <!--                    <artifactId>jjche-boot-system-starter</artifactId>-->
+        <!--                </dependency>-->
 
         <!--spring-cloud-->
-        <!--        <dependency>-->
-        <!--            <groupId>org.jjcheframework.boot</groupId>-->
-        <!--            <artifactId>jjche-boot-cloud-starter</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.jjcheframework.boot</groupId>
+            <artifactId>jjche-boot-cloud-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
