@@ -1,4 +1,10 @@
+server:
+  port: 8800
 spring:
+  profiles:
+    active: ${JJCHE_WEB_PROFILES_ACTIVE:dev}
+  application:
+    name: "@project.artifactId@"
   cloud:
     #配置Bus id(远程推送事件)
     bus:
@@ -17,20 +23,3 @@ spring:
         group: DEFAULT_GROUP
         # 配置文件后缀
         file-extension: yml
-        #获取的${spring.application.name}是@project.name@
-#        shared-configs[0]:
-#          data-id: ${spring.application.name}-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
-#          group: ${spring.cloud.nacos.config.group}
-#          refresh: true
-feign:
-  compression:
-    request:
-      enabled: false
-    response:
-      enabled: false
-jjche:
-  cloud:
-    enable: true
-  swagger:
-    ignore-filter-path:
-      - /error.*
