@@ -18,5 +18,6 @@
         <module>jjche-cloud-system</module>
         <module>jjche-cloud-gateway</module>
         <module>jjche-cloud-monitor</module>
+        <module>jjche-cloud-demo-provider</module>
     </modules>
 </project>

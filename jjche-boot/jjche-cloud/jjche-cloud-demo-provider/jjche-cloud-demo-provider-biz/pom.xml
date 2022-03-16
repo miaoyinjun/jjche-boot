@@ -3,17 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>jjche-boot-demo</name>
-    <description>jjche-boot演示</description>
-
-    <groupId>org.jjche.demo</groupId>
-    <artifactId>jjche-boot-demo</artifactId>
+    <artifactId>jjche-cloud-demo-provider-biz</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.1-SNAPSHOT</version>
 
     <parent>
-        <groupId>org.jjcheframework.boot</groupId>
-        <artifactId>jjche-boot-parent</artifactId>
+        <groupId>org.jjche.demo</groupId>
+        <artifactId>jjche-cloud-demo-provider</artifactId>
         <version>1.1.1-SNAPSHOT</version>
     </parent>
 
@@ -23,21 +18,14 @@
     </properties>
 
     <dependencies>
-        <!--spring-boot-->
-        <!--                <dependency>-->
-        <!--                    <groupId>org.jjcheframework.boot</groupId>-->
-        <!--                    <artifactId>jjche-boot-system-starter</artifactId>-->
-        <!--                </dependency>-->
-
+        <dependency>
+            <groupId>org.jjche.demo</groupId>
+            <artifactId>jjche-cloud-demo-provider-api</artifactId>
+        </dependency>
         <!--spring-cloud-->
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-cloud-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jjche.demo</groupId>
-            <artifactId>jjche-cloud-demo-provider-api</artifactId>
         </dependency>
 
         <dependency>
@@ -48,7 +36,7 @@
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.parent.name}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -91,32 +79,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <!--     远程nexus仓库 -->
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>maven-releases</id>-->
-    <!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
-    <!--        </repository>-->
-    <!--        <repository>-->
-    <!--            <id>maven-snapshots</id>-->
-    <!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
-    <!--            <snapshots>-->
-    <!--                <updatePolicy>always</updatePolicy>-->
-    <!--            </snapshots>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
-    <!--    <pluginRepositories>-->
-    <!--        <pluginRepository>-->
-    <!--            <id>maven-releases</id>-->
-    <!--            <url>http://1.1.1.1:8081/repository/maven-releases</url>-->
-    <!--        </pluginRepository>-->
-    <!--        <pluginRepository>-->
-    <!--            <id>maven-snapshots</id>-->
-    <!--            <url>http://1.1.1.1:8081/repository/maven-snapshots</url>-->
-    <!--            <snapshots>-->
-    <!--                <updatePolicy>always</updatePolicy>-->
-    <!--            </snapshots>-->
-    <!--        </pluginRepository>-->
-    <!--    </pluginRepositories>-->
 </project>
