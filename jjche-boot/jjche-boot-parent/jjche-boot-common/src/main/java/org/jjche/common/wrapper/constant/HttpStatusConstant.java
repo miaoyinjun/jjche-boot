@@ -1,4 +1,4 @@
-package org.jjche.core.wrapper.constant;
+package org.jjche.common.wrapper.constant;
 
 /**
  * <p>

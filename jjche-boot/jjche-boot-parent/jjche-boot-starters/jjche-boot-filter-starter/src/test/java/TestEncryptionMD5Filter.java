@@ -5,7 +5,7 @@ import cn.hutool.json.JSONUtil;
 import controller.TestFilterController;
 import org.jjche.common.constant.FilterEncryptionConstant;
 import org.jjche.common.enums.FilterEncryptionEnum;
-import org.jjche.core.wrapper.enums.ResultWrapperCodeEnum;
+import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
 import org.jjche.filter.property.FilterEncryptionProperties;
 import org.jjche.filter.util.EncryptionUtil;
 import org.junit.jupiter.api.Test;

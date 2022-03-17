@@ -1,8 +1,8 @@
 import cn.hutool.http.HttpStatus;
 import controller.CoreTestController;
 import dto.LoginDTO;
-import org.jjche.core.wrapper.enums.ResultWrapperCodeEnum;
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.common.response.response.ResultWrapper;
+import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

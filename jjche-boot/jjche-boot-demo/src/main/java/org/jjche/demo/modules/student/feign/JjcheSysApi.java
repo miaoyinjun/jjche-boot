@@ -1,6 +1,6 @@
 package org.jjche.demo.modules.student.feign;
 
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.demo.modules.student.api.dto.StudentDTO;
 import org.jjche.demo.modules.student.api.vo.StudentVO;
 import org.jjche.security.annotation.rest.AnonymousPostMapping;

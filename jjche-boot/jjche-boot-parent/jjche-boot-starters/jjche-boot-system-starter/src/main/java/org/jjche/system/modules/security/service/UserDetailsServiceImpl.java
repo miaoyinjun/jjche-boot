@@ -2,7 +2,7 @@ package org.jjche.system.modules.security.service;
 
 import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.UserTypeEnum;
-import org.jjche.core.wrapper.constant.HttpStatusConstant;
+import org.jjche.common.wrapper.constant.HttpStatusConstant;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.service.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

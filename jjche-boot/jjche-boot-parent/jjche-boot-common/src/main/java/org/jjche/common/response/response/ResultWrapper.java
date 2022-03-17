@@ -1,11 +1,11 @@
-package org.jjche.core.wrapper.response;
+package org.jjche.common.response.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.jjche.common.pojo.AbstractResultWrapper;
-import org.jjche.core.wrapper.constant.HttpStatusConstant;
-import org.jjche.core.wrapper.enums.ResultWrapperCodeEnum;
+import org.jjche.common.wrapper.constant.HttpStatusConstant;
+import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
 
 import java.io.Serializable;
 

@@ -1,6 +1,6 @@
-package org.jjche.core.wrapper.enums;
+package org.jjche.common.wrapper.enums;
 
-import org.jjche.core.wrapper.constant.HttpStatusConstant;
+import org.jjche.common.wrapper.constant.HttpStatusConstant;
 
 /**
  * <p>

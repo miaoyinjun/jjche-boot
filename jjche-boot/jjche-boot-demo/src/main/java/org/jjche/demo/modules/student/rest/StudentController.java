@@ -9,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.BaseDTO;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
+import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.wrapper.response.ResultWrapper;
 import org.jjche.demo.constant.ApiVersion;
 import org.jjche.demo.modules.student.api.dto.StudentDTO;
 import org.jjche.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
@@ -51,7 +51,7 @@ public class StudentController extends BaseController {
      * <p>create.</p>
      *
      * @param dto a {@link StudentDTO} object.
-     * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
+     * @return a {@link ResultWrapper} object.
      */
     @PostMapping
     @ApiOperation(value = "学生-新增", tags = ApiVersion.VERSION_1_0_0)
@@ -70,7 +70,7 @@ public class StudentController extends BaseController {
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
+     * @return a {@link ResultWrapper} object.
      */
     @DeleteMapping
     @ApiOperation(value = "学生-删除", tags = ApiVersion.VERSION_1_0_0)
@@ -89,7 +89,7 @@ public class StudentController extends BaseController {
      * <p>update.</p>
      *
      * @param dto a {@link StudentDTO} object.
-     * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
+     * @return a {@link ResultWrapper} object.
      */
     @PutMapping
     @ApiOperation(value = "学生-修改", tags = ApiVersion.VERSION_1_0_0)
@@ -108,7 +108,7 @@ public class StudentController extends BaseController {
      * <p>getById.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
+     * @return a {@link ResultWrapper} object.
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "学生-查询单个", tags = ApiVersion.VERSION_1_0_0)
@@ -135,7 +135,7 @@ public class StudentController extends BaseController {
      * @param page   a {@link org.jjche.mybatis.param.PageParam} object.
      * @param query  a {@link StudentQueryCriteriaDTO} object.
      * @param course a {@link CourseEnum} object.
-     * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
+     * @return a {@link ResultWrapper} object.
      */
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)

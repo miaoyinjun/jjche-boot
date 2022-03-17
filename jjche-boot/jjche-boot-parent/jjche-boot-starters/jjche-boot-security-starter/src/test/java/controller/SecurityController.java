@@ -3,7 +3,7 @@ package controller;
 import dto.LoginDTO;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.enums.UserTypeEnum;
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.security.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

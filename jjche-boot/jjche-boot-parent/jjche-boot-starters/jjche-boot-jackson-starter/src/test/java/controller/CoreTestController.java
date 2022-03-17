@@ -1,6 +1,6 @@
 package controller;
 
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.common.response.response.ResultWrapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;

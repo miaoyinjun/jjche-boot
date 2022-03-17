@@ -5,9 +5,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.wrapper.response.ResultWrapper;
 import org.jjche.demo.constant.ProviderApiVersion;
 import org.jjche.demo.modules.provider.api.dto.ProviderQueryCriteriaDTO;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
@@ -44,7 +44,7 @@ public class ProviderController extends BaseController implements ProviderApi {
      * @param page   a {@link org.jjche.mybatis.param.PageParam} object.
      * @param query  a {@link ProviderQueryCriteriaDTO} object.
      * @param course a {@link ProviderCourseEnum} object.
-     * @return a {@link org.jjche.core.wrapper.response.ResultWrapper} object.
+     * @return a {@link ResultWrapper} object.
      */
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ProviderApiVersion.VERSION_1_0_0)

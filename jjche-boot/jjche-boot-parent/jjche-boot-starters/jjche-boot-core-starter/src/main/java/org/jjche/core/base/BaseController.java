@@ -3,11 +3,11 @@ package org.jjche.core.base;
 import cn.hutool.http.HttpStatus;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.jjche.core.wrapper.constant.HttpStatusConstant;
-import org.jjche.core.wrapper.response.ResultWrapperBadRequest;
-import org.jjche.core.wrapper.response.ResultWrapperForbidden;
-import org.jjche.core.wrapper.response.ResultWrapperInternalServerError;
-import org.jjche.core.wrapper.response.ResultWrapperUnauthorized;
+import org.jjche.common.response.response.ResultWrapperBadRequest;
+import org.jjche.common.response.response.ResultWrapperForbidden;
+import org.jjche.common.response.response.ResultWrapperInternalServerError;
+import org.jjche.common.response.response.ResultWrapperUnauthorized;
+import org.jjche.common.wrapper.constant.HttpStatusConstant;
 import org.springframework.validation.annotation.Validated;
 
 @ApiResponses({

@@ -1,8 +1,8 @@
-package org.jjche.core.wrapper.response;
+package org.jjche.common.response.response;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.jjche.core.wrapper.constant.HttpStatusConstant;
+import org.jjche.common.wrapper.constant.HttpStatusConstant;
 
 
 /**
