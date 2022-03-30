@@ -1,4 +1,4 @@
-package org.jjche.mybatis.param;
+package org.jjche.common.param;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -9,9 +9,9 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.EqualsAndHashCode;
 import org.jjche.common.annotation.IgnoreSwaggerParameter;
-import org.jjche.core.permission.DataPermissionFieldFilterable;
-import org.jjche.core.permission.DataPermissionFieldMetaSetter;
-import org.jjche.core.permission.DataPermissionFieldResultVO;
+import org.jjche.common.permission.DataPermissionFieldFilterable;
+import org.jjche.common.permission.DataPermissionFieldMetaSetter;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 
 import java.util.List;
 import java.util.function.Function;

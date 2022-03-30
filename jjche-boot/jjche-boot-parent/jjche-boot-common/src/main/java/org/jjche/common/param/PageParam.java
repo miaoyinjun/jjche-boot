@@ -1,4 +1,4 @@
-package org.jjche.mybatis.param;
+package org.jjche.common.param;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import org.jjche.common.annotation.IgnoreSwaggerParameter;
 import org.jjche.common.constant.PageConstant;
-import org.jjche.core.permission.DataPermissionFieldResultVO;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 
 import java.util.List;
 

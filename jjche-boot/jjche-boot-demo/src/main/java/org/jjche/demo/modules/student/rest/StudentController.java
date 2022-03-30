@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.BaseDTO;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
@@ -19,8 +21,6 @@ import org.jjche.demo.modules.student.api.enums.CourseEnum;
 import org.jjche.demo.modules.student.api.vo.StudentVO;
 import org.jjche.demo.modules.student.service.StudentService;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
-import org.jjche.mybatis.param.MyPage;
-import org.jjche.mybatis.param.PageParam;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -132,7 +132,7 @@ public class StudentController extends BaseController {
     /**
      * <p>pageQuery.</p>
      *
-     * @param page   a {@link org.jjche.mybatis.param.PageParam} object.
+     * @param page   a {@link PageParam} object.
      * @param query  a {@link StudentQueryCriteriaDTO} object.
      * @param course a {@link CourseEnum} object.
      * @return a {@link ResultWrapper} object.

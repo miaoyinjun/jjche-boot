@@ -1,4 +1,6 @@
-package org.jjche.core.permission;
+package org.jjche.common.permission;
+
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 
 import java.util.List;
 

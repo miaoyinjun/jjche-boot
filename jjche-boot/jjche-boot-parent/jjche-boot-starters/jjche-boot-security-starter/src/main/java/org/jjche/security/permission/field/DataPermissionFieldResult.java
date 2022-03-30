@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.jjche.common.permission.DataPermissionFieldFilterable;
+import org.jjche.common.permission.DataPermissionFieldMetaSetter;
 import org.jjche.common.util.ClassCompareUtil;
 import org.jjche.common.util.StrUtil;
-import org.jjche.core.permission.DataPermissionFieldFilterable;
-import org.jjche.core.permission.DataPermissionFieldMetaSetter;
-import org.jjche.core.permission.DataPermissionFieldResultVO;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 
 import java.lang.reflect.Field;
 import java.sql.Timestamp;

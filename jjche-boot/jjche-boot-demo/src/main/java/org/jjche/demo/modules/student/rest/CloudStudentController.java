@@ -3,17 +3,18 @@ package org.jjche.demo.modules.student.rest;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.demo.modules.student.api.dto.StudentDTO;
-import org.jjche.demo.modules.student.api.enums.CourseEnum;
-import org.jjche.demo.modules.student.api.vo.StudentVO;
-import org.jjche.demo.modules.student.feign.JjcheSysApi;
-import org.jjche.security.annotation.rest.AnonymousGetMapping;
-import org.jjche.security.annotation.rest.AnonymousPostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
+import org.jjche.demo.modules.provider.api.vo.ProviderVO;
+import org.jjche.demo.modules.provider.feign.ProviderApi;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
@@ -30,21 +31,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class CloudStudentController extends BaseController {
 
-    private JjcheSysApi jjcheSysApi;
-
-    @ApiOperation(value = "服务端")
-    @AnonymousPostMapping(value = "server")
-    public ResultWrapper<StudentVO> server(@RequestBody StudentDTO studentDTO) {
-        StudentVO studentVO = new StudentVO();
-        studentVO.setCourse(studentDTO.getCourse());
-        return ResultWrapper.ok(studentVO);
-    }
+    private final ProviderApi providerApi;
 
     @ApiOperation(value = "调用端")
-    @AnonymousGetMapping(value = "client")
-    public ResultWrapper<StudentVO> client() {
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setCourse(CourseEnum.AUDIO);
-        return jjcheSysApi.server(studentDTO);
+    @GetMapping(value = "client")
+    public ResultWrapper<MyPage<ProviderVO>> client(PageParam page,
+                                                    @ApiParam(value = "课程")
+                                                    @RequestParam(required = false) ProviderCourseEnum course,
+                                                    @RequestParam(required = false) String name) {
+        return providerApi.page(page.getPageIndex(), page.getPageSize(), course, name);
     }
 }

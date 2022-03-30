@@ -1,4 +1,4 @@
-package org.jjche.core.permission;
+package org.jjche.common.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

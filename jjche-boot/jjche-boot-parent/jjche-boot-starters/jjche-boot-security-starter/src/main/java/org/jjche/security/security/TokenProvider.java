@@ -71,7 +71,6 @@ public class TokenProvider implements InitializingBean {
     /**
      * 初步检测Token
      *
-     * @param request /
      * @return /
      */
     public String resolveToken() {

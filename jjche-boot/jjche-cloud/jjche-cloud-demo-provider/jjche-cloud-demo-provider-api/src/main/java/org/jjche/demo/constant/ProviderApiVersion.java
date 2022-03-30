@@ -14,7 +14,7 @@ public interface ProviderApiVersion {
     /**
      * feingName {@value}
      */
-    String FEIGN_NAME = "cloud-provider";
+    String FEIGN_NAME = "jjche-cloud-demo-provider-biz";
 
     /**
      * 版本1.0.0 {@value}

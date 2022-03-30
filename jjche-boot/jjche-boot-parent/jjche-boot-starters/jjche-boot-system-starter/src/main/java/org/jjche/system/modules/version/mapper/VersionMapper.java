@@ -3,9 +3,9 @@ package org.jjche.system.modules.version.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.mybatis.base.MyBaseMapper;
-import org.jjche.mybatis.param.MyPage;
-import org.jjche.mybatis.param.PageParam;
 import org.jjche.system.modules.version.domain.VersionDO;
 import org.jjche.system.modules.version.vo.VersionVO;
 

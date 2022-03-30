@@ -5,6 +5,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.constant.EnvConstant;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
@@ -12,8 +14,6 @@ import org.jjche.core.util.SpringContextHolder;
 import org.jjche.gen.modules.generator.domain.ColumnInfoDO;
 import org.jjche.gen.modules.generator.service.GenConfigService;
 import org.jjche.gen.modules.generator.service.GeneratorService;
-import org.jjche.mybatis.param.MyPage;
-import org.jjche.mybatis.param.PageParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 

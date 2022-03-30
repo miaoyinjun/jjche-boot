@@ -1,4 +1,4 @@
-package org.jjche.core.permission;
+package org.jjche.common.permission;
 
 import java.util.function.Function;
 

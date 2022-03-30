@@ -21,19 +21,21 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since 2022-01-25
  */
 @Component
-@FeignClient(contextId = "sysBaseRemoteApi", value = ServiceNameConstant.SYSTEM_SERVICE,
+@FeignClient(contextId = "sysBaseRemoteApi",
+        path = "/api/sys/base/",
+        value = ServiceNameConstant.SYSTEM_SERVICE,
         fallbackFactory = SysBaseAPIFallbackFactory.class)
 public interface ISysBaseAPI extends CommonAPI {
 
     @Override
-    @GetMapping("/api/sys/base/logoutOnlineUser")
+    @GetMapping("logoutOnlineUser")
     void logoutOnlineUser(@RequestParam("token") String token);
 
     @Override
-    @GetMapping("/api/sys/base/getUserDetails")
+    @GetMapping("getUserDetails")
     JwtUserDto getUserDetails();
 
     @Override
-    @PostMapping("/api/sys/base/recordLog")
+    @PostMapping("recordLog")
     void recordLog(@RequestBody LogRecordDTO logRecord);
 }
