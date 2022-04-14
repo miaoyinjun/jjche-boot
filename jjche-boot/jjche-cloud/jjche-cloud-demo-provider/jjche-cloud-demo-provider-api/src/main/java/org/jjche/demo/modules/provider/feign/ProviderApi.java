@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(path = "/api/providers/",
         value = ProviderApiVersion.FEIGN_NAME,
-        fallbackFactory = ProviderApiFallback.class)
+        fallbackFactory = ProviderApiFallback.class
+)
 public interface ProviderApi {
 
     @GetMapping

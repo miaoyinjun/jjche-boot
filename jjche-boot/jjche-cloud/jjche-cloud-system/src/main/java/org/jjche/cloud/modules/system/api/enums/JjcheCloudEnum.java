@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jjche.common.enums.IBaseEnum;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -20,26 +19,13 @@ import java.util.Map;
  */
 @Getter
 @AllArgsConstructor
-public enum JjcheCloudEnum {
+public enum JjcheCloudEnum implements IBaseEnum {
 
     /**
      * 测试
      */
     TEST("1", "测试"),
     ;
-
-    /**
-     * Constant <code>MAPPINGS</code>
-     */
-    private static final Map<String, JjcheCloudEnum> MAPPINGS;
-
-    static {
-        Map<String, JjcheCloudEnum> temp = new HashMap<String, JjcheCloudEnum>();
-        for (JjcheCloudEnum courseEnum : values()) {
-            temp.put(courseEnum.value, courseEnum);
-        }
-        MAPPINGS = Collections.unmodifiableMap(temp);
-    }
 
     @JsonValue
     @EnumValue
@@ -48,16 +34,13 @@ public enum JjcheCloudEnum {
 
     /**
      * <p>
-     * 根据index获取枚举
+     * 根据code获取枚举
      * </p>
      *
-     * @param index a Integer.
      * @return 枚举
-     * @author miaoyj
-     * @since 2020-07-09
      */
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static JjcheCloudEnum resolve(String index) {
-        return MAPPINGS.get(index);
+    public static JjcheCloudEnum resolve(String code) {
+        return Stream.of(JjcheCloudEnum.values()).filter(targetEnum -> targetEnum.value.equals(code)).findFirst().orElse(null);
     }
 }

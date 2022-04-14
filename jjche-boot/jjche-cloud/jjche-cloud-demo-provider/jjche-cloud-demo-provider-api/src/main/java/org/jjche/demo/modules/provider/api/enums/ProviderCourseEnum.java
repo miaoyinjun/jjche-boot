@@ -5,10 +5,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jjche.common.enums.IBaseEnum;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -21,7 +20,7 @@ import java.util.Map;
  */
 @Getter
 @AllArgsConstructor
-public enum ProviderCourseEnum {
+public enum ProviderCourseEnum implements IBaseEnum {
 
     /**
      * 图文
@@ -41,19 +40,6 @@ public enum ProviderCourseEnum {
     URL("105", "外链"),
     ;
 
-    /**
-     * Constant <code>MAPPINGS</code>
-     */
-    private static final Map<String, ProviderCourseEnum> MAPPINGS;
-
-    static {
-        Map<String, ProviderCourseEnum> temp = new HashMap<String, ProviderCourseEnum>();
-        for (ProviderCourseEnum courseEnum : values()) {
-            temp.put(courseEnum.value, courseEnum);
-        }
-        MAPPINGS = Collections.unmodifiableMap(temp);
-    }
-
     @JsonValue
     @EnumValue
     private final String value;
@@ -61,16 +47,13 @@ public enum ProviderCourseEnum {
 
     /**
      * <p>
-     * 根据index获取枚举
+     * 根据code获取枚举
      * </p>
      *
-     * @param index a Integer.
      * @return 枚举
-     * @author miaoyj
-     * @since 2020-07-09
      */
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static ProviderCourseEnum resolve(String index) {
-        return MAPPINGS.get(index);
+    public static ProviderCourseEnum resolve(String code) {
+        return Stream.of(ProviderCourseEnum.values()).filter(targetEnum -> targetEnum.value.equals(code)).findFirst().orElse(null);
     }
 }

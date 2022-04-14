@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -20,7 +18,7 @@ import java.util.Map;
  */
 @Getter
 @AllArgsConstructor
-public enum FileType {
+public enum FileType implements IBaseEnum {
 
     /**
      * 图片
@@ -44,35 +42,19 @@ public enum FileType {
     OTHER("other", "其他"),
     ;
 
-    /**
-     * Constant <code>MAPPINGS</code>
-     */
-    private static final Map<String, FileType> MAPPINGS;
-
-    static {
-        Map<String, FileType> temp = new HashMap<String, FileType>();
-        for (FileType courseEnum : values()) {
-            temp.put(courseEnum.value, courseEnum);
-        }
-        MAPPINGS = Collections.unmodifiableMap(temp);
-    }
-
     @JsonValue
     private final String value;
     private final String desc;
 
     /**
      * <p>
-     * 根据index获取枚举
+     * 根据code获取枚举
      * </p>
      *
-     * @param index a Integer.
      * @return 枚举
-     * @author miaoyj
-     * @since 2020-07-09
      */
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-    public static FileType resolve(String index) {
-        return MAPPINGS.get(index);
+    public static FileType resolve(String code) {
+        return Stream.of(FileType.values()).filter(targetEnum -> targetEnum.value.equals(code)).findFirst().orElse(null);
     }
 }
