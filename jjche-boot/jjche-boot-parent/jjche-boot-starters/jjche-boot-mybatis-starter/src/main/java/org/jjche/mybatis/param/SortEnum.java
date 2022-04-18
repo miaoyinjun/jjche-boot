@@ -1,7 +1,6 @@
 package org.jjche.mybatis.param;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jjche.common.enums.IBaseEnum;
@@ -27,7 +26,6 @@ public enum SortEnum implements IBaseEnum {
     ID_ASC("id ASC", "id正序"),
     ;
 
-    @JsonValue
     private final String value;
     private final String desc;
 

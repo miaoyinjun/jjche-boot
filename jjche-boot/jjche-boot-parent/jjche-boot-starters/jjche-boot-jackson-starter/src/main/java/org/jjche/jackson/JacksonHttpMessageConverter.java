@@ -15,6 +15,8 @@ import de.codecentric.boot.admin.server.utils.jackson.InstanceIdMixin;
 import de.codecentric.boot.admin.server.utils.jackson.RegistrationDeserializer;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.annotation.JacksonAllowNull;
+import org.jjche.common.enums.IBaseEnum;
+import org.jjche.common.json.BaseEnumSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -63,9 +65,9 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addSerializer(Registration.class, ToStringSerializer.instance);
         simpleModule.addDeserializer(Registration.class, new RegistrationDeserializer());
-        //@JsonSerialize替代枚举出参
-//        JsonSerializer<IBaseEnum> serializer = new BaseEnumSerializer();
-//        simpleModule.addSerializer(IBaseEnum.class, serializer);
+        //枚举自定义出参
+        JsonSerializer<IBaseEnum> serializer = new BaseEnumSerializer();
+        simpleModule.addSerializer(IBaseEnum.class, serializer);
         objectMapper.registerModule(simpleModule);
     }
 

@@ -2,7 +2,6 @@ package org.jjche.cloud.modules.system.api.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jjche.common.enums.IBaseEnum;
@@ -27,7 +26,6 @@ public enum JjcheCloudEnum implements IBaseEnum {
     TEST("1", "测试"),
     ;
 
-    @JsonValue
     @EnumValue
     private final String value;
     private final String desc;

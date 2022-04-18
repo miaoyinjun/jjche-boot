@@ -2,7 +2,6 @@ package org.jjche.demo.modules.student.api.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jjche.common.enums.IBaseEnum;
@@ -40,7 +39,6 @@ public enum CourseEnum implements IBaseEnum {
     URL("105", "外链"),
     ;
 
-    @JsonValue
     @EnumValue
     private final String value;
     private final String desc;

@@ -1,7 +1,6 @@
 package org.jjche.common.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -42,7 +41,6 @@ public enum FileType implements IBaseEnum {
     OTHER("other", "其他"),
     ;
 
-    @JsonValue
     private final String value;
     private final String desc;
 
