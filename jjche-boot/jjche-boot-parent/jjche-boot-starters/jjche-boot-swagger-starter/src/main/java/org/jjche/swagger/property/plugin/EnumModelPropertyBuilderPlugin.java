@@ -2,7 +2,8 @@ package org.jjche.swagger.property.plugin;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
-import org.jjche.swagger.property.constant.EnumConstant;
+import org.jjche.common.constant.EnumConstant;
+import org.jjche.common.enums.IBaseEnum;
 import org.springframework.util.ReflectionUtils;
 import springfox.documentation.builders.ModelPropertyBuilder;
 import springfox.documentation.spi.DocumentationType;
@@ -89,7 +90,7 @@ public class EnumModelPropertyBuilderPlugin implements ModelPropertyBuilderPlugi
             String joinText = ReflectionUtils.getField(descField, builder)
                     + "(" + String.join(";", displayValues) + ")";
 
-            builder.description(joinText).type(context.getResolver().resolve(Integer.class));
+            builder.description(joinText).type(context.getResolver().resolve(IBaseEnum.class));
         }
     }
 }

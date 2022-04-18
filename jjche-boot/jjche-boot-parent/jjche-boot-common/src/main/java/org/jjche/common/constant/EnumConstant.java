@@ -1,4 +1,4 @@
-package org.jjche.swagger.property.constant;
+package org.jjche.common.constant;
 
 /**
  * <p>

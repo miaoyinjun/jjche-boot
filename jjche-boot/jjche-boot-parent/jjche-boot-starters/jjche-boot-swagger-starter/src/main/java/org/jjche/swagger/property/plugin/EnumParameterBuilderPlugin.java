@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.classmate.ResolvedType;
 import com.google.common.base.Joiner;
-import org.jjche.swagger.property.constant.EnumConstant;
+import org.jjche.common.constant.EnumConstant;
 import org.springframework.util.ReflectionUtils;
 import springfox.documentation.builders.OperationBuilder;
 import springfox.documentation.builders.ParameterBuilder;
