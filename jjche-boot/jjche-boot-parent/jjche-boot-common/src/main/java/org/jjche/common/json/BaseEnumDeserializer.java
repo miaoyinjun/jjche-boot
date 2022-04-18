@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.jjche.common.constant.EnumConstant;
 import org.jjche.common.enums.IBaseEnum;
 import org.springframework.beans.BeanUtils;
@@ -31,8 +32,14 @@ public class BaseEnumDeserializer extends JsonDeserializer<IBaseEnum> {
 
         String enumClassName = findPropertyType.getName();
         if (annotation == null || annotation.shape() != JsonFormat.Shape.OBJECT) {
-            JSONObject enumJsonObject = JSONUtil.parseObj(node.toString());
-            String value = enumJsonObject.getStr(EnumConstant.VALUE);
+            String value = null;
+            //feign返回枚举时
+            if (node instanceof ObjectNode) {
+                JSONObject enumJsonObject = JSONUtil.parseObj(node.toString());
+                value = enumJsonObject.getStr(EnumConstant.VALUE);
+            } else {
+                value = node.textValue();
+            }
             String[] values = {value};
             valueOf = ClassUtil.invoke(enumClassName, "resolve", values);
         }
