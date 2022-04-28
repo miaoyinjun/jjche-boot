@@ -1,12 +1,14 @@
 package org.jjche.demo.modules.provider.feign;
 
 import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.demo.constant.ProviderApiVersion;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
 import org.jjche.demo.modules.provider.feign.fallback.ProviderApiFallback;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,8 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ProviderApi {
 
     @GetMapping
-    ResultWrapper<MyPage<ProviderVO>> page(@RequestParam Long pageIndex,
-                                           @RequestParam Long pageSize,
+    ResultWrapper<MyPage<ProviderVO>> page(@SpringQueryMap PageParam page,
                                            @RequestParam(required = false) ProviderCourseEnum course,
                                            @RequestParam(required = false) String name);
 }

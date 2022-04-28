@@ -87,15 +87,15 @@ public class FeignConfig {
         return new SpringFormEncoder(new SpringEncoder(messageConverters));
     }
 
-//    @Bean
+    //    @Bean
 //    public Encoder feignEncoder() {
 //        return new SpringEncoder(feignHttpMessageConverter());
 //    }
 //
 //    @Bean
-public Decoder feignDecoder() {
-    return new SpringDecoder(feignHttpMessageConverter());
-}
+    public Decoder feignDecoder() {
+        return new SpringDecoder(feignHttpMessageConverter());
+    }
 
     /**
      * 设置解码器为fastjson

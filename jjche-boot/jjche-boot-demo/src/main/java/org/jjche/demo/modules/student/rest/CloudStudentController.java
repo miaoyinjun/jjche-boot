@@ -13,6 +13,7 @@ import org.jjche.core.base.BaseController;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
 import org.jjche.demo.modules.provider.feign.ProviderApi;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -35,10 +36,10 @@ public class CloudStudentController extends BaseController {
 
     @ApiOperation(value = "调用端")
     @GetMapping(value = "client")
-    public ResultWrapper<MyPage<ProviderVO>> client(PageParam page,
+    public ResultWrapper<MyPage<ProviderVO>> client(@SpringQueryMap PageParam page,
                                                     @ApiParam(value = "课程")
                                                     @RequestParam(required = false) ProviderCourseEnum course,
                                                     @RequestParam(required = false) String name) {
-        return providerApi.page(page.getPageIndex(), page.getPageSize(), course, name);
+        return providerApi.page(page, course, name);
     }
 }

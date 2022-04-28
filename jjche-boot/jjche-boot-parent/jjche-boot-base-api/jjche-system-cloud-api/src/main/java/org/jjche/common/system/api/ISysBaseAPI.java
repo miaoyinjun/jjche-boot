@@ -24,8 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(contextId = "sysBaseRemoteApi",
         path = "/api/sys/base/",
         value = ServiceNameConstant.SYSTEM_SERVICE,
-        fallbackFactory = SysBaseAPIFallbackFactory.class,
-        configuration = MyFeignClientsConfiguration.class)
+        fallbackFactory = SysBaseAPIFallbackFactory.class)
 public interface ISysBaseAPI extends CommonAPI {
 
     @Override

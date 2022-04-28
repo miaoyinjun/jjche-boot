@@ -39,14 +39,10 @@ public class ProviderController extends BaseController implements ProviderApi {
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ProviderApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    public ResultWrapper<MyPage<ProviderVO>> page(@RequestParam Long pageIndex,
-                                                  @RequestParam Long pageSize,
+    public ResultWrapper<MyPage<ProviderVO>> page(PageParam page,
                                                   @ApiParam(value = "课程")
                                                   @RequestParam(required = false) ProviderCourseEnum course,
                                                   @RequestParam(required = false) String name) {
-        PageParam page = new PageParam();
-        page.setPageIndex(pageIndex);
-        page.setPageSize(pageSize);
         return ResultWrapper.ok(providerService.page(page, course, name));
     }
 
