@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author miaoyj
  * @since 2022-03-16
  */
-@FeignClient(path = "/api/providers/",
+@FeignClient(path = "/api/cloud-provider/students/",
         value = ProviderApiVersion.FEIGN_NAME,
         fallbackFactory = ProviderApiFallback.class
 )

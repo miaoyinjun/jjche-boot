@@ -1,3 +1,4 @@
+jjche.core.api.path.prefix: /demo
 spring:
   application:
     name: "@project.name@"

@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import crudStudent from '@/api/student/api'
+import crudStudent from '@/api/demo/student'
 import CRUD, { crud, form, header, presenter } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -167,7 +167,7 @@ export default {
   cruds() {
     return CRUD({
       title: '用户',
-      url: 'students',
+      url: 'demo/students',
       idField: 'id',
       crudMethod: { ...crudStudent }
     })
