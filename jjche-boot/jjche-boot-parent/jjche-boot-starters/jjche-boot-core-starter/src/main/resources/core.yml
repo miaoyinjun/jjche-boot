@@ -46,3 +46,26 @@ jjche:
     alarm:
       ding-talk:
         url: https://oapi.dingtalk.com/robot/send
+  # 文件存储路径
+  tool:
+    file:
+      mac:
+        path: ./file/
+        avatar: ./avatar/
+      linux:
+        path: ./file/
+        avatar: ./avatar/
+      windows:
+        path: C:\admin\file\
+        avatar: C:\admin\avatar\
+      # 文件大小 /M
+      maxSize: 100
+      avatarMaxSize: 5
+    #七牛云
+    qiniu:
+      # 文件大小 /M
+      max-size: 15
+    mail:
+      #邮箱验证码有效时间/秒
+      code:
+        expiration: 300

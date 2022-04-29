@@ -1,4 +1,4 @@
-package org.jjche.tool.modules.tool.config;
+package org.jjche.core.fileconf;
 
 import cn.hutool.log.StaticLog;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;

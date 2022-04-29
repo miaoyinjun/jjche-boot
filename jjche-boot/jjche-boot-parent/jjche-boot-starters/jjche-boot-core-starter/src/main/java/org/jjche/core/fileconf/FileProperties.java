@@ -1,4 +1,4 @@
-package org.jjche.tool.modules.tool.config;
+package org.jjche.core.fileconf;
 
 import lombok.Data;
 import org.jjche.common.constant.ElAdminConstant;

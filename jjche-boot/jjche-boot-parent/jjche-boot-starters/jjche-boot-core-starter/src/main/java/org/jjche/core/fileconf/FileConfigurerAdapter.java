@@ -1,4 +1,4 @@
-package org.jjche.tool.modules.tool.config;
+package org.jjche.core.fileconf;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
