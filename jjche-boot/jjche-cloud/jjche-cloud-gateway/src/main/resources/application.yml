@@ -22,6 +22,8 @@ spring:
       # 懒加载Sentinel Dashboard菜单
       eager: false
     gateway:
+      enabled: true
+      api-prefix: /api
       discovery:
         locator:
           enabled: true

@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author miaoyj
  * @since 2022-03-16
  */
-@FeignClient(path = "/api/cloud-provider/students/",
+@FeignClient(path = ProviderApiVersion.API_PATH_PREFIX,
         value = ProviderApiVersion.FEIGN_NAME,
         fallbackFactory = ProviderApiFallback.class
 )
 public interface ProviderApi {
 
-    @GetMapping
+    @GetMapping(ProviderApiVersion.API_STUDENTS)
     ResultWrapper<MyPage<ProviderVO>> page(@SpringQueryMap PageParam page,
                                            @RequestParam(required = false) ProviderCourseEnum course,
                                            @RequestParam(required = false) String name);

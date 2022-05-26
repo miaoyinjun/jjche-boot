@@ -1,5 +1,6 @@
 package org.jjche.cloud.loader;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import com.alibaba.fastjson.JSON;
@@ -11,14 +12,20 @@ import com.google.common.collect.Lists;
 import org.jjche.cloud.config.GatewayRoutersConfiguration;
 import org.jjche.cloud.config.RouterDataType;
 import org.jjche.common.base.BaseMap;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.gateway.filter.FilterDefinition;
+import org.springframework.cloud.gateway.filter.factory.StripPrefixGatewayFilterFactory;
+import org.springframework.cloud.gateway.handler.predicate.PredicateDefinition;
 import org.springframework.cloud.gateway.route.InMemoryRouteDefinitionRepository;
 import org.springframework.cloud.gateway.route.RouteDefinition;
+import org.springframework.cloud.gateway.support.NameUtils;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
@@ -31,6 +38,9 @@ import java.util.concurrent.Executor;
 @Component
 @DependsOn({"gatewayRoutersConfiguration"})
 public class DynamicRouteLoader {
+    @Value("${spring.cloud.gateway.api-prefix}")
+    private String prefix;
+
     private InMemoryRouteDefinitionRepository repository;
     private DynamicRouteService dynamicRouteService;
     private ConfigService configService;
@@ -88,6 +98,24 @@ public class DynamicRouteLoader {
             e.printStackTrace();
         }
         for (RouteDefinition definition : routes) {
+            //为匹配映射/api/**，增加/api前缀
+            List<PredicateDefinition> predicates = definition.getPredicates();
+            for (PredicateDefinition predicate : predicates) {
+                Map<String, String> args = predicate.getArgs();
+                for (String s : args.keySet()) {
+                    args.put(s, prefix + args.get(s));
+                }
+            }
+            //请求微服务时，删除/api前缀
+            List<FilterDefinition> filters = definition.getFilters();
+            FilterDefinition filter = new FilterDefinition();
+            //重新请求路径
+            filter.setName(NameUtils.normalizeFilterFactoryName(StripPrefixGatewayFilterFactory.class));
+            Map<String, String> map = MapUtil.newConcurrentHashMap();
+            map.put(StripPrefixGatewayFilterFactory.PARTS_KEY, "1");
+            filter.setArgs(map);
+            filters.add(filter);
+
             StaticLog.info("update route : {}", definition.toString());
             dynamicRouteService.add(definition);
         }

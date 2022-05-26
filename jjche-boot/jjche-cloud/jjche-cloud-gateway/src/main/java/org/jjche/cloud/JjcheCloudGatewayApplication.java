@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.gateway.discovery.GatewayDiscoveryClientAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import javax.annotation.Resource;
@@ -19,7 +20,11 @@ import javax.annotation.Resource;
  */
 @EnableFeignClients
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(
+        exclude = {
+                GatewayDiscoveryClientAutoConfiguration.class
+        }
+)
 public class JjcheCloudGatewayApplication implements CommandLineRunner {
 
     @Resource

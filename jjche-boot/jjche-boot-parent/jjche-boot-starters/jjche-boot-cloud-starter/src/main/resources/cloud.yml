@@ -31,6 +31,10 @@ feign:
 jjche:
   cloud:
     enable: true
+  core:
+    api:
+      path:
+        global-prefix: /
   swagger:
     ignore-filter-path:
       - /error.*

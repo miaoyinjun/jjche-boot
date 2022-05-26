@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Api(tags = "提供者")
 @ApiSupport(order = 1, author = "miaoyj")
-@ApiRestController("students")
+@ApiRestController(ProviderApiVersion.API_STUDENTS)
 @RequiredArgsConstructor
 public class ProviderController extends BaseController implements ProviderApi {
 

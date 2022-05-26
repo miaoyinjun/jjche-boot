@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Component
 @FeignClient(contextId = "sysBaseRemoteApi",
-        path = "/api/sys/base/",
+        path = "/sys/base/",
         value = ServiceNameConstant.SYSTEM_SERVICE,
         fallbackFactory = SysBaseAPIFallbackFactory.class)
 public interface ISysBaseAPI extends CommonAPI {

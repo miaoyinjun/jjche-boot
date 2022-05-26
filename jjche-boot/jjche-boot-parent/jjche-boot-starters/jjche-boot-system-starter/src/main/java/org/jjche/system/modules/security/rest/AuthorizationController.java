@@ -48,7 +48,7 @@ import javax.validation.Valid;
  */
 @SysRestController("auth")
 @RequiredArgsConstructor
-@Api(tags = "系统：系统授权接口")
+@Api(tags = "系统：系统授权")
 public class AuthorizationController extends BaseController {
     private final SecurityProperties properties;
     private final RedisService redisService;

@@ -21,6 +21,8 @@ import java.util.Set;
 @Component
 @Primary
 public class MySwaggerResourceProvider implements SwaggerResourcesProvider {
+    @Value("${spring.cloud.gateway.api-prefix}")
+    private String prefix;
 
     /**
      * 网关路由
@@ -51,7 +53,7 @@ public class MySwaggerResourceProvider implements SwaggerResourcesProvider {
         Set<String> dealed = new HashSet<>();
         routeHosts.forEach(instance -> {
             // 拼接url
-            String url = "/" + instance.toLowerCase() + SwaggerConstant.SWAGGER_2_URL;
+            String url = "/" + instance.toLowerCase() + prefix + SwaggerConstant.SWAGGER_2_URL;
             if (!dealed.contains(url)) {
                 dealed.add(url);
                 StaticLog.info(" Gateway add SwaggerResource: {}", url);

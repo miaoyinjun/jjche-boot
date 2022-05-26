@@ -17,6 +17,16 @@ public interface ProviderApiVersion {
     String FEIGN_NAME = "jjche-cloud-demo-provider-biz";
 
     /**
+     * api_path_prefix {@value}
+     */
+    String API_PATH_PREFIX = "/cloud-provider";
+
+    /**
+     * api_students {@value}
+     */
+    String API_STUDENTS = "students";
+
+    /**
      * 版本1.0.0 {@value}
      */
     String VERSION_1_0_0 = "1.0.0版本-20201126";
