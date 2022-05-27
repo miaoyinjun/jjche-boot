@@ -12,7 +12,7 @@ import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
-import org.jjche.demo.modules.provider.feign.ProviderApi;
+import org.jjche.demo.modules.provider.feign.ProviderStudentApi;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class CloudStudentController extends BaseController {
 
-    private final ProviderApi providerApi;
+    private final ProviderStudentApi providerStudentApi;
 
     @ApiOperation(value = "调用端")
     @GetMapping(value = "client")
@@ -40,6 +40,6 @@ public class CloudStudentController extends BaseController {
                                                     @ApiParam(value = "课程")
                                                     @RequestParam(required = false) ProviderCourseEnum course,
                                                     @RequestParam(required = false) String name) {
-        return providerApi.page(page, course, name);
+        return providerStudentApi.page(page, course, name);
     }
 }

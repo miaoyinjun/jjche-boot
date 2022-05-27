@@ -15,7 +15,7 @@ import org.jjche.core.base.BaseController;
 import org.jjche.demo.constant.ProviderApiVersion;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
-import org.jjche.demo.modules.provider.feign.ProviderApi;
+import org.jjche.demo.modules.provider.feign.ProviderStudentApi;
 import org.jjche.demo.modules.provider.service.ProviderService;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @ApiSupport(order = 1, author = "miaoyj")
 @ApiRestController(ProviderApiVersion.API_STUDENTS)
 @RequiredArgsConstructor
-public class ProviderController extends BaseController implements ProviderApi {
+public class ProviderStudentStudentController extends BaseController implements ProviderStudentApi {
 
     private final ProviderService providerService;
 

@@ -27,6 +27,11 @@ public interface ProviderApiVersion {
     String API_STUDENTS = "students";
 
     /**
+     * api_path_prefix_students {@value}
+     */
+    String API_PATH_PREFIX_STUDENTS = API_PATH_PREFIX + "/" + API_STUDENTS;
+
+    /**
      * 版本1.0.0 {@value}
      */
     String VERSION_1_0_0 = "1.0.0版本-20201126";

@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * <p>
- * ProviderApi
+ * ProviderStudentApi
  * </p>
  *
  * @author miaoyj
  * @since 2022-03-16
  */
-@FeignClient(path = ProviderApiVersion.API_PATH_PREFIX,
+@FeignClient(path = ProviderApiVersion.API_PATH_PREFIX_STUDENTS,
         value = ProviderApiVersion.FEIGN_NAME,
         fallbackFactory = ProviderApiFallback.class
 )
-public interface ProviderApi {
+public interface ProviderStudentApi {
 
-    @GetMapping(ProviderApiVersion.API_STUDENTS)
+    @GetMapping
     ResultWrapper<MyPage<ProviderVO>> page(@SpringQueryMap PageParam page,
                                            @RequestParam(required = false) ProviderCourseEnum course,
                                            @RequestParam(required = false) String name);
