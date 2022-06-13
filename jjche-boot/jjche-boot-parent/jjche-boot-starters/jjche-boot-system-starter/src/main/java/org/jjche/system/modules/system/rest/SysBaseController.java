@@ -1,6 +1,5 @@
 package org.jjche.system.modules.system.rest;
 
-import cn.hutool.log.StaticLog;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.JwtUserDto;
@@ -41,6 +40,5 @@ public class SysBaseController extends BaseController {
     @PostMapping("/recordLog")
     public void recordLog(@RequestBody LogRecordDTO logRecord) {
         this.sysBaseAPI.recordLog(logRecord);
-        StaticLog.warn("controller");
     }
 }

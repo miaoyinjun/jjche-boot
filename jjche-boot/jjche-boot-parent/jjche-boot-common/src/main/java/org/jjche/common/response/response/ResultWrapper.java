@@ -1,6 +1,5 @@
 package org.jjche.common.response.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.jjche.common.pojo.AbstractResultWrapper;
@@ -40,6 +39,11 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * 结果数据
      */
     private T data;
+
+    /**
+     * 成功
+     */
+    private boolean success;
 
     /**
      * Instantiates a new wrapper. default code=200
@@ -370,8 +374,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      *
      * @return code =200,true;否则 false.
      */
-    @JsonIgnore
-    public boolean success() {
+    public boolean getSuccess() {
         return ResultWrapperCodeEnum.SUCCESS.getCode() == this.code;
     }
 }
