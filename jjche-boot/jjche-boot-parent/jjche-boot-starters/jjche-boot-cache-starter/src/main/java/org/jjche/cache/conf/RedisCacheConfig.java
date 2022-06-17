@@ -23,8 +23,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.net.UnknownHostException;
-
 /**
  * <p>
  * redis配置
@@ -89,7 +87,7 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
     public RedisTemplate redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
         // 配置redisTemplate
-        RedisTemplate redisTemplate = new RedisTemplate();
+        RedisTemplate redisTemplate = new CustomRedisTemplate();
         initRedisTemplate(redisTemplate, lettuceConnectionFactory, true);
         return redisTemplate;
     }
@@ -134,8 +132,8 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
     @ConditionalOnMissingBean
     public StringRedisTemplate stringRedisTemplate(
-            RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
-        StringRedisTemplate template = new StringRedisTemplate();
+            RedisConnectionFactory redisConnectionFactory) {
+        StringRedisTemplate template = new CustomStringRedisTemplate();
         template.setKeySerializer(myStringSerializer);
         template.setConnectionFactory(redisConnectionFactory);
         template.setEnableTransactionSupport(true);
