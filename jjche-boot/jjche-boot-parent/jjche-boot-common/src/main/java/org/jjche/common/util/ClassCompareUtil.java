@@ -95,9 +95,17 @@ public class ClassCompareUtil {
                 String name = oldObjectPd.getName();
                 if (newObjectMap.containsKey(name)) {
                     Method readMethod = oldObjectPd.getReadMethod();
-                    String oldValue = Convert.toStr(readMethod.invoke(oldObject));
-                    String newValue = MapUtil.getStr(newObjectMap, name);
-                    if (!StrUtil.equalsIgnoreCase(oldValue, newValue)) {
+                    //新值
+                    String newValue = MapUtil.getStr(newObjectMap, name, "");
+
+                    //旧值
+                    String oldValue = "";
+                    Object oldValueObj = readMethod.invoke(oldObject);
+                    if (ObjectUtil.isNotNull(oldValueObj)) {
+                        oldValue = Convert.toStr(oldValueObj);
+                    }
+
+                    if (StrUtil.isNotBlank(name) && !StrUtil.equals(oldValue, newValue)) {
                         LogUpdateDetailDTO logUpdateDetailDTO = new LogUpdateDetailDTO();
                         logUpdateDetailDTO.setName(name);
                         logUpdateDetailDTO.setOldVal(oldValue);
