@@ -262,40 +262,40 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      */
     public static Map<String, Object> getUserHeaders(JwtUserDto userDetails) {
         Map<String, Object> httpHeaders = new HashMap<>();
+        if (userDetails != null) {
+            UserVO user = userDetails.getUser();
+            //用户基本信息
+            String userId = String.valueOf(user.getId());
+            String username = user.getUsername();
+            List<String> elPermissions = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            //数据范围
+            DataScope dataScope = userDetails.getDataScope();
+            //部门id
+            Set<Long> dataScopeDeptIds = dataScope.getDeptIds();
+            List<String> dataScopeDeptIdsList = new ArrayList<>();
+            if (CollUtil.isNotEmpty(dataScopeDeptIds)) {
+                dataScopeDeptIdsList = dataScopeDeptIds.stream().map(o -> String.valueOf(o)).collect(Collectors.toList());
+            }
+            List<String> dataScopeFinalDeptIdsList = dataScopeDeptIdsList;
+            //全部
+            String dataScopeIsAll = String.valueOf(dataScope.isAll());
+            //本人
+            String dataScopeIsSelf = String.valueOf(dataScope.isSelf());
+            //用户id
+            String dataScopeUserid = String.valueOf(dataScope.getUserId());
+            //用户名
+            String dataScopeUsername = dataScope.getUserName();
 
-        UserVO user = userDetails.getUser();
-        //用户基本信息
-        String userId = String.valueOf(user.getId());
-        String username = user.getUsername();
-        List<String> elPermissions = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
-        //数据范围
-        DataScope dataScope = userDetails.getDataScope();
-        //部门id
-        Set<Long> dataScopeDeptIds = dataScope.getDeptIds();
-        List<String> dataScopeDeptIdsList = new ArrayList<>();
-        if (CollUtil.isNotEmpty(dataScopeDeptIds)) {
-            dataScopeDeptIdsList = dataScopeDeptIds.stream().map(o -> String.valueOf(o)).collect(Collectors.toList());
+            httpHeaders.put(SecurityConstant.JWT_KEY_USER_ID, userId);
+            httpHeaders.put(SecurityConstant.JWT_KEY_USERNAME, username);
+            httpHeaders.put(SecurityConstant.JWT_KEY_PERMISSION, elPermissions);
+            //数据范围
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, dataScopeFinalDeptIdsList);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, dataScopeIsAll);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, dataScopeIsSelf);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
         }
-        List<String> dataScopeFinalDeptIdsList = dataScopeDeptIdsList;
-        //全部
-        String dataScopeIsAll = String.valueOf(dataScope.isAll());
-        //本人
-        String dataScopeIsSelf = String.valueOf(dataScope.isSelf());
-        //用户id
-        String dataScopeUserid = String.valueOf(dataScope.getUserId());
-        //用户名
-        String dataScopeUsername = dataScope.getUserName();
-
-        httpHeaders.put(SecurityConstant.JWT_KEY_USER_ID, userId);
-        httpHeaders.put(SecurityConstant.JWT_KEY_USERNAME, username);
-        httpHeaders.put(SecurityConstant.JWT_KEY_PERMISSION, elPermissions);
-        //数据范围
-        httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, dataScopeFinalDeptIdsList);
-        httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, dataScopeIsAll);
-        httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, dataScopeIsSelf);
-        httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
-        httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
-
         return httpHeaders;
     }
 }

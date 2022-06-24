@@ -54,7 +54,7 @@ public class GlobalAccessTokenFilter implements GlobalFilter, Ordered {
                 ServerHttpRequest mutableReq = exchange.getRequest().mutate().headers(headersConsumer).build();
                 exchange = exchange.mutate().request(mutableReq).build();
             } catch (Exception ex) {
-                StaticLog.error("调用验证用户接口错误{}", ex);
+                StaticLog.warn("调用验证用户接口错误{}", ex);
             }
         }
         return chain.filter(exchange);
