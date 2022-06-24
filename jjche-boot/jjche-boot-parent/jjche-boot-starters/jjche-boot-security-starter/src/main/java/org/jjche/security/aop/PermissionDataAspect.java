@@ -1,4 +1,4 @@
-package org.jjche.aop;
+package org.jjche.security.aop;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jjche.common.annotation.PermissionData;
 import org.jjche.common.annotation.QueryCriteria;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.context.ElPermissionContext;
 import org.jjche.common.dto.BaseQueryCriteriaDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
@@ -24,8 +25,6 @@ import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.security.permission.field.DataPermissionFieldResult;
-import org.jjche.system.modules.system.service.DataPermissionRuleService;
-import org.jjche.system.modules.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,9 +53,7 @@ import java.util.stream.Collectors;
 public class PermissionDataAspect {
 
     @Autowired
-    private DataPermissionRuleService sysDataPermissionRuleService;
-    @Autowired
-    private UserService userService;
+    private CommonAPI commonAPI;
     @Autowired(required = false)
     private IDataPermissionFieldUserAuthorityHelper userAuthorityHelper;
 
@@ -123,7 +120,7 @@ public class PermissionDataAspect {
 
             //获取用户数据规则配置
             List<PermissionDataRuleDTO> permissionDataRuleDTOList =
-                    sysDataPermissionRuleService.listByUserId(SecurityUtil.getUserId());
+                    commonAPI.listPermissionDataRuleByUserId(SecurityUtil.getUserId());
             if (CollUtil.isNotEmpty(permissionDataRuleDTOList)) {
                 String finalPermissionCode = permissionCode;
                 Predicate condition = (str) -> StrUtil.equals(String.valueOf(str), finalPermissionCode);

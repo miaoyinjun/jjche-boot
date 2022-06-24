@@ -14,6 +14,7 @@ import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.dto.OnlineUserDTO;
+import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.common.util.FileUtil;
@@ -63,7 +64,10 @@ public class SysBaseAPI implements ISysBaseAPI {
     @Resource
     private LogService logService;
     @Resource
+    private DataPermissionRuleService dataPermissionRuleService;
+    @Resource
     private LogRecordMapStruct logRecordMapper;
+
 
     /**
      * 保存在线用户信息
@@ -208,7 +212,6 @@ public class SysBaseAPI implements ISysBaseAPI {
 
     @Override
     public JwtUserDto getUserDetails() {
-        StaticLog.warn("getUserDetails");
         UserDetails userDetails = null;
         String token = tokenProvider.resolveToken();
         // 对于 Token 为空的不需要去查 Redis
@@ -241,6 +244,11 @@ public class SysBaseAPI implements ISysBaseAPI {
     public void recordLog(LogRecordDTO logRecord) {
         LogDO log = logRecordMapper.toLog(logRecord);
         logService.saveLog(log);
+    }
+
+    @Override
+    public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(Long userId) {
+        return dataPermissionRuleService.listByUserId(userId);
     }
 
     /**

@@ -4,10 +4,13 @@ import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.ServiceNameConstant;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
+import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.system.api.factory.SysBaseAPIFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -39,4 +42,8 @@ public interface ISysBaseAPI extends CommonAPI {
     @Override
     @PostMapping("recordLog")
     void recordLog(@RequestBody LogRecordDTO logRecord);
+
+    @Override
+    @GetMapping("listPermissionDataRuleByUserId")
+    List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(@RequestParam("userId") Long userId);
 }

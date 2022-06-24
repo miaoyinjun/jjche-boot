@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
+import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
@@ -11,6 +12,9 @@ import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * <p>
@@ -40,5 +44,10 @@ public class SysBaseController extends BaseController {
     @PostMapping("/recordLog")
     public void recordLog(@RequestBody LogRecordDTO logRecord) {
         this.sysBaseAPI.recordLog(logRecord);
+    }
+
+    @GetMapping("listPermissionDataRuleByUserId")
+    public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(@RequestParam("userId") Long userId) {
+        return sysBaseAPI.listPermissionDataRuleByUserId(userId);
     }
 }

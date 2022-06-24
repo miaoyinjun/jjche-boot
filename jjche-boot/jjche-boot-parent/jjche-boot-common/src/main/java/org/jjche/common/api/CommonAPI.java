@@ -2,6 +2,9 @@ package org.jjche.common.api;
 
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
+import org.jjche.common.dto.PermissionDataRuleDTO;
+
+import java.util.List;
 
 public interface CommonAPI {
 
@@ -33,5 +36,22 @@ public interface CommonAPI {
      */
     JwtUserDto getUserDetails(String token);
 
+    /**
+     * <p>
+     * 记录日志
+     * </p>
+     *
+     * @param logRecord /
+     */
     void recordLog(LogRecordDTO logRecord);
+
+    /**
+     * <p>
+     * 根据用户id查询
+     * </p>
+     *
+     * @param userId 用户id
+     * @return /
+     */
+    List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(Long userId);
 }

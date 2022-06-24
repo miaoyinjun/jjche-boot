@@ -27,7 +27,9 @@ import org.jjche.system.modules.system.api.dto.UserQueryCriteriaDTO;
 import org.jjche.system.modules.system.api.dto.UserResetPassDTO;
 import org.jjche.system.modules.system.api.vo.UserPassVO;
 import org.jjche.system.modules.system.domain.UserDO;
-import org.jjche.system.modules.system.service.*;
+import org.jjche.system.modules.system.service.RoleService;
+import org.jjche.system.modules.system.service.UserService;
+import org.jjche.system.modules.system.service.VerifyService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -54,8 +56,6 @@ public class UserController extends BaseController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
-    private final DataService dataService;
-    private final DeptService deptService;
     private final RoleService roleService;
     private final VerifyService verificationCodeService;
     private final SecurityProperties properties;
