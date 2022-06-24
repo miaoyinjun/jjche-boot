@@ -10,10 +10,10 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.response.response.ResultWrapper;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.system.modules.system.api.dto.RoleDTO;
 import org.jjche.system.modules.system.api.dto.RoleQueryCriteriaDTO;
@@ -198,7 +198,7 @@ public class RoleController extends BaseController {
      * @return /
      */
     private int getLevels(Integer level) {
-        List<Integer> levels = roleService.findByUsersId(SecurityUtils.getCurrentUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList());
+        List<Integer> levels = roleService.findByUsersId(SecurityUtil.getUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList());
         int min = Collections.min(levels);
         if (level != null) {
             Assert.isFalse(level < min, "权限不足，你的角色级别：" + min + "，低于操作的角色级别：" + level);

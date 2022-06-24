@@ -1,6 +1,7 @@
 package org.jjche.system.modules.security.service;
 
 import cn.hutool.core.lang.Assert;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.security.service.JwtUserService;
@@ -17,8 +18,8 @@ import org.springframework.stereotype.Service;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-05-11
  */
-@Service("smsUserDetailsService")
-@ConditionalOnMissingBean(type = "smsUserDetailsService")
+@Service(SecurityConstant.USER_DETAILS_SMS_SERVICE)
+@ConditionalOnMissingBean(type = SecurityConstant.USER_DETAILS_SMS_SERVICE)
 public class SmsUserDetailsServiceImpl extends AbstractUserDetailsService {
 
     /**

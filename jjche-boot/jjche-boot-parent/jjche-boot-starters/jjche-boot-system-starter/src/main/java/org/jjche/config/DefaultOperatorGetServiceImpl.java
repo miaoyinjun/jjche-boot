@@ -1,7 +1,7 @@
 package org.jjche.config;
 
 
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.beans.Operator;
 import org.jjche.log.biz.service.IOperatorGetService;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class DefaultOperatorGetServiceImpl implements IOperatorGetService {
     @Override
     public Operator getUser() {
         Operator operator = new Operator();
-        operator.setOperatorId(SecurityUtils.getCurrentOrDefaultUsername());
+        operator.setOperatorId(SecurityUtil.getUsernameOrDefaultUsername());
         return operator;
     }
 }

@@ -3,7 +3,7 @@ package org.jjche.system.modules.system.service;
 import cn.hutool.core.date.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.jjche.cache.service.RedisService;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.modules.logging.service.LogService;
 import org.jjche.system.modules.system.api.vo.DashboardChartVO;
 import org.jjche.system.modules.system.api.vo.DashboardCountVO;
@@ -73,7 +73,7 @@ public class DashboardService {
     public DashboardChartVO chart() {
         DashboardChartVO dashboardChartVO = new DashboardChartVO();
         dashboardChartVO.setLastTenVisitCount(logService.findLastTenDaysVisitCount(null));
-        dashboardChartVO.setLastTenUserVisitCount(logService.findLastTenDaysVisitCount(SecurityUtils.getCurrentUsername()));
+        dashboardChartVO.setLastTenUserVisitCount(logService.findLastTenDaysVisitCount(SecurityUtil.getUsername()));
 
         dashboardChartVO.setBrowserCount(logService.findByBrowser());
         dashboardChartVO.setOperatingSystemCount(logService.findByOs());

@@ -10,6 +10,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.dto.OnlineUserDTO;
@@ -19,7 +20,7 @@ import org.jjche.common.util.FileUtil;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.common.util.StrUtil;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.modules.logging.domain.LogDO;
 import org.jjche.log.modules.logging.mapstruct.LogRecordMapStruct;
 import org.jjche.log.modules.logging.service.LogService;
@@ -198,7 +199,7 @@ public class SysBaseAPI implements ISysBaseAPI {
 
     @Override
     public void logoutOnlineUser(String token) {
-        String username = SecurityUtils.getCurrentOrDefaultUsername();
+        String username = SecurityUtil.getUsernameOrDefaultUsername();
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
         String key = securityJwtProperties.getOnlineKey() + token;
         redisService.delete(key);
@@ -207,6 +208,7 @@ public class SysBaseAPI implements ISysBaseAPI {
 
     @Override
     public JwtUserDto getUserDetails() {
+        StaticLog.warn("getUserDetails");
         UserDetails userDetails = null;
         String token = tokenProvider.resolveToken();
         // 对于 Token 为空的不需要去查 Redis
@@ -231,6 +233,11 @@ public class SysBaseAPI implements ISysBaseAPI {
     }
 
     @Override
+    public JwtUserDto getUserDetails(String token) {
+        return null;
+    }
+
+    @Override
     public void recordLog(LogRecordDTO logRecord) {
         LogDO log = logRecordMapper.toLog(logRecord);
         logService.saveLog(log);
@@ -250,14 +257,14 @@ public class SysBaseAPI implements ISysBaseAPI {
         Claims claims = tokenProvider.getClaims(token);
         String userType = claims.getIssuer();
         String username = claims.getSubject();
+        UserDetailsService userDetailsService = null;
         //密码
-        if (cn.hutool.core.util.StrUtil.equals(UserTypeEnum.PWD.getValue(), userType)) {
-            //这里会自动调用对应userDetailService的loadUserByUsername方法，但需要传密码
-//            User principal = new User(claims.getSubject(), "******", new ArrayList<>());
-//            authentication = new UsernamePasswordAuthenticationToken(principal, "");
-            UserDetailsService userDetailsService = SpringUtil.getBean("userDetailsService");
-            userDetails = userDetailsService.loadUserByUsername(username);
+        if (StrUtil.equals(UserTypeEnum.PWD.getValue(), userType)) {
+            userDetailsService = SpringUtil.getBean(SecurityConstant.USER_DETAILS_PWD_SERVICE);
+        } else {
+            userDetailsService = SpringUtil.getBean(SecurityConstant.USER_DETAILS_SMS_SERVICE);
         }
+        userDetails = userDetailsService.loadUserByUsername(username);
         // Token 续期
         this.checkRenewal(token, onlineUserDto);
         return userDetails;

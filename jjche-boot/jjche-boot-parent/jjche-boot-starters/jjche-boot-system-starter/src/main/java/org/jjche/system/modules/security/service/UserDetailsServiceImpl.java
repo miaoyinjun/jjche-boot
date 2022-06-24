@@ -1,5 +1,6 @@
 package org.jjche.system.modules.security.service;
 
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.wrapper.constant.HttpStatusConstant;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-11-22
  */
-@Service("userDetailsService")
-@ConditionalOnMissingBean(type = "userDetailsService")
+@Service(SecurityConstant.USER_DETAILS_PWD_SERVICE)
+@ConditionalOnMissingBean(type = SecurityConstant.USER_DETAILS_PWD_SERVICE)
 public class UserDetailsServiceImpl extends AbstractUserDetailsService {
     /**
      * <p>Constructor for UserDetailsServiceImpl.</p>

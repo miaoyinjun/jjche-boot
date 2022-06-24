@@ -30,6 +30,12 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     }
 
     @Override
+    public JwtUserDto getUserDetails(String token) {
+        StaticLog.error("认证失败 {}", cause);
+        return null;
+    }
+
+    @Override
     public void recordLog(LogRecordDTO logRecord) {
         StaticLog.error("保存日志失败 {}", cause);
     }

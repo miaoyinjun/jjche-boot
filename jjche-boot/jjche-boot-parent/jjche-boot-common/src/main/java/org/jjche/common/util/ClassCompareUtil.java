@@ -87,12 +87,12 @@ public class ClassCompareUtil {
     private static List<LogUpdateDetailDTO> compareFields(Object oldObject, Object newObject) {
         List<LogUpdateDetailDTO> resultList = new ArrayList<>();
         try {
+            Map<String, String> newObjectMap = Convert.convert(Map.class, newObject);
             Class oldObjectClazz = oldObject.getClass();
             //获取object的所有属性
             PropertyDescriptor[] oldObjectPds = Introspector.getBeanInfo(oldObjectClazz, Object.class).getPropertyDescriptors();
             for (PropertyDescriptor oldObjectPd : oldObjectPds) {
                 String name = oldObjectPd.getName();
-                Map<String, String> newObjectMap = Convert.convert(Map.class, newObject);
                 if (newObjectMap.containsKey(name)) {
                     Method readMethod = oldObjectPd.getReadMethod();
                     String oldValue = Convert.toStr(readMethod.invoke(oldObject));

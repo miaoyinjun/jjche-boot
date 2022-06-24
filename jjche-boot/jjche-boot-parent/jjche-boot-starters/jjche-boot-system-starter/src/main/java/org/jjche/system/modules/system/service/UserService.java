@@ -20,7 +20,7 @@ import org.jjche.common.util.PwdCheckUtil;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.core.util.RequestHolder;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.param.SortEnum;
 import org.jjche.mybatis.util.MybatisUtil;
@@ -498,7 +498,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      */
     @Transactional(rollbackFor = Exception.class)
     public String updateAvatar(MultipartFile multipartFile) {
-        UserDO user = this.getByUsername(SecurityUtils.getCurrentUsername());
+        UserDO user = this.getByUsername(SecurityUtil.getUsername());
         String username = user.getUsername();
         String oldPath = user.getAvatarPath();
         File file = avatarService.uploadAvatar(multipartFile);

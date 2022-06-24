@@ -12,11 +12,11 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.pojo.DataScope;
-import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.common.util.RsaUtils;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.property.AdminProperties;
 import org.jjche.property.PasswordProperties;
@@ -142,9 +142,9 @@ public class UserController extends BaseController {
     @ApiOperation("修改用户：个人中心")
     @PutMapping(value = "center")
     public ResultWrapper center(@Validated @RequestBody UserDO resources) {
-        Boolean isUpdateOther = !resources.getId().equals(SecurityUtils.getCurrentUserId());
+        Boolean isUpdateOther = !resources.getId().equals(SecurityUtil.getUserId());
         Assert.isFalse(isUpdateOther, "不能修改他人资料");
-        String userName = SecurityUtils.getCurrentUsername();
+        String userName = SecurityUtil.getUsername();
         userService.updateCenter(resources, userName);
         return ResultWrapper.ok();
     }
@@ -164,7 +164,7 @@ public class UserController extends BaseController {
     @PreAuthorize("@el.check('user:del')")
     public ResultWrapper delete(@RequestBody Set<Long> ids) {
         for (Long id : ids) {
-            Integer currentLevel = Collections.min(roleService.findByUsersId(SecurityUtils.getCurrentUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList()));
+            Integer currentLevel = Collections.min(roleService.findByUsersId(SecurityUtil.getUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList()));
             Integer optLevel = Collections.min(roleService.findByUsersId(id).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList()));
             Assert.isFalse(currentLevel > optLevel, "角色权限不足，不能删除：" + userService.findById(id).getUsername());
         }
@@ -191,7 +191,7 @@ public class UserController extends BaseController {
         String newPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getNewPass());
         //密码格式验证
         userService.checkPwd(newPass);
-        UserVO user = userService.findByName(SecurityUtils.getCurrentUsername());
+        UserVO user = userService.findByName(SecurityUtil.getUsername());
         Boolean isOldPwdError = !passwordEncoder.matches(oldPass, user.getPassword());
         Assert.isFalse(isOldPwdError, "修改失败，旧密码错误");
         Boolean isNewPwdMatchOldPwd = passwordEncoder.matches(newPass, user.getPassword());
@@ -257,7 +257,7 @@ public class UserController extends BaseController {
     public ResultWrapper updateEmail(@PathVariable String code, @RequestBody UserDO user) throws Exception {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         String password = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), user.getPassword());
-        UserVO userDto = userService.findByName(SecurityUtils.getCurrentUsername());
+        UserVO userDto = userService.findByName(SecurityUtil.getUsername());
         Boolean isPwdError = !passwordEncoder.matches(password, userDto.getPassword());
         Assert.isFalse(isPwdError, "密码错误");
         verificationCodeService.validated(CodeEnum.EMAIL_RESET_EMAIL_CODE.getKey() + user.getEmail(), code);

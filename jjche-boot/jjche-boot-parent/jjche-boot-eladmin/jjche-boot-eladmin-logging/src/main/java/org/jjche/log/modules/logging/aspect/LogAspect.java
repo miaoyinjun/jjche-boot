@@ -20,7 +20,7 @@
 //import com.boot.admin.common.util.HttpUtil;
 //import com.boot.admin.common.util.ThrowableUtil;
 //import com.boot.admin.core.util.RequestHolder;
-//import com.boot.admin.core.util.SecurityUtils;
+//import com.boot.admin.core.util.SecurityUtil;
 //import io.lettuce.core.dynamic.support.ReflectionUtils;
 //import org.aspectj.lang.JoinPoint;
 //import org.aspectj.lang.ProceedingJoinPoint;
@@ -130,7 +130,7 @@
 //     */
 //    public String getUsername(String path, List<Object> argValues) {
 //        try {
-//            return SecurityUtils.getCurrentUsername();
+//            return SecurityUtil.getCurrentUsername();
 //        } catch (Exception e) {
 //            String loginPath = "login";
 //            if (loginPath.equals(path)) {

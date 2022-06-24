@@ -2,13 +2,11 @@ package org.jjche.security.config;
 
 import cn.hutool.core.collection.CollUtil;
 import org.jjche.common.context.ElPermissionContext;
-import org.jjche.core.util.SecurityUtils;
-import org.springframework.security.core.GrantedAuthority;
+import org.jjche.core.util.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * <p>ElPermissionConfig class.</p>
@@ -26,13 +24,13 @@ public class ElPermissionConfig {
      * @return a {@link java.lang.Boolean} object.
      */
     public Boolean check(String... permissions) {
-        List<String> permissionList = CollUtil.newArrayList(permissions);
+        Set<String> permissionList = CollUtil.newHashSet(permissions);
         if (CollUtil.isNotEmpty(permissionList)) {
             ElPermissionContext.set(CollUtil.getFirst(permissionList));
         }
         // 获取当前用户的所有权限
-        List<String> elPermissions = SecurityUtils.getCurrentUser().getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        Set<String> elPermissions = SecurityUtil.listPermission();
         // 判断当前用户的所有权限是否包含接口上定义的权限
-        return SecurityUtils.isAdmin() || Arrays.stream(permissions).anyMatch(elPermissions::contains);
+        return SecurityUtil.isAdmin() || Arrays.stream(permissions).anyMatch(elPermissions::contains);
     }
 }

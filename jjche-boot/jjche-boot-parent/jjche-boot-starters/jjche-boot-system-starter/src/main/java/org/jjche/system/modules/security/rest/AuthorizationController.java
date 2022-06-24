@@ -17,11 +17,10 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogModule;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.enums.UserTypeEnum;
-import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.common.util.RsaUtils;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.util.SecurityUtils;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.security.annotation.rest.AnonymousDeleteMapping;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
@@ -98,7 +97,7 @@ public class AuthorizationController extends BaseController {
             value = "短信登录", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false
     )
-    public ResultWrapper<LoginVO> smslogin(@Validated @RequestBody AuthUserSmsDto dto) {
+    public ResultWrapper<LoginVO> smsLogin(@Validated @RequestBody AuthUserSmsDto dto) {
         return ResultWrapper.ok(userService.smslogin(dto));
     }
 
@@ -122,7 +121,7 @@ public class AuthorizationController extends BaseController {
     @ApiOperation("获取用户信息")
     @GetMapping(value = "/info")
     public ResultWrapper<UserDetails> getUserInfo() {
-        return ResultWrapper.ok(SecurityUtils.getCurrentUser());
+        return ResultWrapper.ok(commonAPI.getUserDetails());
     }
 
     /**
@@ -154,7 +153,6 @@ public class AuthorizationController extends BaseController {
     /**
      * <p>logout.</p>
      *
-     * @param request a {@link javax.servlet.http.HttpServletRequest} object.
      * @return a {@link ResultWrapper} object.
      */
     @ApiOperation("退出登录")

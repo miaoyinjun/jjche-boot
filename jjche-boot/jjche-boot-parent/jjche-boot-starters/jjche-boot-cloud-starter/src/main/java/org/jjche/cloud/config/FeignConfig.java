@@ -1,5 +1,6 @@
 package org.jjche.cloud.config;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.log.StaticLog;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -12,6 +13,7 @@ import feign.RequestInterceptor;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.springframework.beans.factory.ObjectFactory;
@@ -32,6 +34,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 @ConditionalOnClass(Feign.class)
@@ -57,6 +60,25 @@ public class FeignConfig {
                 }
                 StaticLog.debug("Feign request token: {}", token);
                 requestTemplate.header(authHeader, token);
+                // 传递用户信息请求头，防止丢失
+                String userId = request.getHeader(SecurityConstant.JWT_KEY_USER_ID);
+                String username = request.getHeader(SecurityConstant.JWT_KEY_USERNAME);
+                Enumeration<String> elPermissions = request.getHeaders(SecurityConstant.JWT_KEY_PERMISSION);
+                Enumeration<String> dataScopeDeptIds = request.getHeaders(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS);
+                String dataScopeIsAll = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL);
+                String dataScopeIsSelf = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF);
+                String dataScopeUserid = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID);
+                String dataScopeUsername = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME);
+
+                requestTemplate.header(SecurityConstant.JWT_KEY_USER_ID, userId);
+                requestTemplate.header(SecurityConstant.JWT_KEY_USERNAME, username);
+                requestTemplate.header(SecurityConstant.JWT_KEY_PERMISSION, CollUtil.newArrayList(elPermissions));
+                //数据范围
+                requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, CollUtil.newArrayList(dataScopeDeptIds));
+                requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, dataScopeIsAll);
+                requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, dataScopeIsSelf);
+                requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
+                requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
             }
         };
     }

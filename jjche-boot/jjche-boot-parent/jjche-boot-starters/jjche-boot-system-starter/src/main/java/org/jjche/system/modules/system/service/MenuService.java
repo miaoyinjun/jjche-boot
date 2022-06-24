@@ -17,7 +17,7 @@ import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.util.MybatisUtil;
 import org.jjche.system.modules.system.api.dto.MenuDTO;
@@ -143,7 +143,7 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
         queryWrapper.orderByAsc(MenuDO::getMenuSort);
         //管理员全部权限
         List<MenuDO> menus = null;
-        if (SecurityUtils.isAdmin()) {
+        if (SecurityUtil.isAdmin()) {
             menus = this.list(queryWrapper);
         } else {
             List<RoleSmallDto> roles = roleService.findByUsersId(currentUserId);

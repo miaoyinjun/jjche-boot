@@ -20,9 +20,9 @@ import org.jjche.common.permission.DataPermissionFieldFilterable;
 import org.jjche.common.permission.DataPermissionFieldMetaSetter;
 import org.jjche.common.permission.IDataPermissionFieldUserAuthorityHelper;
 import org.jjche.common.pojo.DataScope;
-import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.common.vo.DataPermissionFieldResultVO;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.security.permission.field.DataPermissionFieldResult;
 import org.jjche.system.modules.system.service.DataPermissionRuleService;
 import org.jjche.system.modules.system.service.UserService;
@@ -86,7 +86,7 @@ public class PermissionDataAspect {
         DataScope dataScope = null;
         //未登录情况下
         try {
-            dataScope = SecurityUtils.getCurrentUserDataScope();
+            dataScope = SecurityUtil.getUserDataScope();
         } catch (Exception e) {
         }
         BaseQueryCriteriaDTO paramQueryCriteriaDTO = null;
@@ -123,7 +123,7 @@ public class PermissionDataAspect {
 
             //获取用户数据规则配置
             List<PermissionDataRuleDTO> permissionDataRuleDTOList =
-                    sysDataPermissionRuleService.listByUserId(SecurityUtils.getCurrentUserId());
+                    sysDataPermissionRuleService.listByUserId(SecurityUtil.getUserId());
             if (CollUtil.isNotEmpty(permissionDataRuleDTOList)) {
                 String finalPermissionCode = permissionCode;
                 Predicate condition = (str) -> StrUtil.equals(String.valueOf(str), finalPermissionCode);

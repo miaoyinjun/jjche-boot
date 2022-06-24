@@ -16,7 +16,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.modules.logging.domain.LogDO;
 import org.jjche.log.modules.logging.dto.LogQueryCriteriaDTO;
 import org.jjche.log.modules.logging.mapper.LogMapper;
@@ -102,7 +102,7 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @return -
      */
     public MyPage<LogVO> queryAllByUser(LogQueryCriteriaDTO criteria, PageParam pageable) {
-        String username = SecurityUtils.getCurrentUsername();
+        String username = SecurityUtil.getUsername();
         criteria.setUsername(username);
         return queryAll(criteria, pageable);
     }

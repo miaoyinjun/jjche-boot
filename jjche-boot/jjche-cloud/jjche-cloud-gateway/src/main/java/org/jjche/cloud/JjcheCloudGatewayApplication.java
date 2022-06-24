@@ -1,6 +1,7 @@
 package org.jjche.cloud;
 
 import org.jjche.cloud.loader.DynamicRouteLoader;
+import org.jjche.common.system.api.ISysBaseAPI;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,7 +19,7 @@ import javax.annotation.Resource;
  * @author miaoyj
  * @since 2022-03-03
  */
-@EnableFeignClients
+@EnableFeignClients(clients = ISysBaseAPI.class)
 @EnableDiscoveryClient
 @SpringBootApplication(
         exclude = {

@@ -2,7 +2,7 @@ package org.jjche.demo.modules.provider.feign;
 
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.response.response.ResultWrapper;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.demo.constant.ProviderApiVersion;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;

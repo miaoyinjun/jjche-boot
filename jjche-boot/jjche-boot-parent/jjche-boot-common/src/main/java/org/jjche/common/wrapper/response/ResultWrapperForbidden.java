@@ -1,4 +1,4 @@
-package org.jjche.common.response.response;
+package org.jjche.common.wrapper.response;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

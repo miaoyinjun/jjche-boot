@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.core.util.FileUtil;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.param.SortEnum;
 import org.jjche.mybatis.util.MybatisUtil;
@@ -225,7 +225,7 @@ public class DeployService extends MyServiceImpl<DeployMapper, DeployDO> {
         //还原信息入库
         DeployHistoryDO deployHistory = new DeployHistoryDO();
         deployHistory.setAppName(appName);
-        deployHistory.setDeployUser(SecurityUtils.getCurrentUsername());
+        deployHistory.setDeployUser(SecurityUtil.getUsername());
         deployHistory.setIp(ip);
         deployHistory.setDeployId(id);
         deployHistoryService.create(deployHistory);

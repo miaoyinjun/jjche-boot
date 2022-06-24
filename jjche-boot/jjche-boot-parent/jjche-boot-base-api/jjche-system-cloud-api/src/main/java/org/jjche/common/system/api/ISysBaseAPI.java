@@ -7,10 +7,7 @@ import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.system.api.factory.SysBaseAPIFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -34,6 +31,10 @@ public interface ISysBaseAPI extends CommonAPI {
     @Override
     @GetMapping("getUserDetails")
     JwtUserDto getUserDetails();
+
+    @Override
+    @GetMapping("getUserDetails")
+    JwtUserDto getUserDetails(@RequestHeader("Authorization") String token);
 
     @Override
     @PostMapping("recordLog")

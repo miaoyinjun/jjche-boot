@@ -5,7 +5,7 @@ import cn.hutool.log.StaticLog;
 import org.jjche.core.property.CoreAlarmDingTalkProperties;
 import org.jjche.core.property.CoreAlarmProperties;
 import org.jjche.core.property.CoreProperties;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +46,7 @@ public class AlarmDingTalkService {
             CoreAlarmDingTalkProperties dingTalk = alarm.getDingTalk();
             String accessToken = dingTalk.getAccessToken();
             if (StrUtil.isNotBlank(accessToken)) {
-                String userName = SecurityUtils.getCurrentOrDefaultUsername();
+                String userName = SecurityUtil.getUsernameOrDefaultUsername();
                 String errorMsg = StrUtil.format("【{}】，业务告警，{}，操作人：{}", appName, content, userName);
                 DingTalkContentDTO text = new DingTalkContentDTO();
                 text.setContent(errorMsg);

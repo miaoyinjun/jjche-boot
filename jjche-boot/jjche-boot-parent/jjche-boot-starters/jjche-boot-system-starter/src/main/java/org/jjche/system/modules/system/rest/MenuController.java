@@ -9,10 +9,10 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.response.response.ResultWrapper;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.system.modules.system.api.dto.MenuDTO;
 import org.jjche.system.modules.system.api.dto.MenuQueryCriteriaDTO;
@@ -67,7 +67,7 @@ public class MenuController extends BaseController {
     @GetMapping(value = "/build")
     @ApiOperation("获取前端所需菜单")
     public ResultWrapper<List<MenuVO>> buildMenus() {
-        List<MenuDTO> menuDtoList = menuService.findByUser(SecurityUtils.getCurrentUserId());
+        List<MenuDTO> menuDtoList = menuService.findByUser(SecurityUtil.getUserId());
         List<MenuDTO> menuDtos = menuService.buildTree(menuDtoList);
         return ResultWrapper.ok(menuService.buildMenus(menuDtos));
     }

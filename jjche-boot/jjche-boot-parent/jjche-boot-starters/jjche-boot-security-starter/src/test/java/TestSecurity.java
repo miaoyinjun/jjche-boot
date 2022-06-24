@@ -1,8 +1,8 @@
 import cn.hutool.http.HttpStatus;
 import controller.SecurityController;
 import dto.LoginDTO;
-import org.jjche.common.response.response.ResultWrapper;
 import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.junit.jupiter.api.Test;

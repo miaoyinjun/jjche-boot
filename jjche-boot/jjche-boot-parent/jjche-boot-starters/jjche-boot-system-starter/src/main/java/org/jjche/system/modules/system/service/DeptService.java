@@ -17,7 +17,7 @@ import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ValidationUtil;
 import org.jjche.core.util.FileUtil;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.util.MybatisUtil;
 import org.jjche.system.modules.system.api.dto.DeptDTO;
@@ -58,7 +58,7 @@ public class DeptService extends MyServiceImpl<DeptMapper, DeptDO> {
      * @return 级别
      */
     public static String getDataScopeType() {
-        DataScope dataScope = SecurityUtils.getCurrentUserDataScope();
+        DataScope dataScope = SecurityUtil.getUserDataScope();
         Set<Long> dataScopes = dataScope.getDeptIds();
         if (dataScopes.size() != 0) {
             return "";

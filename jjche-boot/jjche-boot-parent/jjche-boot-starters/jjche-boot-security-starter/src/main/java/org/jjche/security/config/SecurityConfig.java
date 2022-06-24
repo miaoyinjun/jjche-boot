@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.SecurityConstant;
+import org.jjche.core.util.SpringContextHolder;
 import org.jjche.security.annotation.AnonymousAccess;
 import org.jjche.security.auth.sms.SmsCodeAuthenticationProvider;
 import org.jjche.security.handler.JwtAuthenticationAccessDeniedHandler;
@@ -125,9 +126,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 防止iframe 造成跨域
                 .and().headers().frameOptions().disable()
                 // 不创建会话
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                // 所有请求都需要认证
-                .anyRequest().authenticated().and().apply(securityConfigurerAdapter());
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests();
+
+        // cloud所有都不需要认证，不走TokenFilter
+        if (SpringContextHolder.isCloud()) {
+            authorizeRequests.anyRequest().permitAll();
+        }// 所有请求都需要认证
+        else {
+            authorizeRequests.anyRequest().authenticated().and().apply(securityConfigurerAdapter());
+        }
     }
 
     /**

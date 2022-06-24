@@ -6,7 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import org.jjche.common.permission.IDataPermissionFieldUserAuthorityHelper;
 import org.jjche.common.util.ClassCompareUtil;
 import org.jjche.common.vo.DataPermissionFieldResultVO;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.system.modules.system.api.vo.DataPermissionFieldVO;
 import org.jjche.system.modules.system.service.DataPermissionFieldRoleService;
 import org.jjche.system.modules.system.service.DataPermissionFieldService;
@@ -66,7 +66,7 @@ public class DataPermissionFieldUserAuthorityHelper implements IDataPermissionFi
             //获取用户数据规则配置
             if (StrUtil.isNotBlank(permission)) {
                 List<DataPermissionFieldVO> permissionDataFieldDTOList =
-                        dataPermissionFieldService.listByUserId(SecurityUtils.getCurrentUserId());
+                        dataPermissionFieldService.listByUserId(SecurityUtil.getUserId());
                 if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
                     String finalPermissionCode = permission;
                     Predicate condition = (str) -> StrUtil.equals(String.valueOf(str), finalPermissionCode);

@@ -23,5 +23,15 @@ public interface CommonAPI {
      */
     JwtUserDto getUserDetails();
 
+    /**
+     * <p>
+     * 根据参数token获取认证信息
+     * </p>
+     *
+     * @param token /
+     * @return /
+     */
+    JwtUserDto getUserDetails(String token);
+
     void recordLog(LogRecordDTO logRecord);
 }

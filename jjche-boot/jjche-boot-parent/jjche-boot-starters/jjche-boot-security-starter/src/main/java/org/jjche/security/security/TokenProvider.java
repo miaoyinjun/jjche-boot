@@ -1,6 +1,7 @@
 package org.jjche.security.security;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.log.StaticLog;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -76,12 +77,13 @@ public class TokenProvider implements InitializingBean {
     public String resolveToken() {
         HttpServletRequest request = RequestHolder.getHttpServletRequest();
         SecurityJwtProperties securityJwtProperties = properties.getJwt();
-        final String bearerToken = request.getHeader(securityJwtProperties.getHeader());
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(securityJwtProperties.getTokenStartWith())) {
+        final String bearerToken = ServletUtil.getHeaderIgnoreCase(request, securityJwtProperties.getHeader());
+        String tokenStartWith = securityJwtProperties.getTokenStartWith();
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(tokenStartWith)) {
             // 去掉令牌前缀
-            return bearerToken.replace(securityJwtProperties.getTokenStartWith(), "");
+            return bearerToken.replace(tokenStartWith, "");
         } else {
-            StaticLog.debug("非法Token：{}", bearerToken);
+            StaticLog.warn("非法Token：{}", bearerToken);
         }
         return null;
     }

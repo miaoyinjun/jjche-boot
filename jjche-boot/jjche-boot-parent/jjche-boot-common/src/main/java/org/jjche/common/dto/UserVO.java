@@ -1,5 +1,7 @@
 package org.jjche.common.dto;
 
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.jjche.common.enums.UserTypeEnum;
@@ -42,9 +44,16 @@ public class UserVO implements Serializable {
 
     /**
      * 创建时间
+     * JsonFormat解决apiGateway调用无法序列化
      */
+    @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     private Timestamp gmtCreate;
 
+    /**
+     * 最后登录时间
+     * JsonFormat解决apiGateway调用无法序列化
+     */
+    @JsonFormat(pattern = DatePattern.NORM_DATETIME_PATTERN)
     private Timestamp lastLoginTime;
 
     @JsonIgnore
