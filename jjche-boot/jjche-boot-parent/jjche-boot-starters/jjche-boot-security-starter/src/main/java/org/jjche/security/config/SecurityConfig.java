@@ -4,8 +4,9 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
-import org.jjche.cache.service.RedisService;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.SecurityConstant;
+import org.jjche.core.util.SpringContextHolder;
 import org.jjche.security.annotation.AnonymousAccess;
 import org.jjche.security.auth.sms.SmsCodeAuthenticationProvider;
 import org.jjche.security.handler.JwtAuthenticationAccessDeniedHandler;
@@ -14,8 +15,6 @@ import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.property.SecurityRoleUrlProperties;
 import org.jjche.security.property.SecurityUrlProperties;
 import org.jjche.security.security.TokenConfigurer;
-import org.jjche.security.security.TokenProvider;
-import org.jjche.security.service.OnlineUserService;
 import org.jjche.security.util.RequestMethodEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,6 +27,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -57,13 +57,11 @@ import java.util.*;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static String ROLE_NAME_PREFIX = "ROLE_";
 
-    private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint authenticationErrorHandler;
     private final JwtAuthenticationAccessDeniedHandler jwtAccessDeniedHandler;
     private final ApplicationContext applicationContext;
     private final SecurityProperties properties;
-    private final OnlineUserService onlineUserService;
-    private final RedisService redisService;
+    private final CommonAPI commonAPI;
     private final UserDetailsService userDetailsService;
     private final UserDetailsService smsUserDetailsService;
 
@@ -85,6 +83,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    public void configure(WebSecurity web) {
+        SecurityUrlProperties securityUrlProperties = properties.getUrl();
+        // 搜寻匿名标记 url： @AnonymousAccess
+        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = applicationContext.getBean(RequestMappingHandlerMapping.class).getHandlerMethods();
+        // 获取匿名标记，同时包括了配置文件里的忽略url
+        Map<String, Set<String>> anonymousUrls = getAnonymousUrl(handlerMethodMap, securityUrlProperties);
+        web.ignoring()
+                // 放行OPTIONS请求
+                .antMatchers(HttpMethod.OPTIONS, "/**")
+                // 自定义匿名访问所有url放行：允许匿名和带Token访问，细腻化到每个 Request 类型
+                // GET
+                .antMatchers(HttpMethod.GET, anonymousUrls.get(RequestMethodEnum.GET.getType()).toArray(new String[0]))
+                // POST
+                .antMatchers(HttpMethod.POST, anonymousUrls.get(RequestMethodEnum.POST.getType()).toArray(new String[0]))
+                // PUT
+                .antMatchers(HttpMethod.PUT, anonymousUrls.get(RequestMethodEnum.PUT.getType()).toArray(new String[0]))
+                // PATCH
+                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(RequestMethodEnum.PATCH.getType()).toArray(new String[0]))
+                // DELETE
+                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(RequestMethodEnum.DELETE.getType()).toArray(new String[0]))
+                // 所有类型的接口都放行
+                .antMatchers(anonymousUrls.get(RequestMethodEnum.ALL.getType()).toArray(new String[0]));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -95,46 +118,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         SecurityUrlProperties securityUrlProperties = properties.getUrl();
         authorizeRequests = setPropertityUrl(authorizeRequests, securityUrlProperties);
 
-        // 搜寻匿名标记 url： @AnonymousAccess
-        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = applicationContext.getBean(RequestMappingHandlerMapping.class).getHandlerMethods();
-        // 获取匿名标记，同时包括了配置文件里的忽略url
-        Map<String, Set<String>> anonymousUrls = getAnonymousUrl(handlerMethodMap, securityUrlProperties);
         authorizeRequests.and()
                 // 禁用 CSRF
                 .csrf().disable()
                 // 授权异常
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationErrorHandler)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .exceptionHandling().authenticationEntryPoint(authenticationErrorHandler).accessDeniedHandler(jwtAccessDeniedHandler)
                 // 防止iframe 造成跨域
-                .and()
-                .headers()
-                .frameOptions()
-                .disable()
+                .and().headers().frameOptions().disable()
                 // 不创建会话
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                // 放行OPTIONS请求
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                // 自定义匿名访问所有url放行：允许匿名和带Token访问，细腻化到每个 Request 类型
-                // GET
-                .antMatchers(HttpMethod.GET, anonymousUrls.get(RequestMethodEnum.GET.getType()).toArray(new String[0])).permitAll()
-                // POST
-                .antMatchers(HttpMethod.POST, anonymousUrls.get(RequestMethodEnum.POST.getType()).toArray(new String[0])).permitAll()
-                // PUT
-                .antMatchers(HttpMethod.PUT, anonymousUrls.get(RequestMethodEnum.PUT.getType()).toArray(new String[0])).permitAll()
-                // PATCH
-                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(RequestMethodEnum.PATCH.getType()).toArray(new String[0])).permitAll()
-                // DELETE
-                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(RequestMethodEnum.DELETE.getType()).toArray(new String[0])).permitAll()
-                // 所有类型的接口都放行
-                .antMatchers(anonymousUrls.get(RequestMethodEnum.ALL.getType()).toArray(new String[0])).permitAll()
-                // 所有请求都需要认证
-                .anyRequest().authenticated()
-                .and().apply(securityConfigurerAdapter());
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests();
+
+        // cloud所有都不需要认证，不走TokenFilter
+        if (SpringContextHolder.isCloud()) {
+            authorizeRequests.anyRequest().permitAll();
+        }// 所有请求都需要认证
+        else {
+            authorizeRequests.anyRequest().authenticated().and().apply(securityConfigurerAdapter());
+        }
     }
 
     /**
@@ -275,7 +275,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     private TokenConfigurer securityConfigurerAdapter() {
-        return new TokenConfigurer(tokenProvider, properties, onlineUserService, redisService);
+        return new TokenConfigurer(commonAPI);
     }
 
 

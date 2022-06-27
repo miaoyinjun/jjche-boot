@@ -9,7 +9,6 @@ import org.jjche.mybatis.handler.MyMetaObjectHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * <p>
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @Import({MyMetaObjectHandler.class, MySqlInjector.class})
-@EnableTransactionManagement
 public class MybatisAutoConfiguration {
     /**
      * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)

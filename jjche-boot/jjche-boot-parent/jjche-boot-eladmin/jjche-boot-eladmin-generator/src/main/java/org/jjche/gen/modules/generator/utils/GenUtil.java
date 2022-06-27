@@ -5,10 +5,9 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.extra.template.*;
-import lombok.extern.slf4j.Slf4j;
+import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.gen.modules.generator.domain.ColumnInfoDO;
 import org.jjche.gen.modules.generator.domain.GenConfigDO;
@@ -31,8 +30,6 @@ import static org.jjche.core.util.FileUtil.SYS_TEM_DIR;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-02
  */
-@Slf4j
-@SuppressWarnings({"unchecked", "all"})
 public class GenUtil {
 
     /**
@@ -96,8 +93,8 @@ public class GenUtil {
      * @param genConfig a {@link GenConfigDO} object.
      * @return a {@link java.util.List} object.
      */
-    public static List<Map<String, Object>> preview(List<ColumnInfoDO> columns, GenConfigDO genConfig) {
-        Map<String, Object> genMap = getGenMap(columns, genConfig);
+    public static List<Map<String, Object>> preview(List<ColumnInfoDO> columns, GenConfigDO genConfig, String apiPrefix) {
+        Map<String, Object> genMap = getGenMap(columns, genConfig, apiPrefix);
         List<Map<String, Object>> genList = new ArrayList<>();
         // 获取后端模版
         List<String> templates = getAdminTemplateNames();
@@ -130,11 +127,11 @@ public class GenUtil {
      * @return a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
-    public static String download(List<ColumnInfoDO> columns, GenConfigDO genConfig) throws IOException {
+    public static String download(List<ColumnInfoDO> columns, GenConfigDO genConfig, String apiPrefix) throws IOException {
         // 拼接的路径：/tmp/jjche-boot-eladmin-gen-temp/，这个路径在Linux下需要root用户才有权限创建,非root用户会权限错误而失败，更改为： /tmp/jjche-boot-eladmin-gen-temp/
         // String tempPath =SYS_TEM_DIR + "jjche-boot-eladmin-gen-temp" + File.separator + genConfig.getTableName() + File.separator;
         String tempPath = SYS_TEM_DIR + "jjche-boot-eladmin-gen-temp" + File.separator + genConfig.getTableName() + File.separator;
-        Map<String, Object> genMap = getGenMap(columns, genConfig);
+        Map<String, Object> genMap = getGenMap(columns, genConfig, apiPrefix);
         TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("template", TemplateConfig.ResourceMode.CLASSPATH));
         // 生成后端代码
         List<String> templates = getAdminTemplateNames();
@@ -175,8 +172,8 @@ public class GenUtil {
      * @param genConfig   a {@link GenConfigDO} object.
      * @throws java.io.IOException if any.
      */
-    public static void generatorCode(List<ColumnInfoDO> columnInfos, GenConfigDO genConfig) throws IOException {
-        Map<String, Object> genMap = getGenMap(columnInfos, genConfig);
+    public static void generatorCode(List<ColumnInfoDO> columnInfos, GenConfigDO genConfig, String apiPrefix) throws IOException {
+        Map<String, Object> genMap = getGenMap(columnInfos, genConfig, apiPrefix);
         TemplateEngine engine = TemplateUtil.createEngine(new TemplateConfig("template", TemplateConfig.ResourceMode.CLASSPATH));
         // 生成后端代码
         List<String> templates = getAdminTemplateNames();
@@ -217,7 +214,7 @@ public class GenUtil {
     }
 
     // 获取模版数据
-    private static Map<String, Object> getGenMap(List<ColumnInfoDO> columnInfos, GenConfigDO genConfig) {
+    private static Map<String, Object> getGenMap(List<ColumnInfoDO> columnInfos, GenConfigDO genConfig, String apiPrefix) {
         // 存储模版字段数据
         Map<String, Object> genMap = new HashMap<>(16);
         String apiVersion = genConfig.getApiVersion();
@@ -246,21 +243,21 @@ public class GenUtil {
         // 表名
         genMap.put("tableName", genConfig.getTableName());
         // 大写开头的类名
-        String className = org.jjche.common.util.StrUtil.toCapitalizeCamelCase(genConfig.getTableName());
+        String className = StrUtil.toCapitalizeCamelCase(genConfig.getTableName());
         // 小写开头的类名
-        String changeClassName = org.jjche.common.util.StrUtil.toCamelCase(genConfig.getTableName());
+        String changeClassName = StrUtil.toCamelCase(genConfig.getTableName());
         // 判断是否去除表前缀
-        if (org.jjche.common.util.StrUtil.isNotEmpty(genConfig.getPrefix())) {
-            className = org.jjche.common.util.StrUtil.toCapitalizeCamelCase(StrUtil.removePrefix(genConfig.getTableName(), genConfig.getPrefix()));
-            changeClassName = org.jjche.common.util.StrUtil.toCamelCase(StrUtil.removePrefix(genConfig.getTableName(), genConfig.getPrefix()));
+        if (StrUtil.isNotEmpty(genConfig.getPrefix())) {
+            className = StrUtil.toCapitalizeCamelCase(StrUtil.removePrefix(genConfig.getTableName(), genConfig.getPrefix()));
+            changeClassName = StrUtil.toCamelCase(StrUtil.removePrefix(genConfig.getTableName(), genConfig.getPrefix()));
         }
-        String controllerBaseUrl = org.jjche.common.util.StrUtil.pluralizeWord(genConfig.getTableName());
+        String controllerBaseUrl = StrUtil.pluralizeWord(genConfig.getTableName());
         // 保存类名
         genMap.put("className", className);
         // 保存小写开头的类名
         genMap.put("changeClassName", changeClassName);
         //控制器基础url
-        genMap.put("controllerBaseUrl", controllerBaseUrl);
+        genMap.put("controllerBaseUrl", apiPrefix + controllerBaseUrl);
         // 存在 Timestamp 字段
         genMap.put("hasTimestamp", false);
         // 查询类中存在 Timestamp 字段
@@ -305,9 +302,9 @@ public class GenUtil {
             // 主键类型
             String colType = ColUtil.cloToJava(column.getColumnType());
             // 小写开头的字段名
-            String changeColumnName = org.jjche.common.util.StrUtil.toCamelCase(columnName);
+            String changeColumnName = StrUtil.toCamelCase(columnName);
             // 大写开头的字段名
-            String capitalColumnName = org.jjche.common.util.StrUtil.toCapitalizeCamelCase(column.getColumnName());
+            String capitalColumnName = StrUtil.toCapitalizeCamelCase(column.getColumnName());
             if (PK.equals(column.getKeyType())) {
                 // 存储主键类型
                 genMap.put("pkColumnType", colType);
@@ -329,7 +326,7 @@ public class GenUtil {
                 genMap.put("auto", true);
             }
             // 主键存在字典
-            if (org.jjche.common.util.StrUtil.isNotBlank(column.getDictName())) {
+            if (StrUtil.isNotBlank(column.getDictName())) {
                 genMap.put("hasDict", true);
                 dicts.add(column.getDictName());
             }
@@ -345,7 +342,7 @@ public class GenUtil {
             // 表单显示
             listMap.put("formShow", column.getFormShow());
             // 表单组件类型
-            listMap.put("formType", org.jjche.common.util.StrUtil.isNotBlank(column.getFormType()) ? column.getFormType() : "Input");
+            listMap.put("formType", StrUtil.isNotBlank(column.getFormType()) ? column.getFormType() : "Input");
             // 小写开头的字段名称
             listMap.put("changeColumnName", changeColumnName);
             //大写开头的字段名称
@@ -356,7 +353,7 @@ public class GenUtil {
             listMap.put("maxLength", column.getMaxLength());
             // 日期注解
             listMap.put("dateAnnotation", column.getDateAnnotation());
-            if (org.jjche.common.util.StrUtil.isNotBlank(column.getDateAnnotation())) {
+            if (StrUtil.isNotBlank(column.getDateAnnotation())) {
                 genMap.put("hasDateAnnotation", true);
             }
             // 添加非空字段信息
@@ -364,7 +361,7 @@ public class GenUtil {
                 isNotNullColumns.add(listMap);
             }
             // 判断是否有查询，如有则把查询的字段set进columnQuery
-            if (!org.jjche.common.util.StrUtil.isBlank(column.getQueryType())) {
+            if (!StrUtil.isBlank(column.getQueryType())) {
                 // 查询类型
                 listMap.put("queryType", column.getQueryType());
                 // 是否存在查询

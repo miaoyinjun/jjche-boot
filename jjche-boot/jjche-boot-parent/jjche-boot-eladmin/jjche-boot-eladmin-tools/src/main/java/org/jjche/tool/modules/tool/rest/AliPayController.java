@@ -4,12 +4,11 @@ import cn.hutool.core.lang.Assert;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.wrapper.response.ResultWrapper;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.tool.modules.tool.domain.AlipayConfigDO;
 import org.jjche.tool.modules.tool.service.AliPayService;
@@ -32,7 +31,6 @@ import java.util.Map;
  * @version 1.0.8-SNAPSHOT
  * @since 2018-12-31
  */
-@Slf4j
 @SysRestController("aliPay")
 @RequiredArgsConstructor
 @Api(tags = "工具：支付宝管理")

@@ -1,18 +1,18 @@
 package org.jjche.core;
 
 import org.jjche.core.alarm.dd.AlarmDingTalkService;
-import org.jjche.core.annotation.controller.ApiRestController;
-import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.exception.GlobalExceptionHandler;
 import org.jjche.core.exception.RequestWrapperFilter;
-import org.jjche.core.property.CoreApiPathProperties;
 import org.jjche.core.property.CoreProperties;
+import org.jjche.core.url.AutoPrefixUrlMapping;
 import org.jjche.core.util.SpringContextHolder;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import javax.annotation.Resource;
 
@@ -33,7 +33,7 @@ import javax.annotation.Resource;
 @EnableFeignClients
 @EnableAsync(proxyTargetClass = true)
 @EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
-public class CoreAutoConfiguration implements WebMvcConfigurer {
+public class CoreAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
 
     @Resource
     private CoreProperties coreProperties;
@@ -53,10 +53,10 @@ public class CoreAutoConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void configurePathMatch(PathMatchConfigurer configurer) {
-        CoreApiPathProperties coreApiPathProperties = coreProperties.getApi().getPath();
-        configurer
-                .addPathPrefix(coreApiPathProperties.getGlobalPrefix(), c -> c.isAnnotationPresent(ApiRestController.class))
-                .addPathPrefix(coreApiPathProperties.getSysPrefix(), c -> c.isAnnotationPresent(SysRestController.class));
+//        CoreApiPathProperties coreApiPathProperties = coreProperties.getApi().getPath();
+//        configurer
+//                .addPathPrefix(coreApiPathProperties.getGlobalPrefix(), c -> c.isAnnotationPresent(ApiRestController.class))
+//                .addPathPrefix(coreApiPathProperties.getSysPrefix(), c -> c.isAnnotationPresent(SysRestController.class));
     }
 
     /**
@@ -69,4 +69,8 @@ public class CoreAutoConfiguration implements WebMvcConfigurer {
         return new SpringContextHolder();
     }
 
+    @Override
+    public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
+        return new AutoPrefixUrlMapping();
+    }
 }

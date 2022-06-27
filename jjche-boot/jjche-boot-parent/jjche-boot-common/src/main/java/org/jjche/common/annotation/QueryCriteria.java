@@ -1,6 +1,5 @@
 package org.jjche.common.annotation;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -118,7 +117,6 @@ public @interface QueryCriteria {
             MAPPINGS = Collections.unmodifiableMap(temp);
         }
 
-        @JsonValue
         private final String value;
         private final String desc;
 

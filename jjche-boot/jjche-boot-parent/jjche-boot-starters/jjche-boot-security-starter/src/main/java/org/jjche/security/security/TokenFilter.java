@@ -1,17 +1,15 @@
 package org.jjche.security.security;
 
-import cn.hutool.core.util.StrUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import org.jjche.cache.service.RedisService;
-import org.jjche.security.dto.OnlineUserDto;
-import org.jjche.security.property.SecurityJwtProperties;
-import org.jjche.security.property.SecurityProperties;
-import org.jjche.security.service.OnlineUserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.jjche.common.api.CommonAPI;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.UserVO;
+import org.jjche.common.enums.UserTypeEnum;
+import org.jjche.common.util.HttpUtil;
+import org.jjche.common.wrapper.HeaderMapRequestWrapper;
+import org.jjche.security.auth.sms.SmsCodeAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -20,7 +18,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.Map;
 
 /**
  * <p>TokenFilter class.</p>
@@ -29,79 +27,44 @@ import java.util.Objects;
  * @version 1.0.8-SNAPSHOT
  */
 public class TokenFilter extends GenericFilterBean {
-    private static final Logger log = LoggerFactory.getLogger(TokenFilter.class);
-
-    private final TokenProvider tokenProvider;
-    private final SecurityProperties properties;
-    private final OnlineUserService onlineUserService;
-    private final RedisService redisService;
+    private final CommonAPI commonAPI;
 
     /**
      * <p>Constructor for TokenFilter.</p>
      *
-     * @param tokenProvider     Token
-     * @param properties        JWT
-     * @param onlineUserService 用户在线
-     * @param redisService      a {@link RedisService} object.
+     * @param commonAPI api
      */
-    public TokenFilter(TokenProvider tokenProvider, SecurityProperties properties,
-                       OnlineUserService onlineUserService, RedisService redisService) {
-        this.properties = properties;
-        this.onlineUserService = onlineUserService;
-        this.tokenProvider = tokenProvider;
-        this.redisService = redisService;
+    public TokenFilter(CommonAPI commonAPI) {
+        this.commonAPI = commonAPI;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-            throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String token = resolveToken(httpServletRequest);
-        // 对于 Token 为空的不需要去查 Redis
-        if (StrUtil.isNotBlank(token)) {
-            OnlineUserDto onlineUserDto = null;
-            boolean cleanUserCache = false;
-            String tokenKey = null;
-            try {
-                SecurityJwtProperties securityJwtProperties = properties.getJwt();
-                tokenKey = securityJwtProperties.getOnlineKey() + token;
-                onlineUserDto = onlineUserService.getOne(tokenKey);
-            } catch (ExpiredJwtException e) {
-                log.error(e.getMessage());
-                cleanUserCache = true;
-            } finally {
-                if (cleanUserCache || Objects.isNull(onlineUserDto)) {
-                    onlineUserService.logout(token);
-                }
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HeaderMapRequestWrapper reqWrapper = new HeaderMapRequestWrapper((HttpServletRequest) servletRequest);
+        //非cloud才会走这里
+        JwtUserDto userDetails = commonAPI.getUserDetails();
+        if (userDetails != null) {
+            Authentication authentication = null;
+            UserVO userVO = userDetails.getUser();
+            UserTypeEnum userType = userVO.getUserType();
+            //用户信息到header
+            Map<String, Object> userHeaders = HttpUtil.getUserHeaders(userDetails);
+            reqWrapper.addHeaders(userHeaders);
+            //密码
+            if (UserTypeEnum.PWD == userType) {
+                authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            }//短信
+            else if (UserTypeEnum.SMS == userType) {
+                authentication = new SmsCodeAuthenticationToken(userVO.getUsername());
             }
-            if (onlineUserDto != null && StringUtils.hasText(token)) {
-                Authentication authentication = tokenProvider.getAuthentication(token);
+            if (authentication != null) {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                // Token 续期
-                tokenProvider.checkRenewal(tokenKey, onlineUserDto);
             }
         }
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(reqWrapper, servletResponse);
     }
 
-    /**
-     * 初步检测Token
-     *
-     * @param request /
-     * @return /
-     */
-    private String resolveToken(HttpServletRequest request) {
-        SecurityJwtProperties securityJwtProperties = properties.getJwt();
-        String bearerToken = request.getHeader(securityJwtProperties.getHeader());
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(securityJwtProperties.getTokenStartWith())) {
-            // 去掉令牌前缀
-            return bearerToken.replace(securityJwtProperties.getTokenStartWith(), "");
-        } else {
-            log.debug("非法Token：{}", bearerToken);
-        }
-        return null;
-    }
 }

@@ -1,7 +1,7 @@
 package org.jjche.security.handler;
 
 import org.jjche.common.util.HttpUtil;
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

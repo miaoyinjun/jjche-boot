@@ -93,10 +93,10 @@
         <el-table-column prop="name" label="姓名" />
         <el-table-column prop="age" label="年龄" />
         <el-table-column prop="course" label="课程类型">
-          <template slot-scope="scope">
-            {{ dict.label.course_status[scope.row.course] }}
-          </template>
-        </el-table-column>
+                  <template slot-scope="scope">
+                    {{ dict.label.course_status[scope.row.course] }}
+                  </template>
+                </el-table-column>
         <el-table-column prop="gmtCreate" label="创建时间">
           <template slot-scope="scope">
             <span>{{ scope.row.gmtCreate }}</span>
@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import crudStudent from '@/api/student/api'
+import crudStudent from '@/api/demo/student'
 import CRUD, { crud, form, header, presenter } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -167,7 +167,7 @@ export default {
   cruds() {
     return CRUD({
       title: '用户',
-      url: 'students',
+      url: 'demo/students',
       idField: 'id',
       crudMethod: { ...crudStudent }
     })
@@ -197,8 +197,7 @@ export default {
     },
     // 编辑界面获取单条数据详情之后
     [CRUD.HOOK.afterToEdit](crud, form) {
-      // form.course = this.dict.label.course_status[form.course]
-      // debugger
+       //form.course = form.course.value
     },
     handleLog(data) {
       this.logVisible = true

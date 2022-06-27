@@ -1,11 +1,10 @@
 package controller;
 
 import dto.LoginDTO;
-import org.jjche.core.wrapper.response.ResultWrapper;
-import org.jjche.security.dto.JwtUserDto;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.enums.UserTypeEnum;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.security.security.TokenProvider;
-import org.jjche.security.security.UserTypeEnum;
-import org.jjche.security.service.OnlineUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,8 +24,8 @@ public class SecurityController {
     public static final String apiUrl = "/security";
     @Autowired
     TokenProvider tokenProvider;
-    @Autowired
-    OnlineUserService onlineUserService;
+    //    @Autowired
+//    OnlineUserService onlineUserService;
     @Autowired(required = false)
     AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -57,7 +56,7 @@ public class SecurityController {
         final String token = tokenProvider.createToken(authentication.getName(), UserTypeEnum.PWD);
         final JwtUserDto jwtUserDto = (JwtUserDto) authentication.getPrincipal();
         // 保存在线信息
-        onlineUserService.save(jwtUserDto, token, request);
+//        onlineUserService.save(jwtUserDto, token, request);
         return ResultWrapper.ok(token);
     }
 

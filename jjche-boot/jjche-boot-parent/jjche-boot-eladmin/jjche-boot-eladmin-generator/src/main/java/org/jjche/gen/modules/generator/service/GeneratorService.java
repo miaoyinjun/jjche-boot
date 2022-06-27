@@ -6,6 +6,8 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ZipUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.gen.modules.generator.domain.ColumnInfoDO;
@@ -14,8 +16,7 @@ import org.jjche.gen.modules.generator.mapper.ColumnInfoMapper;
 import org.jjche.gen.modules.generator.mapper.GenConfigMapper;
 import org.jjche.gen.modules.generator.utils.GenUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
-import org.jjche.mybatis.param.MyPage;
-import org.jjche.mybatis.param.PageParam;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,6 +37,9 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class GeneratorService extends MyServiceImpl<ColumnInfoMapper, ColumnInfoDO> {
+    @Value("${jjche.core.api.path.prefix:}/")
+    private String apiPrefix;
+
     private final GenConfigMapper genConfigMapper;
 
     /**
@@ -148,7 +152,7 @@ public class GeneratorService extends MyServiceImpl<ColumnInfoMapper, ColumnInfo
     public void generator(GenConfigDO genConfig, List<ColumnInfoDO> columns) {
         Assert.notNull(genConfig.getId(), "请先配置生成器");
         try {
-            GenUtil.generatorCode(columns, genConfig);
+            GenUtil.generatorCode(columns, genConfig, apiPrefix);
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new IllegalArgumentException("生成失败，请手动处理已生成的文件");
@@ -164,7 +168,7 @@ public class GeneratorService extends MyServiceImpl<ColumnInfoMapper, ColumnInfo
      */
     public List<Map<String, Object>> preview(GenConfigDO genConfig, List<ColumnInfoDO> columns) {
         Assert.notNull(genConfig.getId(), "请先配置生成器");
-        List<Map<String, Object>> genList = GenUtil.preview(columns, genConfig);
+        List<Map<String, Object>> genList = GenUtil.preview(columns, genConfig, apiPrefix);
         return genList;
     }
 
@@ -180,7 +184,7 @@ public class GeneratorService extends MyServiceImpl<ColumnInfoMapper, ColumnInfo
             request, HttpServletResponse response) {
         Assert.notNull(genConfig.getId(), "请先配置生成器");
         try {
-            File file = new File(GenUtil.download(columns, genConfig));
+            File file = new File(GenUtil.download(columns, genConfig, apiPrefix));
             String zipPath = file.getPath() + ".zip";
             ZipUtil.zip(file.getPath(), zipPath);
             FileUtil.downloadFile(request, response, new File(zipPath), true);
