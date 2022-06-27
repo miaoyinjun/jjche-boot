@@ -9,7 +9,7 @@ import ${packagePath}.constant.ApiVersion;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.common.param.PageParam;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
