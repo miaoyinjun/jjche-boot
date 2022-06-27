@@ -72,7 +72,12 @@ public class HeaderMapRequestWrapper extends HttpServletRequestWrapper {
     public Enumeration<String> getHeaders(String name) {
         List<String> values = Collections.list(super.getHeaders(name));
         if (headerMap.containsKey(name)) {
-            values = (List<String>) headerMap.get(name);
+            Object value = headerMap.get(name);
+            if (String.class.isInstance(value)) {
+                values.add(String.valueOf(value));
+            } else if (value != null) {
+                values = (List<String>) value;
+            }
         }
         return Collections.enumeration(values);
     }
