@@ -8,13 +8,14 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiModelProperty;
+import org.jjche.common.constant.EnumConstant;
 import org.jjche.common.dto.LogUpdateDetailDTO;
+import org.springframework.util.ReflectionUtils;
 
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -73,6 +74,9 @@ public class ClassCompareUtil {
                 }
             }
         }
+        //删除字段名为空的内容
+        Predicate condition = (str) -> str != null;
+        compareFieldList = compareFieldList.stream().filter((p) -> (condition.test(p.getName()))).collect(Collectors.toList());
         return compareFieldList;
     }
 
@@ -86,38 +90,50 @@ public class ClassCompareUtil {
     @SuppressWarnings("rawtypes")
     private static List<LogUpdateDetailDTO> compareFields(Object oldObject, Object newObject) {
         List<LogUpdateDetailDTO> resultList = new ArrayList<>();
-        try {
-            Map<String, String> newObjectMap = Convert.convert(Map.class, newObject);
-            Class oldObjectClazz = oldObject.getClass();
-            //获取object的所有属性
-            PropertyDescriptor[] oldObjectPds = Introspector.getBeanInfo(oldObjectClazz, Object.class).getPropertyDescriptors();
-            for (PropertyDescriptor oldObjectPd : oldObjectPds) {
-                String name = oldObjectPd.getName();
-                if (newObjectMap.containsKey(name)) {
-                    Method readMethod = oldObjectPd.getReadMethod();
-                    //新值
-                    String newValue = MapUtil.getStr(newObjectMap, name, "");
+        Map<String, Object> oldObjectMap = Convert.convert(Map.class, oldObject);
+        Map<String, Object> newObjectMap = Convert.convert(Map.class, newObject);
+        for (Map.Entry<String, Object> entry : oldObjectMap.entrySet()) {
+            String name = entry.getKey();
+            //旧值
+            Object oldValueObj = entry.getValue();
+            String oldValue = getEnumDesc(oldValueObj);
+            //新值
+            Object newValueObj = MapUtil.get(newObjectMap, name, Object.class);
+            String newValue = getEnumDesc(newValueObj);
 
-                    //旧值
-                    String oldValue = "";
-                    Object oldValueObj = readMethod.invoke(oldObject);
-                    if (ObjectUtil.isNotNull(oldValueObj)) {
-                        oldValue = Convert.toStr(oldValueObj);
-                    }
-
-                    if (StrUtil.isNotBlank(name) && !StrUtil.equals(oldValue, newValue)) {
-                        LogUpdateDetailDTO logUpdateDetailDTO = new LogUpdateDetailDTO();
-                        logUpdateDetailDTO.setName(name);
-                        logUpdateDetailDTO.setOldVal(oldValue);
-                        logUpdateDetailDTO.setNewVal(newValue);
-                        resultList.add(logUpdateDetailDTO);
-                    }
-                }
+            if (!StrUtil.equals(oldValue, newValue)) {
+                LogUpdateDetailDTO logUpdateDetailDTO = new LogUpdateDetailDTO();
+                logUpdateDetailDTO.setName(name);
+                logUpdateDetailDTO.setOldVal(oldValue);
+                logUpdateDetailDTO.setNewVal(newValue);
+                resultList.add(logUpdateDetailDTO);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return resultList;
+    }
+
+    /**
+     * <p>
+     * 获取枚举描述
+     * </p>
+     *
+     * @param enumObject /
+     * @return /
+     */
+    private static String getEnumDesc(Object enumObject) {
+        String value = "";
+        if (enumObject != null) {
+            //枚举
+            if (Enum.class.isInstance(enumObject)) {
+                Field descField = ReflectionUtils.findField(enumObject.getClass(), EnumConstant.DESC);
+                if (descField != null) {
+                    ReflectionUtils.makeAccessible(descField);
+                    enumObject = ReflectionUtils.getField(descField, enumObject);
+                }
+            }
+            value = Convert.toStr(enumObject);
+        }
+        return value;
     }
 
     /**
