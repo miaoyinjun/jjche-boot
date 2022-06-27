@@ -48,9 +48,8 @@ public class ProviderStudentStudentController extends BaseController implements 
     )
     public ResultWrapper<MyPage<ProviderVO>> page(PageParam page,
                                                   @ApiParam(value = "课程")
-                                                  @RequestParam(required = true) ProviderCourseEnum course,
+                                                  @RequestParam(required = false) ProviderCourseEnum course,
                                                   @RequestParam(required = false) String name) {
-        System.out.println("=============");
         return ResultWrapper.ok(providerService.page(page, course, name));
     }
 

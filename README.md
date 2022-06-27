@@ -67,6 +67,7 @@
 |         技术          |             名称             |                   说明                    |
 | :-------------------: | :--------------------------: | :---------------------------------------: |
 |      springBoot       |        springBoot框架        |                                           |
+| spring-cloud-alibaba  |            微服务            |                                           |
 |    spring Security    |           安全框架           |                 权限认证                  |
 |     mybatis plus      |         mybatis增强          |           增强对数据库操作工具            |
 |         Druid         |         数据库连接池         |                 提供监控                  |
@@ -89,16 +90,20 @@
 
 ### 模块说明
 
+
+
 > jjche-boot
 >
 > > jjche-boot-ui -- 前端
 > >
 > > jjche-boot --后端
 > >
-> > > jjche-boot-web-demo -- 入口
+> > > jjche-boot-demo -- 单体入口
 > > >
 > > > jjche-boot-parent -- 父模块
 > > >
+> > > > jjche-boot-base-api -- 单体/微服务交互定义
+> > > >
 > > > > jjche-boot-common -- 通用定义
 > >
 > > > > jjche-boot-eladmin -- 基础业务
@@ -107,13 +112,13 @@
 > >
 > > > > > jjche-boot-eladmin-logging -- 日志
 > >
-> > > > > jjche-boot-eladmin-system -- 系统
-> >
 > > > > > jjche-boot-eladmin-tools -- 工具
 > >
 > > > > jjche-boot-starters -- 组件增强
 > > >
 > > > > > jjche-boot-cache-starter -- 缓存
+> > > > >
+> > > > > jjche-boot-cloud-starter 微服务定义
 > >
 > > > > > jjche-boot-core-starter -- 核心
 > >
@@ -128,9 +133,26 @@
 > > > > > jjche-boot-sba-starter -- spring-boot-admin增强
 > >
 > > > > > jjche-boot-security-starter -- 安全
+> > > > >
+> > > > > jjche-boot-starter -- 系统定义
 > >
 > > > > > jjche-boot-swagger-starter -- swagger增强
->
+> > > > >
+> > > > > jjche-boot-system-starter -- 系统核心
+> > > > >
+> > > > > jjche-boot-userdetail-starter -- 默认安全认证定义
+> > >
+> > > jjche-cloud -- 微服务入口
+> > >
+> > > > jjche-cloud-demo-provider -- 演示基础服务
+> > > >
+> > > > jjche-cloud-gateway -- 网关
+> > > >
+> > > > jjche-cloud-monitor -- 监控
+> > > >
+> > > > jjche-cloud-nacos -- 注册中心
+> > > >
+> > > > jjche-cloud-system -- 系统服务
 
 
 
