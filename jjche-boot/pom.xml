@@ -28,6 +28,7 @@
                     <pushHotfixes>true</pushHotfixes>
                     <pushReleases>true</pushReleases>
                     <noDeploy>true</noDeploy>
+                    <noReleaseBuild>true</noReleaseBuild>
                 </configuration>
             </plugin>
         </plugins>

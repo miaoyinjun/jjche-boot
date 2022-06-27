@@ -551,6 +551,7 @@
                         <pushReleases>true</pushReleases>
                         <noDeploy>true</noDeploy>
                         <squash>true</squash>
+                        <noReleaseBuild>true</noReleaseBuild>
                     </configuration>
                 </plugin>
                 <plugin>
