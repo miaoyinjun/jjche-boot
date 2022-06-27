@@ -106,11 +106,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({FeignResultWrapperException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper feignResultWrapperException(Exception e) {
-        String msg = e.getMessage();
-        return JSONUtil.toBean(msg, ResultWrapper.class);
+    public String feignResultWrapperException(Exception e) {
+        return e.getMessage();
     }
-
 
     /**
      * <p>
