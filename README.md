@@ -1,6 +1,6 @@
 ## jjche-boot
 
-企业级快速开发平台，前后端分离设计，基于SpringBoot2.x、Spring Security，JWT，MyBatis-plus，Vue，在线代码生成器一键生成前后端代码，API接口快速开发利器，帮助开发者节省70%的重复工作，更专注业务，节省开发成本，100%开源。
+企业级快速开发平台，前后端分离设计，基于SpringBoot2.x、SpringCloud、Spring Security，MyBatis-plus，Vue，在线代码生成器快速生成前后端CRUD代码，支持单体服务与微服务之间灵活切换、帮助开发者节省70%的重复工作，更专注业务，节省开发成本，100%开源。
 
 ### 体验地址：http://149.28.233.161
 
