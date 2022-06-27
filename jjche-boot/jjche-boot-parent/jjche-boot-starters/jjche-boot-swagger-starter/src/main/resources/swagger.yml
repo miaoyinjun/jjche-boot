@@ -1,14 +1,5 @@
 knife4j:
   enable: true
-  #  documents:
-  #    -
-  #      group: default
-  #      name: 前端手册
-  #      locations: classpath*:markdown/frontend/*
-  #    -
-  #      group: default
-  #      name: 后端手册
-  #      locations: classpath*:markdown/backend/*
   setting:
     enableSwaggerModels: false
     enableVersion: true
@@ -22,7 +13,7 @@ jjche:
   swagger:
     filter-path: ${jjche.core.api.path.global-prefix}
     ignore-filter-path:
-      - ${jjche.core.api.path.sys-prefix}.*
+      - ${jjche.core.api.path.global-prefix}${jjche.core.api.path.sys-prefix}.*
       - /error.*
     title: ${info.name:}
     version: ${info.version:}

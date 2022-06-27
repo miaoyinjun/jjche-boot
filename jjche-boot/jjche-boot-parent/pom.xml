@@ -5,7 +5,7 @@
     <groupId>org.jjcheframework.boot</groupId>
     <artifactId>jjche-boot-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>2.0.0</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,6 +18,8 @@
         <build.plugins.plugin.version>3.0.0-M1</build.plugins.plugin.version>
 
         <spring.boot.starter.version>2.5.8</spring.boot.starter.version>
+        <spring-cloud.version>2020.0.5</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <spring.boot.admin.starter.version>2.5.4</spring.boot.admin.starter.version>
         <maven.plugin.version>3.6.0</maven.plugin.version>
         <screw.version>1.0.4</screw.version>
@@ -38,9 +40,12 @@
         <mail.version>1.4.7</mail.version>
         <qiniu.version>7.8.0</qiniu.version>
         <alipay.version>4.9.153.ALL</alipay.version>
+        <nacos.version>2.0.3</nacos.version>
+
     </properties>
 
     <modules>
+        <module>jjche-boot-base-api</module>
         <module>jjche-boot-common</module>
         <module>jjche-boot-starters</module>
         <module>jjche-boot-eladmin</module>
@@ -49,51 +54,90 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-common</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${spring.boot.starter.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- spring-cloud-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring-cloud-alibaba -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-starter</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-common</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-system-local-api</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-system-cloud-api</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-core-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-sba-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-swagger-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-log-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-mybatis-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cache-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-filter-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-security-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.jjcheframework.boot</groupId>-->
@@ -103,20 +147,38 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-jackson-starter</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <version>2.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
-                <artifactId>jjche-boot-eladmin-system</artifactId>
-                <version>1.1.1-SNAPSHOT</version>
+                <artifactId>jjche-boot-system-starter</artifactId>
+                <version>2.0.0</version>
             </dependency>
-
             <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-parent</artifactId>
-                <version>${spring.boot.starter.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-eladmin-generator</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-eladmin-tools</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-eladmin-logging</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-userdetail-starter</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <!-- cloud -->
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-cloud-starter</artifactId>
+                <version>2.0.0</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>ma.glasnost.orika</groupId>-->
@@ -152,6 +214,11 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-annotation</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis.plus.version}</version>
             </dependency>
             <dependency>
@@ -282,7 +349,6 @@
                 <artifactId>easy-captcha</artifactId>
                 <version>1.6.2</version>
             </dependency>
-            <!-- ip2region IP库 -->
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-ip2region</artifactId>
@@ -329,11 +395,6 @@
                 <version>1.21</version>
             </dependency>
             <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-openfeign</artifactId>
-                <version>3.0.2</version>
-            </dependency>
-            <dependency>
                 <groupId>com.deepoove</groupId>
                 <artifactId>poi-tl</artifactId>
                 <version>1.8.2</version>
@@ -377,6 +438,12 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-core</artifactId>
                 <version>4.0.3</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -484,6 +551,7 @@
                         <pushReleases>true</pushReleases>
                         <noDeploy>true</noDeploy>
                         <squash>true</squash>
+                        <noReleaseBuild>true</noReleaseBuild>
                     </configuration>
                 </plugin>
                 <plugin>

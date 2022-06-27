@@ -4,8 +4,8 @@ import com.alicp.jetcache.Cache;
 import com.alicp.jetcache.anno.CreateCache;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.constant.CacheKey;
-import org.jjche.security.dto.JwtUserDto;
-import org.jjche.security.dto.UserVO;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -102,7 +102,7 @@
           >
             <a
               slot="reference"
-              :href="'/file/' + scope.row.type + '/' + scope.row.realName"
+              :href="'/api/file/' + scope.row.type + '/' + scope.row.realName"
               class="el-link--primary"
               style="
                 word-break: keep-all;
@@ -122,8 +122,8 @@
       <el-table-column prop="path" label="预览图">
         <template slot-scope="{ row }">
           <el-image
-            :src="'/file/' + row.type + '/' + row.realName"
-            :preview-src-list="['/file/' + row.type + '/' + row.realName]"
+            :src="'/api/file/' + row.type + '/' + row.realName"
+            :preview-src-list="['/api/file/' + row.type + '/' + row.realName]"
             fit="contain"
             lazy
             class="el-avatar"

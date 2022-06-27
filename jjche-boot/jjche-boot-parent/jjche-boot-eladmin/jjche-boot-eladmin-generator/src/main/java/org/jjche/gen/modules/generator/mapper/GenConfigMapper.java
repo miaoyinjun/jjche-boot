@@ -1,9 +1,9 @@
 package org.jjche.gen.modules.generator.mapper;
 
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.gen.modules.generator.domain.GenConfigDO;
 import org.jjche.mybatis.base.MyBaseMapper;
-import org.jjche.mybatis.param.MyPage;
-import org.jjche.mybatis.param.PageParam;
 
 import java.util.List;
 

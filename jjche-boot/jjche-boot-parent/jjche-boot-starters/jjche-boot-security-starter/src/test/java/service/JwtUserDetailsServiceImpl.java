@@ -1,11 +1,10 @@
 package service;
 
-import org.jjche.security.dto.DeptSmallDto;
-import org.jjche.security.dto.JwtUserDto;
-import org.jjche.security.dto.UserVO;
+import org.jjche.common.dto.DeptSmallDto;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.SimpleGrantedAuthorityDTO;
+import org.jjche.common.dto.UserVO;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +37,8 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public JwtUserDto loadUserByUsername(String username) {
-        List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("ROLE_USER"));
+        List<SimpleGrantedAuthorityDTO> authorityList = new ArrayList<>();
+        authorityList.add(new SimpleGrantedAuthorityDTO("ROLE_USER"));
         String password = "$2a$10$DOCWRJejaEnhW1p7Ez4wEePbhQcdJkOOnEb17VdhMr1wQtZGAk.zi";
         UserVO user = new UserVO();
         user.setId(1L);

@@ -1,7 +1,7 @@
 package org.jjche.log.biz.starter.support.aop;
 
 import cn.hutool.core.annotation.AnnotationUtil;
-import org.jjche.log.biz.beans.LogRecord;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.util.ClassUtils;
@@ -31,7 +31,7 @@ public class LogRecordOperationSource {
      * @param targetClass 目的类
      * @return 日志对象
      */
-    public LogRecord computeLogRecordOperation(Method method, Class<?> targetClass) {
+    public LogRecordDTO computeLogRecordOperation(Method method, Class<?> targetClass) {
         // Don't allow no-public methods as required.
         if (!Modifier.isPublic(method.getModifiers())) {
             return null;
@@ -55,7 +55,7 @@ public class LogRecordOperationSource {
      * @param ae 日志注解
      * @return 日志对象
      */
-    private LogRecord parseLogRecordAnnotation(AnnotatedElement ae) {
+    private LogRecordDTO parseLogRecordAnnotation(AnnotatedElement ae) {
         LogRecordAnnotation logRecordAnnotation = AnnotationUtil.getAnnotation(ae, LogRecordAnnotation.class);
         return logRecordAnnotation == null ? null : parseLogRecordAnnotation(ae, logRecordAnnotation);
     }
@@ -69,10 +69,10 @@ public class LogRecordOperationSource {
      * @param recordAnnotation 日志注解
      * @return 日志对象
      */
-    private LogRecord parseLogRecordAnnotation(AnnotatedElement ae, LogRecordAnnotation recordAnnotation) {
+    private LogRecordDTO parseLogRecordAnnotation(AnnotatedElement ae, LogRecordAnnotation recordAnnotation) {
         String bizKey = recordAnnotation.prefix();
         String bizNo = recordAnnotation.bizNo();
-        LogRecord recordOps = LogRecord.builder()
+        LogRecordDTO recordOps = LogRecordDTO.builder()
                 .bizKey(bizKey)
                 .bizNo(bizNo)
                 .operatorId(recordAnnotation.operatorId())

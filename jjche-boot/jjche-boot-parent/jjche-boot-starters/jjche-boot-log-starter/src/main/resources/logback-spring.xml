@@ -149,6 +149,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 
     <logger name="com.github.xiaoymin.knife4j.core.model.MarkdownFile" level="WARN"/>
     <logger name="com.ulisesbocchio.jasyptspringboot.EncryptablePropertySourceConverter" level="WARN"/>
+    <logger name="org.springframework.security.web.DefaultSecurityFilterChain" level="WARN"/>
 
     <!-- root节点 -->
     <root level="${level}">

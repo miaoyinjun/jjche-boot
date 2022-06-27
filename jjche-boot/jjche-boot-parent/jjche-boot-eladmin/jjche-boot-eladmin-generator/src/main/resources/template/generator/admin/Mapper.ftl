@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.jjche.mybatis.base.MyBaseMapper;
-import org.jjche.mybatis.param.PageParam;
+import org.jjche.common.param.PageParam;
 import ${packageApi}.vo.${className}VO;
 import org.apache.ibatis.annotations.Param;
-import org.jjche.mybatis.param.MyPage;
+import org.jjche.common.param.MyPage;
 import java.util.List;
 
 /**

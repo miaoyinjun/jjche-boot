@@ -15,4 +15,5 @@ import lombok.Data;
 public class CoreApiPathProperties {
     String globalPrefix;
     String sysPrefix;
+    String prefix;
 }

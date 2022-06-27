@@ -23,7 +23,7 @@
 //import com.baomidou.mybatisplus.core.toolkit.PluginUtils;
 //import com.boot.admin.common.annotation.DataPermission;
 //import com.boot.admin.common.pojo.DataScope;
-//import com.boot.admin.core.util.SecurityUtils;
+//import com.boot.admin.core.util.SecurityUtil;
 //import lombok.SneakyThrows;
 //import net.sf.jsqlparser.expression.Alias;
 //import net.sf.jsqlparser.expression.Expression;
@@ -94,7 +94,7 @@
 //        DataScope dataScope = null;
 //        //未登录情况下
 //        try {
-//            dataScope = SecurityUtils.getCurrentUserDataScope();
+//            dataScope = SecurityUtil.getCurrentUserDataScope();
 //        } catch (Exception e) {
 //        }
 //        if (dataScope == null || dataScope.isAll()) {
