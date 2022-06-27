@@ -9,8 +9,9 @@ import cn.hutool.log.StaticLog;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.ThrowableUtil;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.alarm.dd.AlarmDingTalkService;
-import org.jjche.core.wrapper.response.ResultWrapper;
+import org.jjche.core.util.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -84,9 +85,13 @@ public class GlobalExceptionHandler {
         } catch (Exception ex) {
 
         } finally {
-            log.setExceptionStack(ThrowableUtil.getStackTrace(e));
-            StaticLog.error("全局异常信息 :{}", JSONUtil.toJsonPrettyStr(log));
-            alarmDingTalkService.sendAlarm("全局异常");
+            if (SpringContextHolder.isDev()) {
+                e.printStackTrace();
+            } else {
+                log.setExceptionStack(ThrowableUtil.getStackTrace(e));
+                StaticLog.error("全局异常信息 :{}", JSONUtil.toJsonPrettyStr(log));
+                alarmDingTalkService.sendAlarm("全局异常");
+            }
         }
         return ResultWrapper.error();
     }
@@ -101,11 +106,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({FeignResultWrapperException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper feignResultWrapperException(Exception e) {
-        String msg = e.getMessage();
-        return JSONUtil.toBean(msg, ResultWrapper.class);
+    public String feignResultWrapperException(Exception e) {
+        return e.getMessage();
     }
-
 
     /**
      * <p>

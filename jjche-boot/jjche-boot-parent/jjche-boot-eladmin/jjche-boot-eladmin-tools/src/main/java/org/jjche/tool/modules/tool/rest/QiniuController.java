@@ -3,15 +3,14 @@ package org.jjche.tool.modules.tool.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
+import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.core.wrapper.response.ResultWrapper;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
-import org.jjche.mybatis.param.MyPage;
-import org.jjche.mybatis.param.PageParam;
 import org.jjche.tool.modules.tool.domain.QiniuConfigDO;
 import org.jjche.tool.modules.tool.domain.QiniuContentDO;
 import org.jjche.tool.modules.tool.dto.QiniuQueryCriteriaDTO;
@@ -32,7 +31,6 @@ import java.util.Map;
  * @version 1.0.8-SNAPSHOT
  * @since 2018/09/28 6:55:53
  */
-@Slf4j
 @RequiredArgsConstructor
 @SysRestController("qiNiuContent")
 @Api(tags = "工具：七牛云存储管理")

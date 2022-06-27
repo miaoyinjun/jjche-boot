@@ -4,6 +4,7 @@ target/
 # IDEA #
 .idea/
 *.iml
+*.log
 .flattened-pom.xml
 # Eclipse #
 .settings/
@@ -14,7 +15,6 @@ target/
 rebel.xml
 node_modules/
 dist/
-static/
 logs/
 
 avatar/

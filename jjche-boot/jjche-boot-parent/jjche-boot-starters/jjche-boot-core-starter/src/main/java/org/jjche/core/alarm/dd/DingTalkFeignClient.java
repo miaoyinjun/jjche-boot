@@ -1,7 +1,5 @@
 package org.jjche.core.alarm.dd;
 
-import org.jjche.core.constant.CoreConstant;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @version 1.0.10-SNAPSHOT
  * @since 2020-12-16
  */
-@FeignClient(name = "ALARM-DING-TALK", url = "${" + CoreConstant.PROPERTY_CORE_ALARM_DING_TALK_URL_PACKAGE_PREFIX + "}")
+//@FeignClient(name = "ALARM-DING-TALK", url = "${" + CoreConstant.PROPERTY_CORE_ALARM_DING_TALK_URL_PACKAGE_PREFIX + "}")
 public interface DingTalkFeignClient {
     /**
      * <p>send.</p>

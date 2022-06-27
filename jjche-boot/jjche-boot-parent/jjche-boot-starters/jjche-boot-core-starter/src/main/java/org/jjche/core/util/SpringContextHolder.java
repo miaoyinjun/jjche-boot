@@ -2,7 +2,6 @@ package org.jjche.core.util;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jjche.common.constant.EnvConstant;
 import org.springframework.beans.BeansException;
@@ -25,7 +24,6 @@ import java.util.Optional;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-07
  */
-@Slf4j
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
 
     private static final List<CallBack> CALL_BACKS = new ArrayList<>();
@@ -86,11 +84,20 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * </p>
      *
      * @return 是否生产环境
-     * @author miaoyj
-     * @since 2020-09-29
      */
     public static boolean isProd() {
         return getEnvActive().equalsIgnoreCase(EnvConstant.PROD);
+    }
+
+    /**
+     * <p>
+     * 是否cloud环境
+     * </p>
+     *
+     * @return /
+     */
+    public static boolean isCloud() {
+        return getProperties("jjche.cloud.enable", Boolean.FALSE, Boolean.class);
     }
 
     /**
@@ -99,8 +106,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * </p>
      *
      * @return 环境名称
-     * @author miaoyj
-     * @since 2020-09-29
      */
     public static String getEnvActive() {
         String[] profiles = applicationContext.getEnvironment().getActiveProfiles();
@@ -148,6 +153,9 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         T result = defaultValue;
         try {
             result = getBean(Environment.class).getProperty(property, requiredType);
+            if (result == null) {
+                result = defaultValue;
+            }
         } catch (Exception ignored) {
         }
         return result;
@@ -189,7 +197,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * 清除SpringContextHolder中的ApplicationContext为Null.
      */
     private static void clearHolder() {
-        log.debug("清除SpringContextHolder中的ApplicationContext:"
+        StaticLog.debug("清除SpringContextHolder中的ApplicationContext:"
                 + applicationContext);
         applicationContext = null;
     }
@@ -200,8 +208,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * </p>
      *
      * @param application main
-     * @author miaoyj
-     * @since 2020-11-26
      */
     public static void appLog(ConfigurableApplicationContext application) {
         try {
@@ -215,7 +221,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
             try {
                 hostAddress = InetAddress.getLocalHost().getHostAddress();
             } catch (UnknownHostException e) {
-                log.warn("The host name could not be determined, using `localhost` as fallback");
+                StaticLog.warn("The host name could not be determined, using `localhost` as fallback");
             }
 
             StaticLog.info("\n----------------------------------------------------------\n\t" +
@@ -253,7 +259,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (SpringContextHolder.applicationContext != null) {
-            log.warn("SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:" + SpringContextHolder.applicationContext);
+            StaticLog.warn("SpringContextHolder中的ApplicationContext被覆盖, 原有ApplicationContext为:" + SpringContextHolder.applicationContext);
         }
         SpringContextHolder.applicationContext = applicationContext;
         if (addCallback) {

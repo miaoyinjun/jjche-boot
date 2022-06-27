@@ -1,6 +1,6 @@
 package org.jjche.log.modules.logging.mapstruct;
 
-import org.jjche.log.biz.beans.LogRecord;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.log.modules.logging.domain.LogDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,7 +9,7 @@ import org.mapstruct.ReportingPolicy;
 
 /**
  * <p>
- * LogRecord, log映射
+ * LogRecordDTO, log映射
  * </p>
  *
  * @author miaoyj
@@ -33,5 +33,5 @@ public interface LogRecordMapStruct {
      * @param logRecord 日志记录
      * @return LogDO
      */
-    LogDO toLog(LogRecord logRecord);
+    LogDO toLog(LogRecordDTO logRecord);
 }

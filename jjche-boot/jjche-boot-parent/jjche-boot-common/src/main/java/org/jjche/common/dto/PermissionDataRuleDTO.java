@@ -1,7 +1,6 @@
 package org.jjche.common.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -51,6 +50,5 @@ public class PermissionDataRuleDTO implements Serializable {
     /**
      * 权限标识
      */
-    @JsonIgnore
     private String menuPermission;
 }

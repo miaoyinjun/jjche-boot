@@ -34,7 +34,7 @@ jjche:
     url:
       exclude-default-urls:
         - /
-        - ${spring.boot.admin.context-path:/sba}/**
+        - /error
         - /static/**
         - /*.ico
         - /*.html
@@ -44,6 +44,7 @@ jjche:
         - ${jjche.core.api.path.sys-prefix}/webSocket/**
         - /avatar/**
         - /file/**
+        - /actuator/**
     #密码加密传输，前端公钥加密，后端私钥解密
     rsa:
       public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDK4b3DKtM26QeA++8vElist/F3

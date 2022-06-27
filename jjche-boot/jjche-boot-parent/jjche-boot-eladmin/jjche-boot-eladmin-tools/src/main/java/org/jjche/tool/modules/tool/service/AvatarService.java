@@ -4,8 +4,8 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.enums.FileType;
+import org.jjche.core.fileconf.FileProperties;
 import org.jjche.core.util.FileUtil;
-import org.jjche.tool.modules.tool.config.FileProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

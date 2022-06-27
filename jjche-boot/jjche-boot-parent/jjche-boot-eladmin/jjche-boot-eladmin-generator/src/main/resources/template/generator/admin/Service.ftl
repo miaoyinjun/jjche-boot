@@ -5,10 +5,10 @@ import ${packageApi}.dto.${className}DTO;
 import ${packageApi}.vo.${className}VO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.jjche.mybatis.base.service.IMyService;
-import org.jjche.mybatis.param.PageParam;
+import org.jjche.common.param.PageParam;
 import javax.servlet.http.HttpServletResponse;
 import ${packageApi}.dto.${className}QueryCriteriaDTO;
-import org.jjche.mybatis.param.MyPage;
+import org.jjche.common.param.MyPage;
 import java.util.*;
 
 /**

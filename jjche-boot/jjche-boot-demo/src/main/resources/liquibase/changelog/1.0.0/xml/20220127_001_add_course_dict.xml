@@ -1,0 +1,15 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="20220127_001_add_course_dict" author="miaoyj">
+        <!--兼容cloud版本-->
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="sys_dict"/>
+            <tableExists tableName="sys_dict_detail"/>
+        </preConditions>
+        <sqlFile path="sql/20220127_001_add_course_dict.sql" relativeToChangelogFile="true"/>
+        <rollback/>
+    </changeSet>
+</databaseChangeLog>

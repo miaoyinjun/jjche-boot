@@ -18,14 +18,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.LogConstant;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.pojo.AbstractResultWrapper;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.util.RequestHolder;
-import org.jjche.log.biz.beans.LogRecord;
 import org.jjche.log.biz.context.LogRecordContext;
 import org.jjche.log.biz.service.ILogRecordService;
 import org.jjche.log.biz.service.IOperatorGetService;
@@ -57,6 +58,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
     private String tenantId;
     private ILogRecordService bizLogService;
     private IOperatorGetService operatorGetService;
+    private CommonAPI commonAPI;
 
     /**
      * {@inheritDoc}
@@ -88,7 +90,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         Map<String, String> functionNameAndReturnMap = MapUtil.newHashMap();
         //获取方法执行前的模板
         try {
-            LogRecord logRecord = logRecordOperationSource.computeLogRecordOperation(method, targetClass);
+            LogRecordDTO logRecord = logRecordOperationSource.computeLogRecordOperation(method, targetClass);
             List<String> spElTemplates = getBeforeExecuteFunctionTemplate(logRecord);
             functionNameAndReturnMap = processBeforeExecuteFunctionTemplate(spElTemplates, targetClass, method, args);
         } catch (Exception e) {
@@ -123,7 +125,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * @param logRecord /
      * @return /
      */
-    private List<String> getBeforeExecuteFunctionTemplate(LogRecord logRecord) {
+    private List<String> getBeforeExecuteFunctionTemplate(LogRecordDTO logRecord) {
         List<String> spElTemplates = new ArrayList<>();
         //执行之前的函数，失败模版不解析
         List<String> templates = getSpElTemplates(logRecord);
@@ -151,7 +153,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         String errorMsg = methodExecuteResult.getErrorMsg();
         boolean success = methodExecuteResult.isSuccess();
         //执行前
-        LogRecord logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
+        LogRecordDTO logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
         logRecord.setRequestId(MDC.get(LogConstant.REQUEST_ID));
         Throwable throwable = methodExecuteResult.getThrowable();
         //异常数据
@@ -216,7 +218,9 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
                 }
                 logRecord.setTime(System.currentTimeMillis() - currentTime.get());
                 currentTime.remove();
-                bizLogService.record(logRecord);
+//                bizLogService.record(logRecord);
+                commonAPI.recordLog(logRecord);
+
             } catch (Exception t) {
                 StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
             }
@@ -231,7 +235,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * @param logRecord 日志
      * @return /
      */
-    private List<String> getSpElTemplates(LogRecord logRecord) {
+    private List<String> getSpElTemplates(LogRecordDTO logRecord) {
         List<String> spElTemplates = CollUtil.newArrayList(logRecord.getBizKey(), logRecord.getBizNo(), logRecord.getValue(), logRecord.getDetail());
         if (StrUtil.isNotBlank(logRecord.getCondition())) {
             spElTemplates.add(logRecord.getCondition());
@@ -243,17 +247,17 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition), "true");
     }
 
-    private String getRealOperatorId(LogRecord logRecord, String operatorIdFromService, Map<String, String> expressionValues) {
+    private String getRealOperatorId(LogRecordDTO logRecord, String operatorIdFromService, Map<String, String> expressionValues) {
         return StrUtil.isNotBlank(operatorIdFromService) ? operatorIdFromService : expressionValues.get(logRecord.getOperatorId());
     }
 
-    private String getOperatorIdFromServiceAndPutTemplate(LogRecord operation, List<String> spElTemplates) {
+    private String getOperatorIdFromServiceAndPutTemplate(LogRecordDTO operation, List<String> spElTemplates) {
 
         String realOperatorId = "";
         if (StrUtil.isBlank(operation.getOperatorId())) {
             realOperatorId = operatorGetService.getUser().getOperatorId();
             if (StrUtil.isBlank(realOperatorId)) {
-                throw new IllegalArgumentException("[LogRecord] operator is null");
+                throw new IllegalArgumentException("[LogRecordDTO] operator is null");
             }
         } else {
             spElTemplates.add(operation.getOperatorId());
@@ -327,6 +331,11 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         if (bizLogService == null) {
             StaticLog.error("bizLogService not null");
         }
+
+        commonAPI = beanFactory.getBean(CommonAPI.class);
+        if (commonAPI == null) {
+            StaticLog.error("commonAPI not null");
+        }
     }
 
     /**
@@ -348,7 +357,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * @param logRecord 日志
      * @param args      an array of {@link java.lang.Object} objects.
      */
-    public void setLogRecordHttpRequest(LogRecord logRecord, Object[] args) {
+    public void setLogRecordHttpRequest(LogRecordDTO logRecord, Object[] args) {
         try {
             HttpServletRequest request = RequestHolder.getHttpServletRequest();
             String ip = HttpUtil.getIp(request);

@@ -2,7 +2,7 @@ package org.jjche.mybatis.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
-import org.jjche.core.util.SecurityUtils;
+import org.jjche.core.util.SecurityUtil;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,7 +22,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        String username = SecurityUtils.getCurrentOrDefaultUsername();
+        String username = SecurityUtil.getUsernameOrDefaultUsername();
         this.strictInsertFill(metaObject, "createdBy", String.class, username);
         this.updateFill(metaObject);
     }
@@ -32,7 +32,7 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        String username = SecurityUtils.getCurrentOrDefaultUsername();
+        String username = SecurityUtil.getUsernameOrDefaultUsername();
         this.strictUpdateFill(metaObject, "updatedBy", String.class, username);
     }
 }

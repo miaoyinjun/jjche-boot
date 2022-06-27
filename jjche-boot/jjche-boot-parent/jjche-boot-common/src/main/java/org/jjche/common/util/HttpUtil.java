@@ -1,5 +1,6 @@
 package org.jjche.common.util;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.http.useragent.Browser;
 import cn.hutool.http.useragent.OS;
@@ -10,7 +11,12 @@ import cn.hutool.log.StaticLog;
 import lombok.SneakyThrows;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import net.dreamlu.mica.ip2region.core.IpInfo;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.constant.UrlConstant;
+import org.jjche.common.dto.JwtUserDto;
+import org.jjche.common.dto.UserVO;
+import org.jjche.common.pojo.DataScope;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +28,9 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
+import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -245,4 +252,50 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
         return;
     }
 
+    /**
+     * <p>
+     * 设置header的用户信息
+     * </p>
+     *
+     * @param userDetails /
+     * @return /
+     */
+    public static Map<String, Object> getUserHeaders(JwtUserDto userDetails) {
+        Map<String, Object> httpHeaders = new HashMap<>();
+        if (userDetails != null) {
+            UserVO user = userDetails.getUser();
+            //用户基本信息
+            String userId = String.valueOf(user.getId());
+            String username = user.getUsername();
+            List<String> elPermissions = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+            //数据范围
+            DataScope dataScope = userDetails.getDataScope();
+            //部门id
+            Set<Long> dataScopeDeptIds = dataScope.getDeptIds();
+            List<String> dataScopeDeptIdsList = new ArrayList<>();
+            if (CollUtil.isNotEmpty(dataScopeDeptIds)) {
+                dataScopeDeptIdsList = dataScopeDeptIds.stream().map(o -> String.valueOf(o)).collect(Collectors.toList());
+            }
+            List<String> dataScopeFinalDeptIdsList = dataScopeDeptIdsList;
+            //全部
+            String dataScopeIsAll = String.valueOf(dataScope.isAll());
+            //本人
+            String dataScopeIsSelf = String.valueOf(dataScope.isSelf());
+            //用户id
+            String dataScopeUserid = String.valueOf(dataScope.getUserId());
+            //用户名
+            String dataScopeUsername = dataScope.getUserName();
+
+            httpHeaders.put(SecurityConstant.JWT_KEY_USER_ID, userId);
+            httpHeaders.put(SecurityConstant.JWT_KEY_USERNAME, username);
+            httpHeaders.put(SecurityConstant.JWT_KEY_PERMISSION, elPermissions);
+            //数据范围
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, dataScopeFinalDeptIdsList);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, dataScopeIsAll);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, dataScopeIsSelf);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
+            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
+        }
+        return httpHeaders;
+    }
 }
