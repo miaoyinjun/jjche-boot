@@ -1,5 +1,6 @@
 package org.jjche.core.base;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public interface BaseMapStruct<E, D, V> {
      * @author miaoyj
      * @since 2020-10-12
      */
-    List<E> toDO(List<D> dtoList);
+    List<E> toDO(Collection<D> dtoList);
 
     /**
      * <p>
@@ -59,5 +60,5 @@ public interface BaseMapStruct<E, D, V> {
      * @author miaoyj
      * @since 2020-10-12
      */
-    List<V> toVO(List<E> dooList);
+    List<V> toVO(Collection<E> dooList);
 }
