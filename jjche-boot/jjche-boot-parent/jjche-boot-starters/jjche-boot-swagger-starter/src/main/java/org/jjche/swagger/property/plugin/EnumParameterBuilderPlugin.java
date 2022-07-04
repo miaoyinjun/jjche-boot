@@ -1,27 +1,21 @@
 package org.jjche.swagger.property.plugin;
 
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-import com.fasterxml.classmate.ResolvedType;
 import com.google.common.base.Joiner;
+import io.swagger.annotations.ApiParam;
 import org.jjche.common.constant.EnumConstant;
+import org.jjche.common.enums.IBaseEnum;
 import org.springframework.util.ReflectionUtils;
-import springfox.documentation.builders.OperationBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.service.AllowableListValues;
-import springfox.documentation.service.Parameter;
-import springfox.documentation.service.ResolvedMethodParameter;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.OperationBuilderPlugin;
 import springfox.documentation.spi.service.ParameterBuilderPlugin;
-import springfox.documentation.spi.service.contexts.OperationContext;
 import springfox.documentation.spi.service.contexts.ParameterContext;
+import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +28,7 @@ import java.util.stream.Collectors;
  * @since 2020-07-09
  */
 @SuppressWarnings(value = "all")
-public class EnumParameterBuilderPlugin implements ParameterBuilderPlugin, OperationBuilderPlugin {
+public class EnumParameterBuilderPlugin implements ParameterBuilderPlugin {
 
     private static final Joiner joiner = Joiner.on(";");
 
@@ -43,52 +37,12 @@ public class EnumParameterBuilderPlugin implements ParameterBuilderPlugin, Opera
      */
     @Override
     public void apply(ParameterContext context) {
-        Class<?> type = context.resolvedMethodParameter().getParameterType().getErasedType();
-        if (Enum.class.isAssignableFrom(type)) {
-            Object[] enumConstants = type.getEnumConstants();
-            List<String> displayValues = Arrays.stream(enumConstants).filter(Objects::nonNull)
-                    .filter(o -> ObjectUtil.isNotNull(ReflectionUtils.findField(o.getClass(), EnumConstant.VALUE))).map(item -> {
-                        Class<?> currentClass = item.getClass();
-
-                        Field indexField = ReflectionUtils.findField(currentClass, EnumConstant.VALUE);
-                        ReflectionUtils.makeAccessible(indexField);
-                        Object value = ReflectionUtils.getField(indexField, item);
-
-                        Field descField = ReflectionUtils.findField(currentClass, EnumConstant.DESC);
-                        ReflectionUtils.makeAccessible(descField);
-                        Object desc = ReflectionUtils.getField(descField, item);
-                        return value.toString();
-
-                    }).collect(Collectors.toList());
-
-            ParameterBuilder parameterBuilder = context.parameterBuilder();
-            AllowableListValues values = new AllowableListValues(displayValues, "LIST");
-            parameterBuilder.allowableValues(values);
-//            }
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean supports(DocumentationType delimiter) {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void apply(OperationContext context) {
-        List<ResolvedMethodParameter> parameters = context.getParameters();
-        parameters.forEach(parameter -> {
-            ResolvedType parameterType = parameter.getParameterType();
-            Class<?> clazz = parameterType.getErasedType();
-            if (Enum.class.isAssignableFrom(clazz)) {
-                Object[] enumConstants = clazz.getEnumConstants();
-
+        Optional<ApiParam> apiParam = context.resolvedMethodParameter().findAnnotation(ApiParam.class);
+        if (apiParam.isPresent()) {
+            ApiParam annotation = (ApiParam) apiParam.get();
+            Class<?> type = context.resolvedMethodParameter().getParameterType().getErasedType();
+            if (IBaseEnum.class.isAssignableFrom(type)) {
+                Object[] enumConstants = type.getEnumConstants();
                 List<String> displayValues = Arrays.stream(enumConstants).filter(Objects::nonNull).
                         filter(o -> ObjectUtil.isNotNull(ReflectionUtils.findField(o.getClass(), EnumConstant.VALUE))).map(item -> {
                             Class<?> currentClass = item.getClass();
@@ -103,23 +57,19 @@ public class EnumParameterBuilderPlugin implements ParameterBuilderPlugin, Opera
                             return value + ":" + desc;
 
                         }).collect(Collectors.toList());
-
-                OperationBuilder operationBuilder = context.operationBuilder();
-                Field parametersField = ReflectionUtils.findField(operationBuilder.getClass(), "parameters");
-                ReflectionUtils.makeAccessible(parametersField);
-                List<Parameter> list = (List<Parameter>) ReflectionUtils.getField(parametersField, operationBuilder);
-
-                String parameterName = parameter.defaultName().orElse("");
-                Predicate condition = (str) -> StrUtil.equals(str.toString(), parameterName);
-                Parameter currentParameter = list.stream().filter((p) -> (condition.test(p.getName()))).findFirst().orElse(null);
-
-                if (currentParameter != null) {
-                    Field description = ReflectionUtils.findField(currentParameter.getClass(), "description");
-                    ReflectionUtils.makeAccessible(description);
-                    Object field = ReflectionUtils.getField(description, currentParameter);
-                    ReflectionUtils.setField(description, currentParameter, field + "(" + joiner.join(displayValues) + ")");
-                }
+                String desc = annotation.value() + "(" + joiner.join(displayValues) + ")";
+                context.requestParameterBuilder()
+                        .description(desc);
             }
-        });
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean supports(DocumentationType delimiter) {
+        return SwaggerPluginSupport.pluginDoesApply(delimiter);
     }
 }

@@ -10,6 +10,7 @@ import cn.hutool.core.util.StrUtil;
 import io.swagger.annotations.ApiModelProperty;
 import org.jjche.common.constant.EnumConstant;
 import org.jjche.common.dto.LogUpdateDetailDTO;
+import org.jjche.common.enums.IBaseEnum;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -124,7 +125,7 @@ public class ClassCompareUtil {
         String value = "";
         if (enumObject != null) {
             //枚举
-            if (Enum.class.isInstance(enumObject)) {
+            if (IBaseEnum.class.isInstance(enumObject)) {
                 Field descField = ReflectionUtils.findField(enumObject.getClass(), EnumConstant.DESC);
                 if (descField != null) {
                     ReflectionUtils.makeAccessible(descField);

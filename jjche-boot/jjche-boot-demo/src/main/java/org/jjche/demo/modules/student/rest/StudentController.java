@@ -21,7 +21,6 @@ import org.jjche.demo.modules.student.api.enums.CourseEnum;
 import org.jjche.demo.modules.student.api.vo.StudentVO;
 import org.jjche.demo.modules.student.service.StudentService;
 import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
-import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -141,14 +140,6 @@ public class StudentController extends BaseController {
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
     public ResultWrapper<MyPage<StudentVO>> page(PageParam page,
-                                                 @ApiParam(value = "课程")
-                                                 @RequestParam(required = false) CourseEnum course,
-                                                 @Validated StudentQueryCriteriaDTO query) {
-        return ResultWrapper.ok(studentService.page(page, course, query));
-    }
-
-    @AnonymousGetMapping("/test")
-    public ResultWrapper<MyPage<StudentVO>> test(PageParam page,
                                                  @ApiParam(value = "课程")
                                                  @RequestParam(required = false) CourseEnum course,
                                                  @Validated StudentQueryCriteriaDTO query) {

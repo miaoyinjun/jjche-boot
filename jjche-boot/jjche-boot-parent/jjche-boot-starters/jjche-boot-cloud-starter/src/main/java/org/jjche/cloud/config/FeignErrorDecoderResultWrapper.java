@@ -1,4 +1,4 @@
-package org.jjche.core.feign;
+package org.jjche.cloud.config;
 
 import feign.Response;
 import feign.Util;

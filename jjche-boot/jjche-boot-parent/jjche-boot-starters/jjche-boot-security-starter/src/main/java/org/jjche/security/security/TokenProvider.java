@@ -84,6 +84,7 @@ public class TokenProvider implements InitializingBean {
             return bearerToken.replace(tokenStartWith, "");
         } else {
             StaticLog.warn("非法Token：{}", bearerToken);
+//            throw new AuthenticationTokenNotFoundException(null);
         }
         return null;
     }
