@@ -42,7 +42,7 @@
         <alipay.version>4.9.153.ALL</alipay.version>
         <nacos.version>2.0.3</nacos.version>
         <jetcache.version>2.6.5</jetcache.version>
-        <druid.version>1.2.11</druid.version>
+        <druid.version>1.2.9</druid.version>
 
     </properties>
 
