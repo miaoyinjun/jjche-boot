@@ -1,7 +1,5 @@
 package org.jjche.tool.modules.tool.utils;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.internal.util.AlipaySignature;
 import org.jjche.tool.modules.tool.domain.AlipayConfigDO;
 import org.springframework.stereotype.Component;
 
@@ -62,13 +60,13 @@ public class AlipayUtils {
             params.put(name, valueStr);
         }
 
-        try {
-            return AlipaySignature.rsaCheckV1(params,
-                    alipay.getPublicKey(),
-                    alipay.getCharset(),
-                    alipay.getSignType());
-        } catch (AlipayApiException e) {
+//        try {
+//            return AlipaySignature.rsaCheckV1(params,
+//                    alipay.getPublicKey(),
+//                    alipay.getCharset(),
+//                    alipay.getSignType());
+//        } catch (AlipayApiException e) {
             return false;
-        }
+//        }
     }
 }

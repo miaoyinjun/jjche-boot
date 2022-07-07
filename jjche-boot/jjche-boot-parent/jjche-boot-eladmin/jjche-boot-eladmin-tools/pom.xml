@@ -24,9 +24,9 @@
         </dependency>
 
         <!--支付宝依赖-->
-        <dependency>
-            <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.alipay.sdk</groupId>-->
+<!--            <artifactId>alipay-sdk-java</artifactId>-->
+<!--        </dependency>-->
     </dependencies>
 </project>

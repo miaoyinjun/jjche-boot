@@ -3,10 +3,6 @@ package org.jjche.tool.modules.tool.service;
 import cn.hutool.core.lang.Assert;
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.alipay.api.request.AlipayTradeWapPayRequest;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.constant.CacheKey;
 import org.jjche.mybatis.base.service.MyServiceImpl;
@@ -64,28 +60,28 @@ public class AliPayService extends MyServiceImpl<AliPayMapper, AlipayConfigDO> {
     public String toPayAsPc(AlipayConfigDO alipay, TradeVO trade) throws Exception {
 
         Assert.notNull(alipay.getId(), "请先添加相应配置，再操作");
-        AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppId(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
-
-        // 创建API对应的request(电脑网页版)
-        AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
-
-        // 订单完成后返回的页面和异步通知地址
-        request.setReturnUrl(alipay.getReturnUrl());
-        request.setNotifyUrl(alipay.getNotifyUrl());
-        // 填充订单参数
-        request.setBizContent("{" +
-                "    \"out_trade_no\":\"" + trade.getOutTradeNo() + "\"," +
-                "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + trade.getTotalAmount() + "," +
-                "    \"subject\":\"" + trade.getSubject() + "\"," +
-                "    \"body\":\"" + trade.getBody() + "\"," +
-                "    \"extend_params\":{" +
-                "    \"sys_service_provider_id\":\"" + alipay.getSysServiceProviderId() + "\"" +
-                "    }" +
-                "  }");//填充业务参数
-        // 调用SDK生成表单, 通过GET方式，口可以获取url
-        return alipayClient.pageExecute(request, "GET").getBody();
-
+//        AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppId(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
+//
+//        // 创建API对应的request(电脑网页版)
+//        AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
+//
+//        // 订单完成后返回的页面和异步通知地址
+//        request.setReturnUrl(alipay.getReturnUrl());
+//        request.setNotifyUrl(alipay.getNotifyUrl());
+//        // 填充订单参数
+//        request.setBizContent("{" +
+//                "    \"out_trade_no\":\"" + trade.getOutTradeNo() + "\"," +
+//                "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
+//                "    \"total_amount\":" + trade.getTotalAmount() + "," +
+//                "    \"subject\":\"" + trade.getSubject() + "\"," +
+//                "    \"body\":\"" + trade.getBody() + "\"," +
+//                "    \"extend_params\":{" +
+//                "    \"sys_service_provider_id\":\"" + alipay.getSysServiceProviderId() + "\"" +
+//                "    }" +
+//                "  }");//填充业务参数
+//        // 调用SDK生成表单, 通过GET方式，口可以获取url
+//        return alipayClient.pageExecute(request, "GET").getBody();
+    return null;
     }
 
     /**
@@ -98,25 +94,26 @@ public class AliPayService extends MyServiceImpl<AliPayMapper, AlipayConfigDO> {
      */
     public String toPayAsWeb(AlipayConfigDO alipay, TradeVO trade) throws Exception {
         Assert.notNull(alipay.getId(), "请先添加相应配置，再操作");
-        AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppId(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
-
-        double money = Double.parseDouble(trade.getTotalAmount());
-        double maxMoney = 5000;
-        Assert.isFalse(money <= 0 || money >= maxMoney, "测试金额过大");
-        // 创建API对应的request(手机网页版)
-        AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
-        request.setReturnUrl(alipay.getReturnUrl());
-        request.setNotifyUrl(alipay.getNotifyUrl());
-        request.setBizContent("{" +
-                "    \"out_trade_no\":\"" + trade.getOutTradeNo() + "\"," +
-                "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-                "    \"total_amount\":" + trade.getTotalAmount() + "," +
-                "    \"subject\":\"" + trade.getSubject() + "\"," +
-                "    \"body\":\"" + trade.getBody() + "\"," +
-                "    \"extend_params\":{" +
-                "    \"sys_service_provider_id\":\"" + alipay.getSysServiceProviderId() + "\"" +
-                "    }" +
-                "  }");
-        return alipayClient.pageExecute(request, "GET").getBody();
+//        AlipayClient alipayClient = new DefaultAlipayClient(alipay.getGatewayUrl(), alipay.getAppId(), alipay.getPrivateKey(), alipay.getFormat(), alipay.getCharset(), alipay.getPublicKey(), alipay.getSignType());
+//
+//        double money = Double.parseDouble(trade.getTotalAmount());
+//        double maxMoney = 5000;
+//        Assert.isFalse(money <= 0 || money >= maxMoney, "测试金额过大");
+//        // 创建API对应的request(手机网页版)
+//        AlipayTradeWapPayRequest request = new AlipayTradeWapPayRequest();
+//        request.setReturnUrl(alipay.getReturnUrl());
+//        request.setNotifyUrl(alipay.getNotifyUrl());
+//        request.setBizContent("{" +
+//                "    \"out_trade_no\":\"" + trade.getOutTradeNo() + "\"," +
+//                "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
+//                "    \"total_amount\":" + trade.getTotalAmount() + "," +
+//                "    \"subject\":\"" + trade.getSubject() + "\"," +
+//                "    \"body\":\"" + trade.getBody() + "\"," +
+//                "    \"extend_params\":{" +
+//                "    \"sys_service_provider_id\":\"" + alipay.getSysServiceProviderId() + "\"" +
+//                "    }" +
+//                "  }");
+//        return alipayClient.pageExecute(request, "GET").getBody();
+        return null;
     }
 }
