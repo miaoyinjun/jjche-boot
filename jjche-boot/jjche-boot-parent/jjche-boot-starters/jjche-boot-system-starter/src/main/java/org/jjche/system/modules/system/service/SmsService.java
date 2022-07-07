@@ -1,7 +1,7 @@
 package org.jjche.system.modules.system.service;
 
+import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
-import com.alibaba.fastjson.JSON;
 import com.aliyuncs.CommonRequest;
 import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
@@ -106,7 +106,7 @@ public class SmsService {
             request.putQueryParameter("TemplateCode", templateCode);
             request.putQueryParameter("TemplateParam", sms);
             try {
-                StaticLog.info("sms request: {}", JSON.toJSONString(request));
+                StaticLog.info("sms request: {}", JSONUtil.toJsonStr(request));
                 CommonResponse response = client.getCommonResponse(request);
                 StaticLog.info("sms result: {}", response.getData());
             } catch (ServerException e) {

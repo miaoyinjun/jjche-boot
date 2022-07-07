@@ -1,7 +1,7 @@
 package org.jjche.system.modules.mnt.websocket;
 
+import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
-import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -45,7 +45,7 @@ public class WebSocketServer {
      * @throws java.io.IOException if any.
      */
     public static void sendInfo(SocketMsg socketMsg, @PathParam("sid") String sid) throws IOException {
-        String message = JSONObject.toJSONString(socketMsg);
+        String message = JSONUtil.toJsonStr(socketMsg);
         StaticLog.info("推送消息到" + sid + "，推送内容:" + message);
         for (WebSocketServer item : webSocketSet) {
             try {
