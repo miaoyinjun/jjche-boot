@@ -1,6 +1,7 @@
 package org.jjche.common.system.api;
 
 import org.jjche.common.api.CommonAPI;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.constant.ServiceNameConstant;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
@@ -37,7 +38,7 @@ public interface ISysBaseAPI extends CommonAPI {
 
     @Override
     @GetMapping("getUserDetails")
-    JwtUserDto getUserDetails(@RequestHeader("Authorization") String token);
+    JwtUserDto getUserDetails(@RequestHeader(SecurityConstant.HEADER_AUTH) String token);
 
     @Override
     @PostMapping("recordLog")
