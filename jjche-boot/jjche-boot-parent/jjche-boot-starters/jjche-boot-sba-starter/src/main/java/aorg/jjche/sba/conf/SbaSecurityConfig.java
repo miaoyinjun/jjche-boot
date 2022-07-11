@@ -1,9 +1,8 @@
 package aorg.jjche.sba.conf;
 
-import cn.hutool.core.util.BooleanUtil;
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
-import org.jjche.core.util.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +36,9 @@ public class SbaSecurityConfig {
     @Configuration
     @Order(1)
     public static class SecuritySecureConfig extends WebSecurityConfigurerAdapter {
+        @Value("${jjche.sba.security.enabled:false}")
+        private boolean sbaSecurityEnabled;
+
         private final String adminContextPath;
         @Autowired
         private SecurityProperties securityProperties;
@@ -53,9 +55,9 @@ public class SbaSecurityConfig {
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            boolean isNotDev = !SpringContextHolder.isDev();
-            //单体版才支持登录
-            if (BooleanUtil.isFalse(SpringContextHolder.isCloud()) && isNotDev) {
+            boolean isLogin = sbaSecurityEnabled;
+            //单体版才支持登录BooleanUtil.isFalse(SpringContextHolder.isCloud()) &&
+            if (isLogin) {
                 PasswordEncoder encoder = new BCryptPasswordEncoder();
                 SecurityProperties.User user = securityProperties.getUser();
                 String username = user.getName();
@@ -67,22 +69,19 @@ public class SbaSecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            //单体版才支持登录
-            if (SpringContextHolder.isCloud() || SpringContextHolder.isDev()) {
-                http.csrf().disable().headers().frameOptions().disable();
-                /**解决与其它安全配置冲突问题*/
-                http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().permitAll();
-            } else {
+            //单体版才支持登录BooleanUtil.isFalse(SpringContextHolder.isCloud()) &&
+            boolean isLogin = sbaSecurityEnabled;
+            if (isLogin) {
                 SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
                 //登录跳转
                 successHandler.setTargetUrlParameter("redirectTo");
-
-                http.authorizeRequests().antMatchers(adminContextPath + "/assets/**").permitAll().antMatchers(adminContextPath + "/login").permitAll()
-//					.anyRequest().authenticated()
-//                    .antMatchers(adminContextPath + "/**").authenticated()
-                        .and().formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler).and().logout().logoutUrl(adminContextPath + "/logout").and().httpBasic().and().rememberMe().and().csrf().disable().headers().frameOptions().disable();
+                http.authorizeRequests().antMatchers(adminContextPath + "/assets/**").permitAll().antMatchers(adminContextPath + "/login").permitAll().and().formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler).and().logout().logoutUrl(adminContextPath + "/logout").and().httpBasic().and().rememberMe().and().csrf().disable().headers().frameOptions().disable();
                 /**解决与其它安全配置冲突问题*/
                 http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().authenticated();
+            } else {
+                http.csrf().disable().headers().frameOptions().disable();
+                /**解决与其它安全配置冲突问题*/
+                http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().permitAll();
             }
         }
     }

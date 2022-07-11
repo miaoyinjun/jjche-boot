@@ -15,24 +15,6 @@
     </parent>
 
     <dependencies>
-        <!--        <dependency>-->
-        <!--            <groupId>org.jjcheframework.boot</groupId>-->
-        <!--            <artifactId>jjche-boot-cloud-starter</artifactId>-->
-        <!--            <exclusions>-->
-        <!--                <exclusion>-->
-        <!--                    <groupId>org.jjcheframework.boot</groupId>-->
-        <!--                    <artifactId>jjche-system-cloud-api</artifactId>-->
-        <!--                </exclusion>-->
-        <!--&lt;!&ndash;                <exclusion>&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <artifactId>spring-boot-starter-web</artifactId>&ndash;&gt;-->
-        <!--&lt;!&ndash;                </exclusion>&ndash;&gt;-->
-        <!--&lt;!&ndash;                <exclusion>&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <groupId>org.jjcheframework.boot</groupId>&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <artifactId>jjche-boot-userdetail-starter</artifactId>&ndash;&gt;-->
-        <!--&lt;!&ndash;                </exclusion>&ndash;&gt;-->
-        <!--            </exclusions>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

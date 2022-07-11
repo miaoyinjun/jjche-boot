@@ -66,3 +66,4 @@ management:
   info:
     git:
       mode: full
+jjche.sba.security.enabled: false
