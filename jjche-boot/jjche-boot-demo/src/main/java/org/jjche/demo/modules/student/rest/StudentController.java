@@ -20,7 +20,7 @@ import org.jjche.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
 import org.jjche.demo.modules.student.api.enums.CourseEnum;
 import org.jjche.demo.modules.student.api.vo.StudentVO;
 import org.jjche.demo.modules.student.service.StudentService;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -56,7 +56,7 @@ public class StudentController extends BaseController {
     @ApiOperation(value = "学生-新增", tags = ApiVersion.VERSION_1_0_0)
     @ApiOperationSupport(ignoreParameters = {"id"})
     @PreAuthorize("@el.check('student:add')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "创建了一个学生, 学生姓名：「{{#dto.name}}」",
             category = LogCategoryType.OPERATING,
             type = LogType.ADD, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#_ret.data}}"
@@ -74,7 +74,7 @@ public class StudentController extends BaseController {
     @DeleteMapping
     @ApiOperation(value = "学生-删除", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:del')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "被删除的学生姓名是...", category = LogCategoryType.OPERATING,
             type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#ids}}",
             detail = "学生姓名：「{STUDENT_NAME_BY_IDS{#ids}}」"
@@ -93,10 +93,10 @@ public class StudentController extends BaseController {
     @PutMapping
     @ApiOperation(value = "学生-修改", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:edit')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "被修改的学生姓名：「{{#dto.name}}」", category = LogCategoryType.OPERATING,
             type = LogType.UPDATE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#dto.id}}",
-            detail = "修改内容：「{STUDENT_UPDATE_DIFF_BY_DTO{#dto}}」"
+            detail = "修改：{_DIFF{#dto}}{STUDENT_UPDATE_DIFF_BY_DTO{#dto.id}}"
     )
     public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody StudentDTO dto) {
         studentService.update(dto);

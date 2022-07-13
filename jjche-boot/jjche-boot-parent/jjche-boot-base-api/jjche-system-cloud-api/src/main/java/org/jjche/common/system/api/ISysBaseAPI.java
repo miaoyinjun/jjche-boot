@@ -45,6 +45,10 @@ public interface ISysBaseAPI extends CommonAPI {
     void recordLog(@RequestBody LogRecordDTO logRecord);
 
     @Override
+    @PostMapping("recordLogs")
+    void recordLogs(@RequestBody List<LogRecordDTO> list);
+
+    @Override
     @GetMapping("listPermissionDataRuleByUserId")
     List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(@RequestParam("userId") Long userId);
 }

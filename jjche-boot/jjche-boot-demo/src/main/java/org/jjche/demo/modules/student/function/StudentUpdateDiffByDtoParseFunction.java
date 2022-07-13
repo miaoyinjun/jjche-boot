@@ -1,14 +1,14 @@
 package org.jjche.demo.modules.student.function;
 
-import cn.hutool.core.util.ObjectUtil;
-import org.jjche.common.util.StrUtil;
-import org.jjche.demo.modules.student.api.dto.StudentDTO;
+import cn.hutool.core.lang.Assert;
+import lombok.RequiredArgsConstructor;
 import org.jjche.demo.modules.student.domain.StudentDO;
+import org.jjche.demo.modules.student.mapstruct.StudentMapStruct;
 import org.jjche.demo.modules.student.service.StudentService;
+import org.jjche.log.biz.context.LogRecordContext;
 import org.jjche.log.biz.service.IParseFunction;
+import org.jjche.log.biz.service.impl.DiffParseFunction;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * <p>
@@ -20,9 +20,10 @@ import javax.annotation.Resource;
  * @since 2021-04-29
  */
 @Component
-public class StudentUpdateDiffByDtoParseFunction implements IParseFunction<StudentDTO> {
-    @Resource
-    private StudentService studentService;
+@RequiredArgsConstructor
+public class StudentUpdateDiffByDtoParseFunction implements IParseFunction<Long> {
+    private final StudentService studentService;
+    private final StudentMapStruct studentMapStruct;
 
     /**
      * {@inheritDoc}
@@ -44,11 +45,10 @@ public class StudentUpdateDiffByDtoParseFunction implements IParseFunction<Stude
      * {@inheritDoc}
      */
     @Override
-    public String apply(StudentDTO value) {
-        if (ObjectUtil.isNotNull(value)) {
-            StudentDO studentDO = studentService.getById(value.getId());
-            return StrUtil.updateDiffByDoDto(studentDO, value);
-        }
+    public String apply(Long id) {
+        StudentDO studentDO = studentService.getById(id);
+        Assert.notNull(studentDO, "记录不存在");
+        LogRecordContext.putVariable(DiffParseFunction.OLD_OBJECT, this.studentMapStruct.toDTO(studentDO));
         return null;
     }
 }

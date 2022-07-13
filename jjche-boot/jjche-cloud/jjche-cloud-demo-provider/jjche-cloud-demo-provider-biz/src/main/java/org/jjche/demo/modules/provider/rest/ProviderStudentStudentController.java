@@ -17,7 +17,7 @@ import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
 import org.jjche.demo.modules.provider.feign.ProviderStudentApi;
 import org.jjche.demo.modules.provider.service.ProviderService;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +42,7 @@ public class ProviderStudentStudentController extends BaseController implements 
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ProviderApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "被调用", category = LogCategoryType.OPERATING,
             type = LogType.SELECT, module = "学生"
     )

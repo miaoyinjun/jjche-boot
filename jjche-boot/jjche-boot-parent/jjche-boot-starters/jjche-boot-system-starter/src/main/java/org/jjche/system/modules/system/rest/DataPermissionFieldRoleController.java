@@ -11,7 +11,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.DataPermissionFieldRoleDTO;
 import org.jjche.system.modules.system.api.dto.DataPermissionFieldRoleQueryCriteriaDTO;
 import org.jjche.system.modules.system.api.vo.DataPermissionFieldRoleVO;
@@ -48,7 +48,7 @@ public class DataPermissionFieldRoleController extends BaseController {
     @PostMapping
     @ApiOperation(value = "数据字段角色-保存")
     @PreAuthorize("@el.check('roles:edit')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "保存",
             category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "数据字段角色"

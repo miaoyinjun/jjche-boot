@@ -2,7 +2,7 @@ package org.jjche.log.biz.starter.support.aop;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.util.ClassUtils;
 
@@ -56,8 +56,8 @@ public class LogRecordOperationSource {
      * @return 日志对象
      */
     private LogRecordDTO parseLogRecordAnnotation(AnnotatedElement ae) {
-        LogRecordAnnotation logRecordAnnotation = AnnotationUtil.getAnnotation(ae, LogRecordAnnotation.class);
-        return logRecordAnnotation == null ? null : parseLogRecordAnnotation(ae, logRecordAnnotation);
+        LogRecord logRecord = AnnotationUtil.getAnnotation(ae, LogRecord.class);
+        return logRecord == null ? null : parseLogRecordAnnotation(ae, logRecord);
     }
 
     /**
@@ -69,7 +69,7 @@ public class LogRecordOperationSource {
      * @param recordAnnotation 日志注解
      * @return 日志对象
      */
-    private LogRecordDTO parseLogRecordAnnotation(AnnotatedElement ae, LogRecordAnnotation recordAnnotation) {
+    private LogRecordDTO parseLogRecordAnnotation(AnnotatedElement ae, LogRecord recordAnnotation) {
         String bizKey = recordAnnotation.prefix();
         String bizNo = recordAnnotation.bizNo();
         LogRecordDTO recordOps = LogRecordDTO.builder()
@@ -80,11 +80,14 @@ public class LogRecordOperationSource {
                 .value(recordAnnotation.value())
                 .type(recordAnnotation.type())
                 .module(recordAnnotation.module())
+                .subModule(recordAnnotation.subModule())
                 .detail(recordAnnotation.detail())
                 .condition(recordAnnotation.condition())
                 .saveParams(recordAnnotation.saveParams())
+                .batch(recordAnnotation.batch())
                 .build();
         return recordOps;
     }
+
 
 }

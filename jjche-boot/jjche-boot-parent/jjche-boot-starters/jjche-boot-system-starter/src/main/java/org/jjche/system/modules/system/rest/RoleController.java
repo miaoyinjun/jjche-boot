@@ -14,7 +14,7 @@ import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.SecurityUtil;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.RoleDTO;
 import org.jjche.system.modules.system.api.dto.RoleQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.RoleDO;
@@ -115,7 +115,7 @@ public class RoleController extends BaseController {
      * @param resources a {@link RoleDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "角色"
     )
@@ -135,7 +135,7 @@ public class RoleController extends BaseController {
      * @param resources a {@link RoleDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "角色"
     )
@@ -154,7 +154,7 @@ public class RoleController extends BaseController {
      * @param resources a {@link RoleDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改角色菜单", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "角色"
     )
@@ -174,7 +174,7 @@ public class RoleController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "角色"
     )

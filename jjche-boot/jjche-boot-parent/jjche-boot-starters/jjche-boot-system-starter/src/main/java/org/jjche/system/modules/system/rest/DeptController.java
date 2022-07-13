@@ -12,7 +12,7 @@ import org.jjche.common.param.MyPage;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.DeptDTO;
 import org.jjche.system.modules.system.api.dto.DeptQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.DeptDO;
@@ -99,7 +99,7 @@ public class DeptController extends BaseController {
      * @param resources a {@link DeptDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "部门"
     )
@@ -118,7 +118,7 @@ public class DeptController extends BaseController {
      * @param resources a {@link DeptDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部门"
     )
@@ -136,7 +136,7 @@ public class DeptController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "部门"
     )

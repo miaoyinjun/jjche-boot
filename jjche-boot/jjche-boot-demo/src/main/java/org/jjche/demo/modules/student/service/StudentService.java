@@ -89,9 +89,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void update(StudentDTO dto) {
-        StudentDO studentDO = this.getById(dto.getId());
-        Assert.notNull(studentDO, "记录不存在");
-        studentDO = this.studentMapStruct.toDO(dto);
+        StudentDO studentDO = this.studentMapStruct.toDO(dto);
         Assert.isTrue(this.updateById(studentDO), "修改失败，记录不存在");
     }
 

@@ -1,10 +1,13 @@
 package org.jjche.system.modules.system.mapstruct;
 
-import org.jjche.core.base.BaseMapStruct;
+import org.jjche.core.base.BaseVoMapStruct;
 import org.jjche.system.modules.system.api.dto.MenuDTO;
 import org.jjche.system.modules.system.domain.MenuDO;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>MenuMapStruct interface.</p>
@@ -14,5 +17,14 @@ import org.mapstruct.ReportingPolicy;
  * @since 2018-12-17
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface MenuMapStruct extends BaseMapStruct<MenuDO, MenuDTO, MenuDTO> {
+public interface MenuMapStruct extends BaseVoMapStruct<MenuDO, MenuDTO> {
+    /**
+     * <p>
+     * DTO集合转DO集合
+     * </p>
+     *
+     * @param dtoList dtoList
+     * @return DOList
+     */
+    List<MenuDO> toDO(Collection<MenuDTO> dtoList);
 }

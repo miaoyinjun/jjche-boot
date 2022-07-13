@@ -41,6 +41,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * <p>
@@ -147,49 +149,37 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * @param methodExecuteResult      结果
      * @param functionNameAndReturnMap 方法名和返回
      */
-    private void recordExecute(Object ret, Method method, Object[] args,
-                               Class<?> targetClass, MethodExecuteResult methodExecuteResult,
-                               Map<String, String> functionNameAndReturnMap) {
-        String errorMsg = methodExecuteResult.getErrorMsg();
-        boolean success = methodExecuteResult.isSuccess();
-        //执行前
-        LogRecordDTO logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
-        logRecord.setRequestId(MDC.get(LogConstant.REQUEST_ID));
-        Throwable throwable = methodExecuteResult.getThrowable();
-        //异常数据
-        if (throwable != null) {
-            logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(throwable).getBytes());
-        }
-        //获取请求客户端信息
-        setLogRecordHttpRequest(logRecord, args);
-
-        String bizKey = logRecord.getBizKey();
-        if (StrUtil.isBlank(bizKey)) {
-            String[] restPrefixArray = AnnotationUtil.getAnnotationValue(targetClass, ApiRestController.class);
-            if (ArrayUtil.isNotEmpty(restPrefixArray)) {
-                bizKey = ArrayUtil.get(restPrefixArray, 0);
-                logRecord.setBizKey(bizKey);
+    private void recordExecute(Object ret, Method method, Object[] args, Class<?> targetClass, MethodExecuteResult methodExecuteResult, Map<String, String> functionNameAndReturnMap) {
+        try {
+            String errorMsg = methodExecuteResult.getErrorMsg();
+            boolean success = methodExecuteResult.isSuccess();
+            //执行前
+            LogRecordDTO logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
+            logRecord.setRequestId(MDC.get(LogConstant.REQUEST_ID));
+            Throwable throwable = methodExecuteResult.getThrowable();
+            //异常数据
+            if (throwable != null) {
+                logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(throwable).getBytes());
             }
-        }
-        String bizNo = logRecord.getBizNo();
-        String detail = logRecord.getDetail();
-        String value = logRecord.getValue();
+            //获取请求客户端信息
+            setLogRecordHttpRequest(logRecord, args);
 
-        //获取需要解析的表达式
-        List<String> spElTemplates = getSpElTemplates(logRecord);
-        String operatorIdFromService = getOperatorIdFromServiceAndPutTemplate(logRecord, spElTemplates);
-
-        Map<String, String> expressionValues = processTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap);
-        if (logConditionPassed(logRecord.getCondition(), expressionValues)) {
-            logRecord.setBizKey(expressionValues.get(bizKey));
-            logRecord.setBizNo(expressionValues.get(bizNo));
-            logRecord.setOperator(getRealOperatorId(logRecord, operatorIdFromService, expressionValues));
-            logRecord.setValue(expressionValues.get(value));
-            logRecord.setDetail(expressionValues.get(detail));
-
-
+            //获取需要解析的表达式
+            List<String> spElTemplates = getSpElTemplates(logRecord);
+            String operatorIdFromService = getOperatorIdFromServiceAndPutTemplate(logRecord, spElTemplates);
+            String bizNo = logRecord.getBizNo();
+            String condition = logRecord.getCondition();
+            String bizKey = logRecord.getBizKey();
+            if (StrUtil.isBlank(bizKey)) {
+                String[] restPrefixArray = AnnotationUtil.getAnnotationValue(targetClass, ApiRestController.class);
+                if (ArrayUtil.isNotEmpty(restPrefixArray)) {
+                    bizKey = ArrayUtil.get(restPrefixArray, 0);
+                }
+            }
+            String detail = logRecord.getDetail();
+            String value = logRecord.getValue();
             String methodName = targetClass.getName() + "." + method.getName() + "()";
-            String result = "未提供";
+            String result = "unknown";
             if (success) {
                 if (ObjectUtil.isNotNull(ret)) {
                     //是否控制器返回类型
@@ -205,26 +195,58 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
                 result = errorMsg;
             }
 
-            try {
-                logRecord.setSuccess(success);
-                logRecord.setMethod(methodName);
-                logRecord.setTenant(tenantId);
-                logRecord.setResult(result);
-                logRecord.setCreateTime(DateUtil.date().toTimestamp());
-
-                //save log 需要新开事务，失败日志不能因为事务回滚而丢失
-                if (bizLogService == null) {
-                    StaticLog.error("bizLogService not init!!");
+            //批量
+            if (logRecord.getBatch()) {
+                Map<String, List<String>> expressionValues = parseBatchTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap, bizNo);
+                String finalResult = result;
+                String finalBizKey = bizKey;
+                List<LogRecordDTO> records = IntStream.range(0, expressionValues.get(bizNo).size()).boxed().filter(x -> {
+                    return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition).get(x), "true");
+                }).map(x -> {
+                    String operator = StrUtil.isNotBlank(operatorIdFromService) ? operatorIdFromService : expressionValues.get(logRecord.getOperatorId()).get(x);
+                    long time = System.currentTimeMillis() - currentTime.get();
+                    setRecord(logRecord, finalBizKey, expressionValues.get(bizNo).get(x),
+                            operator, expressionValues.get(value).get(x), expressionValues.get(detail).get(x),
+                            success, methodName, finalResult, time);
+                    return logRecord;
+                }).collect(Collectors.toList());
+                commonAPI.recordLogs(records);
+            } else {
+                Map<String, String> expressionValues = processTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap);
+                if (logConditionPassed(condition, expressionValues)) {
+                    Long time = System.currentTimeMillis() - currentTime.get();
+                    String operatorId = getRealOperatorId(logRecord, operatorIdFromService, expressionValues);
+                    setRecord(logRecord, bizKey, expressionValues.get(bizNo),
+                            operatorId, expressionValues.get(value), expressionValues.get(detail),
+                            success, methodName, result, time);
+                    commonAPI.recordLog(logRecord);
                 }
-                logRecord.setTime(System.currentTimeMillis() - currentTime.get());
-                currentTime.remove();
-//                bizLogService.record(logRecord);
-                commonAPI.recordLog(logRecord);
-
-            } catch (Exception t) {
-                StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
             }
+        } catch (Exception t) {
+            StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
+        } finally {
+            currentTime.remove();
         }
+    }
+
+    private void setRecord(LogRecordDTO logRecord, String bizKey, String bizNo, String operatorId, String value
+            , String detail, boolean success, String methodName, String result, Long time) {
+        logRecord.setBizKey(bizKey);
+        logRecord.setBizNo(bizNo);
+        logRecord.setOperator(operatorId);
+        logRecord.setValue(value);
+        logRecord.setDetail(detail);
+        logRecord.setSuccess(success);
+        logRecord.setMethod(methodName);
+        logRecord.setTenant(tenantId);
+        logRecord.setResult(result);
+        logRecord.setCreateTime(DateUtil.date().toTimestamp());
+
+        //save log 需要新开事务，失败日志不能因为事务回滚而丢失
+        if (bizLogService == null) {
+            StaticLog.error("bizLogService not init!!");
+        }
+        logRecord.setTime(time);
     }
 
     /**
@@ -371,7 +393,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             if (request instanceof ContentCachingRequestWrapper) {
                 ContentCachingRequestWrapper wrapper = (ContentCachingRequestWrapper) request;
                 logRecord.setUrl(wrapper.getRequestURI());
-                if (!ServletUtil.isMultipart(wrapper) && logRecord.isSaveParams()) {
+                if (!ServletUtil.isMultipart(wrapper) && logRecord.getSaveParams()) {
                     Map<String, Object> paramMap = new HashMap<>(2);
                     Map<String, String> paramsQueryMap = ServletUtil.getParamMap(wrapper);
                     //参数值

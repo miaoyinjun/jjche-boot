@@ -1,6 +1,6 @@
 package org.jjche.system.modules.mnt.mapstruct;
 
-import org.jjche.core.base.BaseMapStruct;
+import org.jjche.core.base.BaseVoMapStruct;
 import org.jjche.system.modules.mnt.domain.ServerDeployDO;
 import org.jjche.system.modules.mnt.dto.ServerDeployDTO;
 import org.mapstruct.Mapper;
@@ -14,6 +14,6 @@ import org.mapstruct.ReportingPolicy;
  * @since 2019-08-24
  */
 @Mapper(componentModel = "spring", uses = {}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface ServerDeployMapStruct extends BaseMapStruct<ServerDeployDO, ServerDeployDTO, ServerDeployDTO> {
+public interface ServerDeployMapStruct extends BaseVoMapStruct<ServerDeployDO, ServerDeployDTO> {
 
 }

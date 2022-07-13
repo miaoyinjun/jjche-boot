@@ -6,6 +6,7 @@ import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.log.biz.service.ILogRecordService;
 
 import java.util.List;
+import java.util.logging.LogRecord;
 
 /**
  * <p>
@@ -24,6 +25,11 @@ public class DefaultLogRecordServiceImpl implements ILogRecordService {
     @Override
     public void record(LogRecordDTO logRecord) {
         StaticLog.info("【logRecord】log={}", logRecord);
+    }
+
+    @Override
+    public void batchRecord(List<LogRecord> records) {
+        StaticLog.info("【batchRecord】records={}", records);
     }
 
     /**

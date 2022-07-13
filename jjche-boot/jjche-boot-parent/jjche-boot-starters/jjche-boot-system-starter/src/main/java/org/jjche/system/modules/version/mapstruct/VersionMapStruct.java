@@ -1,6 +1,6 @@
 package org.jjche.system.modules.version.mapstruct;
 
-import org.jjche.core.base.BaseMapStruct;
+import org.jjche.core.base.BaseVoMapStruct;
 import org.jjche.system.modules.version.domain.VersionDO;
 import org.jjche.system.modules.version.dto.VersionDTO;
 import org.jjche.system.modules.version.vo.VersionVO;
@@ -17,5 +17,14 @@ import org.mapstruct.ReportingPolicy;
  * @since 2021-04-23
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface VersionMapStruct extends BaseMapStruct<VersionDO, VersionDTO, VersionVO> {
+public interface VersionMapStruct extends BaseVoMapStruct<VersionDO, VersionVO> {
+    /**
+     * <p>
+     * DTO集合转DO集合
+     * </p>
+     *
+     * @param dto dto
+     * @return DO
+     */
+    VersionDO toDO(VersionDTO dto);
 }

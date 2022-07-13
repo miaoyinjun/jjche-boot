@@ -17,7 +17,7 @@ import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.SecurityUtil;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.property.AdminProperties;
 import org.jjche.property.PasswordProperties;
 import org.jjche.security.property.SecurityProperties;
@@ -97,7 +97,7 @@ public class UserController extends BaseController {
      * @param resources a {@link UserDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "用户"
     )
@@ -117,7 +117,7 @@ public class UserController extends BaseController {
      * @param resources a {@link UserDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户"
     )
@@ -135,7 +135,7 @@ public class UserController extends BaseController {
      * @param resources a {@link UserDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改用户：个人中心", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户"
     )
@@ -155,7 +155,7 @@ public class UserController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "用户"
     )
@@ -179,7 +179,7 @@ public class UserController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改密码", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户", saveParams = false
     )
@@ -206,7 +206,7 @@ public class UserController extends BaseController {
      * @param passDTO a {@link UserResetPassDTO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "重置密码", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户", saveParams = false
     )
@@ -231,7 +231,7 @@ public class UserController extends BaseController {
      * @param avatar a {@link org.springframework.web.multipart.MultipartFile} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改头像", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户", saveParams = false
     )
@@ -248,7 +248,7 @@ public class UserController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改邮箱", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户", saveParams = false
     )

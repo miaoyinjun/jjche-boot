@@ -21,7 +21,7 @@ import org.jjche.common.util.RsaUtils;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.security.annotation.rest.AnonymousDeleteMapping;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.jjche.security.annotation.rest.AnonymousPostMapping;
@@ -63,7 +63,7 @@ public class AuthorizationController extends BaseController {
      */
     @AnonymousPostMapping(value = "/login")
     @ApiOperation("密码登录授权")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "密码登录", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", saveParams = false
     )
@@ -93,7 +93,7 @@ public class AuthorizationController extends BaseController {
      */
     @AnonymousPostMapping(value = "/sms_login")
     @ApiOperation("短信登录授权")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "短信登录", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false
     )

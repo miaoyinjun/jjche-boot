@@ -1,6 +1,5 @@
 package org.jjche.log.biz.starter.support.aop;
 
-import org.springframework.aop.ClassFilter;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.AbstractBeanFactoryPointcutAdvisor;
 
@@ -16,30 +15,12 @@ import org.springframework.aop.support.AbstractBeanFactoryPointcutAdvisor;
 public class BeanFactoryLogRecordAdvisor extends AbstractBeanFactoryPointcutAdvisor {
 
     private final LogRecordPointcut pointcut = new LogRecordPointcut();
-    private LogRecordOperationSource logRecordOperationSource;
 
-    /**
-     * <p>setClassFilter.</p>
-     *
-     * @param classFilter a {@link org.springframework.aop.ClassFilter} object.
-     */
-    public void setClassFilter(ClassFilter classFilter) {
-        this.pointcut.setClassFilter(classFilter);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Pointcut getPointcut() {
         return pointcut;
     }
 
-    /**
-     * <p>Setter for the field <code>logRecordOperationSource</code>.</p>
-     *
-     * @param logRecordOperationSource a {@link LogRecordOperationSource} object.
-     */
     public void setLogRecordOperationSource(LogRecordOperationSource logRecordOperationSource) {
         pointcut.setLogRecordOperationSource(logRecordOperationSource);
     }

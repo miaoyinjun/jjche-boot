@@ -11,7 +11,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.DictDTO;
 import org.jjche.system.modules.system.api.dto.DictQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.DictDO;
@@ -85,7 +85,7 @@ public class DictController extends BaseController {
      * @param resources a {@link DictDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "字典"
     )
@@ -104,7 +104,7 @@ public class DictController extends BaseController {
      * @param resources a {@link DictDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "字典"
     )
@@ -122,7 +122,7 @@ public class DictController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "字典"
     )

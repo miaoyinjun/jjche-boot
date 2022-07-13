@@ -12,7 +12,7 @@ import java.util.List;
  * @version 1.0.8-SNAPSHOT
  * @since 2020-10-12
  */
-public interface BaseMapStruct<E, D, V> {
+public interface BaseMapStruct<E, D, V> extends BaseVoMapStruct<E, V>{
 
     /**
      * <p>
@@ -21,22 +21,28 @@ public interface BaseMapStruct<E, D, V> {
      *
      * @param dto DTO
      * @return DO
-     * @author miaoyj
-     * @since 2020-10-12
      */
     E toDO(D dto);
 
     /**
      * <p>
-     * DO转VO
+     * DO转DTO
      * </p>
      *
      * @param doo DO
-     * @return VO
-     * @author miaoyj
-     * @since 2020-10-12
+     * @return DTO
      */
-    V toVO(E doo);
+    D toDTO(E doo);
+
+    /**
+     * <p>
+     * DO转DTO
+     * </p>
+     *
+     * @param dooList DO
+     * @return DTO
+     */
+    List<D> toDTO(Collection<E> dooList);
 
     /**
      * <p>
@@ -45,20 +51,7 @@ public interface BaseMapStruct<E, D, V> {
      *
      * @param dtoList dtoList
      * @return DOList
-     * @author miaoyj
-     * @since 2020-10-12
      */
     List<E> toDO(Collection<D> dtoList);
 
-    /**
-     * <p>
-     * DO集合转VO集合
-     * </p>
-     *
-     * @param dooList DOList
-     * @return VOList
-     * @author miaoyj
-     * @since 2020-10-12
-     */
-    List<V> toVO(Collection<E> dooList);
 }

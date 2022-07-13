@@ -12,7 +12,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
 import org.jjche.system.modules.version.dto.VersionDTO;
 import org.jjche.system.modules.version.dto.VersionQueryCriteriaDTO;
@@ -45,7 +45,7 @@ public class VersionController extends BaseController {
      * @return a {@link ResultWrapper} object.
      */
     @PostMapping
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "版本"
     )
@@ -62,7 +62,7 @@ public class VersionController extends BaseController {
      * @return a {@link ResultWrapper} object.
      */
     @PutMapping
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "版本"
     )
@@ -106,7 +106,7 @@ public class VersionController extends BaseController {
      */
     @PutMapping("/{id}")
     @CacheInvalidate(name = "versions:", key = "'latest'")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "激活", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "版本"
     )

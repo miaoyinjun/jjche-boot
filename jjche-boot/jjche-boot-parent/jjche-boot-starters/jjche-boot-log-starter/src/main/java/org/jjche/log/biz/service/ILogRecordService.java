@@ -4,6 +4,7 @@ package org.jjche.log.biz.service;
 import org.jjche.common.dto.LogRecordDTO;
 
 import java.util.List;
+import java.util.logging.LogRecord;
 
 /**
  * <p>
@@ -21,6 +22,12 @@ public interface ILogRecordService {
      * @param logRecord 日志实体
      */
     void record(LogRecordDTO logRecord);
+
+    /**
+     * <p>批量保存log</p>
+     * @param records 日志实体列表
+     * */
+    void batchRecord(List<LogRecord> records);
 
     /**
      * 返回最多100条记录

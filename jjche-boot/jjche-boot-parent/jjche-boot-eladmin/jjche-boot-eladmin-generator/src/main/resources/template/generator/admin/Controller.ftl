@@ -6,7 +6,7 @@ import ${packageApi}.dto.${className}QueryCriteriaDTO;
 import ${packageApi}.dto.${className}DTO;
 import ${packagePath}.constant.ApiVersion;
 
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.common.wrapper.response.ResultWrapper;
@@ -48,7 +48,7 @@ public class ${className}Controller extends BaseController{
     @ApiOperation(value = "${apiAlias}-新增", tags = ApiVersion.${apiVersionConstant})
     @ApiOperationSupport(ignoreParameters = {"id"})
     @PreAuthorize("@el.check('${changeClassName}:add')")
-    @LogRecordAnnotation(
+    @LogRecord(
               value = "新增",
               category = LogCategoryType.MANAGER,
               type = LogType.ADD, module = "${apiAlias}", bizNo = "{{#_ret.data}}"
@@ -60,7 +60,7 @@ public class ${className}Controller extends BaseController{
     @DeleteMapping
     @ApiOperation(value = "${apiAlias}-删除", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:del')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}"
     )
@@ -72,7 +72,7 @@ public class ${className}Controller extends BaseController{
     @PutMapping
     @ApiOperation(value = "${apiAlias}-修改", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:edit')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}"
     )
