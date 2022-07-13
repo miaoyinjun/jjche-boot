@@ -6,7 +6,6 @@ import org.jjche.common.annotation.QueryCriteria;
 import org.jjche.common.dto.BaseDTO;
 import org.jjche.common.dto.BaseQueryCriteriaDTO;
 import org.jjche.demo.modules.student.api.enums.CourseEnum;
-import org.jjche.log.biz.starter.annotation.DiffLogField;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -27,14 +26,11 @@ public class StudentDTO extends BaseQueryCriteriaDTO implements BaseDTO {
     private Long id;
     @NotBlank(message = "姓名不能为空")
     @ApiModelProperty(value = "姓名", access = "")
-    @DiffLogField(name = "姓名")
     private String name;
     @NotNull(message = "年龄不能为空")
     @ApiModelProperty(value = "年龄")
-    @DiffLogField(name = "年龄")
     private Integer age;
     @ApiModelProperty(value = "课程类型")
-    @DiffLogField(name = "课程类型")
     private CourseEnum course;
     @ApiModelProperty(value = "所属用户id")
     private Long creatorUserId;

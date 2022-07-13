@@ -1,13 +1,13 @@
 package org.jjche.log.biz.starter.diff;
 
 import de.danielbechler.diff.node.DiffNode;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
 import org.jjche.common.enums.IBaseEnum;
 import org.jjche.common.util.StrUtil;
 import org.jjche.log.biz.service.IFunctionService;
-import org.jjche.log.biz.starter.annotation.DiffLogField;
 import org.jjche.log.biz.starter.configuration.LogRecordProperties;
 import org.springframework.util.CollectionUtils;
 
@@ -41,7 +41,7 @@ public class DefaultDiffItemsToLogContentService implements IDiffItemsToLogConte
         if (node.isRootNode()) {
             return;
         }
-        DiffLogField diffLogFieldAnnotation = node.getFieldAnnotation(DiffLogField.class);
+        ApiModelProperty diffLogFieldAnnotation = node.getFieldAnnotation(ApiModelProperty.class);
         if (diffLogFieldAnnotation == null || node.getValueTypeInfo() != null) {
             //自定义对象类型直接进入对象里面, diff
             return;
@@ -54,14 +54,14 @@ public class DefaultDiffItemsToLogContentService implements IDiffItemsToLogConte
         boolean valueIsCollection = valueIsCollection(node, sourceObject, targetObject);
         //获取值的转换函数
         DiffNode.State state = node.getState();
-        String logContent = getDiffLogContent(filedLogName, node, state, sourceObject, targetObject, diffLogFieldAnnotation.function(), valueIsCollection);
+        String logContent = getDiffLogContent(filedLogName, node, state, sourceObject, targetObject, diffLogFieldAnnotation.access(), valueIsCollection);
         if (StrUtil.isNotBlank(logContent)) {
             stringBuilder.append(logContent).append(logRecordProperties.getFieldSeparator());
         }
     }
 
-    private String getFieldLogName(DiffNode node, DiffLogField diffLogFieldAnnotation) {
-        String filedLogName = diffLogFieldAnnotation.name();
+    private String getFieldLogName(DiffNode node, ApiModelProperty diffLogFieldAnnotation) {
+        String filedLogName = diffLogFieldAnnotation.value();
         if (node.getParentNode() != null) {
             //获取对象的定语：比如：创建人的ID
             filedLogName = getParentFieldName(node) + filedLogName;
@@ -86,13 +86,13 @@ public class DefaultDiffItemsToLogContentService implements IDiffItemsToLogConte
         DiffNode parent = node.getParentNode();
         String fieldNamePrefix = "";
         while (parent != null) {
-            DiffLogField diffLogFieldAnnotation = parent.getFieldAnnotation(DiffLogField.class);
+            ApiModelProperty diffLogFieldAnnotation = parent.getFieldAnnotation(ApiModelProperty.class);
             if (diffLogFieldAnnotation == null) {
                 //父节点没有配置名称，不拼接
                 parent = parent.getParentNode();
                 continue;
             }
-            fieldNamePrefix = diffLogFieldAnnotation.name().concat(logRecordProperties.getOfWord()).concat(fieldNamePrefix);
+            fieldNamePrefix = diffLogFieldAnnotation.value().concat(logRecordProperties.getOfWord()).concat(fieldNamePrefix);
             parent = parent.getParentNode();
         }
         return fieldNamePrefix;
