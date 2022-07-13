@@ -43,6 +43,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * <p>
@@ -200,15 +201,18 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
                 Map<String, List<String>> expressionValues = parseBatchTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap, bizNo);
                 String finalResult = result;
                 String finalBizKey = bizKey;
+                Stream<Integer> a = IntStream.range(0, expressionValues.get(bizNo).size()).boxed().filter(x -> {
+                    return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition).get(x), "true");
+                });
+
                 List<LogRecordDTO> records = IntStream.range(0, expressionValues.get(bizNo).size()).boxed().filter(x -> {
                     return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition).get(x), "true");
                 }).map(x -> {
                     String operator = StrUtil.isNotBlank(operatorIdFromService) ? operatorIdFromService : expressionValues.get(logRecord.getOperatorId()).get(x);
                     long time = System.currentTimeMillis() - currentTime.get();
-                    setRecord(logRecord, finalBizKey, expressionValues.get(bizNo).get(x),
+                    return setRecord(logRecord, finalBizKey, expressionValues.get(bizNo).get(x),
                             operator, expressionValues.get(value).get(x), expressionValues.get(detail).get(x),
                             success, methodName, finalResult, time);
-                    return logRecord;
                 }).collect(Collectors.toList());
                 commonAPI.recordLogs(records);
             } else {
@@ -229,24 +233,26 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         }
     }
 
-    private void setRecord(LogRecordDTO logRecord, String bizKey, String bizNo, String operatorId, String value
+    private LogRecordDTO setRecord(LogRecordDTO logRecord, String bizKey, String bizNo, String operatorId, String value
             , String detail, boolean success, String methodName, String result, Long time) {
-        logRecord.setBizKey(bizKey);
-        logRecord.setBizNo(bizNo);
-        logRecord.setOperator(operatorId);
-        logRecord.setValue(value);
-        logRecord.setDetail(detail);
-        logRecord.setSuccess(success);
-        logRecord.setMethod(methodName);
-        logRecord.setTenant(tenantId);
-        logRecord.setResult(result);
-        logRecord.setCreateTime(DateUtil.date().toTimestamp());
+        LogRecordDTO newLogRecordDTO = ObjectUtil.clone(logRecord);
+        newLogRecordDTO.setBizKey(bizKey);
+        newLogRecordDTO.setBizNo(bizNo);
+        newLogRecordDTO.setOperator(operatorId);
+        newLogRecordDTO.setValue(value);
+        newLogRecordDTO.setDetail(detail);
+        newLogRecordDTO.setSuccess(success);
+        newLogRecordDTO.setMethod(methodName);
+        newLogRecordDTO.setTenant(tenantId);
+        newLogRecordDTO.setResult(result);
+        newLogRecordDTO.setCreateTime(DateUtil.date().toTimestamp());
 
         //save log 需要新开事务，失败日志不能因为事务回滚而丢失
         if (bizLogService == null) {
             StaticLog.error("bizLogService not init!!");
         }
-        logRecord.setTime(time);
+        newLogRecordDTO.setTime(time);
+        return newLogRecordDTO;
     }
 
     /**
