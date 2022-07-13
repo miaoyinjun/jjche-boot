@@ -4,6 +4,7 @@ import de.danielbechler.diff.node.DiffNode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.compress.utils.Lists;
+import org.jjche.common.enums.IBaseEnum;
 import org.jjche.common.util.StrUtil;
 import org.jjche.log.biz.service.IFunctionService;
 import org.jjche.log.biz.starter.annotation.DiffLogField;
@@ -146,6 +147,11 @@ public class DefaultDiffItemsToLogContentService implements IDiffItemsToLogConte
 
     private String getFunctionValue(Object canonicalGet, String functionName) {
         if (StrUtil.isBlank(functionName)) {
+            //枚举
+            if (IBaseEnum.class.isAssignableFrom(canonicalGet.getClass())) {
+                IBaseEnum baseEnum = (IBaseEnum) canonicalGet;
+                return baseEnum.getDesc();
+            }
             return canonicalGet.toString();
         }
         return functionService.apply(functionName, canonicalGet.toString());
