@@ -43,7 +43,6 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * <p>
@@ -97,7 +96,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             List<String> spElTemplates = getBeforeExecuteFunctionTemplate(logRecord);
             functionNameAndReturnMap = processBeforeExecuteFunctionTemplate(spElTemplates, targetClass, method, args);
         } catch (Exception e) {
-            StaticLog.error("log record parse before function exception", e);
+            StaticLog.error("log record parse before function exception:{}", e);
         }
 
         try {
@@ -201,10 +200,6 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
                 Map<String, List<String>> expressionValues = parseBatchTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap, bizNo);
                 String finalResult = result;
                 String finalBizKey = bizKey;
-                Stream<Integer> a = IntStream.range(0, expressionValues.get(bizNo).size()).boxed().filter(x -> {
-                    return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition).get(x), "true");
-                });
-
                 List<LogRecordDTO> records = IntStream.range(0, expressionValues.get(bizNo).size()).boxed().filter(x -> {
                     return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition).get(x), "true");
                 }).map(x -> {
@@ -220,10 +215,10 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
                 if (logConditionPassed(condition, expressionValues)) {
                     Long time = System.currentTimeMillis() - currentTime.get();
                     String operatorId = getRealOperatorId(logRecord, operatorIdFromService, expressionValues);
-                    setRecord(logRecord, bizKey, expressionValues.get(bizNo),
+                    LogRecordDTO newLogRecord= setRecord(logRecord, bizKey, expressionValues.get(bizNo),
                             operatorId, expressionValues.get(value), expressionValues.get(detail),
                             success, methodName, result, time);
-                    commonAPI.recordLog(logRecord);
+                    commonAPI.recordLog(newLogRecord);
                 }
             }
         } catch (Exception t) {

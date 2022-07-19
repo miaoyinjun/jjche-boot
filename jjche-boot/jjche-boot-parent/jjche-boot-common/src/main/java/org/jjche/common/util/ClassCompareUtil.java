@@ -121,8 +121,8 @@ public class ClassCompareUtil {
      * @param enumObject /
      * @return /
      */
-    private static String getEnumDesc(Object enumObject) {
-        String value = "";
+    public static String getEnumDesc(Object enumObject) {
+        String value = "空";
         if (enumObject != null) {
             //枚举
             if (IBaseEnum.class.isInstance(enumObject)) {

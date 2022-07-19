@@ -1,6 +1,5 @@
 package org.jjche.demo.modules.student.function;
 
-import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import org.jjche.demo.modules.student.domain.StudentDO;
 import org.jjche.demo.modules.student.mapstruct.StudentMapStruct;
@@ -9,6 +8,8 @@ import org.jjche.log.biz.context.LogRecordContext;
 import org.jjche.log.biz.service.IParseFunction;
 import org.jjche.log.biz.service.impl.DiffParseFunction;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * <p>
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class StudentUpdateDiffByDtoParseFunction implements IParseFunction<Long> {
+public class StudentDiffOldByIdParseFunction implements IParseFunction<Object> {
     private final StudentService studentService;
     private final StudentMapStruct studentMapStruct;
 
@@ -38,17 +39,25 @@ public class StudentUpdateDiffByDtoParseFunction implements IParseFunction<Long>
      */
     @Override
     public String functionName() {
-        return "STUDENT_UPDATE_DIFF_BY_DTO";
+        return "STUDENT_DIFF_OLD_BY_ID";
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String apply(Long id) {
-        StudentDO studentDO = studentService.getById(id);
-        Assert.notNull(studentDO, "记录不存在");
-        LogRecordContext.putVariable(DiffParseFunction.OLD_OBJECT, this.studentMapStruct.toDTO(studentDO));
+    public String apply(Object idObj) {
+        Object result = null;
+        if (idObj instanceof List) {
+            List<Long> ids = (List<Long>) idObj;
+            List<StudentDO> list = this.studentService.listByIds(ids);
+            result = this.studentMapStruct.toDTO(list);
+        } else {
+            Long id = (Long) idObj;
+            StudentDO studentDO = this.studentService.getById(id);
+            result = this.studentMapStruct.toDTO(studentDO);
+        }
+        LogRecordContext.putVariable(DiffParseFunction.OLD_OBJECT, result);
         return null;
     }
 }

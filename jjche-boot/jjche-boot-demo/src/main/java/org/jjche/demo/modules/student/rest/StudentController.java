@@ -27,7 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 
 /**
  * <p>
@@ -75,11 +75,11 @@ public class StudentController extends BaseController {
     @ApiOperation(value = "学生-删除", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:del')")
     @LogRecord(
-            value = "被删除的学生姓名是...", category = LogCategoryType.OPERATING,
+            batch = true, value = "删除", category = LogCategoryType.OPERATING,
             type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#ids}}",
-            detail = "学生姓名：「{STUDENT_NAME_BY_IDS{#ids}}」"
+            detail = "{API_MODEL{#_oldObj}} {STUDENT_DIFF_OLD_BY_ID{#ids}}"
     )
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public ResultWrapper delete(@RequestBody List<Long> ids) {
         studentService.delete(ids);
         return ResultWrapper.ok();
     }
@@ -96,7 +96,7 @@ public class StudentController extends BaseController {
     @LogRecord(
             value = "被修改的学生姓名：「{{#dto.name}}」", category = LogCategoryType.OPERATING,
             type = LogType.UPDATE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#dto.id}}",
-            detail = "修改：{_DIFF{#dto}}{STUDENT_UPDATE_DIFF_BY_DTO{#dto.id}}"
+            detail = "{_DIFF{#dto}} {STUDENT_DIFF_OLD_BY_ID{#dto.id}}"
     )
     public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody StudentDTO dto) {
         studentService.update(dto);

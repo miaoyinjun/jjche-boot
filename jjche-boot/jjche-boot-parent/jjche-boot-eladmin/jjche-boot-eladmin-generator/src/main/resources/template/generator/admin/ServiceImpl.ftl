@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import cn.hutool.core.lang.Assert;
 import org.jjche.mybatis.param.SortEnum;
-
+import java.util.List;
 /**
 * <p>
 * ${apiAlias} 服务实现类
@@ -88,7 +88,7 @@ public class ${className}Service extends MyServiceImpl<${className}Mapper, ${cla
     * @param ids 主键
     */
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Set<${pkColumnType}> ids){
+    public void delete(List<${pkColumnType}> ids){
         Assert.isTrue(this.removeBatchByIdsWithFill(new ${className}DO(), ids) == ids.size(), "删除失败，记录不存在");
     }
 

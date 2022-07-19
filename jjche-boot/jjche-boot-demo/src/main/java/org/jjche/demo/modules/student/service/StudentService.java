@@ -76,7 +76,7 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
      * @param ids 主键
      */
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Set<Long> ids) {
+    public void delete(List<Long> ids) {
         Assert.isTrue(this.removeBatchByIdsWithFill(new StudentDO(), ids) == ids.size(), "删除失败，记录不存在");
     }
 

@@ -5,7 +5,7 @@ import ${packageService}.service.${className}Service;
 import ${packageApi}.dto.${className}QueryCriteriaDTO;
 import ${packageApi}.dto.${className}DTO;
 import ${packagePath}.constant.ApiVersion;
-
+import org.jjche.common.dto.BaseDTO;
 import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
@@ -27,6 +27,7 @@ import javax.validation.constraints.NotNull;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.enums.LogCategoryType;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
 * <p>
@@ -50,7 +51,7 @@ public class ${className}Controller extends BaseController{
     @PreAuthorize("@el.check('${changeClassName}:add')")
     @LogRecord(
               value = "新增",
-              category = LogCategoryType.MANAGER,
+              category = LogCategoryType.OPERATING,
               type = LogType.ADD, module = "${apiAlias}", bizNo = "{{#_ret.data}}"
     )
     public ResultWrapper<Long> create(@Validated @Valid @RequestBody ${className}DTO dto){
@@ -61,10 +62,11 @@ public class ${className}Controller extends BaseController{
     @ApiOperation(value = "${apiAlias}-删除", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:del')")
     @LogRecord(
-            value = "删除", category = LogCategoryType.MANAGER,
-            type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}"
+            batch = true, value = "删除", category = LogCategoryType.OPERATING,
+            type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}",
+            detail = "{API_MODEL{#_oldObj}} {${diffOldFuncName}{#ids}}"
     )
-    public ResultWrapper delete(@RequestBody Set<${pkColumnType}> ids) {
+    public ResultWrapper delete(@RequestBody List<${pkColumnType}> ids) {
         ${changeClassName}Service.delete(ids);
         return ResultWrapper.ok();
     }
@@ -73,10 +75,11 @@ public class ${className}Controller extends BaseController{
     @ApiOperation(value = "${apiAlias}-修改", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${changeClassName}:edit')")
     @LogRecord(
-            value = "修改", category = LogCategoryType.MANAGER,
-            type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}"
+            value = "修改", category = LogCategoryType.OPERATING,
+            type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}",
+            detail = "{_DIFF{#dto}} {${diffOldFuncName}{#dto.id}}"
     )
-    public ResultWrapper update(@Validated(${className}DTO.Update.class)
+    public ResultWrapper update(@Validated(BaseDTO.Update.class)
                                 @Valid @RequestBody ${className}DTO dto){
         ${changeClassName}Service.update(dto);
         return ResultWrapper.ok();
