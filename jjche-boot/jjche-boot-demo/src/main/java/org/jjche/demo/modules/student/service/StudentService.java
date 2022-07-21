@@ -7,6 +7,7 @@ import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.util.FileUtil;
 import org.jjche.demo.modules.student.api.dto.StudentDTO;
+import org.jjche.demo.modules.student.api.dto.StudentImportDTO;
 import org.jjche.demo.modules.student.api.dto.StudentQueryCriteriaDTO;
 import org.jjche.demo.modules.student.api.enums.CourseEnum;
 import org.jjche.demo.modules.student.api.vo.StudentVO;
@@ -164,5 +165,22 @@ public class StudentService extends MyServiceImpl<StudentMapper, StudentDO> {
         } catch (IOException e) {
             throw new IllegalArgumentException("文件下载失败");
         }
+    }
+
+
+    /**
+     * <p>
+     * 执行导入
+     * </p>
+     *
+     * @param importSet 数据
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void importStudent(Set<?> importSet) {
+        List<StudentDO> list = studentMapStruct.toDO((Set<StudentImportDTO>) importSet);
+        //判断excel中是否有重复的姓名
+        long distinctNum = list.stream().map(StudentDO::getName).distinct().count();
+        Assert.isFalse(list.size() > distinctNum, "姓名不能重复");
+        this.saveBatch(list);
     }
 }
