@@ -38,11 +38,6 @@
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-cache-starter</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.whvcse</groupId>
-            <artifactId>easy-captcha</artifactId>
-        </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>

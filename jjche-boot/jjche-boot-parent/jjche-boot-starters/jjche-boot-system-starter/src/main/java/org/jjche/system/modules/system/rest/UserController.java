@@ -10,6 +10,7 @@ import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.CodeEnum;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
+import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.RsaUtils;
@@ -87,7 +88,7 @@ public class UserController extends BaseController {
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
     @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
-    public ResultWrapper<Object> query(UserQueryCriteriaDTO criteria, PageParam pageable) {
+    public ResultWrapper<MyPage<UserVO>> query(UserQueryCriteriaDTO criteria, PageParam pageable) {
         return ResultWrapper.ok(userService.queryAll(criteria, pageable));
     }
 
@@ -264,5 +265,4 @@ public class UserController extends BaseController {
         userService.updateEmail(userDto.getUsername(), user.getEmail());
         return ResultWrapper.ok();
     }
-
 }

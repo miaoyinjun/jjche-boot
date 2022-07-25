@@ -53,5 +53,4 @@ export function editMenu(data) {
     data
   })
 }
-
 export default { add, edit, del, get, editMenu, getLevel }
