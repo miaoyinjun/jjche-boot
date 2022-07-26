@@ -97,7 +97,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * @return /
      */
     public static boolean isCloud() {
-        return getProperties("jjche.cloud.enable", Boolean.FALSE, Boolean.class);
+        return getProperties("jjche.cloud.enabled", Boolean.FALSE, Boolean.class);
     }
 
     /**

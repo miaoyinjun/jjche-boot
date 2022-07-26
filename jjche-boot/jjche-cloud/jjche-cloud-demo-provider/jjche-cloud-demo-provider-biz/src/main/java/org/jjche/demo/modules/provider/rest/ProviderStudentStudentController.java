@@ -1,5 +1,6 @@
 package org.jjche.demo.modules.provider.rest;
 
+import cn.hutool.log.StaticLog;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,7 +50,9 @@ public class ProviderStudentStudentController extends BaseController implements 
     public ResultWrapper<MyPage<ProviderVO>> page(PageParam page,
                                                   @ApiParam(value = "课程")
                                                   @RequestParam(required = false) ProviderCourseEnum course,
-                                                  @RequestParam(required = false) String name) {
+                                                  @ApiParam(value = "姓名", example = "大")
+                                                      @RequestParam(required = false) String name) {
+        StaticLog.warn("name:{}", name);
         return ResultWrapper.ok(providerService.page(page, course, name));
     }
 

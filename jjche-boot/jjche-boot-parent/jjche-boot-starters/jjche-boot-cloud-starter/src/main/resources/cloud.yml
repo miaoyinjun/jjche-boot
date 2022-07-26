@@ -9,6 +9,7 @@ spring:
         server-addr: ${JJCHE_NACOS_HOST:127.0.0.1}:${JJCHE_NACOS_PORT:8848}
         metadata:
           management.context-path: ${management.endpoints.web.base-path}
+          version: ${spring.profiles.active}
       config:
         namespace: ${spring.cloud.nacos.discovery.namespace}
         # 配置中心地址
@@ -30,7 +31,7 @@ feign:
       enabled: false
 jjche:
   cloud:
-    enable: true
+    enabled: true
   core:
     api:
       path:

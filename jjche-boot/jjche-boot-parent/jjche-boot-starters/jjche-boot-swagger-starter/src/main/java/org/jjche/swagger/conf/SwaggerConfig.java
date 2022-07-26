@@ -21,10 +21,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.async.DeferredResult;
-import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.schema.ScalarType;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -77,31 +77,15 @@ public class SwaggerConfig implements EnvironmentAware {
     public Docket swaggerApi() {
         String defaultGroupName = "default";
         String ignoreFilterPath = this.ignoreFilterPath();
-        List<Parameter> operationParameters = CollUtil.newArrayList(encryptionHeaders());
-        ApiSelectorBuilder select = new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(backendApiInfo())
-                .groupName(defaultGroupName)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage(swaggerProperty.getBasePackage()))
-                .build()
-                .extensions(openApiExtensionResolver.buildExtensions(defaultGroupName))
-                .securityContexts(CollectionUtil.newArrayList(securityContext()))
-                .securitySchemes(CollectionUtil.newArrayList(apiKey()))
-                .genericModelSubstitutes(DeferredResult.class)
-                .useDefaultResponseMessages(false)
-                .forCodeGeneration(false)
-                .pathMapping("/")
-                .select();
+        List<RequestParameter> operationParameters = CollUtil.newArrayList();
+        //灰度头部
+        operationParameters.addAll(grayHeaders());
+        //加密头部
+        operationParameters.addAll(encryptionHeaders());
+        ApiSelectorBuilder select = new Docket(DocumentationType.SWAGGER_2).apiInfo(backendApiInfo()).groupName(defaultGroupName).select().apis(RequestHandlerSelectors.basePackage(swaggerProperty.getBasePackage())).build().extensions(openApiExtensionResolver.buildExtensions(defaultGroupName)).securityContexts(CollectionUtil.newArrayList(securityContext())).securitySchemes(CollectionUtil.newArrayList(apiKeyAuth(), apiKeyGrayVersion())).genericModelSubstitutes(DeferredResult.class).useDefaultResponseMessages(false).forCodeGeneration(false).pathMapping("/").select();
         //过滤的接口
-        select.paths(PathSelectors.regex(swaggerProperty.getFilterPath() + "/.*"))
-                .paths(notRegex(ignoreFilterPath));
-        return select.build().globalOperationParameters(operationParameters);
-    }
-
-    private ApiInfo backendApiInfo() {
-        return new ApiInfo(swaggerProperty.getTitle(),
-                swaggerProperty.getDescription(), swaggerProperty.getVersion(), "",
-                swaggerProperty.getContact(), null, null, new ArrayList<VendorExtension>());
+        select.paths(PathSelectors.regex(swaggerProperty.getFilterPath() + "/.*")).paths(notRegex(ignoreFilterPath));
+        return select.build().globalRequestParameters(operationParameters);
     }
 
     /**
@@ -115,14 +99,23 @@ public class SwaggerConfig implements EnvironmentAware {
 
     /**
      * <p>
-     * 认证header
+     * 文档描述
+     * </p>
+     *
+     * @return /
+     */
+    private ApiInfo backendApiInfo() {
+        return new ApiInfo(swaggerProperty.getTitle(), swaggerProperty.getDescription(), swaggerProperty.getVersion(), "", swaggerProperty.getContact(), null, null, new ArrayList<VendorExtension>());
+    }
+
+    /**
+     * <p>
+     * 认证header-Authorize菜单
      * </p>
      *
      * @return apiKey
-     * @author miaoyj
-     * @since 2020-08-12
      */
-    private ApiKey apiKey() {
+    private ApiKey apiKeyAuth() {
         SwaggerSecurityJwtProperties swaggerPropertySecurityJwt = swaggerProperty.getSecurityJwt();
         String tokenHeader = swaggerPropertySecurityJwt.getTokenHeader();
         return new ApiKey(tokenHeader, tokenHeader, "header");
@@ -130,12 +123,21 @@ public class SwaggerConfig implements EnvironmentAware {
 
     /**
      * <p>
+     * 灰度发布标识-Authorize菜单
+     * </p>
+     *
+     * @return /
+     */
+    private ApiKey apiKeyGrayVersion() {
+        return new ApiKey(SecurityConstant.FEIGN_GRAY_TAG, SecurityConstant.FEIGN_GRAY_TAG, "header");
+    }
+
+    /**
+     * <p>
      * 接口header读取apiKey，加锁标记
      * </p>
      *
-     * @return
-     * @author miaoyj
-     * @since 2020-11-26
+     * @return /
      */
     private SecurityContext securityContext() {
         //获取Spring Security里忽略的url
@@ -145,65 +147,71 @@ public class SwaggerConfig implements EnvironmentAware {
         String notPathRegex = StrUtil.join("|", anonymousUrls);
         //匹配替换正确的格式
         notPathRegex = notPathRegex.replaceAll("\\*\\*", "*");
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(notRegex(notPathRegex))
-                //.forPaths(PathSelectors.regex(".*?208.*$"))
-                .build();
+        return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(notRegex(notPathRegex)).build();
     }
 
-    List<SecurityReference> defaultAuth() {
+    /**
+     * <p>
+     * 接口header-灰度
+     * </p>
+     *
+     * @return /
+     */
+    private SecurityContext grayContext() {
+        //全部加入灰度标识
+        return SecurityContext.builder().securityReferences(grayHeader()).build();
+    }
+
+    /**
+     * <p>
+     * 所有请求-头部认证必填
+     * </p>
+     *
+     * @return /
+     */
+    private List<SecurityReference> defaultAuth() {
         SwaggerSecurityJwtProperties swaggerPropertySecurityJwt = swaggerProperty.getSecurityJwt();
         String tokenHeader = swaggerPropertySecurityJwt.getTokenHeader();
 
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return CollectionUtil.newArrayList(new SecurityReference(tokenHeader, authorizationScopes));
+        //token
+        SecurityReference token = new SecurityReference(tokenHeader, authorizationScopes);
+        return CollectionUtil.newArrayList(token);
     }
 
     /**
      * <p>
-     * 添加加密过滤器所有字段
+     * 所有请求-头部-灰度必填
+     * </p>
+     *
+     * @return /
+     */
+    private List<SecurityReference> grayHeader() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        //gray
+        SecurityReference token = new SecurityReference(SecurityConstant.FEIGN_GRAY_TAG, authorizationScopes);
+        return CollectionUtil.newArrayList(token);
+    }
+
+    /**
+     * <p>
+     * 所有请求-头部，加密过滤器所有字段
      * </p>
      *
      * @return header
-     * @author miaoyj
-     * @since 2020-08-12
      */
-    private List<Parameter> encryptionHeaders() {
-        List<Parameter> pars = new ArrayList<>();
+    private List<RequestParameter> encryptionHeaders() {
+        List<RequestParameter> pars = new ArrayList<>();
         if (swaggerProperty.isEncryptionEnabled()) {
             for (FilterEncryptionEnum eEnum : FilterEncryptionEnum.values()) {
-                ParameterBuilder par = new ParameterBuilder();
-                par.name(eEnum.getKey()).description(eEnum.getDes())
-                        .modelRef(new ModelRef("string")).parameterType("header")
-                        .required(true).build();
-                pars.add(par.build());
-            }
-        }
-        return pars;
-    }
+                RequestParameter parameter = new RequestParameterBuilder().name(eEnum.getKey()).description(eEnum.getDes()).required(true).in(ParameterType.HEADER).query(q -> q.model(m -> m.scalarModel(ScalarType.STRING))).required(false).build();
+                pars.add(parameter);
 
-    /**
-     * <p>
-     * 添加token认证字段
-     * </p>
-     *
-     * @return header
-     * @author miaoyj
-     * @since 2020-08-12
-     */
-    private List<Parameter> securityHeaders() {
-        List<Parameter> pars = new ArrayList<>();
-        SwaggerSecurityJwtProperties swaggerPropertySecurityJwt = swaggerProperty.getSecurityJwt();
-        if (swaggerPropertySecurityJwt.isEnabled()) {
-            ParameterBuilder par = new ParameterBuilder();
-            par.name(swaggerPropertySecurityJwt.getTokenHeader())
-                    .modelRef(new ModelRef("string")).parameterType("header")
-                    .defaultValue(swaggerPropertySecurityJwt.getTokenStartWith() + " ")
-                    .required(true).build();
-            pars.add(par.build());
+            }
         }
         return pars;
     }
@@ -214,23 +222,34 @@ public class SwaggerConfig implements EnvironmentAware {
      * </p>
      *
      * @return 正则
-     * @author miaoyj
-     * @since 2020-09-22
      */
     private String ignoreFilterPath() {
         List<String> ignoreFilterPath = swaggerProperty.getIgnoreFilterPath();
         return StrUtil.join("|", ignoreFilterPath);
     }
 
+    /**
+     * <p>
+     * 所有请求-头部-灰度
+     * 不会把 灰度发布标识-Authorize菜单的version的值带过来
+     * 但使用grayHeader()方式可解决值带过来，但它又是必填，默认值又不能设置
+     * </p>
+     *
+     * @return header
+     */
+    @Deprecated
+    private List<RequestParameter> grayHeaders() {
+        List<RequestParameter> pars = new ArrayList<>();
+        RequestParameter parameter = new RequestParameterBuilder().name(SecurityConstant.FEIGN_GRAY_TAG).description("灰度标识").required(false).in(ParameterType.HEADER).query(q -> q.model(m -> m.scalarModel(ScalarType.STRING))).required(false).build();
+        pars.add(parameter);
+        return pars;
+    }
 
     /**
      * 增加如下配置可解决Spring Boot 6.x 与Swagger 3.0.0 不兼容问题
      **/
     @Bean
-    public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(
-            WebEndpointsSupplier webEndpointsSupplier, ServletEndpointsSupplier servletEndpointsSupplier,
-            ControllerEndpointsSupplier controllerEndpointsSupplier, EndpointMediaTypes endpointMediaTypes,
-            CorsEndpointProperties corsProperties, WebEndpointProperties webEndpointProperties, Environment environment) {
+    public WebMvcEndpointHandlerMapping webEndpointServletHandlerMapping(WebEndpointsSupplier webEndpointsSupplier, ServletEndpointsSupplier servletEndpointsSupplier, ControllerEndpointsSupplier controllerEndpointsSupplier, EndpointMediaTypes endpointMediaTypes, CorsEndpointProperties corsProperties, WebEndpointProperties webEndpointProperties, Environment environment) {
         List<ExposableEndpoint<?>> allEndpoints = new ArrayList();
         Collection<ExposableWebEndpoint> webEndpoints = webEndpointsSupplier.getEndpoints();
         allEndpoints.addAll(webEndpoints);

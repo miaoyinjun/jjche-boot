@@ -59,6 +59,7 @@ public class FeignConfig {
                 String dataScopeIsSelf = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF);
                 String dataScopeUserid = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID);
                 String dataScopeUsername = request.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME);
+                String grayVersion = request.getHeader(SecurityConstant.FEIGN_GRAY_TAG);
 
                 requestTemplate.header(SecurityConstant.JWT_KEY_USER_ID, userId);
                 requestTemplate.header(SecurityConstant.JWT_KEY_USERNAME, username);
@@ -69,6 +70,8 @@ public class FeignConfig {
                 requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, dataScopeIsSelf);
                 requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
                 requestTemplate.header(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
+                //灰度
+                requestTemplate.header(SecurityConstant.FEIGN_GRAY_TAG, grayVersion);
             }
         };
     }

@@ -20,7 +20,7 @@ public class StudentQueryCriteriaDTO extends BaseQueryCriteriaDTO {
     /**
      * 精确
      */
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "姓名", example = "王")
     @QueryCriteria(propName = "name", type = QueryCriteria.Type.LIKE)
     private String name;
 }

@@ -1,6 +1,8 @@
 server:
   port: 8801
 spring:
+  profiles:
+    active: ${JJCHE_WEB_PROFILES_ACTIVE:dev}
   application:
     name: jjche-cloud-gateway
   cloud:
@@ -8,6 +10,8 @@ spring:
       discovery:
         namespace: ${JJCHE_NACOS_NAMESPACE:}
         server-addr: ${JJCHE_NACOS_HOST:127.0.0.1}:${JJCHE_NACOS_PORT:8848}
+        metadata:
+          version: ${spring.profiles.active}
       route:
         config:
           data-id: jjche-cloud-gateway-router

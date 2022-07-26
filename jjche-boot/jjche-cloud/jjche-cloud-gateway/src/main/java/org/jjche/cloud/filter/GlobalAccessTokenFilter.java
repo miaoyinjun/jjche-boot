@@ -52,6 +52,11 @@ public class GlobalAccessTokenFilter implements GlobalFilter, Ordered {
                 // 设置用户信息到请求
                 Consumer<HttpHeaders> headersConsumer = getUserHeadersConsumer(userDetails);
                 ServerHttpRequest mutableReq = exchange.getRequest().mutate().headers(headersConsumer).build();
+                String grayTag = headers.getFirst(SecurityConstant.FEIGN_GRAY_TAG);
+                //灰度标识
+                if (StrUtil.isNotBlank(grayTag)) {
+                    mutableReq.getHeaders().add(SecurityConstant.FEIGN_GRAY_TAG, grayTag);
+                }
                 exchange = exchange.mutate().request(mutableReq).build();
             } catch (Exception ex) {
                 StaticLog.warn("调用验证用户接口错误{}", ex);
