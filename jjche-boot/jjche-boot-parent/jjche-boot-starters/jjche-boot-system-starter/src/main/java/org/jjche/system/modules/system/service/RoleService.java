@@ -25,10 +25,7 @@ import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.api.dto.RoleDTO;
 import org.jjche.system.modules.system.api.dto.RoleQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.*;
-import org.jjche.system.modules.system.mapper.RoleDeptMapper;
-import org.jjche.system.modules.system.mapper.RoleMapper;
-import org.jjche.system.modules.system.mapper.RoleMenuMapper;
-import org.jjche.system.modules.system.mapper.UserMapper;
+import org.jjche.system.modules.system.mapper.*;
 import org.jjche.system.modules.system.mapstruct.RoleMapStruct;
 import org.jjche.system.modules.system.mapstruct.RoleSmallMapStruct;
 import org.springframework.stereotype.Service;
@@ -40,11 +37,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * <p>RoleService class.</p>
+ * <p>
+ * 角色
+ * </p>
  *
- * @author Zheng Jie
- * @version 1.0.8-SNAPSHOT
- * @since 2018-12-03
+ * @author miaoyj
+ * @since 2022-07-25
  */
 @Service
 @RequiredArgsConstructor
@@ -282,15 +280,11 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         // 如果是管理员直接返回
         if (user.getIsAdmin()) {
             permissions.add(SecurityConstant.ADMIN_PERMISSION);
-            return permissions.stream().map(SimpleGrantedAuthorityDTO::new)
-                    .collect(Collectors.toList());
+            return permissions.stream().map(SimpleGrantedAuthorityDTO::new).collect(Collectors.toList());
         }
         List<RoleDO> roles = this.baseMapper.selectByUserId(user.getId());
-        permissions = roles.stream().flatMap(role -> role.getMenus().stream())
-                .filter(menu -> StrUtil.isNotBlank(menu.getPermission()))
-                .map(MenuDO::getPermission).collect(Collectors.toSet());
-        return permissions.stream().map(SimpleGrantedAuthorityDTO::new)
-                .collect(Collectors.toList());
+        permissions = roles.stream().flatMap(role -> role.getMenus().stream()).filter(menu -> StrUtil.isNotBlank(menu.getPermission())).map(MenuDO::getPermission).collect(Collectors.toSet());
+        return permissions.stream().map(SimpleGrantedAuthorityDTO::new).collect(Collectors.toList());
     }
 
     /**
@@ -407,4 +401,5 @@ public class RoleService extends MyServiceImpl<RoleMapper, RoleDO> {
         }
         return Collections.min(roleDtos.stream().map(RoleDTO::getLevel).collect(Collectors.toList()));
     }
+
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.jjche.common.constant.EnumConstant;
 import org.jjche.common.permission.DataPermissionFieldFilterable;
 import org.jjche.common.permission.DataPermissionFieldMetaSetter;
 import org.jjche.common.util.ClassCompareUtil;
@@ -98,7 +99,7 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
                                     //处理枚举
                                     if (field.getType().isEnum()) {
                                         Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>) field.getType();
-                                        Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, "desc");
+                                        Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, EnumConstant.DESC);
                                         value = enumMap.get(value).toString();
                                     }//格式化时间
                                     else if (field.getType().isAssignableFrom(Timestamp.class)) {

@@ -1,7 +1,7 @@
 package org.jjche.tool.modules.tool.service;
 
 import cn.hutool.core.lang.Assert;
-import com.alibaba.fastjson.JSON;
+import cn.hutool.json.JSONUtil;
 import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -160,7 +160,7 @@ public class QiNiuService extends MyServiceImpl<QiNiuConfigMapper, QiniuConfigDO
             Response response = uploadManager.put(file.getBytes(), key, upToken);
             //解析上传成功的结果
 
-            DefaultPutRet putRet = JSON.parseObject(response.bodyString(), DefaultPutRet.class);
+            DefaultPutRet putRet = JSONUtil.toBean(response.bodyString(), DefaultPutRet.class);
             content = this.findByName(FileUtil.getFileNameNoEx(putRet.key));
             if (content == null) {
                 //存入数据库

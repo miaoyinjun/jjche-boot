@@ -10,7 +10,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.tool.modules.tool.domain.QiniuConfigDO;
 import org.jjche.tool.modules.tool.domain.QiniuContentDO;
 import org.jjche.tool.modules.tool.dto.QiniuQueryCriteriaDTO;
@@ -54,7 +54,7 @@ public class QiniuController extends BaseController {
      * @param qiniuConfig a {@link QiniuConfigDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "配置", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "七牛云存储"
     )
@@ -98,7 +98,7 @@ public class QiniuController extends BaseController {
      * @param file a {@link org.springframework.web.multipart.MultipartFile} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "上传文件", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "七牛云存储"
     )
@@ -118,7 +118,7 @@ public class QiniuController extends BaseController {
      *
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "同步", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "七牛云存储"
     )
@@ -149,7 +149,7 @@ public class QiniuController extends BaseController {
      * @param id a {@link java.lang.Long} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "七牛云存储"
     )
@@ -166,7 +166,7 @@ public class QiniuController extends BaseController {
      * @param ids an array of {@link java.lang.Long} objects.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除多张图片", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "七牛云存储"
     )

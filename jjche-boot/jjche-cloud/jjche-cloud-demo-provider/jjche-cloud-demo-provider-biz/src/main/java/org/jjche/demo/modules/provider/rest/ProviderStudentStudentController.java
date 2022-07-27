@@ -1,5 +1,6 @@
 package org.jjche.demo.modules.provider.rest;
 
+import cn.hutool.log.StaticLog;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,7 @@ import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
 import org.jjche.demo.modules.provider.feign.ProviderStudentApi;
 import org.jjche.demo.modules.provider.service.ProviderService;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,14 +43,16 @@ public class ProviderStudentStudentController extends BaseController implements 
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ProviderApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "被调用", category = LogCategoryType.OPERATING,
             type = LogType.SELECT, module = "学生"
     )
     public ResultWrapper<MyPage<ProviderVO>> page(PageParam page,
                                                   @ApiParam(value = "课程")
                                                   @RequestParam(required = false) ProviderCourseEnum course,
-                                                  @RequestParam(required = false) String name) {
+                                                  @ApiParam(value = "姓名", example = "大")
+                                                      @RequestParam(required = false) String name) {
+        StaticLog.warn("name:{}", name);
         return ResultWrapper.ok(providerService.page(page, course, name));
     }
 

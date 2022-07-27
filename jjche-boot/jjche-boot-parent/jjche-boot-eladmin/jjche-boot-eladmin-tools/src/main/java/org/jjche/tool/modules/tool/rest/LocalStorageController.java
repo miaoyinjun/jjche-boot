@@ -14,7 +14,7 @@ import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.FileUtil;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.tool.modules.tool.domain.LocalStorageDO;
 import org.jjche.tool.modules.tool.dto.LocalStorageDTO;
 import org.jjche.tool.modules.tool.dto.LocalStorageQueryCriteriaDTO;
@@ -92,7 +92,7 @@ public class LocalStorageController extends BaseController {
      * @param file a {@link org.springframework.web.multipart.MultipartFile} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "上传图片", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "存储"
     )
@@ -130,7 +130,7 @@ public class LocalStorageController extends BaseController {
      * @param ids an array of {@link java.lang.Long} objects.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "多选删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "存储"
     )

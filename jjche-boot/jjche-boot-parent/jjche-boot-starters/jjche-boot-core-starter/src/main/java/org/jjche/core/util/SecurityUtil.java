@@ -84,7 +84,7 @@ public class SecurityUtil {
         if (StrUtil.isNotBlank(isSelfStr)) {
             isSelf = Boolean.parseBoolean(isSelfStr);
         }
-        String userIdStr = getHeaderByAuthException(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID);
+        String userIdStr = RequestHolder.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID);
         Long userid = 0L;
         if (StrUtil.isNotBlank(userIdStr)) {
             userid = Long.parseLong(userIdStr);

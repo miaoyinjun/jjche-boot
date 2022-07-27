@@ -1,5 +1,8 @@
 package org.jjche.system.modules.system.mapper;
 
+import org.jjche.common.dto.UserVO;
+import org.jjche.common.param.MyPage;
+import org.jjche.common.param.PageParam;
 import org.jjche.mybatis.base.MyBaseMapper;
 import org.jjche.system.modules.system.domain.UserDO;
 
@@ -130,4 +133,28 @@ public interface UserMapper extends MyBaseMapper<UserDO> {
      * @return 修改记录条数
      */
     Integer updateUserTipResetPwd(Integer days);
+
+    /**
+     * <p>
+     * 查询用户根据角色id
+     * </p>
+     *
+     * @param page   分页
+     * @param roleId 角色id
+     * @param blurry 模糊
+     * @return /
+     */
+    MyPage<UserVO> selectByRoleId(PageParam page, Long roleId, String blurry);
+
+    /**
+     * <p>
+     * 查询非用户根据角色id
+     * </p>
+     *
+     * @param page   分页
+     * @param roleId 角色id
+     * @param blurry 模糊
+     * @return /
+     */
+    MyPage<UserVO> selectNotByRoleId(PageParam page, Long roleId, String blurry);
 }

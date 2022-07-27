@@ -6,7 +6,7 @@ import org.jjche.swagger.property.plugin.SwaggerConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+import springfox.documentation.oas.annotations.EnableOpenApi;
 
 /**
  * <p>
@@ -24,6 +24,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
         SwaggerConfiguration.class, EnumWebMvcConfiguration.class
 })
 @Configuration
-@EnableSwagger2WebMvc
+@EnableOpenApi
 public class SwaggerAutoConfiguration {
 }

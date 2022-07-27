@@ -120,6 +120,22 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
     }
 
     /**
+     * 保存日志数据
+     *
+     * @param logs 日志实体
+     */
+    @Async
+    @Transactional(rollbackFor = Exception.class)
+    public void saveLog(List<LogDO> logs) {
+        LogDO log = CollUtil.getFirst(logs);
+        String address = HttpUtil.getCityInfo(log.getRequestIp());
+        for (LogDO logDO : logs) {
+            logDO.setAddress(address);
+        }
+        this.saveBatch(logs);
+    }
+
+    /**
      * 查询异常详情
      *
      * @param id 日志ID
@@ -211,8 +227,8 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
      * @param bizKey 业务标识
      * @param bizNo  业务主键
      * @param page   a {@link PageParam} object.
+     * @param page   a {@link com.boot.admin.mybatis.param.PageParam} object.
      * @return 日志
-     * @param page a {@link com.boot.admin.mybatis.param.PageParam} object.
      */
     public MyPage<LogDO> listByBizKeyAndBizNo(PageParam page, String bizKey, String bizNo) {
         LambdaQueryWrapper<LogDO> queryWrapper = new LambdaQueryWrapper<>();

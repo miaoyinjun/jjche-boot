@@ -10,7 +10,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.mnt.dto.DeployHistoryDTO;
 import org.jjche.system.modules.mnt.dto.DeployHistoryQueryCriteriaDTO;
 import org.jjche.system.modules.mnt.service.DeployHistoryService;
@@ -71,7 +71,7 @@ public class DeployHistoryController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "部署历史"
     )

@@ -11,7 +11,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.quartz.domain.QuartzJobDO;
 import org.jjche.system.modules.quartz.domain.QuartzLogDO;
 import org.jjche.system.modules.quartz.dto.JobQueryCriteriaDTO;
@@ -101,7 +101,7 @@ public class QuartzJobController extends BaseController {
      * @param resources a {@link QuartzJobDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "定时"
     )
@@ -120,7 +120,7 @@ public class QuartzJobController extends BaseController {
      * @param resources a {@link QuartzJobDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "定时"
     )
@@ -138,7 +138,7 @@ public class QuartzJobController extends BaseController {
      * @param id a {@link java.lang.Long} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "更改定时任务状态", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "定时"
     )
@@ -168,7 +168,7 @@ public class QuartzJobController extends BaseController {
      * @param id a {@link java.lang.Long} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "执行", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "定时"
     )
@@ -186,7 +186,7 @@ public class QuartzJobController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "定时"
     )

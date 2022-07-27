@@ -21,6 +21,12 @@
           prop="detail"
           label="详情"
         />
+        <el-table-column prop="isSuccess" label="状态">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.isSuccess">成功</el-tag>
+            <el-tag v-else type="danger">失败</el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="gmtCreate" label="操作时间" width="180px" />
         <el-table-column prop="username" label="操作人" />
       </el-table>

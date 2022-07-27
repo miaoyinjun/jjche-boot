@@ -54,6 +54,7 @@
               <vab-icon :icon="['fas', 'shield-alt']" />
             </span>
             <el-input
+              ref="code"
               v-model="form.code"
               auto-complete="off"
               placeholder="验证码"
@@ -154,6 +155,8 @@ export default {
       getCodeImg().then((res) => {
         this.codeUrl = res.img
         this.form.uuid = res.uuid
+        this.form.code = null
+        this.$refs.code.focus()
       })
     },
     handlePassword() {

@@ -12,7 +12,7 @@ import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.FileUtil;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.mnt.domain.DeployDO;
 import org.jjche.system.modules.mnt.domain.DeployHistoryDO;
 import org.jjche.system.modules.mnt.dto.DeployDTO;
@@ -79,7 +79,7 @@ public class DeployController extends BaseController {
      * @param resources a {@link DeployDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "部署"
     )
@@ -97,7 +97,7 @@ public class DeployController extends BaseController {
      * @param resources a {@link DeployDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
     )
@@ -115,7 +115,7 @@ public class DeployController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "部署"
     )
@@ -135,7 +135,7 @@ public class DeployController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "上传文件", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "部署"
     )
@@ -164,7 +164,7 @@ public class DeployController extends BaseController {
      * @param resources a {@link DeployHistoryDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "系统还原", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
     )
@@ -196,7 +196,7 @@ public class DeployController extends BaseController {
      * @param resources a {@link DeployDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "启动服务", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
     )
@@ -214,7 +214,7 @@ public class DeployController extends BaseController {
      * @param resources a {@link DeployDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "停止服务", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
     )

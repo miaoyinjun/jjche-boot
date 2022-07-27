@@ -13,7 +13,7 @@ import org.jjche.common.util.RsaUtils;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.system.modules.system.service.SysBaseAPI;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -66,7 +66,7 @@ public class OnlineController extends BaseController {
      * @param filter   a {@link java.lang.String} object.
      * @throws java.io.IOException if any.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "导出", category = LogCategoryType.MANAGER,
             type = LogType.SELECT, module = "在线用户"
     )

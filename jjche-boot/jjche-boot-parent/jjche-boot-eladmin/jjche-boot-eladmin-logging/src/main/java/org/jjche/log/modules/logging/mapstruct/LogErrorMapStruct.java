@@ -1,6 +1,6 @@
 package org.jjche.log.modules.logging.mapstruct;
 
-import org.jjche.core.base.BaseMapStruct;
+import org.jjche.core.base.BaseVoMapStruct;
 import org.jjche.log.modules.logging.domain.LogDO;
 import org.jjche.log.modules.logging.dto.LogErrorDTO;
 import org.mapstruct.Mapper;
@@ -14,6 +14,6 @@ import org.mapstruct.ReportingPolicy;
  * @since 2019-5-22
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface LogErrorMapStruct extends BaseMapStruct<LogDO, LogErrorDTO, LogErrorDTO> {
+public interface LogErrorMapStruct extends BaseVoMapStruct<LogDO, LogErrorDTO> {
 
 }
