@@ -44,6 +44,11 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     }
 
     @Override
+    public void recordLogs(List<LogRecordDTO> list) {
+        StaticLog.error("保存日志失败 {}", cause);
+    }
+
+    @Override
     public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(Long userId) {
         StaticLog.error("查询用户数据权限失败 {}", cause);
         return null;

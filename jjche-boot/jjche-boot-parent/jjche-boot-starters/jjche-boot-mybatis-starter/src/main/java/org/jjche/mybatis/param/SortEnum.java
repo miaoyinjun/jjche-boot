@@ -34,6 +34,8 @@ public enum SortEnum implements IBaseEnum {
      * 根据code获取枚举
      * </p>
      *
+     * @param code 标识
+     *
      * @return 枚举
      */
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)

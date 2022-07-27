@@ -46,6 +46,11 @@ public class SysBaseController extends BaseController {
         this.sysBaseAPI.recordLog(logRecord);
     }
 
+    @PostMapping("/recordLogs")
+    public void recordLogs(@RequestBody List<LogRecordDTO> list) {
+        this.sysBaseAPI.recordLogs(list);
+    }
+
     @GetMapping("listPermissionDataRuleByUserId")
     public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(@RequestParam("userId") Long userId) {
         return sysBaseAPI.listPermissionDataRuleByUserId(userId);

@@ -20,11 +20,15 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ClassUtils;
 import springfox.documentation.builders.ParameterBuilder;
+import springfox.documentation.builders.RequestParameterBuilder;
+import springfox.documentation.common.Compatibility;
 import springfox.documentation.schema.Maps;
+import springfox.documentation.schema.ResolvedTypes;
 import springfox.documentation.schema.Types;
 import springfox.documentation.schema.property.bean.AccessorsProvider;
 import springfox.documentation.schema.property.field.FieldProvider;
 import springfox.documentation.service.Parameter;
+import springfox.documentation.service.RequestParameter;
 import springfox.documentation.spi.schema.AlternateTypeProvider;
 import springfox.documentation.spi.schema.EnumTypeDeterminer;
 import springfox.documentation.spi.service.contexts.ParameterExpansionContext;
@@ -41,23 +45,22 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Objects.equal;
 import static com.google.common.base.Predicates.*;
 import static com.google.common.base.Strings.isNullOrEmpty;
 import static com.google.common.collect.FluentIterable.from;
-import static com.google.common.collect.Lists.newArrayList;
 import static com.google.common.collect.Sets.newHashSet;
 import static springfox.documentation.schema.Collections.collectionElementType;
 import static springfox.documentation.schema.Collections.isContainerType;
-import static springfox.documentation.schema.Types.isVoid;
 import static springfox.documentation.schema.Types.typeNameFor;
 
 /**
  * <p>
  * 假如接收参数的实体类中关联了其他对象，那么swagger2的页面中参数应该会多出来这些，
  * dept.id，dept.deptName，或者集合属性，roles[0].id，roles[0].roleName等等。
- * ​​​这些属性有可能是不需要用来接收参数的，出现在文档中会给前端开发人员带来困惑
+ * 这些属性有可能是不需要用来接收参数的，出现在文档中会给前端开发人员带来困惑
  *
  * </p>
  *
@@ -112,12 +115,15 @@ public class CustomizeModelAttributeParameterExpander extends ModelAttributePara
         return parameterType;
     }
 
+
     /**
      * {@inheritDoc}
+     *
+     * @return
      */
     @Override
-    public List<Parameter> expand(ExpansionContext context) {
-        List<Parameter> parameters = newArrayList();
+    public List<Compatibility<Parameter, RequestParameter>> expand(ExpansionContext context) {
+        List<Compatibility<Parameter, RequestParameter>> parameters = new ArrayList();
         Set<PropertyDescriptor> propertyDescriptors = propertyDescriptors(context.getParamType().getErasedType());
         Map<Method, PropertyDescriptor> propertyLookupByGetter
                 = propertyDescriptorsByMethod(context.getParamType().getErasedType(), propertyDescriptors);
@@ -179,10 +185,7 @@ public class CustomizeModelAttributeParameterExpander extends ModelAttributePara
         for (ModelAttributeField each : simpleFields) {
             parameters.add(simpleFields(context.getParentName(), context, each));
         }
-        return FluentIterable.from(parameters)
-                .filter(not(hiddenParameters()))
-                .filter(not(voidParameters()))
-                .toList();
+        return parameters.stream().filter(this.hiddenParameter().negate()).filter(this.voidParameters().negate()).collect(Collectors.toList());
     }
 
     private FluentIterable<ModelAttributeField> allModelAttributes(
@@ -227,14 +230,9 @@ public class CustomizeModelAttributeParameterExpander extends ModelAttributePara
         };
     }
 
-    private Predicate<Parameter> voidParameters() {
-        return new Predicate<Parameter>() {
-            @Override
-            public boolean apply(Parameter input) {
-                //                2.0.7
-                return isVoid(input.getType().orElse(null));
-//                return isVoid(input.getType().orNull());
-            }
+    private java.util.function.Predicate<Compatibility<Parameter, RequestParameter>> voidParameters() {
+        return (input) -> {
+            return ResolvedTypes.isVoid((ResolvedType) input.getLegacy().flatMap(Parameter::getType).orElse(null));
         };
     }
 
@@ -247,16 +245,13 @@ public class CustomizeModelAttributeParameterExpander extends ModelAttributePara
         };
     }
 
-    private Predicate<Parameter> hiddenParameters() {
-        return new Predicate<Parameter>() {
-            @Override
-            public boolean apply(Parameter input) {
-                return input.isHidden();
-            }
+    private java.util.function.Predicate<Compatibility<Parameter, RequestParameter>> hiddenParameter() {
+        return (c) -> {
+            return (Boolean) c.getLegacy().map(Parameter::isHidden).orElse(false);
         };
     }
 
-    private Parameter simpleFields(
+    private Compatibility<Parameter, RequestParameter> simpleFields(
             String parentName,
             ExpansionContext context,
             ModelAttributeField each) {
@@ -264,18 +259,14 @@ public class CustomizeModelAttributeParameterExpander extends ModelAttributePara
         String dataTypeName = Optional.fromNullable(typeNameFor(each.getFieldType().getErasedType()))
                 .or(each.getFieldType().getErasedType().getSimpleName());
         LOG.debug("Building parameter for field: {}, with type: ", each, each.getFieldType());
-        ParameterExpansionContext parameterExpansionContext = new ParameterExpansionContext(
-                dataTypeName,
-                parentName,
+        ParameterExpansionContext parameterExpansionContext = new
+                ParameterExpansionContext(dataTypeName, parentName,
                 determineScalarParameterType(
                         context.getOperationContext().consumes(),
                         context.getOperationContext().httpMethod()),
-                new ModelAttributeParameterMetadataAccessor(
-                        each.annotatedElements(),
-                        each.getFieldType(),
-                        each.getName()),
-                context.getDocumentationContext().getDocumentationType(),
-                new ParameterBuilder());
+                new ModelAttributeParameterMetadataAccessor(each.annotatedElements(),
+                        each.getFieldType(), each.getName()), context.getDocumentationType(),
+                new ParameterBuilder(), new RequestParameterBuilder());
         return pluginsManager.expandParameter(parameterExpansionContext);
     }
 

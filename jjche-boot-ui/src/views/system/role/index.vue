@@ -130,7 +130,7 @@
               width="55"
             />
             <el-table-column prop="name" label="名称" />
-            <el-table-column prop="code" label="角色标识" />
+            <el-table-column prop="code" label="角色标识" width="100px" />
             <el-table-column prop="dataScopeValue" label="数据范围" />
             <el-table-column prop="level" label="角色级别" />
             <el-table-column
@@ -151,15 +151,25 @@
             <el-table-column
               v-permission="['admin', 'roles:edit', 'roles:del']"
               label="操作"
-              width="130px"
+              width="300px"
               align="center"
               fixed="right"
             >
               <template slot-scope="scope">
-                <udOperation
-                  v-if="scope.row.level >= level"
-                  :data="scope.row"
-                  :permission="permission"
+                <div style="display: inline-block">
+                  <udOperation
+                    v-if="scope.row.level >= level"
+                    :data="scope.row"
+                    :permission="permission"
+                  />
+                </div>
+                <el-button
+                  v-permission="['roles:edit', 'roles:del']"
+                  size="mini"
+                  type="warning"
+                  icon="el-icon-user"
+                  style="display: inline-block"
+                  @click="handleUsers(scope.row)"
                 />
               </template>
             </el-table-column>
@@ -250,6 +260,20 @@
         </el-tabs>
       </div>
     </el-drawer>
+
+    <el-drawer
+      :title="userTitle"
+      :visible.sync="userVisible"
+      size="40%"
+      @open="handleUserOpen()"
+    >
+      <div style="margin-left: 20px">
+        <User
+          ref="User"
+          :permission="permission"
+        />
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -268,6 +292,7 @@ import { LOAD_CHILDREN_OPTIONS } from '@riophae/vue-treeselect'
 import DateRangePicker from '@/components/DateRangePicker'
 import dataPermissionRule from './dataPermissionRule'
 import dataPermissionField from './dataPermissionField'
+import User from './user'
 
 const defaultForm = {
   id: null,
@@ -288,7 +313,8 @@ export default {
     udOperation,
     DateRangePicker,
     dataPermissionRule,
-    dataPermissionField
+    dataPermissionField,
+    User
   },
   cruds() {
     return Crud({
@@ -300,6 +326,8 @@ export default {
   mixins: [presenter(), header(), form(defaultForm), crud()],
   data() {
     return {
+      userTitle: '',
+      userVisible: false,
       DataPermissionActiveName: 'dataPermissionRule',
       nodeMenuId: null,
       dataPermissionVisible: false,
@@ -542,6 +570,19 @@ export default {
       } else {
         this.getDataPermissionRuleData()
       }
+    },
+    handleUsers(data) {
+      this.userTitle = data.name
+      this.userVisible = true
+      this.currentId = data.id
+    },
+    handleUserOpen() {
+      this.$nextTick(() => {
+        if (this.$refs.User) {
+          this.$refs.User.query.roleId = this.currentId
+          this.$refs.User.crud.toQuery()
+        }
+      })
     }
   }
 }

@@ -28,7 +28,7 @@ public class LogRecordDTO implements Serializable {
     /**
      * 是否保存参数
      */
-    boolean saveParams;
+    private Boolean saveParams;
 
     /**
      * 是否成功
@@ -157,4 +157,15 @@ public class LogRecordDTO implements Serializable {
      * 请求id
      */
     private String requestId;
+
+    /**
+     * 子模块
+     */
+    private String subModule;
+
+
+    /**
+     * 是否是批量操作
+     * */
+    private Boolean batch;
 }

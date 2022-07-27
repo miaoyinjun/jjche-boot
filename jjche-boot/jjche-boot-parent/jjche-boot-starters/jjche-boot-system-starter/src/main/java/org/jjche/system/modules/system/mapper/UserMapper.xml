@@ -99,4 +99,33 @@
             </foreach>
         </if>
     </select>
+
+    <select id="selectByRoleId" resultType="org.jjche.common.dto.UserVO">
+        SELECT t.id, t.username, t.nick_name, t.gender, t.phone, t.email, t.enabled
+        FROM sys_user t
+        INNER JOIN sys_users_roles sur ON t.id = sur.user_id
+        WHERE sur.role_id = #{roleId}
+        <if test="blurry != null and blurry != ''">
+          AND (
+          t.username like CONCAT('%', #{blurry}, '%')
+          OR t.nick_name like CONCAT('%', #{blurry}, '%')
+          OR t.phone like CONCAT('%', #{blurry}, '%')
+          OR t.email like CONCAT('%', #{blurry}, '%')
+          )
+        </if>
+    </select>
+
+    <select id="selectNotByRoleId" resultType="org.jjche.common.dto.UserVO">
+        SELECT t.id, t.username, t.nick_name, t.gender, t.phone, t.email, t.enabled
+        FROM sys_user t
+        WHERE t.id NOT IN (SELECT user_id FROM sys_users_roles sur WHERE sur.role_id = #{roleId})
+        <if test="blurry != null and blurry != ''">
+            AND (
+            t.username like CONCAT('%', #{blurry}, '%')
+            OR t.nick_name like CONCAT('%', #{blurry}, '%')
+            OR t.phone like CONCAT('%', #{blurry}, '%')
+            OR t.email like CONCAT('%', #{blurry}, '%')
+            )
+        </if>
+    </select>
 </mapper>

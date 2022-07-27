@@ -9,6 +9,12 @@ package org.jjche.common.constant;
  * @since 2022-03-03
  */
 public interface SwaggerConstant {
+
+    /**
+     * 文档地址前缀
+     */
+    String SWAGGER_2_VERSION = "/v2";
+
     /**
      * 文档地址前缀
      */
@@ -16,7 +22,7 @@ public interface SwaggerConstant {
     /**
      * 文档地址后缀
      */
-    String SWAGGER_2_URL_SUFFIX = "/v2/api-docs";
+    String SWAGGER_2_URL_SUFFIX = SWAGGER_2_VERSION + "/api-docs";
     /**
      * 文档地址
      */

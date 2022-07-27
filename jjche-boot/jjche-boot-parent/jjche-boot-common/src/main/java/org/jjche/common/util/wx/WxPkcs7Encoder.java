@@ -1,4 +1,4 @@
-package org.jjche.core.util.wx;
+package org.jjche.common.util.wx;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;

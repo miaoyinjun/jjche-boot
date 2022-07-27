@@ -88,4 +88,9 @@ public interface SecurityConstant {
      * 短信验证服务名
      */
     String USER_DETAILS_SMS_SERVICE = "smsUserDetailsService";
+
+    /**
+     * 灰度标识
+     */
+    String FEIGN_GRAY_TAG = "version";
 }

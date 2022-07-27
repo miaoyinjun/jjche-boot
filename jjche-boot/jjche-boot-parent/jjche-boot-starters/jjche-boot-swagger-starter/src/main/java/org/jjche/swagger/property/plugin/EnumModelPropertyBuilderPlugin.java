@@ -3,6 +3,7 @@ package org.jjche.swagger.property.plugin;
 import cn.hutool.core.util.ObjectUtil;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import org.jjche.common.constant.EnumConstant;
+import org.jjche.common.enums.IBaseEnum;
 import org.springframework.util.ReflectionUtils;
 import springfox.documentation.builders.ModelPropertyBuilder;
 import springfox.documentation.spi.DocumentationType;
@@ -33,9 +34,7 @@ public class EnumModelPropertyBuilderPlugin implements ModelPropertyBuilderPlugi
      */
     @Override
     public void apply(ModelPropertyContext context) {
-        //2.0.7
         Optional<BeanPropertyDefinition> optional = context.getBeanPropertyDefinition();
-//        Optional<BeanPropertyDefinition> optional = context.getBeanPropertyDefinition();
         if (!optional.isPresent()) {
             return;
         }
@@ -60,7 +59,7 @@ public class EnumModelPropertyBuilderPlugin implements ModelPropertyBuilderPlugi
     }
 
     private void addDescForEnum(ModelPropertyContext context, Class<?> fieldType) {
-        if (ObjectUtil.isNotNull(fieldType) && Enum.class.isAssignableFrom(fieldType)) {
+        if (ObjectUtil.isNotNull(fieldType) && IBaseEnum.class.isAssignableFrom(fieldType)) {
             Object[] enumConstants = fieldType.getEnumConstants();
 
             List<String> displayValues =
@@ -89,7 +88,8 @@ public class EnumModelPropertyBuilderPlugin implements ModelPropertyBuilderPlugi
             String joinText = ReflectionUtils.getField(descField, builder)
                     + "(" + String.join(";", displayValues) + ")";
 
-            builder.description(joinText).type(context.getResolver().resolve(String.class));
+            context.getSpecificationBuilder().description(joinText);
+
         }
     }
 }

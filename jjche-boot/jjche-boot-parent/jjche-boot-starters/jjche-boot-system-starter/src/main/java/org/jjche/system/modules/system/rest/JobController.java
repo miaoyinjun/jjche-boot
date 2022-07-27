@@ -10,7 +10,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.JobDTO;
 import org.jjche.system.modules.system.api.dto.JobQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.JobDO;
@@ -71,7 +71,7 @@ public class JobController extends BaseController {
      * @param resources a {@link JobDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "岗位"
     )
@@ -89,7 +89,7 @@ public class JobController extends BaseController {
      * @param resources a {@link JobDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "岗位"
     )
@@ -107,7 +107,7 @@ public class JobController extends BaseController {
      * @param ids a {@link java.util.Set} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "岗位"
     )

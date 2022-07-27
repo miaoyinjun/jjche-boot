@@ -9,7 +9,7 @@ import org.jjche.common.enums.LogType;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.tool.modules.tool.domain.AlipayConfigDO;
 import org.jjche.tool.modules.tool.service.AliPayService;
 import org.jjche.tool.modules.tool.utils.AliPayStatusEnum;
@@ -55,7 +55,7 @@ public class AliPayController extends BaseController {
      * @param alipayConfig a {@link AlipayConfigDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "配置", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "支付宝"
     )

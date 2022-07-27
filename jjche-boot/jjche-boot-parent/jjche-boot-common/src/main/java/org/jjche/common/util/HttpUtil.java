@@ -282,7 +282,11 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
             //本人
             String dataScopeIsSelf = String.valueOf(dataScope.isSelf());
             //用户id
-            String dataScopeUserid = String.valueOf(dataScope.getUserId());
+            Long userIdL = dataScope.getUserId();
+            String dataScopeUserid = null;
+            if (userIdL != null) {
+                dataScopeUserid = String.valueOf(userIdL);
+            }
             //用户名
             String dataScopeUsername = dataScope.getUserName();
 
@@ -293,8 +297,12 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
             httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, dataScopeFinalDeptIdsList);
             httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, dataScopeIsAll);
             httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, dataScopeIsSelf);
-            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
-            httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
+            if (dataScopeUserid != null) {
+                httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, dataScopeUserid);
+            }
+            if (dataScopeUsername != null) {
+                httpHeaders.put(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, dataScopeUsername);
+            }
         }
         return httpHeaders;
     }

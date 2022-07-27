@@ -50,7 +50,9 @@ public class GenUtil {
     public static final Set<String> DEFAULT_COLUMNS = CollUtil.newHashSet("created_by",
             "updated_by", "gmt_create", "gmt_modified");
     private static final String TIMESTAMP = "Timestamp";
-    private static final String BIGDECIMAL = "BigDecimal";
+    private static final String BIG_DECIMAL = "BigDecimal";
+
+    private static final String DIFF_OLD_FUNC = "DiffOldByIdFunc";
 
     /**
      * 获取后端代码模板名称
@@ -71,6 +73,7 @@ public class GenUtil {
 //        templateNames.add("SortEnum");
         templateNames.add("ApiVersion");
         templateNames.add("MenuRoleSql");
+        templateNames.add(DIFF_OLD_FUNC);
         return templateNames;
     }
 
@@ -215,6 +218,7 @@ public class GenUtil {
 
     // 获取模版数据
     private static Map<String, Object> getGenMap(List<ColumnInfoDO> columnInfos, GenConfigDO genConfig, String apiPrefix) {
+        String tableName = genConfig.getTableName();
         // 存储模版字段数据
         Map<String, Object> genMap = new HashMap<>(16);
         String apiVersion = genConfig.getApiVersion();
@@ -241,23 +245,28 @@ public class GenUtil {
         // 创建日期
         genMap.put("date", LocalDate.now().toString());
         // 表名
-        genMap.put("tableName", genConfig.getTableName());
+        genMap.put("tableName", tableName);
         // 大写开头的类名
-        String className = StrUtil.toCapitalizeCamelCase(genConfig.getTableName());
+        String className = StrUtil.toCapitalizeCamelCase(tableName);
         // 小写开头的类名
-        String changeClassName = StrUtil.toCamelCase(genConfig.getTableName());
+        String changeClassName = StrUtil.toCamelCase(tableName);
+        //设置修改前的数据到变量方法
+        String diffOldFuncName = StrUtil.swapCase(tableName);
+        diffOldFuncName += "_DIFF_OLD_BY_ID";
         // 判断是否去除表前缀
         if (StrUtil.isNotEmpty(genConfig.getPrefix())) {
-            className = StrUtil.toCapitalizeCamelCase(StrUtil.removePrefix(genConfig.getTableName(), genConfig.getPrefix()));
-            changeClassName = StrUtil.toCamelCase(StrUtil.removePrefix(genConfig.getTableName(), genConfig.getPrefix()));
+            className = StrUtil.toCapitalizeCamelCase(StrUtil.removePrefix(tableName, genConfig.getPrefix()));
+            changeClassName = StrUtil.toCamelCase(StrUtil.removePrefix(tableName, genConfig.getPrefix()));
         }
-        String controllerBaseUrl = StrUtil.pluralizeWord(genConfig.getTableName());
+        String controllerBaseUrl = StrUtil.pluralizeWord(tableName);
         // 保存类名
         genMap.put("className", className);
         // 保存小写开头的类名
         genMap.put("changeClassName", changeClassName);
+        //全大写类名
+        genMap.put("diffOldFuncName", diffOldFuncName);
         //控制器基础url
-        genMap.put("controllerBaseUrl", apiPrefix + controllerBaseUrl);
+        genMap.put("controllerBaseUrl", controllerBaseUrl);
         // 存在 Timestamp 字段
         genMap.put("hasTimestamp", false);
         // 查询类中存在 Timestamp 字段
@@ -318,7 +327,7 @@ public class GenUtil {
                 genMap.put("hasTimestamp", true);
             }
             // 是否存在 BigDecimal 类型的字段
-            if (BIGDECIMAL.equals(colType)) {
+            if (BIG_DECIMAL.equals(colType)) {
                 genMap.put("hasBigDecimal", true);
             }
             // 主键是否自增
@@ -370,7 +379,7 @@ public class GenUtil {
                     // 查询中存储 Timestamp 类型
                     genMap.put("queryHasTimestamp", true);
                 }
-                if (BIGDECIMAL.equals(colType)) {
+                if (BIG_DECIMAL.equals(colType)) {
                     // 查询中存储 BigDecimal 类型
                     genMap.put("queryHasBigDecimal", true);
                 }
@@ -453,6 +462,9 @@ public class GenUtil {
         }
         if ("MenuRoleSql".equals(templateName)) {
             return packagePath + "sql" + File.separator + className + "MenuRoleSql.sql";
+        }
+        if (DIFF_OLD_FUNC.equals(templateName)) {
+            return packagePath + "function" + File.separator + className + "DiffOldByIdParseFunction.java";
         }
         return null;
     }

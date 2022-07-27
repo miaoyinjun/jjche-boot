@@ -5,7 +5,7 @@
     <groupId>org.jjcheframework.boot</groupId>
     <artifactId>jjche-boot-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.0</version>
+    <version>2.0.2-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -17,23 +17,23 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <build.plugins.plugin.version>3.0.0-M1</build.plugins.plugin.version>
 
-        <spring.boot.starter.version>2.5.8</spring.boot.starter.version>
-        <spring-cloud.version>2020.0.5</spring-cloud.version>
-        <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
-        <spring.boot.admin.starter.version>2.5.4</spring.boot.admin.starter.version>
+        <spring.boot.starter.version>2.6.3</spring.boot.starter.version>
+        <spring-cloud.version>2021.0.3</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
+        <spring.boot.admin.starter.version>2.6.3</spring.boot.admin.starter.version>
         <maven.plugin.version>3.6.0</maven.plugin.version>
         <screw.version>1.0.4</screw.version>
         <mysql.version>8.0.21</mysql.version>
         <!-- docker -->
         <docker.maven.verion>1.4.13</docker.maven.verion>
 
-        <hutool.version>5.7.19</hutool.version>
-        <mybatis.plus.version>3.4.3.3</mybatis.plus.version>
+        <hutool.version>5.8.3</hutool.version>
+        <mybatis.plus.version>3.5.1</mybatis.plus.version>
         <liquibase.version>4.4.3</liquibase.version>
         <jjwt.version>0.11.1</jjwt.version>
         <mapstruct.version>1.4.1.Final</mapstruct.version>
         <poi.version>4.1.2</poi.version>
-        <commons-pool2.version>2.5.0</commons-pool2.version>
+        <commons-pool2.version>2.11.1</commons-pool2.version>
         <jjwt.version>0.11.1</jjwt.version>
         <!-- oshi监控需要指定jna版本, 问题详见 https://github.com/oshi/oshi/issues/1040 -->
         <jna.version>5.6.0</jna.version>
@@ -41,6 +41,8 @@
         <qiniu.version>7.8.0</qiniu.version>
         <alipay.version>4.9.153.ALL</alipay.version>
         <nacos.version>2.0.3</nacos.version>
+        <jetcache.version>2.6.5</jetcache.version>
+        <druid.version>1.2.9</druid.version>
 
     </properties>
 
@@ -81,63 +83,63 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-local-api</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-cloud-api</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-core-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-sba-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-swagger-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-log-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-mybatis-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cache-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-filter-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-security-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.jjcheframework.boot</groupId>-->
@@ -147,38 +149,43 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-jackson-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-system-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-generator</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-tools</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-logging</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-userdetail-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <!-- cloud -->
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cloud-starter</artifactId>
-                <version>2.0.0</version>
+                <version>2.0.2-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-cloud-gray-starter</artifactId>
+                <version>2.0.2-SNAPSHOT</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>ma.glasnost.orika</groupId>-->
@@ -188,7 +195,7 @@
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>
                 <artifactId>jetcache-starter-redis-lettuce</artifactId>
-                <version>2.6.0</version>
+                <version>${jetcache.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
@@ -204,7 +211,7 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>1.2.8</version>
+                <version>${druid.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -254,11 +261,6 @@
                 <version>3.0.3</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>2.10.2</version>
-            </dependency>
-            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.12</version>
@@ -281,14 +283,9 @@
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
                 <artifactId>knife4j-dependencies</artifactId>
-                <version>2.0.9</version>
+                <version>3.0.3</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>30.0-jre</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -352,7 +349,7 @@
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-ip2region</artifactId>
-                <version>2.5.6</version>
+                <version>2.7.2</version>
             </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
@@ -445,6 +442,11 @@
                 <artifactId>nacos-client</artifactId>
                 <version>${nacos.version}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.afterturn</groupId>
+                <artifactId>easypoi-spring-boot-starter</artifactId>
+                <version>4.4.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -517,6 +519,7 @@
                     <configuration>
                         <fork>false</fork>
                         <executable>true</executable>
+                        <includeSystemScope>true</includeSystemScope>
                     </configuration>
                     <executions>
                         <execution>

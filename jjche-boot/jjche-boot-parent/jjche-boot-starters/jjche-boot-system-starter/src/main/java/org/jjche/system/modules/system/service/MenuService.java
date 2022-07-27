@@ -148,7 +148,9 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
         } else {
             List<RoleSmallDto> roles = roleService.findByUsersId(currentUserId);
             Set<Long> roleIds = roles.stream().map(RoleSmallDto::getId).collect(Collectors.toSet());
-            menus = this.baseMapper.findByRoleIdsAndTypeNot(roleIds, 2);
+            if (CollUtil.isNotEmpty(roleIds)) {
+                menus = this.baseMapper.findByRoleIdsAndTypeNot(roleIds, 2);
+            }
         }
         return this.menuMapStruct.toVO(menus);
     }
@@ -408,23 +410,25 @@ public class MenuService extends MyServiceImpl<MenuMapper, MenuDO> {
      */
     public List<MenuDTO> buildTree(List<MenuDTO> menuDtos) {
         List<MenuDTO> trees = new ArrayList<>();
-        Set<Long> ids = new HashSet<>();
-        for (MenuDTO menuDTO : menuDtos) {
-            if (menuDTO.getPid() == null) {
-                trees.add(menuDTO);
-            }
-            for (MenuDTO it : menuDtos) {
-                if (menuDTO.getId().equals(it.getPid())) {
-                    if (menuDTO.getChildren() == null) {
-                        menuDTO.setChildren(new ArrayList<>());
+        if (CollUtil.isNotEmpty(menuDtos)) {
+            Set<Long> ids = new HashSet<>();
+            for (MenuDTO menuDTO : menuDtos) {
+                if (menuDTO.getPid() == null) {
+                    trees.add(menuDTO);
+                }
+                for (MenuDTO it : menuDtos) {
+                    if (menuDTO.getId().equals(it.getPid())) {
+                        if (menuDTO.getChildren() == null) {
+                            menuDTO.setChildren(new ArrayList<>());
+                        }
+                        menuDTO.getChildren().add(it);
+                        ids.add(it.getId());
                     }
-                    menuDTO.getChildren().add(it);
-                    ids.add(it.getId());
                 }
             }
-        }
-        if (trees.size() == 0) {
-            trees = menuDtos.stream().filter(s -> !ids.contains(s.getId())).collect(Collectors.toList());
+            if (trees.size() == 0) {
+                trees = menuDtos.stream().filter(s -> !ids.contains(s.getId())).collect(Collectors.toList());
+            }
         }
         return trees;
     }

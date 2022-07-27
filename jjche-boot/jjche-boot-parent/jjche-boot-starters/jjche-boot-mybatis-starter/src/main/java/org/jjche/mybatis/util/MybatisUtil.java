@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import org.jjche.common.annotation.QueryCriteria;
+import org.jjche.common.constant.EnumConstant;
 import org.jjche.common.dto.BaseQueryCriteriaDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.mybatis.param.BetweenParam;
@@ -57,7 +58,7 @@ public class MybatisUtil {
         //id DESC
         if (ObjectUtil.isNotNull(sortEnum)) {
             Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>) sortEnum.getClass();
-            Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, "value");
+            Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, EnumConstant.VALUE);
             String sortSql = enumMap.get(sortEnum.name()).toString();
             List<String> sortList = StrUtil.split(sortSql, StrPool.C_SPACE);
             if (CollUtil.size(sortList) == 2) {
@@ -116,7 +117,7 @@ public class MybatisUtil {
                     if (Enum.class.isInstance(val)) {
                         Enum sEnum = (Enum) val;
                         Class<? extends Enum<?>> clazz = (Class<? extends Enum<?>>) sEnum.getClass();
-                        Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, "value");
+                        Map<String, Object> enumMap = EnumUtil.getNameFieldMap(clazz, EnumConstant.VALUE);
                         val = enumMap.get(sEnum.name()).toString();
                     }
                 } catch (Exception e) {

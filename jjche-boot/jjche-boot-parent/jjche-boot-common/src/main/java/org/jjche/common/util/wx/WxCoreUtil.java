@@ -1,4 +1,4 @@
-package org.jjche.core.util.wx;
+package org.jjche.common.util.wx;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;

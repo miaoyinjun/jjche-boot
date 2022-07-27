@@ -25,7 +25,7 @@ public class StudentDTO extends BaseQueryCriteriaDTO implements BaseDTO {
     @QueryCriteria(propName = "id", type = QueryCriteria.Type.EQUAL)
     private Long id;
     @NotBlank(message = "姓名不能为空")
-    @ApiModelProperty(value = "姓名")
+    @ApiModelProperty(value = "姓名", access = "")
     private String name;
     @NotNull(message = "年龄不能为空")
     @ApiModelProperty(value = "年龄")

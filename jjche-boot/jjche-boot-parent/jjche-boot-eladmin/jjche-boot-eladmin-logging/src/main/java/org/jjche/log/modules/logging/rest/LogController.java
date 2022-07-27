@@ -12,7 +12,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.log.modules.logging.domain.LogDO;
 import org.jjche.log.modules.logging.dto.LogQueryCriteriaDTO;
 import org.jjche.log.modules.logging.service.LogService;
@@ -101,7 +101,7 @@ public class LogController extends BaseController {
      * @return a {@link ResultWrapper} object.
      */
     @DeleteMapping(value = "/del")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "清空3个月之前的操作日志", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "日志"
     )

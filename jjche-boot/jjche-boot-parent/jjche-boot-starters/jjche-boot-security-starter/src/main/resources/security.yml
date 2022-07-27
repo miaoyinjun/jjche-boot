@@ -41,10 +41,9 @@ jjche:
         - /**/*.html
         - /**/*.css
         - /**/*.js
-        - ${jjche.core.api.path.sys-prefix}/webSocket/**
-        - /avatar/**
-        - /file/**
-        - /actuator/**
+        - ${jjche.core.api.path.global-prefix}${jjche.core.api.path.sys-prefix}/webSocket/**
+        - ${jjche.core.api.path.global-prefix}/avatar/**
+        - ${jjche.core.api.path.global-prefix}/file/**
     #密码加密传输，前端公钥加密，后端私钥解密
     rsa:
       public_key: MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDK4b3DKtM26QeA++8vElist/F3

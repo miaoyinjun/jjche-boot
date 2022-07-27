@@ -1,6 +1,3 @@
-#spring:
-#  main:
-#    allow-bean-definition-overriding: true
-logging:
-  level:
-    org.jjche.demo.modules.provider.feign: debug
+#logging:
+#  level:
+#    org.jjche.demo.modules.provider.feign: debug

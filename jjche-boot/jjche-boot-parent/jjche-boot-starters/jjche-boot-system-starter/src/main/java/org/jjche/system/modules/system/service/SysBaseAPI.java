@@ -247,6 +247,12 @@ public class SysBaseAPI implements ISysBaseAPI {
     }
 
     @Override
+    public void recordLogs(List<LogRecordDTO> list) {
+        List<LogDO> logs = logRecordMapper.toLog(list);
+        logService.saveLog(logs);
+    }
+
+    @Override
     public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(Long userId) {
         return dataPermissionRuleService.listByUserId(userId);
     }

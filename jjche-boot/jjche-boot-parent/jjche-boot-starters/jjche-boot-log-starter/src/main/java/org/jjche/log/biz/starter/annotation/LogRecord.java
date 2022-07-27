@@ -18,7 +18,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface LogRecordAnnotation {
+public @interface LogRecord {
 
     /**
      * <p>
@@ -88,12 +88,21 @@ public @interface LogRecordAnnotation {
 
     /**
      * <p>
-     * 模块
+     * 模块，比如：订单、商品
      * </p>
      *
      * @return /
      */
     String module();
+
+    /**
+     * <p>
+     * 子模块，比如订单的C端日志，和订单的B端日志，type都是订单类型，但是子类型不一样
+     * </p>
+     *
+     * @return /
+     */
+    String subModule() default "";
 
     /**
      * <p>
@@ -112,4 +121,9 @@ public @interface LogRecordAnnotation {
      * @return /
      */
     String condition() default "";
+
+    /**
+     * 是否是批量操作
+     */
+    boolean batch() default false;
 }

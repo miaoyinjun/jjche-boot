@@ -20,5 +20,4 @@ import org.springframework.context.annotation.FilterType;
 @MapperScan(PackageConstant.MAPPER_PATH_STAR)
 @EnableLogRecord(tenant = PackageConstant.BASE_PATH)
 @EnableFeignClients
-public class JjcheAutoConfiguration {
-}
+public class JjcheAutoConfiguration {}
