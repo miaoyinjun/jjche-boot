@@ -23,6 +23,7 @@ import org.jjche.property.AdminProperties;
 import org.jjche.property.PasswordProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.property.SecurityRsaProperties;
+import org.jjche.system.modules.system.api.dto.UserCenterDTO;
 import org.jjche.system.modules.system.api.dto.UserDTO;
 import org.jjche.system.modules.system.api.dto.UserQueryCriteriaDTO;
 import org.jjche.system.modules.system.api.dto.UserResetPassDTO;
@@ -142,11 +143,8 @@ public class UserController extends BaseController {
     )
     @ApiOperation("修改用户：个人中心")
     @PutMapping(value = "center")
-    public ResultWrapper center(@Validated @RequestBody UserDO resources) {
-        Boolean isUpdateOther = !resources.getId().equals(SecurityUtil.getUserId());
-        Assert.isFalse(isUpdateOther, "不能修改他人资料");
-        String userName = SecurityUtil.getUsername();
-        userService.updateCenter(resources, userName);
+    public ResultWrapper center(@Validated @RequestBody UserCenterDTO resources) {
+        userService.updateCenter(resources);
         return ResultWrapper.ok();
     }
 
