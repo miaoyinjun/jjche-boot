@@ -11,7 +11,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.DictDetailDTO;
 import org.jjche.system.modules.system.api.dto.DictDetailQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.DictDetailDO;
@@ -75,7 +75,7 @@ public class DictDetailController extends BaseController {
      * @param resources a {@link DictDetailDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增字典详情", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "字典"
     )
@@ -94,7 +94,7 @@ public class DictDetailController extends BaseController {
      * @param resources a {@link DictDetailDO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "字典"
     )
@@ -112,7 +112,7 @@ public class DictDetailController extends BaseController {
      * @param id a {@link java.lang.Long} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除字典详情", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "字典"
     )

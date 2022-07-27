@@ -7,13 +7,17 @@ import org.jjche.log.biz.service.IOperatorGetService;
 import org.jjche.log.biz.service.IParseFunction;
 import org.jjche.log.biz.service.impl.*;
 import org.jjche.log.biz.starter.annotation.EnableLogRecord;
+import org.jjche.log.biz.starter.diff.DefaultDiffItemsToLogContentService;
+import org.jjche.log.biz.starter.diff.IDiffItemsToLogContentService;
 import org.jjche.log.biz.starter.support.aop.BeanFactoryLogRecordAdvisor;
 import org.jjche.log.biz.starter.support.aop.LogRecordInterceptor;
 import org.jjche.log.biz.starter.support.aop.LogRecordOperationSource;
+import org.jjche.log.biz.starter.support.parse.LogFunctionParser;
 import org.jjche.log.filter.LogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
@@ -35,6 +39,7 @@ import java.util.List;
  * @since 2021-04-30
  */
 @Configuration
+@EnableConfigurationProperties({LogRecordProperties.class})
 public class LogRecordProxyAutoConfiguration implements ImportAware {
 
     private AnnotationAttributes enableLogRecord;
@@ -60,45 +65,23 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
         };
     }
 
-    /**
-     * <p>logRecordOperationSource.</p>
-     *
-     * @return a {@link LogRecordOperationSource} object.
-     */
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public LogRecordOperationSource logRecordOperationSource() {
         return new LogRecordOperationSource();
     }
 
-    /**
-     * <p>functionService.</p>
-     *
-     * @param parseFunctionFactory a {@link ParseFunctionFactory} object.
-     * @return a {@link IFunctionService} object.
-     */
     @Bean
     @ConditionalOnMissingBean(IFunctionService.class)
     public IFunctionService functionService(ParseFunctionFactory parseFunctionFactory) {
         return new DefaultFunctionServiceImpl(parseFunctionFactory);
     }
 
-    /**
-     * <p>parseFunctionFactory.</p>
-     *
-     * @param parseFunctions a {@link java.util.List} object.
-     * @return a {@link ParseFunctionFactory} object.
-     */
     @Bean
     public ParseFunctionFactory parseFunctionFactory(@Autowired List<IParseFunction> parseFunctions) {
         return new ParseFunctionFactory(parseFunctions);
     }
 
-    /**
-     * <p>parseFunction.</p>
-     *
-     * @return a {@link DefaultParseFunction} object.
-     */
     @Bean
     @ConditionalOnMissingBean(IParseFunction.class)
     public DefaultParseFunction parseFunction() {
@@ -106,43 +89,46 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
     }
 
 
-    /**
-     * <p>logRecordAdvisor.</p>
-     *
-     * @param functionService a {@link IFunctionService} object.
-     * @return a {@link BeanFactoryLogRecordAdvisor} object.
-     */
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public BeanFactoryLogRecordAdvisor logRecordAdvisor(IFunctionService functionService) {
+    public BeanFactoryLogRecordAdvisor logRecordAdvisor(IFunctionService functionService, DiffParseFunction diffParseFunction) {
         BeanFactoryLogRecordAdvisor advisor =
                 new BeanFactoryLogRecordAdvisor();
         advisor.setLogRecordOperationSource(logRecordOperationSource());
-        advisor.setAdvice(logRecordInterceptor(functionService));
+        advisor.setAdvice(logRecordInterceptor(functionService, diffParseFunction));
         return advisor;
     }
 
-    /**
-     * <p>logRecordInterceptor.</p>
-     *
-     * @param functionService a {@link IFunctionService} object.
-     * @return a {@link LogRecordInterceptor} object.
-     */
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public LogRecordInterceptor logRecordInterceptor(IFunctionService functionService) {
+    public LogRecordInterceptor logRecordInterceptor(IFunctionService functionService, DiffParseFunction diffParseFunction) {
         LogRecordInterceptor interceptor = new LogRecordInterceptor();
         interceptor.setLogRecordOperationSource(logRecordOperationSource());
         interceptor.setTenant(enableLogRecord.getString("tenant"));
-        interceptor.setFunctionService(functionService);
+        interceptor.setLogFunctionParser(logFunctionParser(functionService));
+        interceptor.setDiffParseFunction(diffParseFunction);
         return interceptor;
     }
 
-    /**
-     * <p>operatorGetService.</p>
-     *
-     * @return a {@link IOperatorGetService} object.
-     */
+    @Bean
+    public LogFunctionParser logFunctionParser(IFunctionService functionService) {
+        return new LogFunctionParser(functionService);
+    }
+
+    @Bean
+    public DiffParseFunction diffParseFunction(IDiffItemsToLogContentService diffItemsToLogContentService) {
+        DiffParseFunction diffParseFunction = new DiffParseFunction();
+        diffParseFunction.setDiffItemsToLogContentService(diffItemsToLogContentService);
+        return diffParseFunction;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(IDiffItemsToLogContentService.class)
+    @Role(BeanDefinition.ROLE_APPLICATION)
+    public IDiffItemsToLogContentService diffItemsToLogContentService(IFunctionService functionService, LogRecordProperties logRecordProperties) {
+        return new DefaultDiffItemsToLogContentService(functionService, logRecordProperties);
+    }
+
     @Bean
     @ConditionalOnMissingBean(IOperatorGetService.class)
     @Role(BeanDefinition.ROLE_APPLICATION)
@@ -150,11 +136,6 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
         return new DefaultOperatorGetServiceImpl();
     }
 
-    /**
-     * <p>recordService.</p>
-     *
-     * @return a {@link ILogRecordService} object.
-     */
     @Bean
     @ConditionalOnMissingBean(ILogRecordService.class)
     @Role(BeanDefinition.ROLE_APPLICATION)
@@ -162,9 +143,6 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
         return new DefaultLogRecordServiceImpl();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setImportMetadata(AnnotationMetadata importMetadata) {
         this.enableLogRecord = AnnotationAttributes.fromMap(

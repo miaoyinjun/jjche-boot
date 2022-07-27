@@ -7,6 +7,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.ReportingPolicy;
 
+import java.util.List;
+
 /**
  * <p>
  * LogRecordDTO, log映射
@@ -34,4 +36,20 @@ public interface LogRecordMapStruct {
      * @return LogDO
      */
     LogDO toLog(LogRecordDTO logRecord);
+
+    @Mappings({
+            @Mapping(source = "operator", target = "username"),
+            @Mapping(source = "value", target = "description"),
+            @Mapping(source = "type", target = "logType"),
+            @Mapping(source = "success", target = "isSuccess"),
+    })
+    /**
+     * <p>
+     * LogRecord转换Log
+     * </p>
+     *
+     * @param logRecord 日志记录
+     * @return LogDO
+     */
+    List<LogDO> toLog(List<LogRecordDTO> logRecord);
 }

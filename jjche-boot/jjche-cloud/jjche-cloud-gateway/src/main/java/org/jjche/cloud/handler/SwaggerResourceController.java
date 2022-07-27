@@ -10,7 +10,12 @@ import springfox.documentation.swagger.web.*;
 import java.util.List;
 
 /**
+ * <p>
  * swagger聚合接口，三个接口都是 doc.html需要访问的接口
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-07-11
  */
 @RestController
 @RequestMapping("/swagger-resources")

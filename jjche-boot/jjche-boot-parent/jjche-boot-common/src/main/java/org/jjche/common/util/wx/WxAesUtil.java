@@ -1,4 +1,5 @@
-package org.jjche.core.util.wx;
+package org.jjche.common.util.wx;
+
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 

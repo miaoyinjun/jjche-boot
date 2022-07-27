@@ -1,6 +1,6 @@
 package org.jjche.system.modules.system.mapstruct;
 
-import org.jjche.core.base.BaseMapStruct;
+import org.jjche.core.base.BaseVoMapStruct;
 import org.jjche.system.modules.system.api.dto.DictSmallDto;
 import org.jjche.system.modules.system.domain.DictDO;
 import org.mapstruct.Mapper;
@@ -14,6 +14,6 @@ import org.mapstruct.ReportingPolicy;
  * @since 2019-04-10
  */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface DictSmallMapStruct extends BaseMapStruct<DictDO, DictSmallDto, DictSmallDto> {
+public interface DictSmallMapStruct extends BaseVoMapStruct<DictDO, DictSmallDto> {
 
 }

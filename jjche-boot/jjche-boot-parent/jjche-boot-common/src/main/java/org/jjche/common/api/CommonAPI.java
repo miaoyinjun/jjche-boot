@@ -47,6 +47,15 @@ public interface CommonAPI {
 
     /**
      * <p>
+     * 批量记录日志
+     * </p>
+     *
+     * @param list /
+     */
+    void recordLogs(List<LogRecordDTO> list);
+
+    /**
+     * <p>
      * 根据用户id查询
      * </p>
      *

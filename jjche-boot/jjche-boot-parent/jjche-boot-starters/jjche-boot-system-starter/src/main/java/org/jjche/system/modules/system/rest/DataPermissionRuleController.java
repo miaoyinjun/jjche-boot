@@ -12,7 +12,7 @@ import org.jjche.common.param.PageParam;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.system.modules.system.api.dto.DataPermissionRuleDTO;
 import org.jjche.system.modules.system.api.dto.DataPermissionRuleQueryCriteriaDTO;
 import org.jjche.system.modules.system.api.vo.DataPermissionRuleVO;
@@ -50,7 +50,7 @@ public class DataPermissionRuleController extends BaseController {
     @ApiOperation(value = "数据规则-新增")
     @ApiOperationSupport(ignoreParameters = {"id"})
     @PreAuthorize("@el.check('menu:add')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "新增",
             category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "数据规则"
@@ -69,7 +69,7 @@ public class DataPermissionRuleController extends BaseController {
     @DeleteMapping
     @ApiOperation(value = "数据规则-删除")
     @PreAuthorize("@el.check('menu:del')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "数据规则",
             prefix = "sysDataPermissionRule", bizNo = "{{#ids}}"
@@ -88,7 +88,7 @@ public class DataPermissionRuleController extends BaseController {
     @PutMapping
     @ApiOperation(value = "数据规则-修改")
     @PreAuthorize("@el.check('menu:edit')")
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "数据规则"
     )

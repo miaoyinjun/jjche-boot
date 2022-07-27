@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping(SwaggerConstant.SWAGGER_2_URL_PREFIX)
 public class SwaggerController {
+
+
     /**
      * <p>resource</p>
      *
@@ -42,9 +44,9 @@ public class SwaggerController {
      *
      * @return a {@link java.lang.String} object.
      */
-    @GetMapping("/v2/api-docs")
+    @GetMapping(SwaggerConstant.SWAGGER_2_URL_SUFFIX)
     public String doc() {
-        return "forward:/v2/api-docs";
+        return "forward:" + SwaggerConstant.SWAGGER_2_URL_SUFFIX;
     }
 
     /**
@@ -52,9 +54,9 @@ public class SwaggerController {
      *
      * @return a {@link java.lang.String} object.
      */
-    @GetMapping("/v2/api-docs-ext")
+    @GetMapping(SwaggerConstant.SWAGGER_2_VERSION + "/api-docs-ext")
     public String docExt() {
-        return "forward:/v2/api-docs-ext";
+        return "forward:" + SwaggerConstant.SWAGGER_2_VERSION + "/api-docs-ext";
     }
 
     /**

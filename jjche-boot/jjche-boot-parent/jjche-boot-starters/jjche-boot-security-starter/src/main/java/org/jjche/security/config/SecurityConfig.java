@@ -16,13 +16,13 @@ import org.jjche.security.property.SecurityRoleUrlProperties;
 import org.jjche.security.property.SecurityUrlProperties;
 import org.jjche.security.security.TokenConfigurer;
 import org.jjche.security.util.RequestMethodEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CommonAPI commonAPI;
     private final UserDetailsService userDetailsService;
     private final UserDetailsService smsUserDetailsService;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Bean
     GrantedAuthorityDefaults grantedAuthorityDefaults() {
@@ -87,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         SecurityUrlProperties securityUrlProperties = properties.getUrl();
         // 搜寻匿名标记 url： @AnonymousAccess
-        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = applicationContext.getBean(RequestMappingHandlerMapping.class).getHandlerMethods();
+        Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = ((RequestMappingHandlerMapping) applicationContext.getBean("requestMappingHandlerMapping")).getHandlerMethods();
         // 获取匿名标记，同时包括了配置文件里的忽略url
         Map<String, Set<String>> anonymousUrls = getAnonymousUrl(handlerMethodMap, securityUrlProperties);
         web.ignoring()
@@ -142,10 +143,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @param auth a {@link org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder} object.
      */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) {
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(smsCodeAuthenticationProvider());
         auth.authenticationProvider(usernamePasswordAuthenticationProvider());
+        authenticationManagerBuilder.authenticationProvider(smsCodeAuthenticationProvider());
+        authenticationManagerBuilder.authenticationProvider(usernamePasswordAuthenticationProvider());
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     /**
@@ -156,7 +165,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return 短信
      */
     @Bean("smsCodeAuthenticationProvider")
-    SmsCodeAuthenticationProvider smsCodeAuthenticationProvider() {
+    public SmsCodeAuthenticationProvider smsCodeAuthenticationProvider() {
         SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
         smsCodeAuthenticationProvider.setUserDetailsService(smsUserDetailsService);
         return smsCodeAuthenticationProvider;
@@ -170,7 +179,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @return 密码
      */
     @Bean("usernamePasswordAuthenticationProvider")
-    DaoAuthenticationProvider usernamePasswordAuthenticationProvider() {
+    public DaoAuthenticationProvider usernamePasswordAuthenticationProvider() {
         DaoAuthenticationProvider usernamePasswordAuthenticationProvider = new DaoAuthenticationProvider();
         usernamePasswordAuthenticationProvider.setUserDetailsService(userDetailsService);
         if (passwordEncoder() != null) {
@@ -277,6 +286,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private TokenConfigurer securityConfigurerAdapter() {
         return new TokenConfigurer(commonAPI);
     }
-
 
 }

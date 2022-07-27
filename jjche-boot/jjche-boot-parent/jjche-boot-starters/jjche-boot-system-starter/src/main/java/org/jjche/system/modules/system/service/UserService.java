@@ -33,6 +33,7 @@ import org.jjche.security.property.SecurityLoginProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.service.JwtUserService;
+import org.jjche.system.modules.system.api.dto.UserCenterDTO;
 import org.jjche.system.modules.system.api.dto.UserDTO;
 import org.jjche.system.modules.system.api.dto.UserQueryCriteriaDTO;
 import org.jjche.system.modules.system.domain.*;
@@ -298,7 +299,9 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * @param userName  /
      */
     @Transactional(rollbackFor = Exception.class)
-    public void updateCenter(UserDO resources, String userName) {
+    public void updateCenter(UserCenterDTO resources) {
+        Boolean isUpdateOther = !resources.getId().equals(SecurityUtil.getUserId());
+        Assert.isFalse(isUpdateOther, "不能修改他人资料");
         UserDO user = this.getById(resources.getId());
         UserDO user1 = this.getByPhone(resources.getPhone());
         Boolean isUserEqual = user1 != null && !user.getId().equals(user1.getId());

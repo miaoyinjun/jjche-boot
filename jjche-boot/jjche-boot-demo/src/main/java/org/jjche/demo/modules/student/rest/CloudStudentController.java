@@ -28,7 +28,8 @@ public class CloudStudentController extends BaseController {
 //    public ResultWrapper<MyPage<ProviderVO>> client(@SpringQueryMap PageParam page,
 //                                                    @ApiParam(value = "课程")
 //                                                    @RequestParam(required = false) ProviderCourseEnum course,
-//                                                    @RequestParam(required = false) String name) {
+//                                                    @ApiParam(value = "姓名", example = "大")
+//                                                        @RequestParam(required = false) String name) {
 //        return providerStudentApi.page(page, course, name);
 //    }
 }

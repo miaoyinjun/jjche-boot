@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogType;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.log.biz.starter.annotation.LogRecordAnnotation;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.tool.modules.tool.domain.EmailConfigDO;
 import org.jjche.tool.modules.tool.service.EmailService;
 import org.jjche.tool.modules.tool.vo.EmailVO;
@@ -49,7 +49,7 @@ public class EmailController extends BaseController {
      * @return a {@link ResultWrapper} object.
      * @throws java.lang.Exception if any.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "配置", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "邮件"
     )
@@ -66,7 +66,7 @@ public class EmailController extends BaseController {
      * @param emailVo a {@link EmailVO} object.
      * @return a {@link ResultWrapper} object.
      */
-    @LogRecordAnnotation(
+    @LogRecord(
             value = "发送", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "邮件"
     )

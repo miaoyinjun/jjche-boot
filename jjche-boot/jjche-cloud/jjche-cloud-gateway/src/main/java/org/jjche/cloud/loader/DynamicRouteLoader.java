@@ -2,8 +2,8 @@ package org.jjche.cloud.loader;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.nacos.api.NacosFactory;
 import com.alibaba.nacos.api.config.ConfigService;
 import com.alibaba.nacos.api.config.listener.Listener;
@@ -91,7 +91,7 @@ public class DynamicRouteLoader {
             String configInfo = configService.getConfig(GatewayRoutersConfiguration.DATA_ID, GatewayRoutersConfiguration.ROUTE_GROUP, GatewayRoutersConfiguration.DEFAULT_TIMEOUT);
             if (StrUtil.isNotBlank(configInfo)) {
                 StaticLog.info("获取网关当前配置:\r\n{}", configInfo);
-                routes = JSON.parseArray(configInfo, RouteDefinition.class);
+                routes = JSONUtil.toList(configInfo, RouteDefinition.class);
             }
         } catch (NacosException e) {
             StaticLog.error("初始化网关路由时发生错误", e);
@@ -134,7 +134,7 @@ public class DynamicRouteLoader {
                 @Override
                 public void receiveConfigInfo(String configInfo) {
                     StaticLog.info("进行网关更新:\n\r{}", configInfo);
-                    List<MyRouteDefinition> definitionList = JSON.parseArray(configInfo, MyRouteDefinition.class);
+                    List<MyRouteDefinition> definitionList = JSONUtil.toList(configInfo, MyRouteDefinition.class);
                     StaticLog.info("update route : {}", definitionList.toString());
                     dynamicRouteService.updateList(definitionList);
                 }

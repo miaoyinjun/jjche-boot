@@ -7,7 +7,6 @@ import org.jjche.core.property.CoreProperties;
 import org.jjche.core.url.AutoPrefixUrlMapping;
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
@@ -30,7 +29,6 @@ import javax.annotation.Resource;
         RequestWrapperFilter.class, AlarmDingTalkService.class})
 @Configuration
 @ComponentScan(basePackages = {"cn.hutool.extra.spring"})
-@EnableFeignClients
 @EnableAsync(proxyTargetClass = true)
 @EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
 public class CoreAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
