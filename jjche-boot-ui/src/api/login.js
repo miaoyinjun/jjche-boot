@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function login(username, password, code, uuid) {
+export function login(username, password, code, uuid, captchaVerification) {
   return request({
     url: 'sys/auth/login',
     method: 'post',
@@ -8,7 +8,8 @@ export function login(username, password, code, uuid) {
       username,
       password,
       code,
-      uuid
+      uuid,
+      captchaVerification
     }
   })
 }

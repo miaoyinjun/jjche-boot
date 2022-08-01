@@ -3,6 +3,9 @@ package org.jjche.system.modules.security.rest;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.anji.captcha.model.common.ResponseModel;
+import com.anji.captcha.model.vo.CaptchaVO;
+import com.anji.captcha.service.CaptchaService;
 import com.wf.captcha.base.Captcha;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,6 +57,7 @@ public class AuthorizationController extends BaseController {
     private final CommonAPI commonAPI;
     private final UserService userService;
     private final TokenProvider tokenProvider;
+    private final CaptchaService captchaService;
 
     /**
      * <p>login.</p>
@@ -63,24 +67,32 @@ public class AuthorizationController extends BaseController {
      */
     @AnonymousPostMapping(value = "/login")
     @ApiOperation("密码登录授权")
-    @LogRecord(
-            value = "密码登录", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", saveParams = false
-    )
+    @LogRecord(value = "密码登录", category = LogCategoryType.MANAGER, type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", saveParams = false)
     public ResultWrapper<LoginVO> login(@Validated @RequestBody AuthUserDto authUser) {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         // 密码解密
         String password = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), authUser.getPassword());
-        // 查询验证码
-        String code = redisService.stringGetString(authUser.getUuid());
-        // 清除验证码
-        redisService.delete(authUser.getUuid());
-        Assert.notBlank(code, "验证码不存在或已过期");
-        Assert.isFalse(StrUtil.isBlank(authUser.getCode()) || !authUser.getCode().equalsIgnoreCase(code), "验证码错误");
 
+        String paramCode = authUser.getCode();
+        String captchaVerification = authUser.getCaptchaVerification();
+        Assert.isTrue(StrUtil.isNotBlank(paramCode) || StrUtil.isNotBlank(captchaVerification), "请选择验证码-手输或滑动");
+        //验证码-手输
+        if (StrUtil.isNotBlank(paramCode)) {
+            // 查询验证码-手输
+            String code = redisService.stringGetString(authUser.getUuid());
+            // 清除验证码
+            redisService.delete(authUser.getUuid());
+            Assert.notBlank(code, "验证码不存在或已过期");
+            Assert.isTrue(StrUtil.equalsIgnoreCase(paramCode, code), "验证码错误");
+        }//滑动
+        else {
+            CaptchaVO captchaVO = new CaptchaVO();
+            captchaVO.setCaptchaVerification(captchaVerification);
+            ResponseModel response = captchaService.verification(captchaVO);
+            Assert.isTrue(response.isSuccess(), response.getRepMsg());
+        }
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(authUser.getUsername(), password);
-
         LoginVO loginVO = userService.loginByAuthenticationToken(authenticationToken, UserTypeEnum.PWD);
         return ResultWrapper.ok(loginVO);
     }
@@ -93,10 +105,7 @@ public class AuthorizationController extends BaseController {
      */
     @AnonymousPostMapping(value = "/sms_login")
     @ApiOperation("短信登录授权")
-    @LogRecord(
-            value = "短信登录", category = LogCategoryType.MANAGER,
-            type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false
-    )
+    @LogRecord(value = "短信登录", category = LogCategoryType.MANAGER, type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false)
     public ResultWrapper<LoginVO> smsLogin(@Validated @RequestBody AuthUserSmsDto dto) {
         return ResultWrapper.ok(userService.smslogin(dto));
     }

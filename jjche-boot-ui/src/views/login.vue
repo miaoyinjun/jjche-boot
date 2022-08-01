@@ -49,7 +49,7 @@
               <vab-icon :icon="['fas', 'eye']" />
             </span>
           </el-form-item>
-          <el-form-item prop="code">
+          <el-form-item prop="code" hidden>
             <span class="svg-container">
               <vab-icon :icon="['fas', 'shield-alt']" />
             </span>
@@ -73,6 +73,13 @@
           >
             登录
           </el-button>
+          <Verify
+            ref="verify"
+            :img-size="{ width: '330px', height: '155px' }"
+            :mode="'pop'"
+            :captcha-type="'blockPuzzle'"
+            @success="loginCaptchaVerification"
+          />
         </el-form>
       </el-col>
     </el-row>
@@ -97,9 +104,11 @@ import Cookies from 'js-cookie'
 const defaultSettings = require('../settings.js')
 import { MessageBox } from 'element-ui'
 import store from '@/store'
+import Verify from '../components/verifition/Verify'
 
 export default {
   name: 'Login',
+  components: { Verify },
   directives: {
     focus: {
       inserted(el) {
@@ -116,7 +125,8 @@ export default {
         username: '',
         password: '',
         code: '',
-        uuid: ''
+        uuid: '',
+        captchaVerification: ''
       },
       rules: {
         username: [
@@ -125,7 +135,7 @@ export default {
         password: [
           { required: true, trigger: 'blur', message: '密码不能为空' }
         ],
-        code: [{ required: true, trigger: 'change', message: '验证码不能为空' }]
+        code: [{ required: false, trigger: 'change', message: '验证码不能为空' }]
       },
       loading: false,
       passwordType: 'password',
@@ -151,6 +161,11 @@ export default {
     document.body.style.overflow = 'auto'
   },
   methods: {
+    loginCaptchaVerification(params) {
+      // params 返回的二次验证参数, 和登录参数一起回传给登录接口，方便后台进行二次验证
+      this.form.captchaVerification = params.captchaVerification
+      this.doLogin()
+    },
     getCode() {
       getCodeImg().then((res) => {
         this.codeUrl = res.img
@@ -169,21 +184,33 @@ export default {
     },
     handleLogin() {
       this.$refs.form.validate((valid) => {
-        const user = {
-          username: this.form.username,
-          password: this.form.password,
-          code: this.form.code,
-          uuid: this.form.uuid
-        }
-        user.password = encrypt(user.password)
         if (valid) {
-          this.loading = true
-          this.$store
-            .dispatch('Login', user)
-            .then(() => {
-              this.loading = false
-              const hour = new Date().getHours()
-              const thisTime =
+          if (this.$refs.verify) {
+            this.$refs.verify.show()
+          } else {
+            this.doLogin()
+          }
+        } else {
+          return false
+        }
+      })
+    },
+    doLogin() {
+      const user = {
+        username: this.form.username,
+        password: this.form.password,
+        code: this.form.code,
+        uuid: this.form.uuid,
+        captchaVerification: this.form.captchaVerification
+      }
+      user.password = encrypt(user.password)
+      this.loading = true
+      this.$store
+        .dispatch('Login', user)
+        .then(() => {
+          this.loading = false
+          const hour = new Date().getHours()
+          const thisTime =
                 hour < 8
                   ? '早上好'
                   : hour <= 11
@@ -193,40 +220,36 @@ export default {
                       : hour < 18
                         ? '下午好'
                         : '晚上好'
-              this.$notify({
-                title: `${thisTime}！`,
-                message: `欢迎登录${this.title}`,
-                type: 'success'
-              })
-              const isTipResetPwd = store.getters.user.isTipResetPwd
-              if (isTipResetPwd) {
-                MessageBox.confirm(
-                  '登录密码即将过期，是否去修改密码',
-                  '系统提示',
-                  {
-                    confirmButtonText: '修改密码',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                  }
-                )
-                  .then(() => {
-                    this.$router.push({ path: '/user/center' })
-                  })
-                  .catch(() => {
-                    this.$router.push({ path: this.redirect || '/' })
-                  })
-              } else {
-                this.$router.push({ path: this.redirect || '/' })
+          this.$notify({
+            title: `${thisTime}！`,
+            message: `欢迎登录${this.title}`,
+            type: 'success'
+          })
+          const isTipResetPwd = store.getters.user.isTipResetPwd
+          if (isTipResetPwd) {
+            MessageBox.confirm(
+              '登录密码即将过期，是否去修改密码',
+              '系统提示',
+              {
+                confirmButtonText: '修改密码',
+                cancelButtonText: '取消',
+                type: 'warning'
               }
-            })
-            .catch(() => {
-              this.loading = false
-              this.getCode()
-            })
-        } else {
-          return false
-        }
-      })
+            )
+              .then(() => {
+                this.$router.push({ path: '/user/center' })
+              })
+              .catch(() => {
+                this.$router.push({ path: this.redirect || '/' })
+              })
+          } else {
+            this.$router.push({ path: this.redirect || '/' })
+          }
+        })
+        .catch(() => {
+          this.loading = false
+          this.getCode()
+        })
     },
     point() {
       const point = Cookies.get('point') !== undefined
