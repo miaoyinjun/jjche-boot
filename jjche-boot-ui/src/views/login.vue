@@ -418,6 +418,10 @@ export default {
         vertical-align: middle;
       }
     }
+  .verifybox {
+    left: 81%;
+    top: 62%;
+    }
   }
 }
 </style>
