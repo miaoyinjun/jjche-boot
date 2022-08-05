@@ -1,4 +1,4 @@
-package org.jjche.filter.encryption.field;
+package org.jjche.filter.enc.field;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import org.jjche.common.annotation.EncryptField;
+import org.jjche.common.constant.FilterEncConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -33,7 +34,7 @@ public class EncryptFieldUtil {
      *
      * @param secretKey a {@link java.lang.String} object.
      */
-    public EncryptFieldUtil(@Value("${jjche.filter.encryption.field.secret-key}") String secretKey) {
+    public EncryptFieldUtil(@Value("${" + FilterEncConstant.PROPERTY_ENC_FIELD_SECRET_KEY + "}") String secretKey) {
         aes = new SymmetricCrypto(SymmetricAlgorithm.AES, secretKey.getBytes());
     }
 
@@ -45,7 +46,7 @@ public class EncryptFieldUtil {
      * @param value 待加密值
      * @return /
      */
-    private String encryptStr(String value) {
+    public String encryptStr(String value) {
         return aes.encryptHex(value);
     }
 
@@ -57,7 +58,7 @@ public class EncryptFieldUtil {
      * @param value 待解密值
      * @return /
      */
-    private String decryptStr(String value) {
+    public String decryptStr(String value) {
         return aes.decryptStr(value);
     }
 

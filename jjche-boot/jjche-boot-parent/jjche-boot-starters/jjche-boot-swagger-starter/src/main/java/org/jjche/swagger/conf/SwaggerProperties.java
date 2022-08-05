@@ -33,10 +33,5 @@ public class SwaggerProperties {
     private String contactName;
     private String contactUrl;
     private String contactEmail;
-    /**
-     * 开启参数加密
-     */
-    private boolean encryptionEnabled;
-
     private Contact contact;
 }

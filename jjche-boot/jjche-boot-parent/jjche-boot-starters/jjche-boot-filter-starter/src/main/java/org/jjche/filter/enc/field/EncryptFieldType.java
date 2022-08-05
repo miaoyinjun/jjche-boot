@@ -1,5 +1,5 @@
 
-package org.jjche.filter.encryption.field;
+package org.jjche.filter.enc.field;
 
 /**
  * <p>

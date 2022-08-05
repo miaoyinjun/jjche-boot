@@ -374,7 +374,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      *
      * @return code =200,true;否则 false.
      */
-    public boolean getSuccess() {
+    public boolean success() {
         return ResultWrapperCodeEnum.SUCCESS.getCode() == this.code;
     }
 }

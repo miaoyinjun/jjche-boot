@@ -1,4 +1,4 @@
-package org.jjche.filter.encryption.limit;
+package org.jjche.filter.enc.limit;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;

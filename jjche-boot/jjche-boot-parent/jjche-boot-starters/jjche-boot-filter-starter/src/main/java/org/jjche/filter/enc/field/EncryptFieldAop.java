@@ -1,4 +1,4 @@
-package org.jjche.filter.encryption.field;
+package org.jjche.filter.enc.field;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;

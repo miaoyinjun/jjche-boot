@@ -1,5 +1,7 @@
 package org.jjche.common.enums;
 
+import org.jjche.common.constant.FilterEncConstant;
+
 /**
  * <p>
  * 加密定义
@@ -9,23 +11,23 @@ package org.jjche.common.enums;
  * @version 1.0.0-SNAPSHOT
  * @since 2020-08-12
  */
-public enum FilterEncryptionEnum {
+public enum FilterEncEnum {
     /**
      * 应用标识
      */
-    APP_ID("appId", "应用标识", "参数appId错误"),
+    APP_ID(FilterEncConstant.APP_ID, FilterEncConstant.APP_ID_DESC, "参数appId不能为空"),
     /**
-     * 时间戳(毫秒)
+     * Unix时间戳(毫秒)
      */
-    TIMESTAMP("timestamp", "时间戳(毫秒)", "参数timestamp错误"),
+    TIMESTAMP(FilterEncConstant.TIMESTAMP, FilterEncConstant.TIMESTAMP_DESC, "参数timestamp不能为空"),
     /**
      * 随机数
      */
-    NONCE("nonce", "随机数", "参数nonce错误"),
+    NONCE(FilterEncConstant.NONCE, FilterEncConstant.NONCE_DESC, "参数nonce不能为空"),
     /**
      * 签名
      */
-    SIGN("sign", "签名", "参数sign错误"),
+    SIGN(FilterEncConstant.SIGN, FilterEncConstant.SIGN_DESC, "参数sign不能为空"),
     ;
     /**
      * 标识
@@ -42,7 +44,7 @@ public enum FilterEncryptionEnum {
      */
     private String errMsg;
 
-    FilterEncryptionEnum(String key, String des, String errMsg) {
+    FilterEncEnum(String key, String des, String errMsg) {
         this.key = key;
         this.des = des;
         this.errMsg = errMsg;
