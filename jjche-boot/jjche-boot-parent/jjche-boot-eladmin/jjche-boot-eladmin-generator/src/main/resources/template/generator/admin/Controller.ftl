@@ -48,7 +48,7 @@ public class ${className}Controller extends BaseController{
     @PostMapping
     @ApiOperation(value = "${apiAlias}-新增", tags = ApiVersion.${apiVersionConstant})
     @ApiOperationSupport(ignoreParameters = {"id"})
-    @PreAuthorize("@el.check('${changeClassName}:add')")
+    @PreAuthorize("@el.check('${tableName}:add')")
     @LogRecord(
               value = "新增",
               category = LogCategoryType.OPERATING,
@@ -60,7 +60,7 @@ public class ${className}Controller extends BaseController{
 
     @DeleteMapping
     @ApiOperation(value = "${apiAlias}-删除", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:del')")
+    @PreAuthorize("@el.check('${tableName}:del')")
     @LogRecord(
             batch = true, value = "删除", category = LogCategoryType.OPERATING,
             type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}",
@@ -73,7 +73,7 @@ public class ${className}Controller extends BaseController{
 
     @PutMapping
     @ApiOperation(value = "${apiAlias}-修改", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:edit')")
+    @PreAuthorize("@el.check('${tableName}:edit')")
     @LogRecord(
             value = "修改", category = LogCategoryType.OPERATING,
             type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}",
@@ -87,21 +87,21 @@ public class ${className}Controller extends BaseController{
 
     @GetMapping("/{id}")
     @ApiOperation(value = "${apiAlias}-查询单个", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:list')")
+    @PreAuthorize("@el.check('${tableName}:list')")
     public ResultWrapper<${className}VO> getById(@PathVariable Long id) {
         return ResultWrapper.ok(this.${changeClassName}Service.getVoById(id));
     }
 
     @ApiOperation(value = "${apiAlias}-导出", tags = ApiVersion.${apiVersionConstant})
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PreAuthorize("@el.check('${changeClassName}:list')")
+    @PreAuthorize("@el.check('${tableName}:list')")
     public void download(@Validated ${className}QueryCriteriaDTO criteria) {
         ${changeClassName}Service.download(criteria);
     }
 
     @GetMapping
     @ApiOperation(value = "${apiAlias}-列表", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:list')")
+    @PreAuthorize("@el.check('${tableName}:list')")
     public ResultWrapper<MyPage<${className}VO>> pageQuery(PageParam page,
                             @Validated ${className}QueryCriteriaDTO query){
         return ResultWrapper.ok(${changeClassName}Service.page(page, query));
