@@ -3,7 +3,7 @@ package org.jjche.log.biz.service.impl;
 import cn.hutool.log.StaticLog;
 import de.danielbechler.diff.ObjectDifferBuilder;
 import de.danielbechler.diff.node.DiffNode;
-import org.jjche.log.biz.context.LogRecordContext;
+import org.jjche.common.context.LogRecordContext;
 import org.jjche.log.biz.starter.diff.IDiffItemsToLogContentService;
 
 import java.lang.reflect.InvocationTargetException;

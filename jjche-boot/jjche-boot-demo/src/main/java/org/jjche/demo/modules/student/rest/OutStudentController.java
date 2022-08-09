@@ -9,11 +9,15 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.annotation.HttpBodyDecrypt;
 import org.jjche.common.annotation.HttpResDataEncrypt;
 import org.jjche.common.constant.FilterEncConstant;
+import org.jjche.common.enums.LogCategoryType;
+import org.jjche.common.enums.LogType;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.OutRestController;
 import org.jjche.core.base.BaseController;
+import org.jjche.demo.constant.ApiVersion;
 import org.jjche.demo.modules.student.api.dto.StudentDTO;
 import org.jjche.demo.modules.student.service.StudentService;
+import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.security.annotation.rest.AnonymousPostMapping;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +41,7 @@ public class OutStudentController extends BaseController {
 
     private final StudentService studentService;
 
+    @AnonymousPostMapping(value = "add")
     @ApiOperation(value = "添加-出参加密，入参解密")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = FilterEncConstant.PARAM_TYPE_HEADER, name = FilterEncConstant.APP_ID, value = FilterEncConstant.APP_ID_DESC, example = FilterEncConstant.DEFAULT_APP_ID, dataTypeClass = String.class, required = true),
@@ -46,7 +51,8 @@ public class OutStudentController extends BaseController {
     })
     @HttpBodyDecrypt
     @HttpResDataEncrypt
-    @AnonymousPostMapping(value = "add")
+    @LogRecord(value = "创建了一个学生, 学生姓名：「{{#dto.name}}」", category = LogCategoryType.MANAGER,
+            type = LogType.ADD, module = ApiVersion.MODULE_STUDENT, operatorId = "{{#appId}}")
     public ResultWrapper<StudentDTO> post(@Validated @Valid @RequestBody StudentDTO dto) {
         return ResultWrapper.ok(dto);
     }

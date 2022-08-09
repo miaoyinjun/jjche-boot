@@ -1,7 +1,7 @@
 package org.jjche.system.modules.app.function;
 
 import lombok.RequiredArgsConstructor;
-import org.jjche.log.biz.context.LogRecordContext;
+import org.jjche.common.context.LogRecordContext;
 import org.jjche.log.biz.service.IParseFunction;
 import org.jjche.log.biz.service.impl.DiffParseFunction;
 import org.jjche.system.modules.app.domain.SecurityAppKeyDO;

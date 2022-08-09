@@ -19,7 +19,9 @@ import lombok.NoArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jjche.common.api.CommonAPI;
+import org.jjche.common.constant.FilterEncConstant;
 import org.jjche.common.constant.LogConstant;
+import org.jjche.common.context.LogRecordContext;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.pojo.AbstractResultWrapper;
 import org.jjche.common.util.HttpUtil;
@@ -27,7 +29,6 @@ import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.util.RequestHolder;
-import org.jjche.log.biz.context.LogRecordContext;
 import org.jjche.log.biz.service.ILogRecordService;
 import org.jjche.log.biz.service.IOperatorGetService;
 import org.jjche.log.biz.starter.support.parse.LogRecordValueParser;
@@ -88,7 +89,11 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         Object ret = null;
         MethodExecuteResult methodExecuteResult = new MethodExecuteResult(true, null, "");
         LogRecordContext.putEmptySpan();
-
+        //appKey单独处理不丢失
+        String appId = RequestHolder.getHeader(FilterEncConstant.APP_ID);
+        if (StrUtil.isNotBlank(appId)) {
+            LogRecordContext.putVariable(FilterEncConstant.APP_ID, appId);
+        }
         Map<String, String> functionNameAndReturnMap = MapUtil.newHashMap();
         //获取方法执行前的模板
         try {
@@ -215,7 +220,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
                 if (logConditionPassed(condition, expressionValues)) {
                     Long time = System.currentTimeMillis() - currentTime.get();
                     String operatorId = getRealOperatorId(logRecord, operatorIdFromService, expressionValues);
-                    LogRecordDTO newLogRecord= setRecord(logRecord, bizKey, expressionValues.get(bizNo),
+                    LogRecordDTO newLogRecord = setRecord(logRecord, bizKey, expressionValues.get(bizNo),
                             operatorId, expressionValues.get(value), expressionValues.get(detail),
                             success, methodName, result, time);
                     commonAPI.recordLog(newLogRecord);
