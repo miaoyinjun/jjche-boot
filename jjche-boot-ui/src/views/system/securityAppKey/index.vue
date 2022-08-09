@@ -65,7 +65,7 @@
             <el-input v-model="form.whiteIp" type="textarea" style="width: 370px" />
           </el-form-item>
           <el-form-item label="限速, 每秒可请求">
-            <el-input-number v-model="form.limitCount" min="0" placeholder="0不限制" />/次
+            <el-input-number v-model="form.limitCount" :min="0" placeholder="0不限制" />/次
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -137,7 +137,7 @@ const defaultForm = {
   encKey: null,
   urls: null,
   whiteIp: null,
-  limitCount: null
+  limitCount: 0
 }
 export default {
   name: 'SecurityAppKey',
@@ -197,8 +197,9 @@ export default {
     },
     // 改变状态
     changeEnabled(data, val) {
+      const str = val ? '激活' : '禁用'
       this.$confirm(
-        '此操作将会使密钥失效, 是否继续？',
+        str + '密钥, 是否继续？',
         '提示',
         {
           confirmButtonText: '确定',

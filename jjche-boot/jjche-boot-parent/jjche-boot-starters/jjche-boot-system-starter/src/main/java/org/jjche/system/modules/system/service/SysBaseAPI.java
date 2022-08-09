@@ -8,6 +8,7 @@ import cn.hutool.http.useragent.UserAgentUtil;
 import cn.hutool.log.StaticLog;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.constant.SecurityConstant;
@@ -21,6 +22,7 @@ import org.jjche.common.util.FileUtil;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.common.util.StrUtil;
+import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.modules.logging.domain.LogDO;
 import org.jjche.log.modules.logging.mapstruct.LogRecordMapStruct;
@@ -29,14 +31,13 @@ import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.service.JwtUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jjche.system.modules.app.service.SecurityAppKeyService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -51,23 +52,17 @@ import java.util.*;
  * @since 2022-01-25
  */
 @Service
+@AllArgsConstructor
 public class SysBaseAPI implements ISysBaseAPI {
 
-    @Autowired
-    private SecurityProperties properties;
-    @Autowired
-    private RedisService redisService;
-    @Autowired
-    private JwtUserService jwtUserService;
-    @Autowired
-    private TokenProvider tokenProvider;
-    @Resource
-    private LogService logService;
-    @Resource
-    private DataPermissionRuleService dataPermissionRuleService;
-    @Resource
-    private LogRecordMapStruct logRecordMapper;
-
+    private final SecurityProperties properties;
+    private final RedisService redisService;
+    private final JwtUserService jwtUserService;
+    private final TokenProvider tokenProvider;
+    private final LogService logService;
+    private final DataPermissionRuleService dataPermissionRuleService;
+    private final LogRecordMapStruct logRecordMapper;
+    private final SecurityAppKeyService appKeyService;
 
     /**
      * 保存在线用户信息
@@ -255,6 +250,11 @@ public class SysBaseAPI implements ISysBaseAPI {
     @Override
     public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(Long userId) {
         return dataPermissionRuleService.listByUserId(userId);
+    }
+
+    @Override
+    public SecurityAppKeyBasicVO getKeyByAppId(String appId) {
+        return appKeyService.getKeyByAppId(appId);
     }
 
     /**

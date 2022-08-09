@@ -21,4 +21,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface SecurityAppKeyMapStruct extends BaseMapStruct<SecurityAppKeyDO, SecurityAppKeyDTO, SecurityAppKeyVO> {
     List<SecurityAppKeyBasicVO> toBasicVO(List<SecurityAppKeyVO> vo);
+
+    SecurityAppKeyBasicVO toBasicVO(SecurityAppKeyDO doo);
 }

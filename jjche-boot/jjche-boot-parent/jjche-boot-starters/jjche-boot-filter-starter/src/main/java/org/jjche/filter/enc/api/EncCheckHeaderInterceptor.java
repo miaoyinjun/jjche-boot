@@ -9,6 +9,7 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.CacheKey;
 import org.jjche.common.constant.FilterEncConstant;
 import org.jjche.common.enums.FilterEncEnum;
@@ -39,10 +40,12 @@ import java.util.List;
  */
 public class EncCheckHeaderInterceptor implements HandlerInterceptor {
 
+    private CommonAPI commonAPI;
     private RedisService redisService;
     private AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
-    public EncCheckHeaderInterceptor(RedisService redisService) {
+    public EncCheckHeaderInterceptor(CommonAPI commonAPI, RedisService redisService) {
+        this.commonAPI = commonAPI;
         this.redisService = redisService;
     }
 
@@ -83,7 +86,7 @@ public class EncCheckHeaderInterceptor implements HandlerInterceptor {
         StaticLog.info("md5Filter.appId:{},timestamp:{}, nonce:{},sign:{}", appIdValue, timestampValue, nonceValue, signValue);
 
         /** 校验appId有效性 */
-        SecurityAppKeyBasicVO appSecretVO = redisService.objectGetObject(CacheKey.SECURITY_APP_ID + appIdValue, SecurityAppKeyBasicVO.class);
+        SecurityAppKeyBasicVO appSecretVO = commonAPI.getKeyByAppId(appIdValue);
         String appSecret = null;
         if (appSecretVO != null) {
             appSecret = appSecretVO.getAppSecret();

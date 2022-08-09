@@ -4,9 +4,8 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import lombok.RequiredArgsConstructor;
-import org.jjche.cache.service.RedisService;
 import org.jjche.common.annotation.HttpBodyDecrypt;
-import org.jjche.common.constant.CacheKey;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.enums.FilterEncEnum;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
@@ -36,7 +35,7 @@ import java.nio.charset.Charset;
 @RestControllerAdvice(annotations = OutRestController.class)
 @RequiredArgsConstructor
 public class EncOutRequestBody implements RequestBodyAdvice {
-    private final RedisService redisService;
+    private final CommonAPI commonAPI;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -61,7 +60,7 @@ public class EncOutRequestBody implements RequestBodyAdvice {
             String bodyStr = StrUtil.str(requestDataByte, Charset.defaultCharset());
             HttpServletRequest request = RequestHolder.getHttpServletRequest();
             String appIdValue = request.getHeader(FilterEncEnum.APP_ID.getKey());
-            SecurityAppKeyBasicVO appSecretVO = redisService.objectGetObject(CacheKey.SECURITY_APP_ID + appIdValue, SecurityAppKeyBasicVO.class);
+            SecurityAppKeyBasicVO appSecretVO = commonAPI.getKeyByAppId(appIdValue);
             String encKey = appSecretVO.getEncKey();
             SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, encKey.getBytes());
 

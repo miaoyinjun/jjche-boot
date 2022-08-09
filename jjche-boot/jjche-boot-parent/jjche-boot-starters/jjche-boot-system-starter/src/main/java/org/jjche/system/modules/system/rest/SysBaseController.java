@@ -2,10 +2,12 @@ package org.jjche.system.modules.system.rest;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.system.api.ISysBaseAPI;
+import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.security.annotation.rest.AnonymousGetMapping;
@@ -31,28 +33,33 @@ public class SysBaseController extends BaseController {
 
     private final ISysBaseAPI sysBaseAPI;
 
-    @GetMapping("/logoutOnlineUser")
+    @GetMapping(CommonAPI.URL_LOGOUT_ONLINE_USER)
     public void logoutOnlineUser(String token) {
         this.sysBaseAPI.logoutOnlineUser(token);
     }
 
-    @AnonymousGetMapping("/getUserDetails")
+    @AnonymousGetMapping(CommonAPI.URL_GET_USER_DETAILS)
     public JwtUserDto getUserDetails() {
         return this.sysBaseAPI.getUserDetails();
     }
 
-    @PostMapping("/recordLog")
+    @PostMapping(CommonAPI.URL_RECORD_LOG)
     public void recordLog(@RequestBody LogRecordDTO logRecord) {
         this.sysBaseAPI.recordLog(logRecord);
     }
 
-    @PostMapping("/recordLogs")
+    @PostMapping(CommonAPI.URL_RECORD_LOGS)
     public void recordLogs(@RequestBody List<LogRecordDTO> list) {
         this.sysBaseAPI.recordLogs(list);
     }
 
-    @GetMapping("listPermissionDataRuleByUserId")
+    @GetMapping(CommonAPI.URL_LIST_PERMISSION_DATA_RULE_BY_USER_ID)
     public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(@RequestParam("userId") Long userId) {
         return sysBaseAPI.listPermissionDataRuleByUserId(userId);
+    }
+
+    @GetMapping(CommonAPI.URL_GET_KEY_BY_APP_ID)
+    public SecurityAppKeyBasicVO getKeyByAppId(@RequestParam("appId") String appId) {
+        return sysBaseAPI.getKeyByAppId(appId);
     }
 }

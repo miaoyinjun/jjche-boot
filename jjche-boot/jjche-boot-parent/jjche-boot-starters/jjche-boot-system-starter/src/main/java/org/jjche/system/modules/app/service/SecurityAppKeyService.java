@@ -1,6 +1,8 @@
 package org.jjche.system.modules.app.service;
 
 import cn.hutool.core.lang.Assert;
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.jjche.common.constant.CacheKey;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.util.FileUtil;
+import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.param.SortEnum;
 import org.jjche.mybatis.util.MybatisUtil;
@@ -79,7 +82,6 @@ public class SecurityAppKeyService extends MyServiceImpl<SecurityAppKeyMapper, S
         Assert.isTrue(dbDO == null, appId + "已存在");
         SecurityAppKeyDO securityAppKeyDO = this.securityAppKeyMapStruct.toDO(dto);
         Assert.isTrue(this.save(securityAppKeyDO), "保存失败");
-        redisService.objectSetObject(CacheKey.SECURITY_APP_ID + securityAppKeyDO.getAppId(), securityAppKeyDO);
     }
 
     /**
@@ -107,6 +109,7 @@ public class SecurityAppKeyService extends MyServiceImpl<SecurityAppKeyMapper, S
      * @param dto 编辑对象
      */
     @Transactional(rollbackFor = Exception.class)
+    @CacheInvalidate(name = CacheKey.SECURITY_APP_ID, key = "#dto.appId")
     public SecurityAppKeyDO update(SecurityAppKeyDTO dto) {
         SecurityAppKeyDO securityAppKeyDO = this.getById(dto.getId());
         Assert.notNull(securityAppKeyDO, "记录不存在");
@@ -127,17 +130,6 @@ public class SecurityAppKeyService extends MyServiceImpl<SecurityAppKeyMapper, S
 
         securityAppKeyDO = this.securityAppKeyMapStruct.toDO(dto);
         Assert.isTrue(this.updateById(securityAppKeyDO), "修改失败，记录不存在");
-        //激活才添加缓存
-        String key = CacheKey.SECURITY_APP_ID + securityAppKeyDO.getAppId();
-        Boolean enabled = securityAppKeyDO.getEnabled();
-        if (enabled == null) {
-            enabled = true;
-        }
-        if (enabled) {
-            redisService.objectSetObject(key, securityAppKeyDO);
-        } else {
-            redisService.delete(key);
-        }
         return securityAppKeyDO;
     }
 
@@ -211,6 +203,22 @@ public class SecurityAppKeyService extends MyServiceImpl<SecurityAppKeyMapper, S
         } catch (IOException e) {
             throw new IllegalArgumentException("文件下载失败");
         }
+    }
+
+    /**
+     * <p>
+     * 根据应用id获取密钥
+     * </p>
+     *
+     * @param appId 应用id
+     * @return /
+     */
+    @Cached(name = CacheKey.SECURITY_APP_ID, key = "#appId")
+    public SecurityAppKeyBasicVO getKeyByAppId(String appId) {
+        LambdaQueryWrapper<SecurityAppKeyDO> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.eq(SecurityAppKeyDO::getAppId, appId);
+        queryWrapper.eq(SecurityAppKeyDO::getEnabled, true);
+        return this.securityAppKeyMapStruct.toBasicVO(this.getOne(queryWrapper));
     }
 
 }

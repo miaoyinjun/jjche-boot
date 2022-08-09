@@ -2,6 +2,7 @@ package org.jjche.filter.enc.api;
 
 import cn.hutool.core.collection.CollUtil;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.api.CommonAPI;
 import org.jjche.filter.property.FilterEncProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,8 @@ public class EncAutoConfiguration {
     private FilterEncProperties filterEncProperties;
     @Autowired
     private RedisService redisService;
+    @Autowired
+    private CommonAPI commonAPI;
 
     /**
      * <p>
@@ -51,7 +54,7 @@ public class EncAutoConfiguration {
                 List<String> filterUrls = filterEncProperties.getUrls();
                 InterceptorRegistration checkHeaderInterceptorRegistration = null;
                 /** 默认拦截项目中定义的接口地址*/
-                EncCheckHeaderInterceptor checkParamInterceptor = new EncCheckHeaderInterceptor(redisService);
+                EncCheckHeaderInterceptor checkParamInterceptor = new EncCheckHeaderInterceptor(commonAPI, redisService);
                 checkHeaderInterceptorRegistration = registry.addInterceptor(checkParamInterceptor);
                 /**添加要过滤的URL*/
                 if (CollUtil.isNotEmpty(filterUrls)) {
