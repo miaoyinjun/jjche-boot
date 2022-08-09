@@ -8,7 +8,7 @@ import org.jjche.common.annotation.HttpResDataEncrypt;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.enums.FilterEncEnum;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.OutRestController;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestControllerAdvice(annotations = OutRestController.class)
 @RequiredArgsConstructor
-public class EncOutResponseBody implements ResponseBodyAdvice<ResultWrapper> {
+public class EncOutResponseBody implements ResponseBodyAdvice<R> {
     private final CommonAPI commonAPI;
 
     @Override
@@ -48,11 +48,11 @@ public class EncOutResponseBody implements ResponseBodyAdvice<ResultWrapper> {
     }
 
     @Override
-    public ResultWrapper beforeBodyWrite(ResultWrapper restResult, MethodParameter methodParameter,
-                                         MediaType mediaType,
-                                         Class<? extends HttpMessageConverter<?>> aClass,
-                                         ServerHttpRequest serverHttpRequest,
-                                         ServerHttpResponse serverHttpResponse) {
+    public R beforeBodyWrite(R restResult, MethodParameter methodParameter,
+                             MediaType mediaType,
+                             Class<? extends HttpMessageConverter<?>> aClass,
+                             ServerHttpRequest serverHttpRequest,
+                             ServerHttpResponse serverHttpResponse) {
         // 转换对象
         HttpServletRequest request = ((ServletServerHttpRequest) serverHttpRequest).getServletRequest();
         HttpServletResponse response = ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();

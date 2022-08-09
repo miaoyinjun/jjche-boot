@@ -9,7 +9,7 @@ import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.util.StrUtil;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.FileUtil;
@@ -64,20 +64,20 @@ public class DatabaseController extends BaseController {
      *
      * @param criteria a {@link DatabaseQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "查询数据库")
     @GetMapping
     @PreAuthorize("@el.check('database:list')")
-    public ResultWrapper<MyPage<DatabaseDTO>> query(DatabaseQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(databaseService.queryAll(criteria, pageable));
+    public R<MyPage<DatabaseDTO>> query(DatabaseQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(databaseService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link DatabaseDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -86,16 +86,16 @@ public class DatabaseController extends BaseController {
     @ApiOperation(value = "新增数据库")
     @PostMapping
     @PreAuthorize("@el.check('database:add')")
-    public ResultWrapper create(@Validated @RequestBody DatabaseDO resources) {
+    public R create(@Validated @RequestBody DatabaseDO resources) {
         databaseService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link DatabaseDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -104,16 +104,16 @@ public class DatabaseController extends BaseController {
     @ApiOperation(value = "修改数据库")
     @PutMapping
     @PreAuthorize("@el.check('database:edit')")
-    public ResultWrapper update(@Validated @RequestBody DatabaseDO resources) {
+    public R update(@Validated @RequestBody DatabaseDO resources) {
         databaseService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -122,22 +122,22 @@ public class DatabaseController extends BaseController {
     @ApiOperation(value = "删除数据库")
     @DeleteMapping
     @PreAuthorize("@el.check('database:del')")
-    public ResultWrapper delete(@RequestBody Set<String> ids) {
+    public R delete(@RequestBody Set<String> ids) {
         databaseService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>testConnect.</p>
      *
      * @param resources a {@link DatabaseDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "测试数据库链接")
     @PostMapping("/testConnect")
     @PreAuthorize("@el.check('database:testConnect')")
-    public ResultWrapper<Boolean> testConnect(@Validated @RequestBody DatabaseDO resources) {
-        return ResultWrapper.ok(databaseService.testConnection(resources));
+    public R<Boolean> testConnect(@Validated @RequestBody DatabaseDO resources) {
+        return R.ok(databaseService.testConnection(resources));
     }
 
     /**
@@ -145,7 +145,7 @@ public class DatabaseController extends BaseController {
      *
      * @param file    a {@link org.springframework.web.multipart.MultipartFile} object.
      * @param request a {@link javax.servlet.http.HttpServletRequest} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecord(
@@ -154,7 +154,7 @@ public class DatabaseController extends BaseController {
     )
     @PostMapping(value = "/upload")
     @PreAuthorize("@el.check('database:add')")
-    public ResultWrapper<String> upload(@RequestBody MultipartFile file, HttpServletRequest request) throws Exception {
+    public R<String> upload(@RequestBody MultipartFile file, HttpServletRequest request) throws Exception {
         String id = request.getParameter("id");
         DatabaseDTO database = databaseService.findById(id);
         String fileName;
@@ -168,6 +168,6 @@ public class DatabaseController extends BaseController {
         file.transferTo(executeFile);
         String result = SqlUtils.executeFile(database.getJdbcUrl(), database.getUserName(), database.getPwd(), executeFile);
         Assert.isTrue(StrUtil.equals("success", result), "执行失败");
-        return ResultWrapper.ok(result);
+        return R.ok(result);
     }
 }

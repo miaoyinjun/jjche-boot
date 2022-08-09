@@ -349,6 +349,12 @@
             <dependency>
                 <groupId>net.dreamlu</groupId>
                 <artifactId>mica-ip2region</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>net.dreamlu</groupId>
+                        <artifactId>mica-core</artifactId>
+                    </exclusion>
+                </exclusions>
                 <version>2.7.2</version>
             </dependency>
             <dependency>

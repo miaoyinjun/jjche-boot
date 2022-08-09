@@ -9,7 +9,7 @@ import org.jjche.common.dto.BaseDTO;
 import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.common.param.PageParam;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
@@ -54,8 +54,8 @@ public class ${className}Controller extends BaseController{
               category = LogCategoryType.OPERATING,
               type = LogType.ADD, module = "${apiAlias}", bizNo = "{{#_ret.data}}"
     )
-    public ResultWrapper<Long> create(@Validated @Valid @RequestBody ${className}DTO dto){
-        return ResultWrapper.ok(${changeClassName}Service.save(dto));
+    public R<Long> create(@Validated @Valid @RequestBody ${className}DTO dto){
+        return R.ok(${changeClassName}Service.save(dto));
     }
 
     @DeleteMapping
@@ -66,9 +66,9 @@ public class ${className}Controller extends BaseController{
             type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}",
             detail = "{API_MODEL{#_oldObj}} {${diffOldFuncName}{#ids}}"
     )
-    public ResultWrapper delete(@RequestBody List<${pkColumnType}> ids) {
+    public R delete(@RequestBody List<${pkColumnType}> ids) {
         ${changeClassName}Service.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @PutMapping
@@ -79,17 +79,17 @@ public class ${className}Controller extends BaseController{
             type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}",
             detail = "{_DIFF{#dto}} {${diffOldFuncName}{#dto.id}}"
     )
-    public ResultWrapper update(@Validated(BaseDTO.Update.class)
+    public R update(@Validated(BaseDTO.Update.class)
                                 @Valid @RequestBody ${className}DTO dto){
         ${changeClassName}Service.update(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "${apiAlias}-查询单个", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${tableName}:list')")
-    public ResultWrapper<${className}VO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(this.${changeClassName}Service.getVoById(id));
+    public R<${className}VO> getById(@PathVariable Long id) {
+        return R.ok(this.${changeClassName}Service.getVoById(id));
     }
 
     @ApiOperation(value = "${apiAlias}-导出", tags = ApiVersion.${apiVersionConstant})
@@ -102,9 +102,9 @@ public class ${className}Controller extends BaseController{
     @GetMapping
     @ApiOperation(value = "${apiAlias}-列表", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${tableName}:list')")
-    public ResultWrapper<MyPage<${className}VO>> pageQuery(PageParam page,
+    public R<MyPage<${className}VO>> pageQuery(PageParam page,
                             @Validated ${className}QueryCriteriaDTO query){
-        return ResultWrapper.ok(${changeClassName}Service.page(page, query));
+        return R.ok(${changeClassName}Service.page(page, query));
     }
 
 }

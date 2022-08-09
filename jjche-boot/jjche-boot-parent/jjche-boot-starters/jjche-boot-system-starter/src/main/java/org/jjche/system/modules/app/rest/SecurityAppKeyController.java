@@ -10,7 +10,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -47,34 +47,34 @@ public class SecurityAppKeyController extends BaseController {
     @ApiOperationSupport(ignoreParameters = {"id"})
     @PreAuthorize("@el.check('securityAppKey:add')")
     @LogRecord(value = "新增", category = LogCategoryType.OPERATING, type = LogType.ADD, module = "应用密钥", bizNo = "{{#_ret.data}}")
-    public ResultWrapper create(@Validated @Valid @RequestBody SecurityAppKeyDTO dto) {
+    public R create(@Validated @Valid @RequestBody SecurityAppKeyDTO dto) {
         securityAppKeyService.save(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @DeleteMapping
     @ApiOperation(value = "应用密钥-删除")
     @PreAuthorize("@el.check('securityAppKey:del')")
     @LogRecord(batch = true, value = "删除", category = LogCategoryType.OPERATING, type = LogType.DELETE, module = "应用密钥", bizNo = "{{#ids}}", detail = "{API_MODEL{#_oldObj}} {SECURITY_APP_KEY_DIFF_OLD_BY_ID{#ids}}")
-    public ResultWrapper delete(@RequestBody List<Long> ids) {
+    public R delete(@RequestBody List<Long> ids) {
         securityAppKeyService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @PutMapping
     @ApiOperation(value = "应用密钥-修改")
     @PreAuthorize("@el.check('securityAppKey:edit')")
     @LogRecord(value = "修改", category = LogCategoryType.OPERATING, type = LogType.UPDATE, module = "应用密钥", bizNo = "{{#dto.id}}", detail = "{_DIFF{#dto}} {SECURITY_APP_KEY_DIFF_OLD_BY_ID{#dto.id}}")
-    public ResultWrapper update(@Validated(BaseDTO.Update.class) @Valid @RequestBody SecurityAppKeyDTO dto) {
+    public R update(@Validated(BaseDTO.Update.class) @Valid @RequestBody SecurityAppKeyDTO dto) {
         securityAppKeyService.update(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "应用密钥-查询单个")
     @PreAuthorize("@el.check('securityAppKey:list')")
-    public ResultWrapper<SecurityAppKeyVO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(this.securityAppKeyService.getVoById(id));
+    public R<SecurityAppKeyVO> getById(@PathVariable Long id) {
+        return R.ok(this.securityAppKeyService.getVoById(id));
     }
 
     @ApiOperation(value = "应用密钥-导出")
@@ -87,8 +87,8 @@ public class SecurityAppKeyController extends BaseController {
     @GetMapping
     @ApiOperation(value = "应用密钥-列表")
     @PreAuthorize("@el.check('securityAppKey:list')")
-    public ResultWrapper<MyPage<SecurityAppKeyVO>> pageQuery(PageParam page, @Validated SecurityAppKeyQueryCriteriaDTO query) {
-        return ResultWrapper.ok(securityAppKeyService.page(page, query));
+    public R<MyPage<SecurityAppKeyVO>> pageQuery(PageParam page, @Validated SecurityAppKeyQueryCriteriaDTO query) {
+        return R.ok(securityAppKeyService.page(page, query));
     }
 
 }

@@ -15,7 +15,7 @@ import org.jjche.common.wrapper.constant.HttpStatusConstant;
  * @since 2020-07-09
  */
 @Data
-public class ResultWrapperBadRequest<T> extends ResultWrapper<T> {
+public class RBadRequest<T> extends R<T> {
 
     /**
      * 编号

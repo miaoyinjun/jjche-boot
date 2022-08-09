@@ -11,7 +11,7 @@ import org.jjche.common.wrapper.constant.HttpStatusConstant;
  * @version 1.0.0-SNAPSHOT
  * @since 2020-08-10
  */
-public enum ResultWrapperCodeEnum {
+public enum RCodeEnum {
     /**
      * OK
      */
@@ -91,7 +91,7 @@ public enum ResultWrapperCodeEnum {
      */
     private String msg;
 
-    ResultWrapperCodeEnum(int code, String msg) {
+    RCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

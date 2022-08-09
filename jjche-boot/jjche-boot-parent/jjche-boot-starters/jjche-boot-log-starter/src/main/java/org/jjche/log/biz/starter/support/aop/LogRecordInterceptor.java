@@ -23,7 +23,7 @@ import org.jjche.common.constant.FilterEncConstant;
 import org.jjche.common.constant.LogConstant;
 import org.jjche.common.context.LogRecordContext;
 import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.pojo.AbstractResultWrapper;
+import org.jjche.common.pojo.AbstractR;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ThrowableUtil;
@@ -188,10 +188,10 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             if (success) {
                 if (ObjectUtil.isNotNull(ret)) {
                     //是否控制器返回类型
-                    boolean isResultWrapper = ClassUtil.isAssignable(AbstractResultWrapper.class, ret.getClass());
-                    if (isResultWrapper) {
-                        AbstractResultWrapper iResultWrapper = Convert.convert(AbstractResultWrapper.class, ret);
-                        result = iResultWrapper.getMessage();
+                    boolean isR = ClassUtil.isAssignable(AbstractR.class, ret.getClass());
+                    if (isR) {
+                        AbstractR iR = Convert.convert(AbstractR.class, ret);
+                        result = iR.getMessage();
                     } else {
                         result = StrUtil.toString(ret);
                     }

@@ -11,7 +11,7 @@ import org.jjche.common.annotation.HttpResDataEncrypt;
 import org.jjche.common.constant.FilterEncConstant;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.OutRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.demo.constant.ApiVersion;
@@ -53,7 +53,7 @@ public class OutStudentController extends BaseController {
     @HttpResDataEncrypt
     @LogRecord(value = "创建了一个学生, 学生姓名：「{{#dto.name}}」", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = ApiVersion.MODULE_STUDENT, operatorId = "{{#appId}}")
-    public ResultWrapper<StudentDTO> post(@Validated @Valid @RequestBody StudentDTO dto) {
-        return ResultWrapper.ok(dto);
+    public R<StudentDTO> post(@Validated @Valid @RequestBody StudentDTO dto) {
+        return R.ok(dto);
     }
 }

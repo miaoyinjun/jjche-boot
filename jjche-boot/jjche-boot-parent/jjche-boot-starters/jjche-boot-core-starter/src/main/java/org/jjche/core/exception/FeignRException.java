@@ -2,22 +2,22 @@ package org.jjche.core.exception;
 
 /**
  * <p>
- * Feign调用ResultWrapper异常
+ * Feign调用R异常
  * </p>
  *
  * @author miaoyj
  * @version 1.0.0-SNAPSHOT
  * @since 2020-08-13
  */
-public class FeignResultWrapperException extends RuntimeException {
+public class FeignRException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * <p>Constructor for FeignResultWrapperException.</p>
+     * <p>Constructor for FeignRException.</p>
      *
      * @param msg a {@link java.lang.String} object.
      */
-    public FeignResultWrapperException(String msg) {
+    public FeignRException(String msg) {
         super(msg);
     }
 }

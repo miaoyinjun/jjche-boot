@@ -10,7 +10,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.FileUtil;
@@ -49,13 +49,13 @@ public class LocalStorageController extends BaseController {
      *
      * @param criteria a {@link LocalStorageQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询文件")
     @GetMapping
     @PreAuthorize("@el.check('storage:list')")
-    public ResultWrapper<MyPage<LocalStorageDTO>> query(LocalStorageQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(localStorageService.pageQuery(criteria, pageable));
+    public R<MyPage<LocalStorageDTO>> query(LocalStorageQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(localStorageService.pageQuery(criteria, pageable));
     }
 
     /**
@@ -77,20 +77,20 @@ public class LocalStorageController extends BaseController {
      *
      * @param name a {@link java.lang.String} object.
      * @param file a {@link org.springframework.web.multipart.MultipartFile} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("上传文件")
     @PostMapping
     @PreAuthorize("@el.check('storage:add')")
-    public ResultWrapper<List<LocalStorageBaseVO>> create(@RequestParam String name, @RequestParam("file") MultipartFile[] file) {
-        return ResultWrapper.ok(localStorageService.create(name, file));
+    public R<List<LocalStorageBaseVO>> create(@RequestParam String name, @RequestParam("file") MultipartFile[] file) {
+        return R.ok(localStorageService.create(name, file));
     }
 
     /**
      * <p>upload.</p>
      *
      * @param file a {@link org.springframework.web.multipart.MultipartFile} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "上传图片", category = LogCategoryType.MANAGER,
@@ -98,7 +98,7 @@ public class LocalStorageController extends BaseController {
     )
     @PostMapping("/pictures")
     @ApiOperation("上传图片")
-    public ResultWrapper<List<LocalStorageBaseVO>> upload(@RequestParam MultipartFile[] file) {
+    public R<List<LocalStorageBaseVO>> upload(@RequestParam MultipartFile[] file) {
         // 判断文件是否为图片
         Assert.isTrue(ArrayUtil.isNotEmpty(file), "请选择图片");
         for (MultipartFile f : file) {
@@ -106,7 +106,7 @@ public class LocalStorageController extends BaseController {
             Boolean isPic = FileType.IMAGE.equals(FileUtil.getFileType(suffix));
             Assert.isTrue(isPic, "只能上传图片");
         }
-        return ResultWrapper.ok(localStorageService.create(null, file));
+        return R.ok(localStorageService.create(null, file));
 
     }
 
@@ -114,21 +114,21 @@ public class LocalStorageController extends BaseController {
      * <p>update.</p>
      *
      * @param resources a {@link LocalStorageDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("修改文件")
     @PutMapping
     @PreAuthorize("@el.check('storage:edit')")
-    public ResultWrapper update(@Validated @RequestBody LocalStorageDO resources) {
+    public R update(@Validated @RequestBody LocalStorageDO resources) {
         localStorageService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids an array of {@link java.lang.Long} objects.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "多选删除", category = LogCategoryType.MANAGER,
@@ -137,20 +137,20 @@ public class LocalStorageController extends BaseController {
     @DeleteMapping
     @ApiOperation("多选删除")
     @PreAuthorize("@el.check('storage:del')")
-    public ResultWrapper delete(@RequestBody List<String> ids) {
+    public R delete(@RequestBody List<String> ids) {
         localStorageService.deleteAll(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>list.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping("/get_files")
     @ApiOperation("获取文件信息")
-    public ResultWrapper<List<LocalStorageBaseVO>> list(@RequestBody Set<String> ids) {
-        return ResultWrapper.ok(localStorageService.listBaseByEncIds(ids));
+    public R<List<LocalStorageBaseVO>> list(@RequestBody Set<String> ids) {
+        return R.ok(localStorageService.listBaseByEncIds(ids));
     }
 }

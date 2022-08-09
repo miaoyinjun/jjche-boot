@@ -9,7 +9,7 @@ import cn.hutool.log.StaticLog;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.ThrowableUtil;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.alarm.dd.AlarmDingTalkService;
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,13 +57,13 @@ public class GlobalExceptionHandler {
      *
      * @param e       a {@link java.lang.Exception} object.
      * @param request a {@link javax.servlet.ServletRequest} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResultWrapper exception(Throwable e, ServletRequest request) {
+    public R exception(Throwable e, ServletRequest request) {
         BoxLog log = new BoxLog();
         try {
             if (request != null && request instanceof ContentCachingRequestWrapper) {
@@ -93,20 +93,20 @@ public class GlobalExceptionHandler {
                 alarmDingTalkService.sendAlarm("全局异常");
             }
         }
-        return ResultWrapper.error();
+        return R.error();
     }
 
     /**
      * <p>
-     * Feign调用ResultWrapper异常
+     * Feign调用R异常
      * </p>
      *
      * @param e 异常
      * @return 结果
      */
-    @ExceptionHandler({FeignResultWrapperException.class})
+    @ExceptionHandler({FeignRException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String feignResultWrapperException(Exception e) {
+    public String feignRException(Exception e) {
         return e.getMessage();
     }
 
@@ -116,14 +116,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper allException(Exception e) {
-        return ResultWrapper.validError(e.getMessage());
+    public R allException(Exception e) {
+        return R.validError(e.getMessage());
     }
 
     /**
@@ -132,16 +132,16 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper requestParamArgumentException(Exception e) {
+    public R requestParamArgumentException(Exception e) {
         String fieldName = ((MissingServletRequestParameterException) e).getParameterName();
         String msg = StrUtil.format("{}: 不能为空", fieldName);
-        return ResultWrapper.parameterError(msg);
+        return R.parameterError(msg);
     }
 
     /**
@@ -150,13 +150,13 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link javax.validation.ConstraintViolationException} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper requestParamValidatorArgumentException(ConstraintViolationException e) {
+    public R requestParamValidatorArgumentException(ConstraintViolationException e) {
         String errorMessage = e.getMessage();
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         if (!CollectionUtils.isEmpty(constraintViolations)) {
@@ -170,7 +170,7 @@ public class GlobalExceptionHandler {
                 errorMessage = errorMessage.substring(0, errorMessage.length() - 1);
             }
         }
-        return ResultWrapper.parameterError(errorMessage);
+        return R.parameterError(errorMessage);
     }
 
     /**
@@ -179,13 +179,13 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link org.springframework.web.bind.MethodArgumentNotValidException} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper resolveMethodArgumentNotValidException(Exception e) {
+    public R resolveMethodArgumentNotValidException(Exception e) {
         String errorMessage = e.getMessage();
         List<ObjectError> objectErrors = new ArrayList<>();
         if (e instanceof MethodArgumentNotValidException) {
@@ -204,7 +204,7 @@ public class GlobalExceptionHandler {
                 errorMessage = errorMessage.substring(0, errorMessage.length() - 1);
             }
         }
-        return ResultWrapper.parameterError(errorMessage);
+        return R.parameterError(errorMessage);
     }
 
     /**
@@ -213,14 +213,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({UsernameNotFoundException.class, BadCredentialsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper userException(Exception e) {
-        return ResultWrapper.userError();
+    public R userException(Exception e) {
+        return R.userError();
     }
 
     /**
@@ -229,14 +229,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({DisabledException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper userDisabledException(Exception e) {
-        return ResultWrapper.userDisabledError();
+    public R userDisabledException(Exception e) {
+        return R.userDisabledError();
     }
 
     /**
@@ -245,14 +245,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({LockedException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper userLockedException(Exception e) {
-        return ResultWrapper.userLockedError();
+    public R userLockedException(Exception e) {
+        return R.userLockedError();
     }
 
     /**
@@ -261,14 +261,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({AccountExpiredException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper usernameExpiredException(Exception e) {
-        return ResultWrapper.userNameExpiredError();
+    public R usernameExpiredException(Exception e) {
+        return R.userNameExpiredError();
     }
 
     /**
@@ -277,14 +277,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({CredentialsExpiredException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper userCredentialsExpiredException(Exception e) {
-        return ResultWrapper.userCredentialsExpiredError();
+    public R userCredentialsExpiredException(Exception e) {
+        return R.userCredentialsExpiredError();
     }
 
     /**
@@ -293,26 +293,26 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({AuthenticationTokenNotFoundException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResultWrapper authenticationTokenNotFoundException(Exception e) {
-        return ResultWrapper.tokenNotFoundError();
+    public R authenticationTokenNotFoundException(Exception e) {
+        return R.tokenNotFoundError();
     }
 
     /**
      * <p>authenticationTokenExpiredException.</p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ExceptionHandler({AuthenticationTokenExpiredException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResultWrapper authenticationTokenExpiredException(Exception e) {
-        return ResultWrapper.tokenExpiredError();
+    public R authenticationTokenExpiredException(Exception e) {
+        return R.tokenExpiredError();
     }
 
     /**
@@ -321,14 +321,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResultWrapper authenticationAccessDeniedException(Exception e) {
-        return ResultWrapper.userAccessDeniedError();
+    public R authenticationAccessDeniedException(Exception e) {
+        return R.userAccessDeniedError();
     }
 
     /**
@@ -337,14 +337,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({RequestTimeoutException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResultWrapper requestTimeoutException(Exception e) {
-        return ResultWrapper.requestTimeout();
+    public R requestTimeoutException(Exception e) {
+        return R.requestTimeout();
     }
 
     /**
@@ -353,14 +353,14 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
      */
     @ExceptionHandler({SignException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResultWrapper signException(Exception e) {
-        return ResultWrapper.signError();
+    public R signException(Exception e) {
+        return R.signError();
     }
 
     /**
@@ -373,8 +373,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({WhiteIpException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResultWrapper whiteIpErrorException(Exception e) {
-        return ResultWrapper.whiteIpError();
+    public R whiteIpErrorException(Exception e) {
+        return R.whiteIpError();
     }
 
     /**
@@ -387,7 +387,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({RequestLimitException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResultWrapper requestLimitErrorException(Exception e) {
-        return ResultWrapper.requestLimit();
+    public R requestLimitErrorException(Exception e) {
+        return R.requestLimit();
     }
 }

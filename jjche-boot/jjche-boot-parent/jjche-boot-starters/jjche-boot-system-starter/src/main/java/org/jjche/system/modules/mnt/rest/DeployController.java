@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.FileUtil;
@@ -64,20 +64,20 @@ public class DeployController extends BaseController {
      *
      * @param criteria a {@link DeployQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "查询部署")
     @GetMapping
     @PreAuthorize("@el.check('deploy:list')")
-    public ResultWrapper<MyPage<DeployDTO>> query(DeployQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(deployService.queryAll(criteria, pageable));
+    public R<MyPage<DeployDTO>> query(DeployQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(deployService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link DeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -86,16 +86,16 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "新增部署")
     @PostMapping
     @PreAuthorize("@el.check('deploy:add')")
-    public ResultWrapper create(@Validated @RequestBody DeployDO resources) {
+    public R create(@Validated @RequestBody DeployDO resources) {
         deployService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link DeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -104,16 +104,16 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "修改部署")
     @PutMapping
     @PreAuthorize("@el.check('deploy:edit')")
-    public ResultWrapper update(@Validated @RequestBody DeployDO resources) {
+    public R update(@Validated @RequestBody DeployDO resources) {
         deployService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -122,9 +122,9 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "删除部署")
     @DeleteMapping
     @PreAuthorize("@el.check('deploy:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         deployService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -132,7 +132,7 @@ public class DeployController extends BaseController {
      *
      * @param file    a {@link org.springframework.web.multipart.MultipartFile} object.
      * @param request a {@link javax.servlet.http.HttpServletRequest} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecord(
@@ -142,7 +142,7 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "上传文件部署")
     @PostMapping(value = "/upload")
     @PreAuthorize("@el.check('deploy:edit')")
-    public ResultWrapper<String> upload(@RequestBody MultipartFile file, HttpServletRequest request) throws Exception {
+    public R<String> upload(@RequestBody MultipartFile file, HttpServletRequest request) throws Exception {
         Long id = Long.valueOf(request.getParameter("id"));
         String fileName = "";
         if (file != null) {
@@ -155,14 +155,14 @@ public class DeployController extends BaseController {
         } else {
             StaticLog.warn("没有找到相对应的文件");
         }
-        return ResultWrapper.ok(fileName);
+        return R.ok(fileName);
     }
 
     /**
      * <p>serverReduction.</p>
      *
      * @param resources a {@link DeployHistoryDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "系统还原", category = LogCategoryType.MANAGER,
@@ -171,30 +171,30 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "系统还原")
     @PostMapping(value = "/serverReduction")
     @PreAuthorize("@el.check('deploy:edit')")
-    public ResultWrapper<String> serverReduction(@Validated @RequestBody DeployHistoryDO resources) {
+    public R<String> serverReduction(@Validated @RequestBody DeployHistoryDO resources) {
         String result = deployService.serverReduction(resources);
-        return ResultWrapper.ok(result);
+        return R.ok(result);
     }
 
     /**
      * <p>serverStatus.</p>
      *
      * @param resources a {@link DeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "服务运行状态")
     @PostMapping(value = "/serverStatus")
     @PreAuthorize("@el.check('deploy:edit')")
-    public ResultWrapper<String> serverStatus(@Validated @RequestBody DeployDO resources) {
+    public R<String> serverStatus(@Validated @RequestBody DeployDO resources) {
         String result = deployService.serverStatus(resources);
-        return ResultWrapper.ok(result);
+        return R.ok(result);
     }
 
     /**
      * <p>startServer.</p>
      *
      * @param resources a {@link DeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "启动服务", category = LogCategoryType.MANAGER,
@@ -203,16 +203,16 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "启动服务")
     @PostMapping(value = "/startServer")
     @PreAuthorize("@el.check('deploy:edit')")
-    public ResultWrapper<String> startServer(@Validated @RequestBody DeployDO resources) {
+    public R<String> startServer(@Validated @RequestBody DeployDO resources) {
         String result = deployService.startServer(resources);
-        return ResultWrapper.ok(result);
+        return R.ok(result);
     }
 
     /**
      * <p>stopServer.</p>
      *
      * @param resources a {@link DeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "停止服务", category = LogCategoryType.MANAGER,
@@ -221,8 +221,8 @@ public class DeployController extends BaseController {
     @ApiOperation(value = "停止服务")
     @PostMapping(value = "/stopServer")
     @PreAuthorize("@el.check('deploy:edit')")
-    public ResultWrapper<String> stopServer(@Validated @RequestBody DeployDO resources) {
+    public R<String> stopServer(@Validated @RequestBody DeployDO resources) {
         String result = deployService.stopServer(resources);
-        return ResultWrapper.ok(result);
+        return R.ok(result);
     }
 }

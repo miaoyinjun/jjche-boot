@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -42,18 +42,18 @@ public class AliPayController extends BaseController {
     /**
      * <p>queryConfig.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
-    public ResultWrapper<AlipayConfigDO> queryConfig() {
-        return ResultWrapper.ok(alipayService.find());
+    public R<AlipayConfigDO> queryConfig() {
+        return R.ok(alipayService.find());
     }
 
     /**
      * <p>updateConfig.</p>
      *
      * @param alipayConfig a {@link AlipayConfigDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "配置", category = LogCategoryType.MANAGER,
@@ -61,41 +61,41 @@ public class AliPayController extends BaseController {
     )
     @ApiOperation("配置支付宝")
     @PutMapping
-    public ResultWrapper updateConfig(@Validated @RequestBody AlipayConfigDO alipayConfig) {
+    public R updateConfig(@Validated @RequestBody AlipayConfigDO alipayConfig) {
         alipayService.config(alipayConfig);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>toPayAsPc.</p>
      *
      * @param trade a {@link TradeVO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @ApiOperation("PC网页支付")
     @PostMapping(value = "/toPayAsPC")
-    public ResultWrapper<String> toPayAsPc(@Validated @RequestBody TradeVO trade) throws Exception {
+    public R<String> toPayAsPc(@Validated @RequestBody TradeVO trade) throws Exception {
         AlipayConfigDO aliPay = alipayService.find();
         trade.setOutTradeNo(alipayUtils.getOrderCode());
         String payUrl = alipayService.toPayAsPc(aliPay, trade);
-        return ResultWrapper.ok(payUrl);
+        return R.ok(payUrl);
     }
 
     /**
      * <p>toPayAsWeb.</p>
      *
      * @param trade a {@link TradeVO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @ApiOperation("手机网页支付")
     @PostMapping(value = "/toPayAsWeb")
-    public ResultWrapper<String> toPayAsWeb(@Validated @RequestBody TradeVO trade) throws Exception {
+    public R<String> toPayAsWeb(@Validated @RequestBody TradeVO trade) throws Exception {
         AlipayConfigDO alipay = alipayService.find();
         trade.setOutTradeNo(alipayUtils.getOrderCode());
         String payUrl = alipayService.toPayAsWeb(alipay, trade);
-        return ResultWrapper.ok(payUrl);
+        return R.ok(payUrl);
     }
 
     /**
@@ -103,11 +103,11 @@ public class AliPayController extends BaseController {
      *
      * @param request  a {@link javax.servlet.http.HttpServletRequest} object.
      * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiIgnore
     @ApiOperation("支付之后跳转的链接")
-    public ResultWrapper<String> returnPage(HttpServletRequest request, HttpServletResponse response) {
+    public R<String> returnPage(HttpServletRequest request, HttpServletResponse response) {
         AlipayConfigDO alipay = alipayService.find();
         response.setContentType("text/html;charset=" + alipay.getCharset());
         //内容验签，防止黑客篡改参数
@@ -117,19 +117,19 @@ public class AliPayController extends BaseController {
         //支付宝交易号
         String tradeNo = new String(request.getParameter("trade_no").getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         // 根据业务需要返回数据，这里统一返回OK
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>notify.</p>
      *
      * @param request a {@link javax.servlet.http.HttpServletRequest} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiIgnore
     @RequestMapping("/notify")
     @ApiOperation("支付异步通知(要公网访问)，接收异步通知，检查通知内容app_id、out_trade_no、total_amount是否与请求中的一致，根据trade_status进行后续业务处理")
-    public ResultWrapper notify(HttpServletRequest request) {
+    public R notify(HttpServletRequest request) {
         AlipayConfigDO alipay = alipayService.find();
         Map<String, String[]> parameterMap = request.getParameterMap();
         //内容验签，防止黑客篡改参数
@@ -146,8 +146,8 @@ public class AliPayController extends BaseController {
             if (tradeStatus.equals(AliPayStatusEnum.SUCCESS.getValue()) || tradeStatus.equals(AliPayStatusEnum.FINISHED.getValue())) {
                 // 验证通过后应该根据业务需要处理订单
             }
-            return ResultWrapper.ok();
+            return R.ok();
         }
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

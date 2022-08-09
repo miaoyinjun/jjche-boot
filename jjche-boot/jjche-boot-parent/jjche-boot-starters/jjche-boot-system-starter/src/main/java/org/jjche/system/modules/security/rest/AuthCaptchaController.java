@@ -12,7 +12,7 @@ import com.anji.captcha.service.CaptchaService;
 import com.anji.captcha.util.StringUtils;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.security.annotation.rest.AnonymousPostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,16 +53,16 @@ public class AuthCaptchaController {
     }
 
     @AnonymousPostMapping("/get")
-    public ResultWrapper<ResponseModel> get(@RequestBody CaptchaVO data, HttpServletRequest request) {
+    public R<ResponseModel> get(@RequestBody CaptchaVO data, HttpServletRequest request) {
         assert request.getRemoteHost() != null;
         data.setBrowserInfo(getRemoteId(request));
-        return ResultWrapper.ok(captchaService.get(data));
+        return R.ok(captchaService.get(data));
     }
 
     @AnonymousPostMapping("/check")
-    public ResultWrapper<ResponseModel> check(@RequestBody CaptchaVO data, HttpServletRequest request) {
+    public R<ResponseModel> check(@RequestBody CaptchaVO data, HttpServletRequest request) {
         data.setBrowserInfo(getRemoteId(request));
-        return ResultWrapper.ok(captchaService.check(data));
+        return R.ok(captchaService.check(data));
     }
 
 }

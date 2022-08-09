@@ -21,7 +21,7 @@ import org.jjche.common.enums.LogModule;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.util.RsaUtils;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -63,12 +63,12 @@ public class AuthorizationController extends BaseController {
      * <p>login.</p>
      *
      * @param authUser a {@link AuthUserDto} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @AnonymousPostMapping(value = "/login")
     @ApiOperation("密码登录授权")
     @LogRecord(value = "密码登录", category = LogCategoryType.MANAGER, type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", saveParams = false)
-    public ResultWrapper<LoginVO> login(@Validated @RequestBody AuthUserDto authUser) {
+    public R<LoginVO> login(@Validated @RequestBody AuthUserDto authUser) {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         // 密码解密
         String password = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), authUser.getPassword());
@@ -94,53 +94,53 @@ public class AuthorizationController extends BaseController {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(authUser.getUsername(), password);
         LoginVO loginVO = userService.loginByAuthenticationToken(authenticationToken, UserTypeEnum.PWD);
-        return ResultWrapper.ok(loginVO);
+        return R.ok(loginVO);
     }
 
     /**
      * <p>smslogin.</p>
      *
      * @param dto a {@link AuthUserSmsDto} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @AnonymousPostMapping(value = "/sms_login")
     @ApiOperation("短信登录授权")
     @LogRecord(value = "短信登录", category = LogCategoryType.MANAGER, type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false)
-    public ResultWrapper<LoginVO> smsLogin(@Validated @RequestBody AuthUserSmsDto dto) {
-        return ResultWrapper.ok(userService.smslogin(dto));
+    public R<LoginVO> smsLogin(@Validated @RequestBody AuthUserSmsDto dto) {
+        return R.ok(userService.smslogin(dto));
     }
 
     /**
      * <p>getSmsCode.</p>
      *
      * @param dto a {@link SmsCodeDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "认证-获取手机验证码")
     @AnonymousGetMapping(value = "/sms_code")
-    public ResultWrapper<String> getSmsCode(@Valid SmsCodeDTO dto) {
-        return ResultWrapper.ok(userService.getSmsCode(dto));
+    public R<String> getSmsCode(@Valid SmsCodeDTO dto) {
+        return R.ok(userService.getSmsCode(dto));
     }
 
     /**
      * <p>getUserInfo.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("获取用户信息")
     @GetMapping(value = "/info")
-    public ResultWrapper<UserDetails> getUserInfo() {
-        return ResultWrapper.ok(commonAPI.getUserDetails());
+    public R<UserDetails> getUserInfo() {
+        return R.ok(commonAPI.getUserDetails());
     }
 
     /**
      * <p>getCode.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("获取验证码")
     @AnonymousGetMapping(value = "/code")
-    public ResultWrapper<LoginCodeVO> getCode() {
+    public R<LoginCodeVO> getCode() {
         // 获取运算的结果
         SecurityLoginProperties loginProperties = properties.getLogin();
         Captcha captcha = loginProperties.getCaptcha();
@@ -156,18 +156,18 @@ public class AuthorizationController extends BaseController {
         redisService.stringSetString(uuid, captchaValue, loginProperties.getLoginCode().getExpiration());
         // 验证码信息
         LoginCodeVO loginCodeVO = new LoginCodeVO(captcha.toBase64(), uuid);
-        return ResultWrapper.ok(loginCodeVO);
+        return R.ok(loginCodeVO);
     }
 
     /**
      * <p>logout.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("退出登录")
     @AnonymousDeleteMapping(value = "/logout")
-    public ResultWrapper logout() {
+    public R logout() {
         commonAPI.logoutOnlineUser(tokenProvider.resolveToken());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

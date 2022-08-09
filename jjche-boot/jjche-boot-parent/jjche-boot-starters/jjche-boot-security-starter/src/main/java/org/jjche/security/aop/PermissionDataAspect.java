@@ -22,7 +22,7 @@ import org.jjche.common.permission.DataPermissionFieldMetaSetter;
 import org.jjche.common.permission.IDataPermissionFieldUserAuthorityHelper;
 import org.jjche.common.pojo.DataScope;
 import org.jjche.common.vo.DataPermissionFieldResultVO;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.security.permission.field.DataPermissionFieldResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,7 +152,7 @@ public class PermissionDataAspect {
 
         //获取泛型
         // 1层，如DataPermissionFieldResult<StudentVO>
-        // 2层，如ResultWrapper<MyPage<StudentVO>>
+        // 2层，如R<MyPage<StudentVO>>
         Type returnType = this.getTypeArgumentVO(method.getGenericReturnType());
         Class returnClass = TypeUtil.getClass(returnType);
 
@@ -168,12 +168,12 @@ public class PermissionDataAspect {
         if (pd.fieldReturn() && ObjectUtil.isNotEmpty(object)) {
             if (object != null) {
                 Object newObject = null;
-                boolean isResultWrapper = ClassUtil.isAssignable(ResultWrapper.class, object.getClass());
+                boolean isR = ClassUtil.isAssignable(R.class, object.getClass());
                 boolean isDataPermissionFieldResult = ClassUtil.isAssignable(DataPermissionFieldResult.class, object.getClass());
                 //控制器
-                if (isResultWrapper) {
-                    ResultWrapper resultWrapper = (ResultWrapper) object;
-                    newObject = resultWrapper.getData();
+                if (isR) {
+                    R R = (R) object;
+                    newObject = R.getData();
                 } else if (isDataPermissionFieldResult) {
                     newObject = object;
                 }

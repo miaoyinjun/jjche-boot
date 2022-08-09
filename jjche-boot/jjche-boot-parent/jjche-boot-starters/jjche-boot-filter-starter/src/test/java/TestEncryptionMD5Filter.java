@@ -5,7 +5,7 @@
 //import controller.TestFilterController;
 //import org.jjche.common.constant.FilterEncConstant;
 //import org.jjche.common.enums.FilterEncEnum;
-//import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
+//import org.jjche.common.wrapper.enums.RCodeEnum;
 //import org.jjche.filter.property.FilterEncApiProperties;
 //import org.jjche.filter.util.EncUtil;
 //import org.junit.jupiter.api.Test;
@@ -96,7 +96,7 @@
 //        assertEquals(responseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
 //        body = responseEntity.getBody();
 //        map = JSONUtil.toBean(body.toString(), Map.class);
-//        assertEquals(map.get("message"), ResultWrapperCodeEnum.REQUEST_TIMEOUT.getMsg());
+//        assertEquals(map.get("message"), RCodeEnum.REQUEST_TIMEOUT.getMsg());
 //
 //        /** appId错误验证*/
 //        timestamp = String.valueOf(System.currentTimeMillis());
@@ -123,7 +123,7 @@
 //        assertEquals(responseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
 //        body = responseEntity.getBody();
 //        map = JSONUtil.toBean(body.toString(), Map.class);
-//        assertEquals(map.get("message"), ResultWrapperCodeEnum.SIGN_ERROR.getMsg());
+//        assertEquals(map.get("message"), RCodeEnum.SIGN_ERROR.getMsg());
 //
 //        String appKey = "11";
 //        /** 根据参数排序后拼接为字符串 */

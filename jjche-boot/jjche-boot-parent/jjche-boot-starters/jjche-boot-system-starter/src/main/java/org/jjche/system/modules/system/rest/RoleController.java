@@ -13,7 +13,7 @@ import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.pojo.DataScope;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.SecurityUtil;
@@ -56,13 +56,13 @@ public class RoleController extends BaseController {
      * <p>query.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("获取单个role")
     @GetMapping(value = "/{id}")
     @PreAuthorize("@el.check('roles:list')")
-    public ResultWrapper<RoleDTO> query(@PathVariable Long id) {
-        return ResultWrapper.ok(roleService.findById(id));
+    public R<RoleDTO> query(@PathVariable Long id) {
+        return R.ok(roleService.findById(id));
     }
 
     /**
@@ -82,13 +82,13 @@ public class RoleController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("返回全部的角色")
     @GetMapping(value = "/all")
     @PreAuthorize("@el.check('roles:list','user:add','user:edit')")
-    public ResultWrapper<List<RoleDTO>> query() {
-        return ResultWrapper.ok(roleService.queryAll());
+    public R<List<RoleDTO>> query() {
+        return R.ok(roleService.queryAll());
     }
 
     /**
@@ -96,87 +96,87 @@ public class RoleController extends BaseController {
      *
      * @param criteria a {@link RoleQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询角色")
     @GetMapping
     @PreAuthorize("@el.check('roles:list')")
-    public ResultWrapper<MyPage<RoleDTO>> query(RoleQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(roleService.queryAll(criteria, pageable));
+    public R<MyPage<RoleDTO>> query(RoleQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(roleService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>getLevel.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("获取用户级别")
     @GetMapping(value = "/level")
-    public ResultWrapper<Object> getLevel() {
-        return ResultWrapper.ok(Dict.create().set("level", getLevels(null)));
+    public R<Object> getLevel() {
+        return R.ok(Dict.create().set("level", getLevels(null)));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link RoleDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(value = "新增", category = LogCategoryType.MANAGER, type = LogType.ADD, module = "角色")
     @ApiOperation("新增角色")
     @PostMapping
     @PreAuthorize("@el.check('roles:add')")
-    public ResultWrapper create(@Validated @RequestBody RoleDO resources) {
+    public R create(@Validated @RequestBody RoleDO resources) {
         Assert.isNull(resources.getId(), "A new " + ENTITY_NAME + " cannot already have an ID");
         getLevels(resources.getLevel());
         roleService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link RoleDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(value = "修改", category = LogCategoryType.MANAGER, type = LogType.UPDATE, module = "角色")
     @ApiOperation("修改角色")
     @PutMapping
     @PreAuthorize("@el.check('roles:edit')")
-    public ResultWrapper update(@Validated @RequestBody RoleDO resources) {
+    public R update(@Validated @RequestBody RoleDO resources) {
         getLevels(resources.getLevel());
         roleService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>updateMenu.</p>
      *
      * @param resources a {@link RoleDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(value = "修改角色菜单", category = LogCategoryType.MANAGER, type = LogType.UPDATE, module = "角色")
     @ApiOperation("修改角色菜单")
     @PutMapping(value = "/menu")
     @PreAuthorize("@el.check('roles:edit')")
-    public ResultWrapper updateMenu(@RequestBody RoleDO resources) {
+    public R updateMenu(@RequestBody RoleDO resources) {
         RoleDTO role = roleService.findById(resources.getId());
         getLevels(role.getLevel());
         roleService.updateMenu(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(value = "删除", category = LogCategoryType.MANAGER, type = LogType.DELETE, module = "角色")
     @ApiOperation("删除角色")
     @DeleteMapping
     @PreAuthorize("@el.check('roles:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         for (Long id : ids) {
             RoleDTO role = roleService.findById(id);
             getLevels(role.getLevel());
@@ -184,7 +184,7 @@ public class RoleController extends BaseController {
         // 验证是否被用户关联
         roleService.verification(ids);
         roleService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -206,14 +206,14 @@ public class RoleController extends BaseController {
      *
      * @param roleId   角色id.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询下属用户")
     @GetMapping("/users")
     @PreAuthorize("@el.check('roles:edit')")
     @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
-    public ResultWrapper<MyPage<UserVO>> listByRole(PageParam pageable, @RequestParam Long roleId, @RequestParam(required = false) String blurry) {
-        return ResultWrapper.ok(userRoleService.listUserById(pageable, roleId, blurry));
+    public R<MyPage<UserVO>> listByRole(PageParam pageable, @RequestParam Long roleId, @RequestParam(required = false) String blurry) {
+        return R.ok(userRoleService.listUserById(pageable, roleId, blurry));
     }
 
     /**
@@ -221,31 +221,31 @@ public class RoleController extends BaseController {
      *
      * @param roleId   角色id.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询非下属用户")
     @GetMapping("/not/users")
     @PreAuthorize("@el.check('roles:edit')")
     @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
-    public ResultWrapper<MyPage<UserVO>> listNotByRole(PageParam pageable, @RequestParam Long roleId, @RequestParam(required = false) String blurry) {
-        return ResultWrapper.ok(userRoleService.listNotUserById(pageable, roleId, blurry));
+    public R<MyPage<UserVO>> listNotByRole(PageParam pageable, @RequestParam Long roleId, @RequestParam(required = false) String blurry) {
+        return R.ok(userRoleService.listNotUserById(pageable, roleId, blurry));
     }
 
     @LogRecord(value = "删除下属用户", category = LogCategoryType.MANAGER, type = LogType.DELETE, module = "角色")
     @ApiOperation("删除下属用户")
     @DeleteMapping("/users")
     @PreAuthorize("@el.check('roles:del')")
-    public ResultWrapper deleteUsers(@Valid @RequestBody List<UserRoleDTO> list) {
+    public R deleteUsers(@Valid @RequestBody List<UserRoleDTO> list) {
         userRoleService.deleteUsers(list);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @LogRecord(value = "添加下属用户", category = LogCategoryType.MANAGER, type = LogType.ADD, module = "角色")
     @ApiOperation("添加下属用户")
     @PostMapping("/users")
     @PreAuthorize("@el.check('roles:del')")
-    public ResultWrapper addUsers(@Valid @RequestBody List<UserRoleDTO> list) {
+    public R addUsers(@Valid @RequestBody List<UserRoleDTO> list) {
         userRoleService.addUsers(list);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

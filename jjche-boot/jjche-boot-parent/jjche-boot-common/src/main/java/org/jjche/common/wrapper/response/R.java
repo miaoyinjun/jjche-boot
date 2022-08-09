@@ -2,9 +2,9 @@ package org.jjche.common.wrapper.response;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.jjche.common.pojo.AbstractResultWrapper;
+import org.jjche.common.pojo.AbstractR;
 import org.jjche.common.wrapper.constant.HttpStatusConstant;
-import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
+import org.jjche.common.wrapper.enums.RCodeEnum;
 
 import java.io.Serializable;
 
@@ -19,7 +19,7 @@ import java.io.Serializable;
  * @since 2020-07-09
  */
 @Data
-public class ResultWrapper<T> extends AbstractResultWrapper implements Serializable {
+public class R<T> extends AbstractR implements Serializable {
 
     /**
      * 编号
@@ -48,8 +48,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
     /**
      * Instantiates a new wrapper. default code=200
      */
-    public ResultWrapper() {
-        this(ResultWrapperCodeEnum.SUCCESS.getCode(), ResultWrapperCodeEnum.SUCCESS.getMsg());
+    public R() {
+        this(RCodeEnum.SUCCESS.getCode(), RCodeEnum.SUCCESS.getMsg());
     }
 
     /**
@@ -58,7 +58,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param code    the code
      * @param message the message
      */
-    ResultWrapper(int code, String message) {
+    R(int code, String message) {
         this(code, message, null);
     }
 
@@ -69,7 +69,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param message the message
      * @param result  the result
      */
-    ResultWrapper(int code, String message, T result) {
+    R(int code, String message, T result) {
         super();
         this.code(code).message(message).data(result);
     }
@@ -82,8 +82,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param message  the message
      * @return the wrapper
      */
-    private static <E> ResultWrapper<E> wrap(ResultWrapperCodeEnum codeEnum, String message) {
-        return new ResultWrapper(codeEnum.getCode(), message);
+    private static <E> R<E> wrap(RCodeEnum codeEnum, String message) {
+        return new R(codeEnum.getCode(), message);
     }
 
     /**
@@ -93,7 +93,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param codeEnum the codeEnum
      * @return the wrapper
      */
-    private static <E> ResultWrapper<E> wrap(ResultWrapperCodeEnum codeEnum) {
+    private static <E> R<E> wrap(RCodeEnum codeEnum) {
         return wrap(codeEnum, codeEnum.getMsg());
     }
 
@@ -107,8 +107,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> error() {
-        return wrap(ResultWrapperCodeEnum.UNKNOWN_ERROR);
+    public static <E> R<E> error() {
+        return wrap(RCodeEnum.UNKNOWN_ERROR);
     }
 
     /**
@@ -122,8 +122,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> validError(String msg) {
-        return wrap(ResultWrapperCodeEnum.VALID_ERROR, msg);
+    public static <E> R<E> validError(String msg) {
+        return wrap(RCodeEnum.VALID_ERROR, msg);
     }
 
     /**
@@ -137,8 +137,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> parameterError(String msg) {
-        return wrap(ResultWrapperCodeEnum.PARAMETER_ERROR, msg);
+    public static <E> R<E> parameterError(String msg) {
+        return wrap(RCodeEnum.PARAMETER_ERROR, msg);
     }
 
     /**
@@ -151,8 +151,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> requestTimeout() {
-        return wrap(ResultWrapperCodeEnum.REQUEST_TIMEOUT);
+    public static <E> R<E> requestTimeout() {
+        return wrap(RCodeEnum.REQUEST_TIMEOUT);
     }
 
     /**
@@ -165,8 +165,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> signError() {
-        return wrap(ResultWrapperCodeEnum.SIGN_ERROR);
+    public static <E> R<E> signError() {
+        return wrap(RCodeEnum.SIGN_ERROR);
     }
 
     /**
@@ -179,8 +179,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> requestLimit() {
-        return wrap(ResultWrapperCodeEnum.REQUEST_LIMIT);
+    public static <E> R<E> requestLimit() {
+        return wrap(RCodeEnum.REQUEST_LIMIT);
     }
 
     /**
@@ -193,8 +193,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> ok() {
-        return new ResultWrapper<>();
+    public static <E> R<E> ok() {
+        return new R<>();
     }
 
     /**
@@ -208,8 +208,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> ok(E o) {
-        return new ResultWrapper<>(ResultWrapperCodeEnum.SUCCESS.getCode(), ResultWrapperCodeEnum.SUCCESS.getMsg(), o);
+    public static <E> R<E> ok(E o) {
+        return new R<>(RCodeEnum.SUCCESS.getCode(), RCodeEnum.SUCCESS.getMsg(), o);
     }
 
     /**
@@ -222,8 +222,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> userError() {
-        return wrap(ResultWrapperCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS);
+    public static <E> R<E> userError() {
+        return wrap(RCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS);
     }
 
     /**
@@ -236,8 +236,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> userDisabledError() {
-        return wrap(ResultWrapperCodeEnum.USER_DISABLED);
+    public static <E> R<E> userDisabledError() {
+        return wrap(RCodeEnum.USER_DISABLED);
     }
 
     /**
@@ -250,8 +250,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> userLockedError() {
-        return wrap(ResultWrapperCodeEnum.USER_LOCKED);
+    public static <E> R<E> userLockedError() {
+        return wrap(RCodeEnum.USER_LOCKED);
     }
 
     /**
@@ -264,8 +264,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> userNameExpiredError() {
-        return wrap(ResultWrapperCodeEnum.USERNAME_EXPIRED);
+    public static <E> R<E> userNameExpiredError() {
+        return wrap(RCodeEnum.USERNAME_EXPIRED);
     }
 
     /**
@@ -278,8 +278,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> userCredentialsExpiredError() {
-        return wrap(ResultWrapperCodeEnum.USER_CREDENTIALS_EXPIRED);
+    public static <E> R<E> userCredentialsExpiredError() {
+        return wrap(RCodeEnum.USER_CREDENTIALS_EXPIRED);
     }
 
     /**
@@ -292,8 +292,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> tokenExpiredError() {
-        return wrap(ResultWrapperCodeEnum.TOKEN_EXPIRED);
+    public static <E> R<E> tokenExpiredError() {
+        return wrap(RCodeEnum.TOKEN_EXPIRED);
     }
 
     /**
@@ -306,8 +306,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> tokenError() {
-        return wrap(ResultWrapperCodeEnum.TOKEN_ERROR);
+    public static <E> R<E> tokenError() {
+        return wrap(RCodeEnum.TOKEN_ERROR);
     }
 
     /**
@@ -320,8 +320,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> userAccessDeniedError() {
-        return wrap(ResultWrapperCodeEnum.USER_ACCESS_DENIED);
+    public static <E> R<E> userAccessDeniedError() {
+        return wrap(RCodeEnum.USER_ACCESS_DENIED);
     }
 
     /**
@@ -332,8 +332,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param <E> a E object.
      * @return /
      */
-    public static <E> ResultWrapper<E> tokenNotFoundError() {
-        return wrap(ResultWrapperCodeEnum.TOKEN_NOT_FOUND);
+    public static <E> R<E> tokenNotFoundError() {
+        return wrap(RCodeEnum.TOKEN_NOT_FOUND);
     }
 
     /**
@@ -343,8 +343,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      *
      * @return /
      */
-    public static <E> ResultWrapper<E> whiteIpError() {
-        return wrap(ResultWrapperCodeEnum.WHITE_IP);
+    public static <E> R<E> whiteIpError() {
+        return wrap(RCodeEnum.WHITE_IP);
     }
 
     /**
@@ -353,7 +353,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param code the new 编号
      * @return the wrapper
      */
-    private ResultWrapper<T> code(int code) {
+    private R<T> code(int code) {
         this.setCode(code);
         return this;
     }
@@ -364,7 +364,7 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param message the new 信息
      * @return the wrapper
      */
-    private ResultWrapper<T> message(String message) {
+    private R<T> message(String message) {
         this.setMessage(message);
         return this;
     }
@@ -375,17 +375,17 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @param data the new 结果数据
      * @return the wrapper
      */
-    public ResultWrapper<T> data(T data) {
+    public R<T> data(T data) {
         this.setData(data);
         return this;
     }
 
     /**
-     * 判断是否成功： 依据 ResultWrapper.SUCCESS_CODE == this.code
+     * 判断是否成功： 依据 R.SUCCESS_CODE == this.code
      *
      * @return code =200,true;否则 false.
      */
     public boolean success() {
-        return ResultWrapperCodeEnum.SUCCESS.getCode() == this.code;
+        return RCodeEnum.SUCCESS.getCode() == this.code;
     }
 }

@@ -3,7 +3,7 @@ package org.jjche.cloud.config;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
-import org.jjche.core.exception.FeignResultWrapperException;
+import org.jjche.core.exception.FeignRException;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 
 /**
  * <p>
- * ResultWrapper捕捉feign异常
+ * R捕捉feign异常
  * </p>
  *
  * @author miaoyj
@@ -19,7 +19,7 @@ import java.nio.charset.Charset;
  * @since 2021-06-10
  */
 @Configuration
-public class FeignErrorDecoderResultWrapper implements ErrorDecoder {
+public class FeignErrorDecoderR implements ErrorDecoder {
 
     /**
      * {@inheritDoc}
@@ -28,7 +28,7 @@ public class FeignErrorDecoderResultWrapper implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
         try {
             String body = Util.toString(response.body().asReader(Charset.defaultCharset()));
-            return new FeignResultWrapperException(body);
+            return new FeignRException(body);
         } catch (IOException e) {
         }
         return decode(methodKey, response);

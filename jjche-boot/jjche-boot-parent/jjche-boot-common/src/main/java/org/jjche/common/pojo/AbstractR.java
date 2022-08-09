@@ -12,7 +12,7 @@ import lombok.Data;
  * @since 2021-04-28
  */
 @Data
-public abstract class AbstractResultWrapper {
+public abstract class AbstractR {
     private int code;
     private String message;
 }
