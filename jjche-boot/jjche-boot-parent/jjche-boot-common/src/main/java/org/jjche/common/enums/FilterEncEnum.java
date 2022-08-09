@@ -15,19 +15,19 @@ public enum FilterEncEnum {
     /**
      * 应用标识
      */
-    APP_ID(FilterEncConstant.APP_ID, FilterEncConstant.APP_ID_DESC, "参数appId不能为空"),
+    APP_ID(FilterEncConstant.APP_ID, FilterEncConstant.APP_ID_DESC, "appId无效"),
     /**
      * Unix时间戳(毫秒)
      */
-    TIMESTAMP(FilterEncConstant.TIMESTAMP, FilterEncConstant.TIMESTAMP_DESC, "参数timestamp不能为空"),
+    TIMESTAMP(FilterEncConstant.TIMESTAMP, FilterEncConstant.TIMESTAMP_DESC, "timestamp无效"),
     /**
      * 随机数
      */
-    NONCE(FilterEncConstant.NONCE, FilterEncConstant.NONCE_DESC, "参数nonce不能为空"),
+    NONCE(FilterEncConstant.NONCE, FilterEncConstant.NONCE_DESC, "nonce无效"),
     /**
      * 签名
      */
-    SIGN(FilterEncConstant.SIGN, FilterEncConstant.SIGN_DESC, "参数sign不能为空"),
+    SIGN(FilterEncConstant.SIGN, FilterEncConstant.SIGN_DESC, "sign无效"),
     ;
     /**
      * 标识

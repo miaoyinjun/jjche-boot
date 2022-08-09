@@ -28,8 +28,8 @@ public class ResultWrapperBadRequest<T> extends ResultWrapper<T> {
             + ":" + HttpStatusConstant.MSG_REQUEST_TIMEOUT + ";"
             + HttpStatusConstant.CODE_SIGN_ERROR
             + ":" + HttpStatusConstant.MSG_SIGN_ERROR + ";"
-            + HttpStatusConstant.CODE_REPEAT_SUBMIT
-            + ":" + HttpStatusConstant.MSG_REPEAT_SUBMIT + ";"
+            + HttpStatusConstant.CODE_REQUEST_LIMIT
+            + ":" + HttpStatusConstant.MSG_REQUEST_LIMIT + ";"
 
             + HttpStatusConstant.CODE_USERNAME_NOTFOUND_OR_BAD_CREDENTIALS
             + ":" + HttpStatusConstant.MSG_USERNAME_NOTFOUND_OR_BAD_CREDENTIALS + ";"

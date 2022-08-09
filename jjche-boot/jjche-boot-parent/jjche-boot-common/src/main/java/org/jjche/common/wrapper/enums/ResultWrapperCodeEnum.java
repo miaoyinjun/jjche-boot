@@ -39,7 +39,7 @@ public enum ResultWrapperCodeEnum {
     /**
      * 请不要频繁操作
      */
-    REPEAT_SUBMIT(HttpStatusConstant.CODE_REPEAT_SUBMIT, HttpStatusConstant.MSG_REPEAT_SUBMIT),
+    REQUEST_LIMIT(HttpStatusConstant.CODE_REQUEST_LIMIT, HttpStatusConstant.MSG_REQUEST_LIMIT),
     /**
      * 未授权
      */
@@ -76,6 +76,10 @@ public enum ResultWrapperCodeEnum {
      * 找不到认证信息
      */
     TOKEN_NOT_FOUND(HttpStatusConstant.CODE_TOKEN_NOT_FOUND, HttpStatusConstant.MSG_TOKEN_NOT_FOUND),
+    /**
+     * 白名单限制
+     */
+    WHITE_IP(HttpStatusConstant.CODE_WHITE_IP, HttpStatusConstant.MSG_CODE_WHITE_IP),
     ;
     /**
      * 代码

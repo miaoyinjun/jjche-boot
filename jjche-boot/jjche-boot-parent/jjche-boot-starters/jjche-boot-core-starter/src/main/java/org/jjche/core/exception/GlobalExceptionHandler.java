@@ -209,39 +209,6 @@ public class GlobalExceptionHandler {
 
     /**
      * <p>
-     * 请求超时
-     * </p>
-     *
-     * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
-     * @author miaoyj
-     * @since 2020-07-09
-     */
-    @ExceptionHandler({RequestTimeoutException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper requestTimeoutException(Exception e) {
-        return ResultWrapper.requestTimeout();
-    }
-
-    /**
-     * <p>
-     * 签名错误
-     * </p>
-     *
-     * @param e a {@link java.lang.Exception} object.
-     * @return a {@link ResultWrapper} object.
-     * @author miaoyj
-     * @since 2020-07-09
-     */
-    @ExceptionHandler({SignException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResultWrapper signException(Exception e) {
-        return ResultWrapper.signError();
-    }
-
-
-    /**
-     * <p>
      * 用户名或密码错误
      * </p>
      *
@@ -362,5 +329,65 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResultWrapper authenticationAccessDeniedException(Exception e) {
         return ResultWrapper.userAccessDeniedError();
+    }
+
+    /**
+     * <p>
+     * 请求超时
+     * </p>
+     *
+     * @param e a {@link java.lang.Exception} object.
+     * @return a {@link ResultWrapper} object.
+     * @author miaoyj
+     * @since 2020-07-09
+     */
+    @ExceptionHandler({RequestTimeoutException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResultWrapper requestTimeoutException(Exception e) {
+        return ResultWrapper.requestTimeout();
+    }
+
+    /**
+     * <p>
+     * 签名错误
+     * </p>
+     *
+     * @param e a {@link java.lang.Exception} object.
+     * @return a {@link ResultWrapper} object.
+     * @author miaoyj
+     * @since 2020-07-09
+     */
+    @ExceptionHandler({SignException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResultWrapper signException(Exception e) {
+        return ResultWrapper.signError();
+    }
+
+    /**
+     * <p>
+     * 白名单限制
+     * </p>
+     *
+     * @param e /
+     * @return /
+     */
+    @ExceptionHandler({WhiteIpException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResultWrapper whiteIpErrorException(Exception e) {
+        return ResultWrapper.whiteIpError();
+    }
+
+    /**
+     * <p>
+     * 不要频繁操作
+     * </p>
+     *
+     * @param e /
+     * @return /
+     */
+    @ExceptionHandler({RequestLimitException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResultWrapper requestLimitErrorException(Exception e) {
+        return ResultWrapper.requestLimit();
     }
 }

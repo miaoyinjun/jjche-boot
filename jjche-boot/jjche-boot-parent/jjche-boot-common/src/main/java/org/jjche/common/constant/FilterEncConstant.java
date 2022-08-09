@@ -10,14 +10,6 @@ package org.jjche.common.constant;
  * @since 2020-08-12
  */
 public interface FilterEncConstant {
-    /**
-     * 类型 {@value}
-     */
-    String TYPE_MD5 = "MD5";
-    /**
-     * 类型 {@value}
-     */
-    String TYPE_RSA = "RSA";
 
     /**
      * 应用标识 {@value}

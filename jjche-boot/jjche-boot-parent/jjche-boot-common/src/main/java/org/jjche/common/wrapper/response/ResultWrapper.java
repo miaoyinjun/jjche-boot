@@ -179,8 +179,8 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      * @author miaoyj
      * @since 2020-08-10
      */
-    public static <E> ResultWrapper<E> repeatSubmit() {
-        return wrap(ResultWrapperCodeEnum.REPEAT_SUBMIT);
+    public static <E> ResultWrapper<E> requestLimit() {
+        return wrap(ResultWrapperCodeEnum.REQUEST_LIMIT);
     }
 
     /**
@@ -334,6 +334,17 @@ public class ResultWrapper<T> extends AbstractResultWrapper implements Serializa
      */
     public static <E> ResultWrapper<E> tokenNotFoundError() {
         return wrap(ResultWrapperCodeEnum.TOKEN_NOT_FOUND);
+    }
+
+    /**
+     * <p>
+     * 白名单限制
+     * </p>
+     *
+     * @return /
+     */
+    public static <E> ResultWrapper<E> whiteIpError() {
+        return wrap(ResultWrapperCodeEnum.WHITE_IP);
     }
 
     /**

@@ -70,7 +70,7 @@ public interface HttpStatusConstant {
     /**
      * 请求超时 {@value}
      */
-    int CODE_REQUEST_TIMEOUT = 4003;
+    int CODE_REQUEST_TIMEOUT = 4033;
 
     /**
      * 请求超时 {@value}
@@ -80,22 +80,22 @@ public interface HttpStatusConstant {
     /**
      * 签名错误 {@value}
      */
-    int CODE_SIGN_ERROR = 4004;
+    int CODE_SIGN_ERROR = 4032;
 
     /**
      * 签名错误 {@value}
      */
-    String MSG_SIGN_ERROR = "签名错误";
+    String MSG_SIGN_ERROR = "签名无效";
 
     /**
      * 请不要频繁操作 {@value}
      */
-    int CODE_REPEAT_SUBMIT = 4005;
+    int CODE_REQUEST_LIMIT = 4035;
 
     /**
      * 请不要频繁操作 {@value}
      */
-    String MSG_REPEAT_SUBMIT = "请不要频繁操作";
+    String MSG_REQUEST_LIMIT = "请不要频繁操作";
 
     /**
      * 未授权 {@value}
@@ -128,6 +128,16 @@ public interface HttpStatusConstant {
     String MSG_USER_ACCESS_DENIED = "不允许访问";
 
     /**
+     * 白名单限制 {@value}
+     */
+    int CODE_WHITE_IP = 4034;
+
+    /**
+     * 白名单限制 {@value}
+     */
+    String MSG_CODE_WHITE_IP = "白名单限制";
+
+    /**
      * 找不到认证信息 {@value}
      */
     int CODE_TOKEN_NOT_FOUND = 4013;
@@ -140,7 +150,7 @@ public interface HttpStatusConstant {
     /**
      * 用户名或密码错误 {@value}
      */
-    int CODE_USERNAME_NOTFOUND_OR_BAD_CREDENTIALS = 4006;
+    int CODE_USERNAME_NOTFOUND_OR_BAD_CREDENTIALS = 4003;
 
     /**
      * 用户名或密码错误 {@value}

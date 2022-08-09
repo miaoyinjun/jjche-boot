@@ -1,21 +1,28 @@
 package org.jjche.filter.enc.api;
 
+import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import cn.hutool.json.JSONUtil;
+import lombok.RequiredArgsConstructor;
+import org.jjche.cache.service.RedisService;
 import org.jjche.common.annotation.HttpResDataEncrypt;
+import org.jjche.common.constant.CacheKey;
+import org.jjche.common.enums.FilterEncEnum;
+import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.common.wrapper.response.ResultWrapper;
 import org.jjche.core.annotation.controller.OutRestController;
-import org.jjche.filter.enc.field.EncryptFieldUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -27,9 +34,9 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2022-08-04
  */
 @RestControllerAdvice(annotations = OutRestController.class)
+@RequiredArgsConstructor
 public class EncOutResponseBody implements ResponseBodyAdvice<ResultWrapper> {
-    @Autowired
-    private EncryptFieldUtil encryptFieldUtil;
+    private final RedisService redisService;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
@@ -48,15 +55,19 @@ public class EncOutResponseBody implements ResponseBodyAdvice<ResultWrapper> {
                                          ServerHttpRequest serverHttpRequest,
                                          ServerHttpResponse serverHttpResponse) {
         // 转换对象
-//        HttpServletRequest request = ((ServletServerHttpRequest) serverHttpRequest).getServletRequest();
+        HttpServletRequest request = ((ServletServerHttpRequest) serverHttpRequest).getServletRequest();
         HttpServletResponse response = ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
 
         int resCode = response.getStatus();
         //200时才做加密处理
         if (resCode == HttpStatus.OK.value()) {
             if (restResult.success()) {
+                String appIdValue = request.getHeader(FilterEncEnum.APP_ID.getKey());
+                SecurityAppKeyBasicVO appSecretVO = redisService.objectGetObject(CacheKey.SECURITY_APP_ID + appIdValue, SecurityAppKeyBasicVO.class);
+                String encKey = appSecretVO.getEncKey();
+                SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, encKey.getBytes());
                 String dataStr = JSONUtil.toJsonStr(restResult.getData());
-                dataStr = encryptFieldUtil.encryptStr(dataStr);
+                dataStr = aes.encryptHex(dataStr);
                 restResult.setData(dataStr);
             }
         }
