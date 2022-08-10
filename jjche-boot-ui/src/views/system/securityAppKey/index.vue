@@ -45,15 +45,15 @@
           <el-form-item label="描述">
             <el-input v-model="form.comment" style="width: 370px" />
           </el-form-item>
-          <el-form-item label="应用id" prop="appId">
+          <el-form-item label="appId" prop="appId">
             <el-input v-model="form.appId" style="width: 370px" />
           </el-form-item>
-          <el-form-item label="应用密钥" prop="appSecret">
+          <el-form-item label="appSecret" prop="appSecret">
             <el-input v-model="form.appSecret" style="width: 370px">
               <el-button slot="append" icon="el-icon-refresh-right" @click="refreshAppSecret" />
             </el-input>
           </el-form-item>
-          <el-form-item label="加密密钥" prop="encKey">
+          <el-form-item label="aesKey" prop="encKey">
             <el-input v-model="form.encKey" style="width: 370px">
               <el-button slot="append" icon="el-icon-refresh-right" @click="refreshEncKey" />
             </el-input>
@@ -90,7 +90,7 @@
       >
         <el-table-column type="selection" width="55" />
         <el-table-column prop="name" label="名称" />
-        <el-table-column prop="appId" label="应用id" />
+        <el-table-column prop="appId" label="appId" />
         <el-table-column prop="enabled" label="状态">
           <template slot-scope="scope">
             <el-switch
@@ -167,9 +167,9 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '名称不能为空', trigger: 'blur' }],
-        appId: [{ required: true, message: '应用id不能为空', trigger: 'blur' }],
-        appSecret: [{ required: true, message: '应用密钥不能为空', trigger: 'blur' }],
-        encKey: [{ required: true, message: '加密密钥不能为空', trigger: 'blur' }],
+        appId: [{ required: true, message: 'appId不能为空', trigger: 'blur' }],
+        appSecret: [{ required: true, message: 'appSecret不能为空', trigger: 'blur' }],
+        encKey: [{ required: true, message: 'aesKey不能为空', trigger: 'blur' }],
         urls: [{ required: true, message: '地址不能为空', trigger: 'blur' }]
       }
     }
