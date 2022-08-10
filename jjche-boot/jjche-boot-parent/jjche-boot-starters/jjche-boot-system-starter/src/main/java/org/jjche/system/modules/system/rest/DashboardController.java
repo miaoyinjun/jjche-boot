@@ -3,7 +3,7 @@ package org.jjche.system.modules.system.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.system.modules.system.api.vo.DashboardChartVO;
@@ -30,37 +30,37 @@ public class DashboardController extends BaseController {
     /**
      * <p>pvIncr.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("首页-记录pv")
     @PostMapping("/pvIncr")
-    public ResultWrapper pvIncr() {
+    public R pvIncr() {
         dashboardService.pvIncr();
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>query.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("首页-统计")
     @GetMapping("/count")
     @PreAuthorize("@el.check('dashboard:list')")
-    public ResultWrapper<DashboardCountVO> count() {
-        return ResultWrapper.ok(dashboardService.count());
+    public R<DashboardCountVO> count() {
+        return R.ok(dashboardService.count());
     }
 
 
     /**
      * <p>chart.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("首页-图表")
     @GetMapping("/chart")
     @PreAuthorize("@el.check('dashboard:list')")
-    public ResultWrapper<DashboardChartVO> chart() {
-        return ResultWrapper.ok(dashboardService.chart());
+    public R<DashboardChartVO> chart() {
+        return R.ok(dashboardService.chart());
     }
 }

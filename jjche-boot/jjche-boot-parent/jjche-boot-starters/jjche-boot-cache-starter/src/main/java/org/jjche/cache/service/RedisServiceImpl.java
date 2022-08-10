@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -459,9 +460,9 @@ public class RedisServiceImpl implements RedisService {
      * {@inheritDoc}
      */
     @Override
-    public void delByKeys(String prefix, Set<Long> ids) {
+    public void delByKeys(String prefix, Set ids) {
         Set<String> keys = new HashSet<>();
-        for (Long id : ids) {
+        for (Object id : ids) {
             CollUtil.addAll(keys, new StringBuffer(prefix).append(id).toString());
         }
         this.delete(keys);
@@ -474,5 +475,10 @@ public class RedisServiceImpl implements RedisService {
     public boolean delByKeyPrefix(String prefix) {
         Set<String> keys = this.keys(prefix);
         return this.delete(keys);
+    }
+
+    @Override
+    public <T> T execute(RedisScript<T> script, List keys, Object... args) {
+        return (T) redisTemplate.execute(script, keys, args);
     }
 }

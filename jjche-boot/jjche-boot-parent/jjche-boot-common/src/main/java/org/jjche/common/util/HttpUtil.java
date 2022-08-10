@@ -132,12 +132,15 @@ public class HttpUtil extends cn.hutool.http.HttpUtil {
      * @return a {@link java.lang.String} object.
      */
     public static String getLocalCityInfo(String ip) {
-        IpInfo ipInfo = IP_SEARCHER.memorySearch(ip);
-        if (ipInfo != null) {
-            return ipInfo.getAddress();
+        try {
+            IpInfo ipInfo = IP_SEARCHER.memorySearch(ip);
+            if (ipInfo != null) {
+                return ipInfo.getAddress();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
-
     }
 
     /**

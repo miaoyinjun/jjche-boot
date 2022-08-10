@@ -154,7 +154,7 @@ public class GenUtil {
         templates = getFrontTemplateNames();
         for (String templateName : templates) {
             Template template = engine.getTemplate("generator/front/" + templateName + ".ftl");
-            String filePath = getFrontFilePath(templateName, genConfig.getModuleName(), genMap.get("changeClassName").toString(), tempPath);
+            String filePath = getFrontFilePath(templateName, genConfig.getModuleName(), genMap.get("tableName").toString(), tempPath);
             assert filePath != null;
             File file = new File(filePath);
             // 如果非覆盖生成
@@ -202,7 +202,7 @@ public class GenUtil {
         templates = getFrontTemplateNames();
         for (String templateName : templates) {
             Template template = engine.getTemplate("generator/front/" + templateName + ".ftl");
-            String filePath = getFrontFilePath(templateName, genConfig.getModuleName(), genMap.get("changeClassName").toString(), userDir);
+            String filePath = getFrontFilePath(templateName, genConfig.getModuleName(), genMap.get("tableName").toString(), userDir);
 
             assert filePath != null;
             File file = new File(filePath);

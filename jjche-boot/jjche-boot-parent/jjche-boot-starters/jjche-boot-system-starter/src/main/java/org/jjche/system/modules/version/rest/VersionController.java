@@ -9,7 +9,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -42,7 +42,7 @@ public class VersionController extends BaseController {
      * <p>create.</p>
      *
      * @param dto a {@link VersionDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping
     @LogRecord(
@@ -50,16 +50,16 @@ public class VersionController extends BaseController {
             type = LogType.ADD, module = "版本"
     )
     @PreAuthorize("@el.check('version:add')")
-    public ResultWrapper create(@Validated @RequestBody VersionDTO dto) {
+    public R create(@Validated @RequestBody VersionDTO dto) {
         versionService.save(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param dto a {@link VersionDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PutMapping
     @LogRecord(
@@ -67,22 +67,22 @@ public class VersionController extends BaseController {
             type = LogType.UPDATE, module = "版本"
     )
     @PreAuthorize("@el.check('version:edit')")
-    public ResultWrapper update(@Validated(VersionDTO.VersionDtoUpdateValid.class)
-                                @RequestBody VersionDTO dto) {
+    public R update(@Validated(VersionDTO.VersionDtoUpdateValid.class)
+                    @RequestBody VersionDTO dto) {
         versionService.update(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>getById.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping("/{id}")
     @PreAuthorize("@el.check('version:list')")
-    public ResultWrapper<VersionVO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(this.versionService.getVoById(id));
+    public R<VersionVO> getById(@PathVariable Long id) {
+        return R.ok(this.versionService.getVoById(id));
     }
 
     /**
@@ -90,19 +90,19 @@ public class VersionController extends BaseController {
      *
      * @param query a {@link VersionQueryCriteriaDTO} object.
      * @param page  page
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
     @PreAuthorize("@el.check('version:list')")
-    public ResultWrapper<MyPage<VersionVO>> pageQuery(VersionQueryCriteriaDTO query, PageParam page) {
-        return ResultWrapper.ok(versionService.queryAll(query, page));
+    public R<MyPage<VersionVO>> pageQuery(VersionQueryCriteriaDTO query, PageParam page) {
+        return R.ok(versionService.queryAll(query, page));
     }
 
     /**
      * <p>activated.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PutMapping("/{id}")
     @CacheInvalidate(name = "versions:", key = "'latest'")
@@ -111,19 +111,19 @@ public class VersionController extends BaseController {
             type = LogType.UPDATE, module = "版本"
     )
     @PreAuthorize("@el.check('version:edit')")
-    public ResultWrapper activated(@PathVariable Long id) {
+    public R activated(@PathVariable Long id) {
         versionService.updateActivated(id);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>versionLatest.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @AnonymousGetMapping("/latest")
     @Cached(name = "versions:", key = "'latest'", cacheType = CacheType.REMOTE)
-    public ResultWrapper<String> versionLatest() {
-        return ResultWrapper.ok(versionService.versionLatest());
+    public R<String> versionLatest() {
+        return R.ok(versionService.versionLatest());
     }
 }

@@ -554,6 +554,10 @@ INSERT INTO `sys_menu` VALUES (125, 122, 0, 2, '版本删除', 'version_del', ''
 INSERT INTO `sys_menu` VALUES (126, 41, 0, 2, '强退', 'online_del', '', 5, '', '', b'0', b'0', b'0', 'online:del', 'admin', 'admin', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 INSERT INTO `sys_menu` VALUES (127, 7, 0, 2, '清空', 'log_del', '', 5, '', '', b'0', b'0', b'0', 'log:del', 'admin', 'admin', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 INSERT INTO `sys_menu` VALUES (128, NULL, 0, 0, '首页', 'Dashboard', 'Layout', 0, 'index', 'dashboard', b'0', b'0', b'0', 'dashboard:list', 'admin', 'admin', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_menu` VALUES (129, 1, 3, 1, '密钥管理', 'SecurityAppKeyMenu', 'system/securityAppKey/index', 11, 'anq', 'SecurityAppKey', b'0', b'0', b'0', 'securityAppKey:list', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
+INSERT INTO `sys_menu` VALUES (130, 129, 0, 2, '密钥新增', 'securityAppKey_add', '', 5, '', '', b'0', b'0', b'0', 'securityAppKey:add', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
+INSERT INTO `sys_menu` VALUES (131, 129, 0, 2, '密钥编辑', 'securityAppKey_edit', '', 5, '', '', b'0', b'0', b'0', 'securityAppKey:edit', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
+INSERT INTO `sys_menu` VALUES (132, 129, 0, 2, '密钥删除', 'securityAppKey_del', '', 5, '', '', b'0', b'0', b'0', 'securityAppKey:del', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
 COMMIT;
 
 -- ----------------------------
@@ -749,6 +753,10 @@ INSERT INTO `sys_roles_menus` VALUES (118, 2);
 INSERT INTO `sys_roles_menus` VALUES (121, 1);
 INSERT INTO `sys_roles_menus` VALUES (121, 2);
 INSERT INTO `sys_roles_menus` VALUES (122, 2);
+INSERT INTO `sys_roles_menus` VALUES (129, 1);
+INSERT INTO `sys_roles_menus` VALUES (130, 1);
+INSERT INTO `sys_roles_menus` VALUES (131, 1);
+INSERT INTO `sys_roles_menus` VALUES (132, 1);
 COMMIT;
 
 -- ----------------------------
@@ -968,6 +976,32 @@ CREATE TABLE `tool_qiniu_content` (
 -- Records of tool_qiniu_content
 -- ----------------------------
 BEGIN;
+
+CREATE TABLE `security_app_key` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `comment` varchar(255) DEFAULT NULL COMMENT '描述',
+  `app_id` varchar(255) NOT NULL COMMENT '应用id',
+  `app_secret` varchar(255) NOT NULL COMMENT '应用密钥',
+  `enc_key` varchar(255) NOT NULL COMMENT '加密密钥',
+  `enabled` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态：1启用、0禁用',
+  `urls` varchar(500) NOT NULL COMMENT '地址',
+  `white_ip` varchar(500) DEFAULT NULL COMMENT '白名单',
+  `limit_count` int(11) NOT NULL DEFAULT b'0' COMMENT '限速（N/秒）0不限制',
+  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
+  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_name` (`name`),
+  UNIQUE KEY `uk_app_id` (`app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用密钥';
+
+COMMIT;
+
+BEGIN;
+INSERT INTO `security_app_key` (`name`, `app_id`, `app_secret`, `urls`, `enc_key`, `enabled`)
+    VALUES ('测试', 'default_app_id', 'default_app_secret', '/api/demo/out/students/*','y5PtpclbYABqpF2x', 1);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

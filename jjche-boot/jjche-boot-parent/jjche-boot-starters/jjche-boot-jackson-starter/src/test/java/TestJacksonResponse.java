@@ -1,5 +1,5 @@
 import controller.CoreTestController;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,10 +22,10 @@ public class TestJacksonResponse {
     @Test
     public void Test1() {
         //使用这种方式转换restTemplate接收返回LinkedHashMap类型的对象
-        ParameterizedTypeReference<ResultWrapper<LoginVO>> typeRef = new ParameterizedTypeReference<ResultWrapper<LoginVO>>() {
+        ParameterizedTypeReference<R<LoginVO>> typeRef = new ParameterizedTypeReference<R<LoginVO>>() {
         };
 
-        ResponseEntity<ResultWrapper<LoginVO>> loginVOWrapper = this.restTemplate.exchange("http://localhost:" + port + "/http-convert/jackson", HttpMethod.GET, null, typeRef);
+        ResponseEntity<R<LoginVO>> loginVOWrapper = this.restTemplate.exchange("http://localhost:" + port + "/http-convert/jackson", HttpMethod.GET, null, typeRef);
         LoginVO loginVO = loginVOWrapper.getBody().getData();
         assertNotNull(loginVO);
         assertNotNull(loginVO.getName());

@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -44,36 +44,36 @@ public class DictDetailController extends BaseController {
      *
      * @param criteria a {@link DictDetailQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询字典详情")
     @GetMapping
-    public ResultWrapper<MyPage<DictDetailDTO>> query(DictDetailQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(dictDetailService.queryAll(criteria, pageable));
+    public R<MyPage<DictDetailDTO>> query(DictDetailQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(dictDetailService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>getDictDetailMaps.</p>
      *
      * @param dictName a {@link java.lang.String} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询多个字典详情")
     @GetMapping(value = "/map")
-    public ResultWrapper<Map<String, List<DictDetailDTO>>> getDictDetailMaps(@RequestParam String dictName) {
+    public R<Map<String, List<DictDetailDTO>>> getDictDetailMaps(@RequestParam String dictName) {
         String[] names = dictName.split("[,，]");
         Map<String, List<DictDetailDTO>> dictMap = new HashMap<>(16);
         for (String name : names) {
             dictMap.put(name, dictDetailService.getDictByName(name));
         }
-        return ResultWrapper.ok(dictMap);
+        return R.ok(dictMap);
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link DictDetailDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增字典详情", category = LogCategoryType.MANAGER,
@@ -82,17 +82,17 @@ public class DictDetailController extends BaseController {
     @ApiOperation("新增字典详情")
     @PostMapping
     @PreAuthorize("@el.check('dict:add')")
-    public ResultWrapper create(@Validated @RequestBody DictDetailDO resources) {
+    public R create(@Validated @RequestBody DictDetailDO resources) {
         Assert.isNull(resources.getId(), "A new " + ENTITY_NAME + " cannot already have an ID");
         dictDetailService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link DictDetailDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -101,16 +101,16 @@ public class DictDetailController extends BaseController {
     @ApiOperation("修改字典详情")
     @PutMapping
     @PreAuthorize("@el.check('dict:edit')")
-    public ResultWrapper update(@Validated @RequestBody DictDetailDO resources) {
+    public R update(@Validated @RequestBody DictDetailDO resources) {
         dictDetailService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除字典详情", category = LogCategoryType.MANAGER,
@@ -119,8 +119,8 @@ public class DictDetailController extends BaseController {
     @ApiOperation("删除字典详情")
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("@el.check('dict:del')")
-    public ResultWrapper delete(@PathVariable Long id) {
+    public R delete(@PathVariable Long id) {
         dictDetailService.delete(id);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

@@ -7,7 +7,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -56,20 +56,20 @@ public class DeployHistoryController extends BaseController {
      *
      * @param criteria a {@link DeployHistoryQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "查询部署历史")
     @GetMapping
     @PreAuthorize("@el.check('deployHistory:list')")
-    public ResultWrapper<MyPage<DeployHistoryDTO>> query(DeployHistoryQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(deployhistoryService.queryAll(criteria, pageable));
+    public R<MyPage<DeployHistoryDTO>> query(DeployHistoryQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(deployhistoryService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -78,8 +78,8 @@ public class DeployHistoryController extends BaseController {
     @ApiOperation(value = "删除部署历史")
     @DeleteMapping
     @PreAuthorize("@el.check('deployHistory:del')")
-    public ResultWrapper delete(@RequestBody Set<String> ids) {
+    public R delete(@RequestBody Set<String> ids) {
         deployhistoryService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

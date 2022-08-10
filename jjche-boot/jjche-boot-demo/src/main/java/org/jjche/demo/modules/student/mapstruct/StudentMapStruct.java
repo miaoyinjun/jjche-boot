@@ -27,7 +27,7 @@ public interface StudentMapStruct extends BaseMapStruct<StudentDO, StudentDTO, S
      * 转换excel
      * </p>
      *
-     * @param dtoList
+     * @param dtoList /
      * @return /
      */
     List<StudentDO> toDO(Set<StudentImportDTO> dtoList);

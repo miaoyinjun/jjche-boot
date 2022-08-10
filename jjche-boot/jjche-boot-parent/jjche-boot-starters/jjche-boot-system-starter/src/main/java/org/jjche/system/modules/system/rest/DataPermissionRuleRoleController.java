@@ -10,7 +10,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -47,7 +47,7 @@ public class DataPermissionRuleRoleController extends BaseController {
      * <p>create.</p>
      *
      * @param dto a {@link DataPermissionRuleRoleDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping
     @ApiOperation(value = "数据规则权限-保存")
@@ -58,9 +58,9 @@ public class DataPermissionRuleRoleController extends BaseController {
             category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "数据规则权限"
     )
-    public ResultWrapper create(@Validated @RequestBody DataPermissionRuleRoleDTO dto) {
+    public R create(@Validated @RequestBody DataPermissionRuleRoleDTO dto) {
         sysDataPermissionRuleRoleService.save(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -68,13 +68,13 @@ public class DataPermissionRuleRoleController extends BaseController {
      *
      * @param page  a {@link PageParam} object.
      * @param query a {@link DataPermissionRuleRoleQueryCriteriaDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
     @ApiOperation(value = "数据规则权限-列表")
     @PreAuthorize("@el.check('roles:list')")
-    public ResultWrapper<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
-                                                                 @Validated DataPermissionRuleRoleQueryCriteriaDTO query) {
-        return ResultWrapper.ok(sysDataPermissionRuleService.pageByMenuIdAndRoleId(page, query));
+    public R<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
+                                                     @Validated DataPermissionRuleRoleQueryCriteriaDTO query) {
+        return R.ok(sysDataPermissionRuleService.pageByMenuIdAndRoleId(page, query));
     }
 }

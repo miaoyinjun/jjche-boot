@@ -2,7 +2,7 @@ package org.jjche.demo.modules.provider.feign;
 
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.demo.constant.ProviderApiVersion;
 import org.jjche.demo.modules.provider.api.enums.ProviderCourseEnum;
 import org.jjche.demo.modules.provider.api.vo.ProviderVO;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ProviderStudentApi {
 
     @GetMapping
-    ResultWrapper<MyPage<ProviderVO>> page(@SpringQueryMap PageParam page,
-                                           @RequestParam(required = false) ProviderCourseEnum course,
-                                           @RequestParam(required = false) String name);
+    R<MyPage<ProviderVO>> page(@SpringQueryMap PageParam page,
+                               @RequestParam(required = false) ProviderCourseEnum course,
+                               @RequestParam(required = false) String name);
 }

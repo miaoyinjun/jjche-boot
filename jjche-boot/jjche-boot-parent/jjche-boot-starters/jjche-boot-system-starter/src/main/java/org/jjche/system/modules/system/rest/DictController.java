@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -57,12 +57,12 @@ public class DictController extends BaseController {
     /**
      * <p>queryAll.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping(value = "/all")
     @PreAuthorize("@el.check('dict:list')")
-    public ResultWrapper<List<DictDTO>> queryAll() {
-        return ResultWrapper.ok(dictService.queryAll(new DictQueryCriteriaDTO()));
+    public R<List<DictDTO>> queryAll() {
+        return R.ok(dictService.queryAll(new DictQueryCriteriaDTO()));
     }
 
     /**
@@ -70,20 +70,20 @@ public class DictController extends BaseController {
      *
      * @param resources a {@link DictQueryCriteriaDTO} object.
      * @param pageable  /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询字典")
     @GetMapping
     @PreAuthorize("@el.check('dict:list')")
-    public ResultWrapper<MyPage> query(DictQueryCriteriaDTO resources, PageParam pageable) {
-        return ResultWrapper.ok(dictService.queryAll(resources, pageable));
+    public R<MyPage> query(DictQueryCriteriaDTO resources, PageParam pageable) {
+        return R.ok(dictService.queryAll(resources, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link DictDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -92,17 +92,17 @@ public class DictController extends BaseController {
     @ApiOperation("新增字典")
     @PostMapping
     @PreAuthorize("@el.check('dict:add')")
-    public ResultWrapper create(@Validated @RequestBody DictDO resources) {
+    public R create(@Validated @RequestBody DictDO resources) {
         Assert.isNull(resources.getId(), "A new " + ENTITY_NAME + " cannot already have an ID");
         dictService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link DictDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -111,16 +111,16 @@ public class DictController extends BaseController {
     @ApiOperation("修改字典")
     @PutMapping
     @PreAuthorize("@el.check('dict:edit')")
-    public ResultWrapper update(@Validated @RequestBody DictDO resources) {
+    public R update(@Validated @RequestBody DictDO resources) {
         dictService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -129,8 +129,8 @@ public class DictController extends BaseController {
     @ApiOperation("删除字典")
     @DeleteMapping
     @PreAuthorize("@el.check('dict:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         dictService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

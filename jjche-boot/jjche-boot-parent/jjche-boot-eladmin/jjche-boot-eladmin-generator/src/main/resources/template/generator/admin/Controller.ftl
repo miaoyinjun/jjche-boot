@@ -9,7 +9,7 @@ import org.jjche.common.dto.BaseDTO;
 import org.jjche.log.biz.starter.annotation.LogRecord;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.common.param.PageParam;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.annotations.Api;
@@ -48,63 +48,63 @@ public class ${className}Controller extends BaseController{
     @PostMapping
     @ApiOperation(value = "${apiAlias}-新增", tags = ApiVersion.${apiVersionConstant})
     @ApiOperationSupport(ignoreParameters = {"id"})
-    @PreAuthorize("@el.check('${changeClassName}:add')")
+    @PreAuthorize("@el.check('${tableName}:add')")
     @LogRecord(
               value = "新增",
               category = LogCategoryType.OPERATING,
               type = LogType.ADD, module = "${apiAlias}", bizNo = "{{#_ret.data}}"
     )
-    public ResultWrapper<Long> create(@Validated @Valid @RequestBody ${className}DTO dto){
-        return ResultWrapper.ok(${changeClassName}Service.save(dto));
+    public R<Long> create(@Validated @Valid @RequestBody ${className}DTO dto){
+        return R.ok(${changeClassName}Service.save(dto));
     }
 
     @DeleteMapping
     @ApiOperation(value = "${apiAlias}-删除", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:del')")
+    @PreAuthorize("@el.check('${tableName}:del')")
     @LogRecord(
             batch = true, value = "删除", category = LogCategoryType.OPERATING,
             type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}",
             detail = "{API_MODEL{#_oldObj}} {${diffOldFuncName}{#ids}}"
     )
-    public ResultWrapper delete(@RequestBody List<${pkColumnType}> ids) {
+    public R delete(@RequestBody List<${pkColumnType}> ids) {
         ${changeClassName}Service.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @PutMapping
     @ApiOperation(value = "${apiAlias}-修改", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:edit')")
+    @PreAuthorize("@el.check('${tableName}:edit')")
     @LogRecord(
             value = "修改", category = LogCategoryType.OPERATING,
             type = LogType.UPDATE, module = "${apiAlias}", bizNo = "{{#dto.id}}",
             detail = "{_DIFF{#dto}} {${diffOldFuncName}{#dto.id}}"
     )
-    public ResultWrapper update(@Validated(BaseDTO.Update.class)
+    public R update(@Validated(BaseDTO.Update.class)
                                 @Valid @RequestBody ${className}DTO dto){
         ${changeClassName}Service.update(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "${apiAlias}-查询单个", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:list')")
-    public ResultWrapper<${className}VO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(this.${changeClassName}Service.getVoById(id));
+    @PreAuthorize("@el.check('${tableName}:list')")
+    public R<${className}VO> getById(@PathVariable Long id) {
+        return R.ok(this.${changeClassName}Service.getVoById(id));
     }
 
     @ApiOperation(value = "${apiAlias}-导出", tags = ApiVersion.${apiVersionConstant})
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    @PreAuthorize("@el.check('${changeClassName}:list')")
+    @PreAuthorize("@el.check('${tableName}:list')")
     public void download(@Validated ${className}QueryCriteriaDTO criteria) {
         ${changeClassName}Service.download(criteria);
     }
 
     @GetMapping
     @ApiOperation(value = "${apiAlias}-列表", tags = ApiVersion.${apiVersionConstant})
-    @PreAuthorize("@el.check('${changeClassName}:list')")
-    public ResultWrapper<MyPage<${className}VO>> pageQuery(PageParam page,
+    @PreAuthorize("@el.check('${tableName}:list')")
+    public R<MyPage<${className}VO>> pageQuery(PageParam page,
                             @Validated ${className}QueryCriteriaDTO query){
-        return ResultWrapper.ok(${changeClassName}Service.page(page, query));
+        return R.ok(${changeClassName}Service.page(page, query));
     }
 
 }

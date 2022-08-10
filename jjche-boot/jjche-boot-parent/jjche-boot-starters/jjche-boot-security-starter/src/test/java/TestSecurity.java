@@ -1,8 +1,8 @@
 import cn.hutool.http.HttpStatus;
 import controller.SecurityController;
 import dto.LoginDTO;
-import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.enums.RCodeEnum;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.security.property.SecurityJwtProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.junit.jupiter.api.Test;
@@ -42,24 +42,24 @@ public class TestSecurity {
         String authHeader = securityJwtProperties.getHeader();
 
         /**未提供token*/
-        ResponseEntity<ResultWrapper> wrapperResponseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/security/test", ResultWrapper.class);
+        ResponseEntity<R> wrapperResponseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/security/test", R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_UNAUTHORIZED);
-        ResultWrapper wrapper = wrapperResponseEntity.getBody();
+        R wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.TOKEN_ERROR.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.TOKEN_ERROR.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.TOKEN_ERROR.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.TOKEN_ERROR.getMsg());
 
         /**提供的token无法解析*/
         HttpHeaders headers = new HttpHeaders();
         headers.add(authHeader, "Bearer dfsdfsdf");
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 
-        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/test", HttpMethod.GET, requestEntity, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/test", HttpMethod.GET, requestEntity, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_UNAUTHORIZED);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.TOKEN_ERROR.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.TOKEN_ERROR.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.TOKEN_ERROR.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.TOKEN_ERROR.getMsg());
     }
 
     /**
@@ -76,57 +76,57 @@ public class TestSecurity {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.username);
         loginDTO.setPassword("11");
-        ResponseEntity<ResultWrapper> wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, ResultWrapper.class);
+        ResponseEntity<R> wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
-        ResultWrapper wrapper = wrapperResponseEntity.getBody();
+        R wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS.getMsg());
 
         /**账户已被禁用*/
         loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.usernameEnabled);
         loginDTO.setPassword(JwtUserDetailsServiceImpl.username);
-        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.USER_DISABLED.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.USER_DISABLED.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.USER_DISABLED.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.USER_DISABLED.getMsg());
 
         /**账户被锁定*/
         loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.usernameAccountNonLocked);
         loginDTO.setPassword(JwtUserDetailsServiceImpl.username);
-        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.USER_LOCKED.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.USER_LOCKED.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.USER_LOCKED.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.USER_LOCKED.getMsg());
 
 
         /**账户过期*/
         loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.usernameAccountNonExpired);
         loginDTO.setPassword(JwtUserDetailsServiceImpl.username);
-        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.USERNAME_EXPIRED.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.USERNAME_EXPIRED.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.USERNAME_EXPIRED.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.USERNAME_EXPIRED.getMsg());
 
         /**密码过期*/
         loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.usernameCredentialsNonExpired);
         loginDTO.setPassword(JwtUserDetailsServiceImpl.username);
-        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_BAD_REQUEST);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.USER_CREDENTIALS_EXPIRED.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.USER_CREDENTIALS_EXPIRED.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.USER_CREDENTIALS_EXPIRED.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.USER_CREDENTIALS_EXPIRED.getMsg());
     }
 
     /**
@@ -146,13 +146,13 @@ public class TestSecurity {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername(JwtUserDetailsServiceImpl.username);
         loginDTO.setPassword(JwtUserDetailsServiceImpl.password);
-        ResponseEntity<ResultWrapper> wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, ResultWrapper.class);
+        ResponseEntity<R> wrapperResponseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/security/login", loginDTO, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_OK);
-        ResultWrapper wrapper = wrapperResponseEntity.getBody();
+        R wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
         assertNotNull(wrapper.getData());
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.SUCCESS.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.SUCCESS.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.SUCCESS.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.SUCCESS.getMsg());
 
         String token = wrapper.getData().toString();
 
@@ -161,29 +161,29 @@ public class TestSecurity {
         headers.add(authHeader, "Bearer " + token);
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 
-        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/not_allow", HttpMethod.GET, requestEntity, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/not_allow", HttpMethod.GET, requestEntity, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_FORBIDDEN);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.USER_ACCESS_DENIED.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.USER_ACCESS_DENIED.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.USER_ACCESS_DENIED.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.USER_ACCESS_DENIED.getMsg());
 
         /**访问正常*/
-        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/allow", HttpMethod.GET, requestEntity, ResultWrapper.class);
+        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/allow", HttpMethod.GET, requestEntity, R.class);
         assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_OK);
         wrapper = wrapperResponseEntity.getBody();
         assertNotNull(wrapper);
-        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.SUCCESS.getCode());
-        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.SUCCESS.getMsg());
+        assertEquals(wrapper.getCode(), RCodeEnum.SUCCESS.getCode());
+        assertEquals(wrapper.getMessage(), RCodeEnum.SUCCESS.getMsg());
 
 //        Thread.sleep(4 * 1000);
         /**授权过期 redis被删除无法判定过期*/
-//        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/allow", HttpMethod.GET, requestEntity, ResultWrapper.class);
+//        wrapperResponseEntity = this.restTemplate.exchange("http://localhost:" + port + "/security/allow", HttpMethod.GET, requestEntity, R.class);
 //        assertEquals(wrapperResponseEntity.getStatusCode().value(), HttpStatus.HTTP_FORBIDDEN);
 //        wrapper = wrapperResponseEntity.getBody();
 //        assertNotNull(wrapper);
-//        assertEquals(wrapper.getCode(), ResultWrapperCodeEnum.TOKEN_EXPIRED.getCode());
-//        assertEquals(wrapper.getMessage(), ResultWrapperCodeEnum.TOKEN_EXPIRED.getMsg());
+//        assertEquals(wrapper.getCode(), RCodeEnum.TOKEN_EXPIRED.getCode());
+//        assertEquals(wrapper.getMessage(), RCodeEnum.TOKEN_EXPIRED.getMsg());
     }
 
 }

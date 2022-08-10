@@ -3,7 +3,7 @@ package org.jjche.gen.modules.generator.rest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.gen.modules.generator.domain.GenConfigDO;
@@ -33,25 +33,25 @@ public class GenConfigController extends BaseController {
      * <p>query.</p>
      *
      * @param tableName a {@link java.lang.String} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询")
     @GetMapping(value = "/{tableName}")
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper<GenConfigDO> query(@PathVariable String tableName) {
-        return ResultWrapper.ok(genConfigService.find(tableName));
+    public R<GenConfigDO> query(@PathVariable String tableName) {
+        return R.ok(genConfigService.find(tableName));
     }
 
     /**
      * <p>update.</p>
      *
      * @param genConfig a {@link GenConfigDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("修改")
     @PutMapping
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper<GenConfigDO> update(@Validated @RequestBody GenConfigDO genConfig) {
-        return ResultWrapper.ok(genConfigService.update(genConfig));
+    public R<GenConfigDO> update(@Validated @RequestBody GenConfigDO genConfig) {
+        return R.ok(genConfigService.update(genConfig));
     }
 }

@@ -30,3 +30,4 @@ DROP TABLE `tool_email_config`;
 DROP TABLE `tool_local_storage`;
 DROP TABLE `tool_qiniu_config`;
 DROP TABLE `tool_qiniu_content`;
+DROP TABLE `security_app_key`;

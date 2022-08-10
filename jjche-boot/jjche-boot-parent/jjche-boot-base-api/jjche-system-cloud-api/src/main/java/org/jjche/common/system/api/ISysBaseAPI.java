@@ -7,6 +7,7 @@ import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.system.api.factory.SysBaseAPIFallbackFactory;
+import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -29,26 +30,30 @@ import java.util.List;
 public interface ISysBaseAPI extends CommonAPI {
 
     @Override
-    @GetMapping("logoutOnlineUser")
+    @GetMapping(URL_LOGOUT_ONLINE_USER)
     void logoutOnlineUser(@RequestParam("token") String token);
 
     @Override
-    @GetMapping("getUserDetails")
+    @GetMapping(URL_GET_USER_DETAILS)
     JwtUserDto getUserDetails();
 
     @Override
-    @GetMapping("getUserDetails")
+    @GetMapping(URL_GET_USER_DETAILS)
     JwtUserDto getUserDetails(@RequestHeader(SecurityConstant.HEADER_AUTH) String token);
 
     @Override
-    @PostMapping("recordLog")
+    @PostMapping(URL_RECORD_LOG)
     void recordLog(@RequestBody LogRecordDTO logRecord);
 
     @Override
-    @PostMapping("recordLogs")
+    @PostMapping(URL_RECORD_LOGS)
     void recordLogs(@RequestBody List<LogRecordDTO> list);
 
     @Override
-    @GetMapping("listPermissionDataRuleByUserId")
+    @GetMapping(URL_LIST_PERMISSION_DATA_RULE_BY_USER_ID)
     List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(@RequestParam("userId") Long userId);
+
+    @Override
+    @GetMapping(URL_GET_KEY_BY_APP_ID)
+    SecurityAppKeyBasicVO getKeyByAppId(@RequestParam("appId") String appId);
 }

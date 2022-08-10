@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.constant.EnvConstant;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.SpringContextHolder;
@@ -42,61 +42,61 @@ public class GeneratorController extends BaseController {
      *
      * @param name /
      * @param page /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询数据库数据")
     @GetMapping(value = "/tables")
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper<Object> queryTables(@RequestParam(defaultValue = "") String name,
-                                             PageParam page) {
-        return ResultWrapper.ok(generatorService.getTables(name, page));
+    public R<Object> queryTables(@RequestParam(defaultValue = "") String name,
+                                 PageParam page) {
+        return R.ok(generatorService.getTables(name, page));
     }
 
     /**
      * <p>queryColumns.</p>
      *
      * @param tableName a {@link java.lang.String} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询字段数据")
     @GetMapping(value = "/columns")
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper<MyPage> queryColumns(@RequestParam String tableName) {
+    public R<MyPage> queryColumns(@RequestParam String tableName) {
         List<ColumnInfoDO> columnInfos = generatorService.getColumns(tableName);
         MyPage myPage = new MyPage();
         myPage.setRecords(columnInfos);
         myPage.setTotal(columnInfos.size());
-        return ResultWrapper.ok(myPage);
+        return R.ok(myPage);
     }
 
     /**
      * <p>save.</p>
      *
      * @param columnInfos a {@link java.util.List} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("保存字段数据")
     @PutMapping
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper save(@RequestBody List<ColumnInfoDO> columnInfos) {
+    public R save(@RequestBody List<ColumnInfoDO> columnInfos) {
         generatorService.saveColumnInfo(columnInfos);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>sync.</p>
      *
      * @param tables a {@link java.util.List} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("同步字段数据")
     @PostMapping(value = "sync")
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper sync(@RequestBody List<String> tables) {
+    public R sync(@RequestBody List<String> tables) {
         for (String table : tables) {
             generatorService.sync(generatorService.getColumns(table), generatorService.query(table));
         }
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -106,12 +106,12 @@ public class GeneratorController extends BaseController {
      * @param type      a {@link java.lang.Integer} object.
      * @param request   a {@link javax.servlet.http.HttpServletRequest} object.
      * @param response  a {@link javax.servlet.http.HttpServletResponse} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("生成代码")
     @PostMapping(value = "/{tableName}/{type}")
     @PreAuthorize("@el.check('generator:list')")
-    public ResultWrapper generator(@PathVariable String tableName, @PathVariable Integer type, HttpServletRequest request, HttpServletResponse response) {
+    public R generator(@PathVariable String tableName, @PathVariable Integer type, HttpServletRequest request, HttpServletResponse response) {
         boolean isDev = SpringContextHolder.getEnvActive().equalsIgnoreCase(EnvConstant.DEV);
         Assert.isFalse(!isDev && type == 0, "此环境不允许生成代码，请选择预览或者下载查看！");
         switch (type) {
@@ -122,7 +122,7 @@ public class GeneratorController extends BaseController {
             // 预览
             case 1:
                 List<Map<String, Object>> result = generatorService.preview(genConfigService.find(tableName), generatorService.getColumns(tableName));
-                return ResultWrapper.ok(result);
+                return R.ok(result);
             // 打包
             case 2:
                 generatorService.download(genConfigService.find(tableName), generatorService.getColumns(tableName), request, response);
@@ -130,6 +130,6 @@ public class GeneratorController extends BaseController {
             default:
                 throw new IllegalArgumentException("没有这个选项");
         }
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

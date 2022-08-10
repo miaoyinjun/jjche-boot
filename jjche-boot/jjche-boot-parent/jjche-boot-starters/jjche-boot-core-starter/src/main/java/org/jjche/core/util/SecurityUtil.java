@@ -6,7 +6,7 @@ import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.constant.UserConstant;
 import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.StrUtil;
-import org.jjche.common.wrapper.enums.ResultWrapperCodeEnum;
+import org.jjche.common.wrapper.enums.RCodeEnum;
 import org.jjche.core.exception.AuthenticationTokenExpiredException;
 import org.springframework.util.StringUtils;
 
@@ -155,7 +155,7 @@ public class SecurityUtil {
         if (StrUtil.isNotBlank(value)) {
             return value;
         }
-        throw new AuthenticationTokenExpiredException(ResultWrapperCodeEnum.TOKEN_EXPIRED.getMsg());
+        throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
     }
 
     /**
@@ -171,6 +171,6 @@ public class SecurityUtil {
         if (value != null && value > 0) {
             return value;
         }
-        throw new AuthenticationTokenExpiredException(ResultWrapperCodeEnum.TOKEN_EXPIRED.getMsg());
+        throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
     }
 }

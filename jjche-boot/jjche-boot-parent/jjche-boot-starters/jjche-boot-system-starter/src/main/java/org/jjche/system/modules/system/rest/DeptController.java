@@ -9,7 +9,7 @@ import org.jjche.common.annotation.PermissionData;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -58,46 +58,46 @@ public class DeptController extends BaseController {
      * <p>query.</p>
      *
      * @param criteria a {@link DeptQueryCriteriaDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @ApiOperation("查询部门")
     @GetMapping
     @PreAuthorize("@el.check('user:list','dept:list')")
     @PermissionData(deptIdInFieldName = "id")
-    public ResultWrapper<MyPage> query(DeptQueryCriteriaDTO criteria) throws Exception {
+    public R<MyPage> query(DeptQueryCriteriaDTO criteria) throws Exception {
         List<DeptDTO> deptDtos = deptService.queryAll(criteria, true);
         MyPage<DeptDTO> myPage = new MyPage<>();
         myPage.setRecords(deptDtos);
         myPage.setTotal(deptDtos.size());
-        return ResultWrapper.ok(myPage);
+        return R.ok(myPage);
     }
 
     /**
      * <p>getSuperior.</p>
      *
      * @param ids a {@link java.util.List} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询部门:根据ID获取同级与上级数据")
     @PostMapping("/superior")
     @PreAuthorize("@el.check('user:list','dept:list')")
     @PermissionData(deptIdInFieldName = "id")
-    public ResultWrapper<MyPage<List<DeptDTO>>> getSuperior(@RequestBody List<Long> ids) {
+    public R<MyPage<List<DeptDTO>>> getSuperior(@RequestBody List<Long> ids) {
         Set<DeptDTO> deptDtos = new LinkedHashSet<>();
         for (Long id : ids) {
             DeptDTO deptDto = deptService.findById(id);
             List<DeptDTO> depts = deptService.getSuperior(deptDto, new ArrayList<>());
             deptDtos.addAll(depts);
         }
-        return ResultWrapper.ok(deptService.buildTree(new ArrayList<>(deptDtos)));
+        return R.ok(deptService.buildTree(new ArrayList<>(deptDtos)));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link DeptDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -106,17 +106,17 @@ public class DeptController extends BaseController {
     @ApiOperation("新增部门")
     @PostMapping
     @PreAuthorize("@el.check('dept:add')")
-    public ResultWrapper create(@Validated @RequestBody DeptDO resources) {
+    public R create(@Validated @RequestBody DeptDO resources) {
         Assert.isFalse(resources.getId() != null, "A new " + ENTITY_NAME + " cannot already have an ID");
         deptService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link DeptDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -125,16 +125,16 @@ public class DeptController extends BaseController {
     @ApiOperation("修改部门")
     @PutMapping
     @PreAuthorize("@el.check('dept:edit')")
-    public ResultWrapper update(@Validated @RequestBody DeptDO resources) {
+    public R update(@Validated @RequestBody DeptDO resources) {
         deptService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -143,7 +143,7 @@ public class DeptController extends BaseController {
     @ApiOperation("删除部门")
     @DeleteMapping
     @PreAuthorize("@el.check('dept:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         Set<DeptDTO> deptDtos = new HashSet<>();
         for (Long id : ids) {
             List<DeptDO> deptList = deptService.findByPid(id);
@@ -155,6 +155,6 @@ public class DeptController extends BaseController {
         // 验证是否被角色或用户关联
         deptService.verification(deptDtos);
         deptService.delete(deptDtos);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }
