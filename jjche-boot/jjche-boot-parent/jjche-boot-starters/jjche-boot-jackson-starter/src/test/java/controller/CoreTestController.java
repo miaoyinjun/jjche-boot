@@ -1,6 +1,6 @@
 package controller;
 
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.MediaType;
@@ -29,8 +29,8 @@ public class CoreTestController {
      * @since 2020-07-09
      */
     @GetMapping("jackson")
-    public ResultWrapper<LoginVO> wd() {
+    public R<LoginVO> wd() {
         LoginVO loginVO = new LoginVO();
-        return ResultWrapper.ok(loginVO);
+        return R.ok(loginVO);
     }
 }

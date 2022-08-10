@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -43,7 +43,7 @@ public class DataPermissionFieldRoleController extends BaseController {
      * <p>create.</p>
      *
      * @param dto a {@link DataPermissionFieldRoleDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping
     @ApiOperation(value = "数据字段角色-保存")
@@ -53,9 +53,9 @@ public class DataPermissionFieldRoleController extends BaseController {
             category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "数据字段角色"
     )
-    public ResultWrapper create(@Validated @RequestBody DataPermissionFieldRoleDTO dto) {
+    public R create(@Validated @RequestBody DataPermissionFieldRoleDTO dto) {
         sysDataPermissionFieldRoleService.save(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -63,14 +63,14 @@ public class DataPermissionFieldRoleController extends BaseController {
      *
      * @param page  a {@link PageParam} object.
      * @param query a {@link DataPermissionFieldRoleQueryCriteriaDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
     @ApiOperation(value = "数据字段角色-列表")
     @PreAuthorize("@el.check('roles:list')")
-    public ResultWrapper<MyPage<DataPermissionFieldRoleVO>> pageQuery(PageParam page,
-                                                                      @Validated DataPermissionFieldRoleQueryCriteriaDTO query) {
-        return ResultWrapper.ok(sysDataPermissionFieldRoleService.page(page, query));
+    public R<MyPage<DataPermissionFieldRoleVO>> pageQuery(PageParam page,
+                                                          @Validated DataPermissionFieldRoleQueryCriteriaDTO query) {
+        return R.ok(sysDataPermissionFieldRoleService.page(page, query));
     }
 
 }

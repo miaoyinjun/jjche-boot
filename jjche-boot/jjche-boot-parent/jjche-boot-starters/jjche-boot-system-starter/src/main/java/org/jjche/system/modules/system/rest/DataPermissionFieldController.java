@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -41,7 +41,7 @@ public class DataPermissionFieldController extends BaseController {
      * <p>create.</p>
      *
      * @param resources a {@link DataPermissionFieldDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -50,17 +50,17 @@ public class DataPermissionFieldController extends BaseController {
     @ApiOperation("新增数据字段")
     @PostMapping
     @PreAuthorize("@el.check('menu:add')")
-    public ResultWrapper create(@Validated @RequestBody DataPermissionFieldDTO resources) {
+    public R create(@Validated @RequestBody DataPermissionFieldDTO resources) {
         Assert.isNull(resources.getId(), "A new DataPermissionFieldDO cannot already have an ID");
         dataPermissionFieldService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -69,16 +69,16 @@ public class DataPermissionFieldController extends BaseController {
     @ApiOperation("删除数据字段")
     @DeleteMapping()
     @PreAuthorize("@el.check('menu:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         dataPermissionFieldService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link DataPermissionFieldDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -87,22 +87,22 @@ public class DataPermissionFieldController extends BaseController {
     @ApiOperation("修改数据字段")
     @PutMapping
     @PreAuthorize("@el.check('menu:edit')")
-    public ResultWrapper update(@Validated(DataPermissionFieldDTO.Update.class) @RequestBody DataPermissionFieldDTO resources) {
+    public R update(@Validated(DataPermissionFieldDTO.Update.class) @RequestBody DataPermissionFieldDTO resources) {
         dataPermissionFieldService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>getById.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "数据字段-查询单个")
     @PreAuthorize("@el.check('menu:list')")
-    public ResultWrapper<DataPermissionFieldVO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(this.dataPermissionFieldService.getVoById(id));
+    public R<DataPermissionFieldVO> getById(@PathVariable Long id) {
+        return R.ok(this.dataPermissionFieldService.getVoById(id));
     }
 
 
@@ -111,12 +111,12 @@ public class DataPermissionFieldController extends BaseController {
      *
      * @param criteria a {@link DataPermissionFieldQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询数据字段")
     @GetMapping
     @PreAuthorize("@el.check('menu:list')")
-    public ResultWrapper<MyPage<DataPermissionFieldVO>> query(PageParam pageable, DataPermissionFieldQueryCriteriaDTO criteria) {
-        return ResultWrapper.ok(dataPermissionFieldService.pageQuery(pageable, criteria));
+    public R<MyPage<DataPermissionFieldVO>> query(PageParam pageable, DataPermissionFieldQueryCriteriaDTO criteria) {
+        return R.ok(dataPermissionFieldService.pageQuery(pageable, criteria));
     }
 }

@@ -1,7 +1,7 @@
 package org.jjche.security.handler;
 
 import org.jjche.common.util.HttpUtil;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
@@ -29,6 +29,6 @@ public class JwtAuthenticationAccessDeniedHandler implements AccessDeniedHandler
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        HttpUtil.printJson(response, ResultWrapper.userAccessDeniedError());
+        HttpUtil.printJson(response, R.userAccessDeniedError());
     }
 }

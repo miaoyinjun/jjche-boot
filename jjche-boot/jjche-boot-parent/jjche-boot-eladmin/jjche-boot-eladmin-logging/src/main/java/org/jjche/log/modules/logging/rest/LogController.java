@@ -9,7 +9,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -61,12 +61,12 @@ public class LogController extends BaseController {
      *
      * @param criteria a {@link LogQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
     @PreAuthorize("@el.check('log:list')")
-    public ResultWrapper<MyPage<LogVO>> query(LogQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(logService.queryAll(criteria, pageable));
+    public R<MyPage<LogVO>> query(LogQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(logService.queryAll(criteria, pageable));
     }
 
     /**
@@ -74,31 +74,31 @@ public class LogController extends BaseController {
      *
      * @param criteria a {@link LogQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping(value = "/user")
     @ApiOperation("用户日志查询")
-    public ResultWrapper<MyPage<LogVO>> queryUserLog(LogQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(logService.queryAllByUser(criteria, pageable));
+    public R<MyPage<LogVO>> queryUserLog(LogQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(logService.queryAllByUser(criteria, pageable));
     }
 
     /**
      * <p>queryErrorLogs.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping(value = "/error/{id}")
     @ApiOperation("日志异常详情查询")
     @PreAuthorize("@el.check('log:list')")
-    public ResultWrapper<Object> queryErrorLogs(@PathVariable Long id) {
-        return ResultWrapper.ok(logService.findByErrDetail(id));
+    public R<Object> queryErrorLogs(@PathVariable Long id) {
+        return R.ok(logService.findByErrDetail(id));
     }
 
     /**
      * <p>delAllInfoLog.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @DeleteMapping(value = "/del")
     @LogRecord(
@@ -107,22 +107,22 @@ public class LogController extends BaseController {
     )
     @ApiOperation("清空3个月之前的操作日志")
     @PreAuthorize("@el.check('log:del')")
-    public ResultWrapper delAllInfoLog() {
+    public R delAllInfoLog() {
         logService.delAll();
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>listModule.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping("/modules")
     @ApiOperation("日志获取模块")
     @PreAuthorize("@el.check('log:list')")
     @Cached(name = "logs:modules", cacheType = CacheType.REMOTE, expire = 3600000)
-    public ResultWrapper<List<String>> listModule() {
-        return ResultWrapper.ok(logService.listModule());
+    public R<List<String>> listModule() {
+        return R.ok(logService.listModule());
     }
 
     /**
@@ -131,13 +131,13 @@ public class LogController extends BaseController {
      * @param page   a {@link PageParam} object.
      * @param bizKey a {@link java.lang.String} object.
      * @param bizNo  a {@link java.lang.String} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping("/biz")
     @ApiOperation("查询业务标识与业务主键")
-    public ResultWrapper<MyPage<LogDO>> listByBizKeyAndBizNo(PageParam page,
-                                                             String bizKey, String bizNo) {
-        return ResultWrapper.ok(logService.listByBizKeyAndBizNo(page, bizKey, bizNo));
+    public R<MyPage<LogDO>> listByBizKeyAndBizNo(PageParam page,
+                                                 String bizKey, String bizNo) {
+        return R.ok(logService.listByBizKeyAndBizNo(page, bizKey, bizNo));
     }
 
 }

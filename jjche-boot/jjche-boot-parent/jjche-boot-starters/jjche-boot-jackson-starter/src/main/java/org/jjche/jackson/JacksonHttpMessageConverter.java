@@ -101,7 +101,7 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
      */
 //    @Override
 //    public boolean canWrite(Class<?> clazz, MediaType mediaType) {
-//        return ResultWrapper.class.isAssignableFrom(clazz);
+//        return R.class.isAssignableFrom(clazz);
 //    }
 
     private class MyBeanSerializerModifier extends BeanSerializerModifier {

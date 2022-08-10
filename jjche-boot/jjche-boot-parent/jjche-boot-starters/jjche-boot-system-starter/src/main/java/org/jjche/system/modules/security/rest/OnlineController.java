@@ -10,7 +10,7 @@ import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.util.RsaUtils;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -45,18 +45,18 @@ public class OnlineController extends BaseController {
      *
      * @param filter   a {@link java.lang.String} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询在线用户")
     @GetMapping
     @PreAuthorize("@el.check('online:list')")
-    public ResultWrapper query(String filter, PageParam pageable) {
+    public R query(String filter, PageParam pageable) {
         List<OnlineUserDTO> onlineUserDTOS = sysBaseAPI.getAll(filter);
         List<OnlineUserDTO> list = CollUtil.page((int) pageable.getPageIndex() - 1, (int) pageable.getPageSize(), onlineUserDTOS);
         MyPage myPage = new MyPage();
         myPage.setRecords(list);
         myPage.setTotal(onlineUserDTOS.size());
-        return ResultWrapper.ok(myPage);
+        return R.ok(myPage);
     }
 
     /**
@@ -81,19 +81,19 @@ public class OnlineController extends BaseController {
      * <p>delete.</p>
      *
      * @param keys a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @ApiOperation("踢出用户")
     @DeleteMapping
     @PreAuthorize("@el.check('online:del')")
-    public ResultWrapper delete(@RequestBody Set<String> keys) throws Exception {
+    public R delete(@RequestBody Set<String> keys) throws Exception {
         for (String key : keys) {
             String privateKey = securityProperties.getRsa().getPrivateKey();
             // 解密Key
             key = RsaUtils.decryptByPrivateKey(privateKey, key);
             sysBaseAPI.kickOut(key);
         }
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

@@ -3,6 +3,7 @@ package org.jjche.core.url;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.util.BooleanUtil;
 import org.jjche.core.annotation.controller.ApiRestController;
+import org.jjche.core.annotation.controller.OutRestController;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.property.CoreApiPathProperties;
 import org.jjche.core.property.CoreProperties;
@@ -33,7 +34,8 @@ public class AutoPrefixUrlMapping extends RequestMappingHandlerMapping {
         RequestMappingInfo requestMappingInfo = super.getMappingForMethod(method, handlerType);
         boolean apiRest = AnnotationUtil.hasAnnotation(handlerType, ApiRestController.class);
         boolean sysRest = AnnotationUtil.hasAnnotation(handlerType, SysRestController.class);
-        if ((apiRest || sysRest) && null != requestMappingInfo) {
+        boolean outRest = AnnotationUtil.hasAnnotation(handlerType, OutRestController.class);
+        if ((apiRest || sysRest || outRest) && null != requestMappingInfo) {
             //单体
             if (BooleanUtil.isFalse(SpringContextHolder.isCloud())) {
                 if (sysRest) {
@@ -41,6 +43,9 @@ public class AutoPrefixUrlMapping extends RequestMappingHandlerMapping {
                 } else {
                     prefix += coreApiPathProperties.getPrefix();
                 }
+            }
+            if (outRest) {
+                prefix += coreApiPathProperties.getOutPrefix();
             }
             //根据url前缀生成RequestMappingInfo并与原有的RequestMappingInfo合并
             requestMappingInfo = RequestMappingInfo.paths(prefix).build().combine(requestMappingInfo);

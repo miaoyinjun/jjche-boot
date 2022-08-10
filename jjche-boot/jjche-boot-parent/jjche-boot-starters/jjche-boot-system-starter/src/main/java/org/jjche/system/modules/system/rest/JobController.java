@@ -7,7 +7,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -56,20 +56,20 @@ public class JobController extends BaseController {
      *
      * @param criteria a {@link JobQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询岗位")
     @GetMapping
     @PreAuthorize("@el.check('job:list','user:list')")
-    public ResultWrapper<MyPage<JobDTO>> query(JobQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(jobService.queryAll(criteria, pageable));
+    public R<MyPage<JobDTO>> query(JobQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(jobService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link JobDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -78,16 +78,16 @@ public class JobController extends BaseController {
     @ApiOperation("新增岗位")
     @PostMapping
     @PreAuthorize("@el.check('job:add')")
-    public ResultWrapper create(@Validated @RequestBody JobDTO resources) {
+    public R create(@Validated @RequestBody JobDTO resources) {
         jobService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link JobDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -96,16 +96,16 @@ public class JobController extends BaseController {
     @ApiOperation("修改岗位")
     @PutMapping
     @PreAuthorize("@el.check('job:edit')")
-    public ResultWrapper update(@Validated @RequestBody JobDO resources) {
+    public R update(@Validated @RequestBody JobDO resources) {
         jobService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -114,10 +114,10 @@ public class JobController extends BaseController {
     @ApiOperation("删除岗位")
     @DeleteMapping
     @PreAuthorize("@el.check('job:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         // 验证是否被用户关联
         jobService.verification(ids);
         jobService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

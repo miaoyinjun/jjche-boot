@@ -5,7 +5,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
 import org.jjche.common.constant.SecurityConstant;
-import org.jjche.common.enums.FilterEncryptionEnum;
 import org.jjche.swagger.property.SwaggerSecurityJwtProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
@@ -68,6 +67,21 @@ public class SwaggerConfig implements EnvironmentAware {
     }
 
     /**
+     * <p>getRegex.</p>
+     *
+     * @param pathRegex a {@link java.lang.String} object.
+     * @return a {@link java.util.function.Predicate} object.
+     */
+    public static Predicate<String> getRegex(final String pathRegex) {
+        return new Predicate<String>() {
+            @Override
+            public boolean test(String input) {
+                return input.matches(pathRegex);
+            }
+        };
+    }
+
+    /**
      * <p>swaggerApi</p>
      *
      * @return a {@link springfox.documentation.spring.web.plugins.Docket} object.
@@ -80,8 +94,6 @@ public class SwaggerConfig implements EnvironmentAware {
         List<RequestParameter> operationParameters = CollUtil.newArrayList();
         //灰度头部
         operationParameters.addAll(grayHeaders());
-        //加密头部
-        operationParameters.addAll(encryptionHeaders());
         ApiSelectorBuilder select = new Docket(DocumentationType.SWAGGER_2).apiInfo(backendApiInfo()).groupName(defaultGroupName).select().apis(RequestHandlerSelectors.basePackage(swaggerProperty.getBasePackage())).build().extensions(openApiExtensionResolver.buildExtensions(defaultGroupName)).securityContexts(CollectionUtil.newArrayList(securityContext())).securitySchemes(CollectionUtil.newArrayList(apiKeyAuth(), apiKeyGrayVersion())).genericModelSubstitutes(DeferredResult.class).useDefaultResponseMessages(false).forCodeGeneration(false).pathMapping("/").select();
         //过滤的接口
         select.paths(PathSelectors.regex(swaggerProperty.getFilterPath() + "/.*")).paths(notRegex(ignoreFilterPath));
@@ -195,25 +207,6 @@ public class SwaggerConfig implements EnvironmentAware {
         //gray
         SecurityReference token = new SecurityReference(SecurityConstant.FEIGN_GRAY_TAG, authorizationScopes);
         return CollectionUtil.newArrayList(token);
-    }
-
-    /**
-     * <p>
-     * 所有请求-头部，加密过滤器所有字段
-     * </p>
-     *
-     * @return header
-     */
-    private List<RequestParameter> encryptionHeaders() {
-        List<RequestParameter> pars = new ArrayList<>();
-        if (swaggerProperty.isEncryptionEnabled()) {
-            for (FilterEncryptionEnum eEnum : FilterEncryptionEnum.values()) {
-                RequestParameter parameter = new RequestParameterBuilder().name(eEnum.getKey()).description(eEnum.getDes()).required(true).in(ParameterType.HEADER).query(q -> q.model(m -> m.scalarModel(ScalarType.STRING))).required(false).build();
-                pars.add(parameter);
-
-            }
-        }
-        return pars;
     }
 
     /**

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.enums.CodeBiEnum;
 import org.jjche.common.enums.CodeEnum;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.system.modules.system.service.VerifyService;
@@ -36,28 +36,28 @@ public class VerifyController extends BaseController {
      * <p>resetEmail.</p>
      *
      * @param email a {@link java.lang.String} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping(value = "/resetEmail")
     @ApiOperation("重置邮箱，发送验证码")
-    public ResultWrapper resetEmail(@RequestParam String email) {
+    public R resetEmail(@RequestParam String email) {
         EmailVO emailVo = verificationCodeService.sendEmail(email, CodeEnum.EMAIL_RESET_EMAIL_CODE.getKey());
         emailService.send(emailVo, emailService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>resetPass.</p>
      *
      * @param email a {@link java.lang.String} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping(value = "/email/resetPass")
     @ApiOperation("重置密码，发送验证码")
-    public ResultWrapper resetPass(@RequestParam String email) {
+    public R resetPass(@RequestParam String email) {
         EmailVO emailVo = verificationCodeService.sendEmail(email, CodeEnum.EMAIL_RESET_PWD_CODE.getKey());
         emailService.send(emailVo, emailService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -66,11 +66,11 @@ public class VerifyController extends BaseController {
      * @param email  a {@link java.lang.String} object.
      * @param code   a {@link java.lang.String} object.
      * @param codeBi a {@link java.lang.Integer} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping(value = "/validated")
     @ApiOperation("验证码验证")
-    public ResultWrapper validated(@RequestParam String email, @RequestParam String code, @RequestParam Integer codeBi) {
+    public R validated(@RequestParam String email, @RequestParam String code, @RequestParam Integer codeBi) {
         CodeBiEnum biEnum = CodeBiEnum.find(codeBi);
         switch (Objects.requireNonNull(biEnum)) {
             case ONE:
@@ -82,6 +82,6 @@ public class VerifyController extends BaseController {
             default:
                 break;
         }
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

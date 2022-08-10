@@ -16,4 +16,5 @@ public class CoreApiPathProperties {
     String globalPrefix;
     String sysPrefix;
     String prefix;
+    String outPrefix;
 }

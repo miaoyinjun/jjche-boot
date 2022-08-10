@@ -9,7 +9,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -44,7 +44,7 @@ public class DataPermissionRuleController extends BaseController {
      * <p>create.</p>
      *
      * @param dto a {@link DataPermissionRuleDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PostMapping
     @ApiOperation(value = "数据规则-新增")
@@ -55,16 +55,16 @@ public class DataPermissionRuleController extends BaseController {
             category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "数据规则"
     )
-    public ResultWrapper create(@Validated @RequestBody DataPermissionRuleDTO dto) {
+    public R create(@Validated @RequestBody DataPermissionRuleDTO dto) {
         sysDataPermissionRuleService.save(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @DeleteMapping
     @ApiOperation(value = "数据规则-删除")
@@ -74,16 +74,16 @@ public class DataPermissionRuleController extends BaseController {
             type = LogType.DELETE, module = "数据规则",
             prefix = "sysDataPermissionRule", bizNo = "{{#ids}}"
     )
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         sysDataPermissionRuleService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param dto a {@link DataPermissionRuleDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @PutMapping
     @ApiOperation(value = "数据规则-修改")
@@ -92,23 +92,23 @@ public class DataPermissionRuleController extends BaseController {
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "数据规则"
     )
-    public ResultWrapper update(@Validated(DataPermissionRuleDTO.Update.class)
-                                @RequestBody DataPermissionRuleDTO dto) {
+    public R update(@Validated(DataPermissionRuleDTO.Update.class)
+                    @RequestBody DataPermissionRuleDTO dto) {
         sysDataPermissionRuleService.update(dto);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>getById.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "数据规则-查询单个")
     @PreAuthorize("@el.check('menu:list')")
-    public ResultWrapper<DataPermissionRuleVO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(this.sysDataPermissionRuleService.getVoById(id));
+    public R<DataPermissionRuleVO> getById(@PathVariable Long id) {
+        return R.ok(this.sysDataPermissionRuleService.getVoById(id));
     }
 
     /**
@@ -116,14 +116,14 @@ public class DataPermissionRuleController extends BaseController {
      *
      * @param page  a {@link PageParam} object.
      * @param query a {@link DataPermissionRuleQueryCriteriaDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
     @ApiOperation(value = "数据规则-列表")
     @PreAuthorize("@el.check('menu:list')")
-    public ResultWrapper<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
-                                                                 @Validated DataPermissionRuleQueryCriteriaDTO query) {
-        return ResultWrapper.ok(sysDataPermissionRuleService.pageQuery(page, query));
+    public R<MyPage<DataPermissionRuleVO>> pageQuery(PageParam page,
+                                                     @Validated DataPermissionRuleQueryCriteriaDTO query) {
+        return R.ok(sysDataPermissionRuleService.pageQuery(page, query));
     }
 
 }

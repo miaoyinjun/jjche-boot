@@ -121,7 +121,7 @@
             </#list>
         </#if>
         <el-table-column
-          v-permission="['admin','${changeClassName}:edit','${changeClassName}:del']"
+          v-permission="['admin','${tableName}:edit','${tableName}:del']"
           label="操作"
           width="150px"
           align="center"
@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import crud${className} from '@/api/${changeClassName}/api'
+import crud${className} from '@/api/${tableName}/api'
 import CRUD, { crud, form, header, presenter } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import crudOperation from '@crud/CRUD.operation'
@@ -183,9 +183,9 @@ export default {
   data() {
     return {
       permission: {
-        add: ['admin', '${changeClassName}:add'],
-        edit: ['admin', '${changeClassName}:edit'],
-        del: ['admin', '${changeClassName}:del']
+        add: ['admin', '${tableName}:add'],
+        edit: ['admin', '${tableName}:edit'],
+        del: ['admin', '${tableName}:del']
       },
       rules: {
         <#if isNotNullColumns??>

@@ -1,9 +1,9 @@
 package org.jjche.filter;
 
-import org.jjche.filter.encryption.api.FilterEncryptionAutoConfiguration;
-import org.jjche.filter.encryption.field.EncryptFieldAop;
-import org.jjche.filter.encryption.field.EncryptFieldUtil;
-import org.jjche.filter.encryption.limit.LimitAspect;
+import org.jjche.filter.enc.api.EncAutoConfiguration;
+import org.jjche.filter.enc.field.EncryptFieldAop;
+import org.jjche.filter.enc.field.EncryptFieldUtil;
+import org.jjche.filter.enc.limit.LimitAspect;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Import;
  * @since 2020-08-10
  */
 @Configuration
-@Import({FilterEncryptionAutoConfiguration.class, LimitAspect.class,
-        EncryptFieldAop.class, EncryptFieldUtil.class})
+@Import({LimitAspect.class,
+        EncryptFieldAop.class, EncryptFieldUtil.class, EncAutoConfiguration.class})
 public class FilterAutoConfiguration {
 
 }
