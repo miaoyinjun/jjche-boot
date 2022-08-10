@@ -33,3 +33,9 @@ jjche:
       keep-alive-seconds: 60
       # 队列容量
       queue-capacity: 50
+aj:
+  captcha:
+    cache-type: redis
+    water-mark: jjche-boot
+    aes-status: true
+    jigsaw: classpath:images/jigsaw

@@ -6,6 +6,7 @@ import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.system.api.ISysBaseAPI;
+import org.jjche.common.vo.SecurityAppKeyBasicVO;
 
 import java.util.List;
 
@@ -51,6 +52,12 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     @Override
     public List<PermissionDataRuleDTO> listPermissionDataRuleByUserId(Long userId) {
         StaticLog.error("查询用户数据权限失败 {}", cause);
+        return null;
+    }
+
+    @Override
+    public SecurityAppKeyBasicVO getKeyByAppId(String appId) {
+        StaticLog.error("查询应用id获取密钥失败 {}", cause);
         return null;
     }
 }

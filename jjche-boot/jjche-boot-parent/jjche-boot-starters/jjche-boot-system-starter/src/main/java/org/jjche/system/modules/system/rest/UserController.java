@@ -14,7 +14,7 @@ import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.RsaUtils;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.SecurityUtil;
@@ -83,21 +83,21 @@ public class UserController extends BaseController {
      *
      * @param criteria a {@link UserQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询用户")
     @GetMapping
     @PreAuthorize("@el.check('user:list')")
     @PermissionData(deptIdInFieldName = DataScope.F_SQL_SCOPE_NAME)
-    public ResultWrapper<MyPage<UserVO>> query(UserQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(userService.queryAll(criteria, pageable));
+    public R<MyPage<UserVO>> query(UserQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(userService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link UserDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -106,18 +106,18 @@ public class UserController extends BaseController {
     @ApiOperation("新增用户")
     @PostMapping
     @PreAuthorize("@el.check('user:add')")
-    public ResultWrapper create(@Validated @RequestBody UserDTO resources) {
+    public R create(@Validated @RequestBody UserDTO resources) {
         PasswordProperties pwdConf = adminConfig.getUser().getPassword();
         String defaultPwd = pwdConf.getDefaultVal();
         userService.create(resources, passwordEncoder.encode(defaultPwd));
-        return ResultWrapper.ok(defaultPwd);
+        return R.ok(defaultPwd);
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link UserDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -126,16 +126,16 @@ public class UserController extends BaseController {
     @ApiOperation("修改用户")
     @PutMapping
     @PreAuthorize("@el.check('user:edit')")
-    public ResultWrapper update(@Validated @RequestBody UserDTO resources) {
+    public R update(@Validated @RequestBody UserDTO resources) {
         userService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>center.</p>
      *
      * @param resources a {@link UserDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改用户：个人中心", category = LogCategoryType.MANAGER,
@@ -143,16 +143,16 @@ public class UserController extends BaseController {
     )
     @ApiOperation("修改用户：个人中心")
     @PutMapping(value = "center")
-    public ResultWrapper center(@Validated @RequestBody UserCenterDTO resources) {
+    public R center(@Validated @RequestBody UserCenterDTO resources) {
         userService.updateCenter(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -161,21 +161,21 @@ public class UserController extends BaseController {
     @ApiOperation("删除用户")
     @DeleteMapping
     @PreAuthorize("@el.check('user:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         for (Long id : ids) {
             Integer currentLevel = Collections.min(roleService.findByUsersId(SecurityUtil.getUserId()).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList()));
             Integer optLevel = Collections.min(roleService.findByUsersId(id).stream().map(RoleSmallDto::getLevel).collect(Collectors.toList()));
             Assert.isFalse(currentLevel > optLevel, "角色权限不足，不能删除：" + userService.findById(id).getUsername());
         }
         userService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>updatePass.</p>
      *
      * @param passVo a {@link UserPassVO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecord(
@@ -184,7 +184,7 @@ public class UserController extends BaseController {
     )
     @ApiOperation("修改密码")
     @PostMapping(value = "/updatePass")
-    public ResultWrapper updatePass(@RequestBody UserPassVO passVo) throws Exception {
+    public R updatePass(@RequestBody UserPassVO passVo) throws Exception {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         String oldPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getOldPass());
         String newPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getNewPass());
@@ -196,14 +196,14 @@ public class UserController extends BaseController {
         Boolean isNewPwdMatchOldPwd = passwordEncoder.matches(newPass, user.getPassword());
         Assert.isFalse(isNewPwdMatchOldPwd, "新密码不能与旧密码相同");
         userService.updatePass(user.getUsername(), passwordEncoder.encode(newPass));
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>resetPass.</p>
      *
      * @param passDTO a {@link UserResetPassDTO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "重置密码", category = LogCategoryType.MANAGER,
@@ -212,7 +212,7 @@ public class UserController extends BaseController {
     @ApiOperation("重置密码")
     @PreAuthorize("@el.check('admin')")
     @PutMapping(value = "/resetPass")
-    public ResultWrapper resetPass(@RequestBody UserResetPassDTO passDTO) {
+    public R resetPass(@RequestBody UserResetPassDTO passDTO) {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         String newPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passDTO.getNewPass());
         //密码格式验证
@@ -221,22 +221,22 @@ public class UserController extends BaseController {
         userService.updatePass(username, passwordEncoder.encode(newPass));
         //管理员重置密码后，用户登陆后必须修改密码
         userService.updateUserMustResetPwd(username);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>updateAvatar.</p>
      *
      * @param avatar a {@link org.springframework.web.multipart.MultipartFile} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改头像", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "用户", saveParams = false
     )
     @PostMapping(value = "/updateAvatar")
-    public ResultWrapper<String> updateAvatar(@RequestParam MultipartFile avatar) {
-        return ResultWrapper.ok(userService.updateAvatar(avatar));
+    public R<String> updateAvatar(@RequestParam MultipartFile avatar) {
+        return R.ok(userService.updateAvatar(avatar));
     }
 
     /**
@@ -244,7 +244,7 @@ public class UserController extends BaseController {
      *
      * @param code a {@link java.lang.String} object.
      * @param user a {@link UserDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecord(
@@ -253,7 +253,7 @@ public class UserController extends BaseController {
     )
     @ApiOperation("修改邮箱")
     @PostMapping(value = "/updateEmail/{code}")
-    public ResultWrapper updateEmail(@PathVariable String code, @RequestBody UserDO user) throws Exception {
+    public R updateEmail(@PathVariable String code, @RequestBody UserDO user) throws Exception {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         String password = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), user.getPassword());
         UserVO userDto = userService.findByName(SecurityUtil.getUsername());
@@ -261,6 +261,6 @@ public class UserController extends BaseController {
         Assert.isFalse(isPwdError, "密码错误");
         verificationCodeService.validated(CodeEnum.EMAIL_RESET_EMAIL_CODE.getKey() + user.getEmail(), code);
         userService.updateEmail(userDto.getUsername(), user.getEmail());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

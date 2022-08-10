@@ -1,5 +1,7 @@
 package org.jjche.cache.service;
 
+import org.springframework.data.redis.core.script.RedisScript;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -521,7 +523,7 @@ public interface RedisService {
      * @param prefix 前缀
      * @param ids    id
      */
-    void delByKeys(String prefix, Set<Long> ids);
+    void delByKeys(String prefix, Set ids);
 
     /**
      * <p>
@@ -532,4 +534,16 @@ public interface RedisService {
      * @return 是否成功
      */
     boolean delByKeyPrefix(String prefix);
+
+    /**
+     * <p>
+     * 运行脚本
+     * </p>
+     *
+     * @param script /
+     * @param keys   /
+     * @param args   /
+     * @return /
+     */
+    <T> T execute(RedisScript<T> script, List keys, Object... args);
 }

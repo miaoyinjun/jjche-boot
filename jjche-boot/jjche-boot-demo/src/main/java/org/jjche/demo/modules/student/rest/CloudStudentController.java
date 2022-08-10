@@ -15,7 +15,7 @@ import org.jjche.core.base.BaseController;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-02-02
  */
-@Api(tags = "cloud")
+@Api(tags = "feign调用")
 @ApiSupport(order = 1, author = "miaoyj")
 @ApiRestController("cloud")
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class CloudStudentController extends BaseController {
 //
 //    @ApiOperation(value = "调用端")
 //    @GetMapping(value = "client")
-//    public ResultWrapper<MyPage<ProviderVO>> client(@SpringQueryMap PageParam page,
+//    public R<MyPage<ProviderVO>> client(@SpringQueryMap PageParam page,
 //                                                    @ApiParam(value = "课程")
 //                                                    @RequestParam(required = false) ProviderCourseEnum course,
 //                                                    @ApiParam(value = "姓名", example = "大")

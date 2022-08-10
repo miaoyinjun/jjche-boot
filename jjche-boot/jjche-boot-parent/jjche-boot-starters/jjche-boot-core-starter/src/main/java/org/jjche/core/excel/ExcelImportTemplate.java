@@ -11,8 +11,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.common.wrapper.constant.HttpStatusConstant;
-import org.jjche.common.wrapper.response.ResultWrapper;
-import org.jjche.common.wrapper.response.ResultWrapperBadRequest;
+import org.jjche.common.wrapper.response.R;
+import org.jjche.common.wrapper.response.RBadRequest;
 import org.jjche.core.vo.ExcelImportRetVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -125,8 +125,8 @@ public abstract class ExcelImportTemplate {
      * @return 结果
      */
     @SneakyThrows
-    public ResultWrapper<List<ExcelImportRetVO>> importData() {
-        ResultWrapper resultWrapper = new ResultWrapperBadRequest();
+    public R<List<ExcelImportRetVO>> importData() {
+        R R = new RBadRequest();
         //定义一个存放错误信息的集合
         List<ExcelImportRetVO> errList = Lists.newArrayList();
         // 将待导入的文件抽取成集合
@@ -170,21 +170,21 @@ public abstract class ExcelImportTemplate {
         importList.clear();
         // 如果全部为空行,则导入失败
         if (CollUtil.isEmpty(importSet) && CollUtil.isEmpty(errList)) {
-            resultWrapper.setCode(HttpStatusConstant.CODE_PARAMETER_ERROR);
-            resultWrapper.setMessage("导入模板不正确或没有数据要导入");
-            return resultWrapper;
+            R.setCode(HttpStatusConstant.CODE_PARAMETER_ERROR);
+            R.setMessage("导入模板不正确或没有数据要导入");
+            return R;
         }
         // 如果有异常则返回前端告诉用户，如果一切正常则进行批量导入
         if (errList.isEmpty()) {
             //执行导入
             importOperation(importSet);
-            return ResultWrapperBadRequest.ok();
+            return RBadRequest.ok();
         } else {
             ExcelImportRetVO errorVO = CollUtil.getFirst(errList);
             String message = StrUtil.format("第{}行，{}", errorVO.getRowNum(), errorVO.getErrMsg());
-            resultWrapper.setCode(HttpStatusConstant.CODE_PARAMETER_ERROR);
-            resultWrapper.setMessage(message);
-            return resultWrapper;
+            R.setCode(HttpStatusConstant.CODE_PARAMETER_ERROR);
+            R.setMessage(message);
+            return R;
         }
     }
 

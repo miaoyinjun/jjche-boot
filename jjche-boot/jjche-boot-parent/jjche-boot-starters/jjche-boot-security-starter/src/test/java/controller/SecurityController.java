@@ -3,7 +3,7 @@ package controller;
 import dto.LoginDTO;
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.enums.UserTypeEnum;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.security.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -44,7 +44,7 @@ public class SecurityController {
      * @since 2020-09-08
      */
     @PostMapping("/login")
-    public ResultWrapper<String> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
+    public R<String> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         //用户验证
@@ -57,7 +57,7 @@ public class SecurityController {
         final JwtUserDto jwtUserDto = (JwtUserDto) authentication.getPrincipal();
         // 保存在线信息
 //        onlineUserService.save(jwtUserDto, token, request);
-        return ResultWrapper.ok(token);
+        return R.ok(token);
     }
 
     /**
@@ -70,10 +70,10 @@ public class SecurityController {
      * @since 2020-07-09
      */
     @GetMapping("/not_allow")
-    public ResultWrapper<String> notAllow(@RequestParam(required = false) Integer pageIndex,
-                                          @RequestParam(required = false) Integer pageSize,
-                                          @RequestParam(required = false) String name) {
-        return ResultWrapper.ok("test");
+    public R<String> notAllow(@RequestParam(required = false) Integer pageIndex,
+                              @RequestParam(required = false) Integer pageSize,
+                              @RequestParam(required = false) String name) {
+        return R.ok("test");
     }
 
     /**
@@ -86,9 +86,9 @@ public class SecurityController {
      * @since 2020-07-09
      */
     @GetMapping("/allow")
-    public ResultWrapper<String> allow(@RequestParam(required = false) Integer pageIndex,
-                                       @RequestParam(required = false) Integer pageSize,
-                                       @RequestParam(required = false) String name) {
-        return ResultWrapper.ok("test");
+    public R<String> allow(@RequestParam(required = false) Integer pageIndex,
+                           @RequestParam(required = false) Integer pageSize,
+                           @RequestParam(required = false) String name) {
+        return R.ok("test");
     }
 }

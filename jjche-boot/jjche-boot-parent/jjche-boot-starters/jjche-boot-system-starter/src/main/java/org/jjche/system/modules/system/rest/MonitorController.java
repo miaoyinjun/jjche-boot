@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.system.modules.system.service.MonitorService;
@@ -33,24 +33,24 @@ public class MonitorController extends BaseController {
     /**
      * <p>query.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询服务监控")
     @GetMapping("/server")
     @PreAuthorize("@el.check('monitor:list')")
-    public ResultWrapper<Object> query() {
-        return ResultWrapper.ok(serverService.getServers());
+    public R<Object> query() {
+        return R.ok(serverService.getServers());
     }
 
     /**
      * <p>getCache.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询缓存监控")
     @GetMapping("/cache")
     @PreAuthorize("@el.check('monitor:list')")
-    public ResultWrapper<Object> getCache() {
+    public R<Object> getCache() {
         Properties info = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info());
         Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
         Object dbSize = redisTemplate.execute((RedisCallback<Object>) connection -> connection.dbSize());
@@ -68,6 +68,6 @@ public class MonitorController extends BaseController {
             pieList.add(data);
         });
         result.put("commandStats", pieList);
-        return ResultWrapper.ok(result);
+        return R.ok(result);
     }
 }

@@ -22,7 +22,14 @@ public class AuthUserDto {
     @NotBlank
     private String password;
 
+    /**
+     * 验证码-手输
+     */
     private String code;
+    /**
+     * 验证码-滑动
+     */
+    private String captchaVerification;
 
     private String uuid = "";
 

@@ -10,7 +10,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.demo.constant.ProviderApiVersion;
@@ -47,13 +47,13 @@ public class ProviderStudentStudentController extends BaseController implements 
             value = "被调用", category = LogCategoryType.OPERATING,
             type = LogType.SELECT, module = "学生"
     )
-    public ResultWrapper<MyPage<ProviderVO>> page(PageParam page,
-                                                  @ApiParam(value = "课程")
-                                                  @RequestParam(required = false) ProviderCourseEnum course,
-                                                  @ApiParam(value = "姓名", example = "大")
-                                                      @RequestParam(required = false) String name) {
+    public R<MyPage<ProviderVO>> page(PageParam page,
+                                      @ApiParam(value = "课程")
+                                      @RequestParam(required = false) ProviderCourseEnum course,
+                                      @ApiParam(value = "姓名", example = "大")
+                                      @RequestParam(required = false) String name) {
         StaticLog.warn("name:{}", name);
-        return ResultWrapper.ok(providerService.page(page, course, name));
+        return R.ok(providerService.page(page, course, name));
     }
 
 }

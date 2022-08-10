@@ -1,7 +1,7 @@
 package org.jjche.security.handler;
 
 import org.jjche.common.util.HttpUtil;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -32,6 +32,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        HttpUtil.printJson(response, ResultWrapper.tokenError());
+        HttpUtil.printJson(response, R.tokenError());
     }
 }

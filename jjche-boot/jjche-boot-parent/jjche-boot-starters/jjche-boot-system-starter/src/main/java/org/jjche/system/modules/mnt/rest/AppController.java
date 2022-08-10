@@ -7,7 +7,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -56,20 +56,20 @@ public class AppController extends BaseController {
      *
      * @param criteria a {@link AppQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "查询应用")
     @GetMapping
     @PreAuthorize("@el.check('app:list')")
-    public ResultWrapper<MyPage<AppDTO>> query(AppQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(appService.queryAll(criteria, pageable));
+    public R<MyPage<AppDTO>> query(AppQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(appService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link AppDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -78,16 +78,16 @@ public class AppController extends BaseController {
     @ApiOperation(value = "新增应用")
     @PostMapping
     @PreAuthorize("@el.check('app:add')")
-    public ResultWrapper create(@Validated @RequestBody AppDO resources) {
+    public R create(@Validated @RequestBody AppDO resources) {
         appService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link AppDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -96,16 +96,16 @@ public class AppController extends BaseController {
     @ApiOperation(value = "修改应用")
     @PutMapping
     @PreAuthorize("@el.check('app:edit')")
-    public ResultWrapper update(@Validated @RequestBody AppDO resources) {
+    public R update(@Validated @RequestBody AppDO resources) {
         appService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -114,8 +114,8 @@ public class AppController extends BaseController {
     @ApiOperation(value = "删除应用")
     @DeleteMapping
     @PreAuthorize("@el.check('app:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         appService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

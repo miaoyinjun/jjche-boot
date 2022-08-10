@@ -7,7 +7,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -56,21 +56,21 @@ public class ServerDeployController extends BaseController {
      *
      * @param criteria a {@link ServerDeployQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "查询服务器")
     @GetMapping
     @PreAuthorize("@el.check('serverDeploy:list')")
-    public ResultWrapper<MyPage<ServerDeployDTO>> query(
+    public R<MyPage<ServerDeployDTO>> query(
             ServerDeployQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(serverDeployService.queryAll(criteria, pageable));
+        return R.ok(serverDeployService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link ServerDeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -79,16 +79,16 @@ public class ServerDeployController extends BaseController {
     @ApiOperation(value = "新增服务器")
     @PostMapping
     @PreAuthorize("@el.check('serverDeploy:add')")
-    public ResultWrapper create(@Validated @RequestBody ServerDeployDO resources) {
+    public R create(@Validated @RequestBody ServerDeployDO resources) {
         serverDeployService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link ServerDeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -97,16 +97,16 @@ public class ServerDeployController extends BaseController {
     @ApiOperation(value = "修改服务器")
     @PutMapping
     @PreAuthorize("@el.check('serverDeploy:edit')")
-    public ResultWrapper update(@Validated @RequestBody ServerDeployDO resources) {
+    public R update(@Validated @RequestBody ServerDeployDO resources) {
         serverDeployService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -115,21 +115,21 @@ public class ServerDeployController extends BaseController {
     @ApiOperation(value = "删除Server")
     @DeleteMapping
     @PreAuthorize("@el.check('serverDeploy:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         serverDeployService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>testConnect.</p>
      *
      * @param resources a {@link ServerDeployDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation(value = "测试连接服务器")
     @PostMapping("/testConnect")
     @PreAuthorize("@el.check('serverDeploy:add')")
-    public ResultWrapper<Boolean> testConnect(@Validated @RequestBody ServerDeployDO resources) {
-        return ResultWrapper.ok(serverDeployService.testConnect(resources));
+    public R<Boolean> testConnect(@Validated @RequestBody ServerDeployDO resources) {
+        return R.ok(serverDeployService.testConnect(resources));
     }
 }

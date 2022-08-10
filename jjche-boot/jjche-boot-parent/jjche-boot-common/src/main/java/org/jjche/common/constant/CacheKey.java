@@ -9,6 +9,21 @@ package org.jjche.common.constant;
  * @since: 2020/6/11 15:49
  */
 public interface CacheKey {
+
+    /**
+     * 限流脚本
+     */
+    String SCRIPT_LUA_LIMIT = "local c" +
+            "\nc = redis.call('get',KEYS[1])" +
+            "\nif c and tonumber(c) > tonumber(ARGV[1]) then" +
+            "\nreturn c;" +
+            "\nend" +
+            "\nc = redis.call('incr',KEYS[1])" +
+            "\nif tonumber(c) == 1 then" +
+            "\nredis.call('expire',KEYS[1],ARGV[2])" +
+            "\nend" +
+            "\nreturn c;";
+
     /**
      * Constant <code>JWT_USER_NAME="user:jwt:username:"</code>
      */
@@ -62,4 +77,14 @@ public interface CacheKey {
      * gateway路由缓存
      */
     String GATEWAY_ROUTES = "sys:cache:cloud:gateway_routes";
+
+    /**
+     * 密钥
+     */
+    String SECURITY_APP_ID = "sys:security:app:id:";
+
+    /**
+     * 限速
+     */
+    String REQUEST_LIMIT = "sys:request:limit:";
 }

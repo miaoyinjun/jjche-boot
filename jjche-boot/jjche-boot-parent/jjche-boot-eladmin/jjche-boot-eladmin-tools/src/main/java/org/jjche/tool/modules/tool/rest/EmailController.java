@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -35,18 +35,18 @@ public class EmailController extends BaseController {
     /**
      * <p>queryConfig.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping
-    public ResultWrapper<EmailConfigDO> queryConfig() {
-        return ResultWrapper.ok(emailService.find());
+    public R<EmailConfigDO> queryConfig() {
+        return R.ok(emailService.find());
     }
 
     /**
      * <p>updateConfig.</p>
      *
      * @param emailConfig a {@link EmailConfigDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      * @throws java.lang.Exception if any.
      */
     @LogRecord(
@@ -55,16 +55,16 @@ public class EmailController extends BaseController {
     )
     @PutMapping
     @ApiOperation("配置邮件")
-    public ResultWrapper updateConfig(@Validated @RequestBody EmailConfigDO emailConfig) throws Exception {
+    public R updateConfig(@Validated @RequestBody EmailConfigDO emailConfig) throws Exception {
         emailService.config(emailConfig, emailService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>sendEmail.</p>
      *
      * @param emailVo a {@link EmailVO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "发送", category = LogCategoryType.MANAGER,
@@ -72,8 +72,8 @@ public class EmailController extends BaseController {
     )
     @PostMapping
     @ApiOperation("发送邮件")
-    public ResultWrapper sendEmail(@Validated @RequestBody EmailVO emailVo) {
+    public R sendEmail(@Validated @RequestBody EmailVO emailVo) {
         emailService.send(emailVo, emailService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

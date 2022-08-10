@@ -7,7 +7,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -41,18 +41,18 @@ public class QiniuController extends BaseController {
     /**
      * <p>queryConfig.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping(value = "/config")
-    public ResultWrapper<QiniuConfigDO> queryConfig() {
-        return ResultWrapper.ok(qiNiuService.find());
+    public R<QiniuConfigDO> queryConfig() {
+        return R.ok(qiNiuService.find());
     }
 
     /**
      * <p>updateConfig.</p>
      *
      * @param qiniuConfig a {@link QiniuConfigDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "配置", category = LogCategoryType.MANAGER,
@@ -60,10 +60,10 @@ public class QiniuController extends BaseController {
     )
     @ApiOperation("配置七牛云存储")
     @PutMapping(value = "/config")
-    public ResultWrapper updateConfig(@Validated @RequestBody QiniuConfigDO qiniuConfig) {
+    public R updateConfig(@Validated @RequestBody QiniuConfigDO qiniuConfig) {
         qiNiuService.config(qiniuConfig);
         qiNiuService.update(qiniuConfig.getType());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
@@ -84,19 +84,19 @@ public class QiniuController extends BaseController {
      *
      * @param criteria a {@link QiniuQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询文件")
     @GetMapping
-    public ResultWrapper<MyPage> query(QiniuQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(qiNiuService.queryAll(criteria, pageable));
+    public R<MyPage> query(QiniuQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(qiNiuService.queryAll(criteria, pageable));
     }
 
     /**
      * <p>upload.</p>
      *
      * @param file a {@link org.springframework.web.multipart.MultipartFile} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "上传文件", category = LogCategoryType.MANAGER,
@@ -104,19 +104,19 @@ public class QiniuController extends BaseController {
     )
     @ApiOperation("上传文件")
     @PostMapping
-    public ResultWrapper<Object> upload(@RequestParam MultipartFile file) {
+    public R<Object> upload(@RequestParam MultipartFile file) {
         QiniuContentDO qiniuContent = qiNiuService.upload(file, qiNiuService.find());
         Map<String, Object> map = new HashMap<>(3);
         map.put("id", qiniuContent.getId());
         map.put("errno", 0);
         map.put("data", new String[]{qiniuContent.getUrl()});
-        return ResultWrapper.ok(map);
+        return R.ok(map);
     }
 
     /**
      * <p>synchronize.</p>
      *
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "同步", category = LogCategoryType.MANAGER,
@@ -124,30 +124,30 @@ public class QiniuController extends BaseController {
     )
     @ApiOperation("同步七牛云数据")
     @PostMapping(value = "/synchronize")
-    public ResultWrapper synchronize() {
+    public R synchronize() {
         qiNiuService.synchronize(qiNiuService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>download.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("下载文件")
     @GetMapping(value = "/download/{id}")
-    public ResultWrapper<Object> download(@PathVariable Long id) {
+    public R<Object> download(@PathVariable Long id) {
         Map<String, Object> map = new HashMap<>(1);
         map.put("url", qiNiuService.download(qiNiuService.findByContentId(id), qiNiuService.find()));
-        return ResultWrapper.ok(map);
+        return R.ok(map);
     }
 
     /**
      * <p>delete.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -155,16 +155,16 @@ public class QiniuController extends BaseController {
     )
     @ApiOperation("删除文件")
     @DeleteMapping(value = "/{id}")
-    public ResultWrapper delete(@PathVariable Long id) {
+    public R delete(@PathVariable Long id) {
         qiNiuService.delete(qiNiuService.findByContentId(id), qiNiuService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>deleteAll.</p>
      *
      * @param ids an array of {@link java.lang.Long} objects.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除多张图片", category = LogCategoryType.MANAGER,
@@ -172,8 +172,8 @@ public class QiniuController extends BaseController {
     )
     @ApiOperation("删除多张图片")
     @DeleteMapping
-    public ResultWrapper deleteAll(@RequestBody Long[] ids) {
+    public R deleteAll(@RequestBody Long[] ids) {
         qiNiuService.deleteAll(ids, qiNiuService.find());
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }

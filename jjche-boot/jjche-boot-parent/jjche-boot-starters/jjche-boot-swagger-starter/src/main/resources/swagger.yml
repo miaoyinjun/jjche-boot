@@ -22,7 +22,6 @@ jjche:
     title: ${info.name:}
     version: ${info.version:}
     description: ${info.description:}
-    encryption-enabled: ${jjche.filter.encryption.enabled:false}
     security-jwt:
       enabled: ${jjche.security.enabled:false}
       token-header: ${jjche.security.jwt.header}

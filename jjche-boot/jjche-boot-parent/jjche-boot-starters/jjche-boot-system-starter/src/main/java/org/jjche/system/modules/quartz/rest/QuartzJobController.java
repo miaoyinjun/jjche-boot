@@ -8,7 +8,7 @@ import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
-import org.jjche.common.wrapper.response.ResultWrapper;
+import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
@@ -44,13 +44,13 @@ public class QuartzJobController extends BaseController {
      *
      * @param criteria a query object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询定时任务")
     @GetMapping
     @PreAuthorize("@el.check('timing:list')")
-    public ResultWrapper<MyPage<QuartzJobDO>> query(JobQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(quartzJobService.queryAll(criteria, pageable));
+    public R<MyPage<QuartzJobDO>> query(JobQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(quartzJobService.queryAll(criteria, pageable));
     }
 
     /**
@@ -86,20 +86,20 @@ public class QuartzJobController extends BaseController {
      *
      * @param criteria a {@link JobQueryCriteriaDTO} object.
      * @param pageable /
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @ApiOperation("查询任务执行日志")
     @GetMapping(value = "/logs")
     @PreAuthorize("@el.check('timing:list')")
-    public ResultWrapper<MyPage<QuartzLogDO>> queryJobLog(JobQueryCriteriaDTO criteria, PageParam pageable) {
-        return ResultWrapper.ok(quartzJobService.queryAllLog(criteria, pageable));
+    public R<MyPage<QuartzLogDO>> queryJobLog(JobQueryCriteriaDTO criteria, PageParam pageable) {
+        return R.ok(quartzJobService.queryAllLog(criteria, pageable));
     }
 
     /**
      * <p>create.</p>
      *
      * @param resources a {@link QuartzJobDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
@@ -108,17 +108,17 @@ public class QuartzJobController extends BaseController {
     @ApiOperation("新增定时任务")
     @PostMapping
     @PreAuthorize("@el.check('timing:add')")
-    public ResultWrapper create(@Validated @RequestBody QuartzJobDO resources) {
+    public R create(@Validated @RequestBody QuartzJobDO resources) {
         Assert.isNull(resources.getId(), "A new " + ENTITY_NAME + " cannot already have an ID");
         quartzJobService.create(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param resources a {@link QuartzJobDO} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
@@ -127,16 +127,16 @@ public class QuartzJobController extends BaseController {
     @ApiOperation("修改定时任务")
     @PutMapping
     @PreAuthorize("@el.check('timing:edit')")
-    public ResultWrapper update(@Validated @RequestBody QuartzJobDO resources) {
+    public R update(@Validated @RequestBody QuartzJobDO resources) {
         quartzJobService.update(resources);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>update.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "更改定时任务状态", category = LogCategoryType.MANAGER,
@@ -145,28 +145,28 @@ public class QuartzJobController extends BaseController {
     @ApiOperation("更改定时任务状态")
     @PutMapping(value = "/{id}")
     @PreAuthorize("@el.check('timing:edit')")
-    public ResultWrapper update(@PathVariable Long id) {
+    public R update(@PathVariable Long id) {
         quartzJobService.updateIsPause(quartzJobService.findById(id));
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>getById.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @GetMapping("/{id}")
     @PreAuthorize("@el.check('timing:list')")
-    public ResultWrapper<QuartzJobDO> getById(@PathVariable Long id) {
-        return ResultWrapper.ok(quartzJobService.findById(id));
+    public R<QuartzJobDO> getById(@PathVariable Long id) {
+        return R.ok(quartzJobService.findById(id));
     }
 
     /**
      * <p>execution.</p>
      *
      * @param id a {@link java.lang.Long} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "执行", category = LogCategoryType.MANAGER,
@@ -175,16 +175,16 @@ public class QuartzJobController extends BaseController {
     @ApiOperation("执行定时任务")
     @PutMapping(value = "/exec/{id}")
     @PreAuthorize("@el.check('timing:edit')")
-    public ResultWrapper execution(@PathVariable Long id) {
+    public R execution(@PathVariable Long id) {
         quartzJobService.execution(quartzJobService.findById(id));
-        return ResultWrapper.ok();
+        return R.ok();
     }
 
     /**
      * <p>delete.</p>
      *
      * @param ids a {@link java.util.Set} object.
-     * @return a {@link ResultWrapper} object.
+     * @return a {@link R} object.
      */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
@@ -193,8 +193,8 @@ public class QuartzJobController extends BaseController {
     @ApiOperation("删除定时任务")
     @DeleteMapping
     @PreAuthorize("@el.check('timing:del')")
-    public ResultWrapper delete(@RequestBody Set<Long> ids) {
+    public R delete(@RequestBody Set<Long> ids) {
         quartzJobService.delete(ids);
-        return ResultWrapper.ok();
+        return R.ok();
     }
 }
