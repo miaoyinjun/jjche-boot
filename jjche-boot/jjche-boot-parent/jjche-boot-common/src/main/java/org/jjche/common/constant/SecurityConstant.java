@@ -55,6 +55,10 @@ public interface SecurityConstant {
      */
     String JWT_KEY_PERMISSION = "permissions";
     /**
+     * 用户数据范围
+     */
+    String JWT_KEY_DATA_SCOPE = "data_scope";
+    /**
      * 用户数据范围-部门ids
      */
     String JWT_KEY_DATA_SCOPE_DEPT_IDS = "data_scope_dept_ids";
@@ -98,19 +102,4 @@ public interface SecurityConstant {
      * 应用加密密钥
      */
     String APP_KEY_ENC_KEY = "app_key_enc_key";
-
-    /**
-     * 应用映射地址
-     */
-    String APP_KEY_URLS = "app_key_urls";
-
-    /**
-     * 应用白名单
-     */
-    String APP_KEY_WHITE_IP = "app_key_white_ip";
-
-    /**
-     * 应用限速
-     */
-    String APP_KEY_LIMIT_COUNT = "app_key_limit_count";
 }

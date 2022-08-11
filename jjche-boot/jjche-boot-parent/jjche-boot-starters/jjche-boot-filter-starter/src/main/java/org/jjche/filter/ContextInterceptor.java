@@ -2,7 +2,11 @@ package org.jjche.filter;
 
 import cn.hutool.core.util.IdUtil;
 import org.jjche.common.constant.LogConstant;
+import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.context.ContextUtil;
+import org.jjche.common.pojo.DataScope;
+import org.jjche.core.util.RequestHolder;
+import org.jjche.core.util.SpringContextHolder;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -29,6 +33,20 @@ public class ContextInterceptor implements HandlerInterceptor {
         String uuid = IdUtil.randomUUID();
         MDC.put(LogConstant.REQUEST_ID, uuid);
         httpServletResponse.setHeader(LogConstant.REQUEST_ID, uuid);
+        if (SpringContextHolder.isCloud()) {
+            //用户基本信息
+            ContextUtil.setUserId(RequestHolder.getHeaderLong(SecurityConstant.JWT_KEY_USER_ID));
+            ContextUtil.setUsername(RequestHolder.getHeader(SecurityConstant.JWT_KEY_USERNAME));
+            ContextUtil.setPermissions(RequestHolder.getHeaders(SecurityConstant.JWT_KEY_PERMISSION));
+            //数据范围
+            DataScope dataScope = new DataScope();
+            dataScope.setDeptIds(RequestHolder.getLongHeaders(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS));
+            dataScope.setAll(RequestHolder.getBooleanHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL));
+            dataScope.setSelf(RequestHolder.getBooleanHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF));
+            dataScope.setUserId(RequestHolder.getLongHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID));
+            dataScope.setUserName(RequestHolder.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME));
+            ContextUtil.setDataScope(dataScope);
+        }
         return true;
     }
 

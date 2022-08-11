@@ -3,9 +3,11 @@ package org.jjche.common.context;
 import cn.hutool.core.convert.Convert;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.jjche.common.constant.SecurityConstant;
+import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.StrUtil;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -45,6 +47,118 @@ public final class ContextUtil {
     public static void setAppKeyEncKey(String val) {
         set(SecurityConstant.APP_KEY_ENC_KEY, val);
     }
+
+    /**
+     * <p>
+     * 获取token
+     * </p>
+     *
+     * @return /
+     */
+    public static String getToken() {
+        return get(SecurityConstant.HEADER_AUTH, String.class);
+    }
+
+    /**
+     * <p>
+     * 设置token
+     * </p>
+     *
+     * @param val /
+     */
+    public static void setToken(String val) {
+        set(SecurityConstant.HEADER_AUTH, val);
+    }
+
+
+    /**
+     * <p>
+     * 获取用户id
+     * </p>
+     *
+     * @return /
+     */
+    public static Long getUserId() {
+        return get(SecurityConstant.JWT_KEY_USER_ID, Long.class);
+    }
+
+    /**
+     * <p>
+     * 设置用户id
+     * </p>
+     *
+     * @param val 用户id
+     */
+    public static void setUserId(Long val) {
+        set(SecurityConstant.JWT_KEY_USER_ID, val);
+    }
+
+    /**
+     * <p>
+     * 获取用户名
+     * </p>
+     *
+     * @return /
+     */
+    public static String getUsername() {
+        return get(SecurityConstant.JWT_KEY_USERNAME, String.class);
+    }
+
+    /**
+     * <p>
+     * 设置用户名
+     * </p>
+     *
+     * @param val 用户名
+     */
+    public static void setUsername(String val) {
+        set(SecurityConstant.JWT_KEY_USERNAME, val);
+    }
+
+    /**
+     * <p>
+     * 获取用户权限
+     * </p>
+     *
+     * @return /
+     */
+    public static Set<String> getPermissions() {
+        return get(SecurityConstant.JWT_KEY_PERMISSION, Set.class);
+    }
+
+    /**
+     * <p>
+     * 设置用户权限
+     * </p>
+     *
+     * @param val 权限
+     */
+    public static void setPermissions(Set<String> val) {
+        set(SecurityConstant.JWT_KEY_PERMISSION, val);
+    }
+
+    /**
+     * <p>
+     * 获取用户权限
+     * </p>
+     *
+     * @return /
+     */
+    public static DataScope getDataScope() {
+        return get(SecurityConstant.JWT_KEY_DATA_SCOPE, DataScope.class);
+    }
+
+    /**
+     * <p>
+     * 设置用户权限
+     * </p>
+     *
+     * @param val 权限
+     */
+    public static void setDataScope(DataScope val) {
+        set(SecurityConstant.JWT_KEY_DATA_SCOPE, val);
+    }
+
 
     public static void putAll(Map<String, String> map) {
         map.forEach((k, v) -> {
