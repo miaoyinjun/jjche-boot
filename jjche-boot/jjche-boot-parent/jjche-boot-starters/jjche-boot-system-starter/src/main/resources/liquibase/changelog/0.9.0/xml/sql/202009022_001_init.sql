@@ -5,17 +5,62 @@
  Source Server Type    : MySQL
  Source Server Version : 50727
  Source Host           : localhost:3306
- Source Schema         : boot-admin
+ Source Schema         : jjche-boot
 
  Target Server Type    : MySQL
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 27/12/2021 16:24:25
+ Date: 11/08/2022 08:41:18
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for DATABASECHANGELOG
+-- ----------------------------
+CREATE TABLE `DATABASECHANGELOG` (
+  `ID` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `AUTHOR` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `FILENAME` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `DATEEXECUTED` datetime NOT NULL,
+  `ORDEREXECUTED` int(11) NOT NULL,
+  `EXECTYPE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `MD5SUM` varchar(35) COLLATE utf8mb4_bin DEFAULT NULL,
+  `DESCRIPTION` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `COMMENTS` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `TAG` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `LIQUIBASE` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL,
+  `CONTEXTS` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `LABELS` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `DEPLOYMENT_ID` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- ----------------------------
+-- Records of DATABASECHANGELOG
+-- ----------------------------
+BEGIN;
+INSERT INTO `DATABASECHANGELOG` VALUES ('202009022_001_init', 'miaoyj', 'liquibase/changelog/0.9.0/xml/20200922_001_init.xml', '2022-08-11 08:40:11', 1, 'EXECUTED', '8:6be8deef3ae008974d492cf7c57f8fe1', 'sqlFile', '', NULL, '4.4.3', NULL, NULL, '0178410954');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for DATABASECHANGELOGLOCK
+-- ----------------------------
+CREATE TABLE `DATABASECHANGELOGLOCK` (
+  `ID` int(11) NOT NULL,
+  `LOCKED` bit(1) NOT NULL,
+  `LOCKGRANTED` datetime DEFAULT NULL,
+  `LOCKEDBY` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- ----------------------------
+-- Records of DATABASECHANGELOGLOCK
+-- ----------------------------
+BEGIN;
+INSERT INTO `DATABASECHANGELOGLOCK` VALUES (1, b'0', NULL, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for code_column_config
@@ -194,6 +239,36 @@ CREATE TABLE `mnt_server` (
 -- Records of mnt_server
 -- ----------------------------
 BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for security_app_key
+-- ----------------------------
+CREATE TABLE `security_app_key` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `comment` varchar(255) DEFAULT NULL COMMENT '描述',
+  `app_id` varchar(255) NOT NULL COMMENT '应用id',
+  `app_secret` varchar(255) NOT NULL COMMENT '应用密钥',
+  `enc_key` varchar(255) NOT NULL COMMENT '加密密钥',
+  `enabled` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态：1启用、0禁用',
+  `urls` varchar(500) NOT NULL COMMENT '地址',
+  `white_ip` varchar(500) DEFAULT NULL COMMENT '白名单',
+  `limit_count` int(11) NOT NULL DEFAULT '0' COMMENT '限速（N/秒）0不限制',
+  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
+  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_name` (`name`),
+  UNIQUE KEY `uk_app_id` (`app_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='应用密钥';
+
+-- ----------------------------
+-- Records of security_app_key
+-- ----------------------------
+BEGIN;
+INSERT INTO `security_app_key` VALUES (1, '测试', NULL, 'default_app_id', 'default_app_secret', 'y5PtpclbYABqpF2x', b'1', '/api/demo/out/students/*', NULL, 0, 'System', 'System', '2022-08-11 08:40:11', '2022-08-11 08:40:11');
 COMMIT;
 
 -- ----------------------------
@@ -438,12 +513,14 @@ CREATE TABLE `sys_log` (
   `request_id` varchar(255) DEFAULT NULL COMMENT '请求id',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `inx_log_type` (`log_type`(5)) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3537 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统日志';
+) ENGINE=InnoDB AUTO_INCREMENT=3539 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统日志';
 
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_log` VALUES (3537, '密码登录', 'SELECT', 'org.jjche.system.modules.security.rest.AuthorizationController.login()', NULL, '127.0.0.1', 1076, 'admin', '内网IP', 'MSEdge', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.62', NULL, '', '/api/sys/auth/login', '认证', 'org.jjche', '', '', 'MANAGER', 'OK', '2022-08-11 08:40:42', b'1', '60cd46d6-d79e-4349-95a0-ebe6a1279ec0');
+INSERT INTO `sys_log` VALUES (3538, '修改角色菜单', 'UPDATE', 'org.jjche.system.modules.system.rest.RoleController.updateMenu()', '{\n    \"body\": {\n        \"menus\": [\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 93\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 116\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 6\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 80\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 34\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 98\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 121\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 11\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 39\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 3\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 90\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 9\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 37\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 14\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 78\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 1\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 83\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 19\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 129\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 79\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 38\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 15\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 2\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 30\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 7\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 94\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 122\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 35\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 36\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 118\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 77\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 41\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 18\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 82\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 28\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 5\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 92\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 97\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 33\n            },\n            {\n                \"menuSort\": 999,\n                \"subCount\": 0,\n                \"id\": 10\n            }\n        ],\n        \"dataScope\": \"DATA_SCOPE_DEPT\",\n        \"level\": 3,\n        \"id\": 2\n    },\n    \"query\": {\n    }\n}', '127.0.0.1', 605, 'admin', '内网IP', 'MSEdge', 'OSX', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36 Edg/98.0.1108.62', NULL, '', '/api/sys/roles/menu', '角色', 'org.jjche', '', '', 'MANAGER', 'OK', '2022-08-11 08:40:59', b'1', '8804bb90-d100-4aca-a5b7-9c7ddc0bdd8c');
 COMMIT;
 
 -- ----------------------------
@@ -469,7 +546,7 @@ CREATE TABLE `sys_menu` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -754,6 +831,7 @@ INSERT INTO `sys_roles_menus` VALUES (121, 1);
 INSERT INTO `sys_roles_menus` VALUES (121, 2);
 INSERT INTO `sys_roles_menus` VALUES (122, 2);
 INSERT INTO `sys_roles_menus` VALUES (129, 1);
+INSERT INTO `sys_roles_menus` VALUES (129, 2);
 INSERT INTO `sys_roles_menus` VALUES (130, 1);
 INSERT INTO `sys_roles_menus` VALUES (131, 1);
 INSERT INTO `sys_roles_menus` VALUES (132, 1);
@@ -796,7 +874,7 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES (1, 2, 'admin', '管理员', '男', '18888888888', 'qq@qq.com', NULL, NULL, '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', b'1', b'1', b'1', b'1', b'0', 0, b'0', '2020-05-03 16:38:31', '2018-08-23 09:11:56', 'admin', 'admin', '2020-09-05 10:43:31', '2020-09-05 10:43:31');
+INSERT INTO `sys_user` VALUES (1, 2, 'admin', '管理员', '男', '18888888888', 'qq@qq.com', NULL, NULL, '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', b'1', b'1', b'1', b'1', b'0', 0, b'0', '2020-05-03 16:38:31', '2022-08-11 08:40:42', 'admin', 'admin', '2020-09-05 10:43:31', '2020-09-05 10:43:31');
 COMMIT;
 
 -- ----------------------------
@@ -976,32 +1054,6 @@ CREATE TABLE `tool_qiniu_content` (
 -- Records of tool_qiniu_content
 -- ----------------------------
 BEGIN;
-
-CREATE TABLE `security_app_key` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `comment` varchar(255) DEFAULT NULL COMMENT '描述',
-  `app_id` varchar(255) NOT NULL COMMENT '应用id',
-  `app_secret` varchar(255) NOT NULL COMMENT '应用密钥',
-  `enc_key` varchar(255) NOT NULL COMMENT '加密密钥',
-  `enabled` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态：1启用、0禁用',
-  `urls` varchar(500) NOT NULL COMMENT '地址',
-  `white_ip` varchar(500) DEFAULT NULL COMMENT '白名单',
-  `limit_count` int(11) NOT NULL DEFAULT b'0' COMMENT '限速（N/秒）0不限制',
-  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
-  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
-  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_name` (`name`),
-  UNIQUE KEY `uk_app_id` (`app_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用密钥';
-
-COMMIT;
-
-BEGIN;
-INSERT INTO `security_app_key` (`name`, `app_id`, `app_secret`, `urls`, `enc_key`, `enabled`)
-    VALUES ('测试', 'default_app_id', 'default_app_secret', '/api/demo/out/students/*','y5PtpclbYABqpF2x', 1);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
