@@ -16,6 +16,7 @@ import java.util.List;
 public class StrUtil extends cn.hutool.core.util.StrUtil {
 
     private static final char SEPARATOR = '_';
+    public static final String ZERO = "0";
 
     /**
      * 驼峰命名法工具

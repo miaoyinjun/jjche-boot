@@ -13,7 +13,6 @@ import org.jjche.log.biz.starter.support.aop.BeanFactoryLogRecordAdvisor;
 import org.jjche.log.biz.starter.support.aop.LogRecordInterceptor;
 import org.jjche.log.biz.starter.support.aop.LogRecordOperationSource;
 import org.jjche.log.biz.starter.support.parse.LogFunctionParser;
-import org.jjche.log.filter.LogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,8 +23,6 @@ import org.springframework.context.annotation.ImportAware;
 import org.springframework.context.annotation.Role;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -41,29 +38,7 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties({LogRecordProperties.class})
 public class LogRecordProxyAutoConfiguration implements ImportAware {
-
     private AnnotationAttributes enableLogRecord;
-
-    /**
-     * <p>
-     * 日志拦截
-     * </p>
-     *
-     * @return 日志拦截配置
-     */
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            /**
-             * 添加拦截器
-             * @param registry
-             */
-            @Override
-            public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new LogInterceptor());
-            }
-        };
-    }
 
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)

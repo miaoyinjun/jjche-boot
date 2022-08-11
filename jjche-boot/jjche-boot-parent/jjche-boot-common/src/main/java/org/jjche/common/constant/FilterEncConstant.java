@@ -84,4 +84,6 @@ public interface FilterEncConstant {
      * 过滤器过滤路径url{@value}
      */
     String PROPERTY_ENC_API_FILTER = PROPERTY_ENC_PREFIX + ".api";
+
+
 }
