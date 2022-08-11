@@ -184,7 +184,7 @@ public class UserController extends BaseController {
     )
     @ApiOperation("修改密码")
     @PostMapping(value = "/updatePass")
-    public R updatePass(@RequestBody UserPassVO passVo) throws Exception {
+    public R updatePass(@RequestBody UserPassVO passVo) {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         String oldPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getOldPass());
         String newPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getNewPass());
@@ -219,8 +219,6 @@ public class UserController extends BaseController {
         userService.checkPwd(newPass);
         String username = passDTO.getUsername();
         userService.updatePass(username, passwordEncoder.encode(newPass));
-        //管理员重置密码后，用户登陆后必须修改密码
-        userService.updateUserMustResetPwd(username);
         return R.ok();
     }
 
