@@ -74,7 +74,19 @@ public class SecurityUtil {
      * @return /
      */
     public static DataScope getUserDataScope() {
-        return ContextUtil.getDataScope();
+        DataScope dataScope = new DataScope();
+        Set<Long> deptIds = ContextUtil.getDataScopeDeptIds();
+        boolean isAll = ContextUtil.getDataScopeIsAll();
+        boolean isSelf = ContextUtil.getDataScopeIsSelf();
+        Long userid = ContextUtil.getDataScopeUserId();
+        String username = ContextUtil.getDataScopeUserName();
+
+        dataScope.setDeptIds(deptIds);
+        dataScope.setAll(isAll);
+        dataScope.setAll(isSelf);
+        dataScope.setUserId(userid);
+        dataScope.setUserName(username);
+        return dataScope;
     }
 
     /**

@@ -87,12 +87,28 @@ public class TokenFilter extends GenericFilterBean {
             Long userId = user.getId();
             String username = user.getUsername();
             Set<String> elPermissions = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
+            //数据范围
             DataScope dataScope = userDetails.getDataScope();
+            //部门id
+            Set<Long> dataScopeDeptIds = dataScope.getDeptIds();
+            //全部
+            Boolean dataScopeIsAll = dataScope.isAll();
+            //本人
+            Boolean dataScopeIsSelf = dataScope.isSelf();
+            //用户id
+            Long dataScopeUserid = dataScope.getUserId();
+            //用户名
+            String dataScopeUsername = dataScope.getUserName();
+
             ContextUtil.setUserId(userId);
             ContextUtil.setUsername(username);
             ContextUtil.setPermissions(elPermissions);
             //数据范围
-            ContextUtil.setDataScope(dataScope);
+            ContextUtil.setDataScopeDeptIds(dataScopeDeptIds);
+            ContextUtil.setDataScopeIsAll(dataScopeIsAll);
+            ContextUtil.setDataScopeIsSelf(dataScopeIsSelf);
+            ContextUtil.setDataScopeUserId(dataScopeUserid);
+            ContextUtil.setDataScopeUserName(dataScopeUsername);
         }
     }
 

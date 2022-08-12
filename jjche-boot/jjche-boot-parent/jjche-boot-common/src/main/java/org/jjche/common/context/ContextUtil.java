@@ -3,7 +3,6 @@ package org.jjche.common.context;
 import cn.hutool.core.convert.Convert;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import org.jjche.common.constant.SecurityConstant;
-import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.StrUtil;
 
 import java.util.Map;
@@ -137,28 +136,116 @@ public final class ContextUtil {
         set(SecurityConstant.JWT_KEY_PERMISSION, val);
     }
 
+
     /**
      * <p>
-     * 获取用户权限
+     * 获取用户数据范围部门id
      * </p>
      *
      * @return /
      */
-    public static DataScope getDataScope() {
-        return get(SecurityConstant.JWT_KEY_DATA_SCOPE, DataScope.class);
+    public static Set<Long> getDataScopeDeptIds() {
+        return get(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, Set.class);
     }
 
     /**
      * <p>
-     * 设置用户权限
+     * 设置用户数据范围部门id
      * </p>
      *
-     * @param val 权限
+     * @param val 部门id
      */
-    public static void setDataScope(DataScope val) {
-        set(SecurityConstant.JWT_KEY_DATA_SCOPE, val);
+    public static void setDataScopeDeptIds(Set<Long> val) {
+        set(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS, val);
     }
 
+    /**
+     * <p>
+     * 设置用户数据范围是否全部
+     * </p>
+     *
+     * @return /
+     */
+    public static boolean getDataScopeIsAll() {
+        return get(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, Boolean.class, false);
+    }
+
+    /**
+     * <p>
+     * 设置用户数据范围是否全部
+     * </p>
+     *
+     * @param val 数据范围是否全部
+     */
+    public static void setDataScopeIsAll(boolean val) {
+        set(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL, val);
+    }
+
+    /**
+     * <p>
+     * 设置用户数据范围是否本人
+     * </p>
+     *
+     * @return /
+     */
+    public static boolean getDataScopeIsSelf() {
+        return get(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, Boolean.class, false);
+    }
+
+    /**
+     * <p>
+     * 设置用户数据范围是否本人
+     * </p>
+     *
+     * @param val 数据范围是否本人
+     */
+    public static void setDataScopeIsSelf(boolean val) {
+        set(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF, val);
+    }
+
+    /**
+     * <p>
+     * 获取用户数据范围用户id
+     * </p>
+     *
+     * @return /
+     */
+    public static Long getDataScopeUserId() {
+        return get(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, Long.class);
+    }
+
+    /**
+     * <p>
+     * 设置用户数据范围用户id
+     * </p>
+     *
+     * @param val 用户数据范围用户id
+     */
+    public static void setDataScopeUserId(Long val) {
+        set(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID, val);
+    }
+
+    /**
+     * <p>
+     * 获取用户数据范围用户名
+     * </p>
+     *
+     * @return /
+     */
+    public static String getDataScopeUserName() {
+        return get(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, String.class);
+    }
+
+    /**
+     * <p>
+     * 设置用户数据范围用户名
+     * </p>
+     *
+     * @param val 用户数据范围用户名
+     */
+    public static void setDataScopeUserName(String val) {
+        set(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, val);
+    }
 
     public static void putAll(Map<String, String> map) {
         map.forEach((k, v) -> {
