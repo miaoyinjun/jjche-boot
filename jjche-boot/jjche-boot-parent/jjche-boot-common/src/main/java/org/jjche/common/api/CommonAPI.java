@@ -2,7 +2,9 @@ package org.jjche.common.api;
 
 import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.LogRecordDTO;
+import org.jjche.common.dto.PermissionDataResourceDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
 
 import java.util.List;
@@ -33,6 +35,10 @@ public interface CommonAPI {
      * 根据应用id获取密钥 {@value}
      */
     String URL_GET_KEY_BY_APP_ID = "getKeyByAppId";
+    /**
+     * 获取数据权限 {@value}
+     */
+    String URL_LIST_PERMISSION_DATA_RESOURCE = "listPermissionDataResource";
 
     /**
      * <p>
@@ -99,4 +105,14 @@ public interface CommonAPI {
      * @return /
      */
     SecurityAppKeyBasicVO getKeyByAppId(String appId);
+
+    /**
+     * <p>
+     * 执行过滤
+     * </p>
+     *
+     * @param dto /
+     * @return 结果
+     */
+    List<DataPermissionFieldResultVO> listPermissionDataResource(PermissionDataResourceDTO dto);
 }

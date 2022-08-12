@@ -1,12 +1,18 @@
 package org.jjche.system.modules.system.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.constant.CacheKey;
+import org.jjche.common.dto.PermissionDataResourceDTO;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.mybatis.base.service.MyServiceImpl;
 import org.jjche.mybatis.util.MybatisUtil;
 import org.jjche.system.modules.system.api.dto.DataPermissionFieldDTO;
@@ -18,8 +24,12 @@ import org.jjche.system.modules.system.mapstruct.DataPermissionFieldMapStruct;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -137,5 +147,57 @@ public class DataPermissionFieldService extends MyServiceImpl<DataPermissionFiel
     @Cached(name = CacheKey.PERMISSION_DATA_FIELD_USER_ID, key = "#userId")
     public List<DataPermissionFieldVO> listByUserId(Long userId) {
         return this.getBaseMapper().queryByUserId(userId);
+    }
+
+    /**
+     * <p>
+     * 执行过滤
+     * </p>
+     *
+     * @param dto /
+     * @return 结果
+     */
+    public List<DataPermissionFieldResultVO> getDataResource(PermissionDataResourceDTO dto) {
+        String permission = dto.getPermission();
+        Map<String, String> voMap = dto.getVoMap();
+        boolean isFilter = dto.getFilter();
+        List<DataPermissionFieldResultVO> resources = new ArrayList<>();
+        if (MapUtil.isNotEmpty(voMap)) {
+            //获取list里的类型，取ApiModelProperty注解里的字段名，相同的字段名优先配置里的名称
+            for (String key : voMap.keySet()) {
+                String value = MapUtil.getStr(voMap, key);
+                DataPermissionFieldResultVO dataPermissionFieldResultVO = DataPermissionFieldResultVO.builder()
+                        .name(value)
+                        .code(key)
+                        .isAccessible(true)
+                        .isEditable(true)
+                        .build();
+                resources.add(dataPermissionFieldResultVO);
+            }
+        }
+        if (isFilter) {
+            //获取用户数据规则配置
+            if (StrUtil.isNotBlank(permission)) {
+                List<DataPermissionFieldVO> permissionDataFieldDTOList =
+                        this.listByUserId(SecurityUtil.getUserId());
+                if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
+                    String finalPermissionCode = permission;
+                    Predicate condition = (str) -> StrUtil.equals(String.valueOf(str), finalPermissionCode);
+                    permissionDataFieldDTOList = permissionDataFieldDTOList.stream().filter((p) -> (condition.test(p.getMenuPermission()))).collect(Collectors.toList());
+                    if (CollUtil.isNotEmpty(permissionDataFieldDTOList)) {
+                        for (DataPermissionFieldResultVO resource : resources) {
+                            for (DataPermissionFieldVO permissionFieldVO : permissionDataFieldDTOList) {
+                                if (StrUtil.equals(permissionFieldVO.getCode(), resource.getCode())) {
+                                    resource.setIsAccessible(permissionFieldVO.getIsAccessible());
+                                    resource.setIsEditable(permissionFieldVO.getIsEditable());
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return resources;
     }
 }
