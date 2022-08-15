@@ -7,7 +7,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.jjche.common.annotation.PermissionData;
 import org.jjche.common.dto.BaseDTO;
 import org.jjche.common.enums.LogCategoryType;
 import org.jjche.common.enums.LogType;
@@ -135,7 +134,6 @@ public class StudentController extends BaseController {
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
-    @PermissionData(fieldReturn = true)
     public R<MyPage<StudentVO>> page(PageParam page, @ApiParam(value = "课程") @RequestParam(required = false) CourseEnum course, @Validated StudentQueryCriteriaDTO query) {
         StaticLog.warn("name:{}", query.getName());
         return R.ok(studentService.page(page, course, query));

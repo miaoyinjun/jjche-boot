@@ -54,7 +54,7 @@ public class EncOutResponseBody implements ResponseBodyAdvice<R> {
         int resCode = response.getStatus();
         //200时才做加密处理
         if (resCode == HttpStatus.OK.value()) {
-            if (restResult.success()) {
+            if (restResult.getSuccess()) {
                 String encKey = ContextUtil.getAppKeyEncKey();
                 SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, encKey.getBytes());
                 String dataStr = JSONUtil.toJsonStr(restResult.getData());
