@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.jjche.common.api.CommonAPI;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.util.ThrowableUtil;
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.ServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
@@ -62,12 +62,13 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public R exception(Throwable e, ServletRequest request) {
+    public R exception(Throwable e) {
         String eStr = ThrowableUtil.getStackTrace(e);
         try {
             //已经通过@LogRecord记录了日志，这里不在记录
             if (BooleanUtil.isFalse(ContextUtil.getLogSaved())) {
                 //记录到表
+                String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
                 LogRecordDTO logRecord = new LogRecordDTO();
                 logRecord.setModule(String.valueOf(HttpStatusConstant.CODE_UNKNOWN_ERROR));
                 logRecord.setDetail(HttpStatusConstant.MSG_UNKNOWN_ERROR);
@@ -77,6 +78,7 @@ public class GlobalExceptionHandler {
                 logRecord.setRequestId(TraceContext.traceId());
                 logRecord.setExceptionDetail(eStr.getBytes());
                 logRecord.setSuccess(false);
+                logRecord.setAppName(appName);
                 //获取请求客户端信息
                 LogUtil.setLogRecordHttpRequest(logRecord);
                 commonAPI.recordLog(logRecord);

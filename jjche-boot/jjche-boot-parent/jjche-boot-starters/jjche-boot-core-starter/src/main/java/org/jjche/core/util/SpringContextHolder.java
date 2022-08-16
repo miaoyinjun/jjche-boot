@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jjche.common.constant.EnvConstant;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.ApplicationContext;
@@ -230,7 +231,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
                             "External: \thttp://{}:{}{}\n\t" +
                             "Doc:       \thttp://{}:{}{}sba/api/doc.html\n\t" +
                             "Profile(s): {}\n----------------------------------------------------------",
-                    env.getProperty("spring.application.name"),
+                    env.getProperty(SpringPropertyConstant.APP_NAME),
                     serverPort,
                     contextPath,
                     hostAddress,

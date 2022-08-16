@@ -17,6 +17,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.FilterEncConstant;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.context.LogRecordContext;
 import org.jjche.common.dto.LogRecordDTO;
@@ -27,6 +28,7 @@ import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.util.LogUtil;
 import org.jjche.core.util.RequestHolder;
+import org.jjche.core.util.SpringContextHolder;
 import org.jjche.log.biz.service.ILogRecordService;
 import org.jjche.log.biz.service.IOperatorGetService;
 import org.jjche.log.biz.starter.support.parse.LogRecordValueParser;
@@ -58,7 +60,6 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
     private ILogRecordService bizLogService;
     private IOperatorGetService operatorGetService;
     private CommonAPI commonAPI;
-
     /**
      * {@inheritDoc}
      */
@@ -266,6 +267,8 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         if (bizLogService == null) {
             StaticLog.error("bizLogService not init!!");
         }
+        String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
+        newLogRecordDTO.setAppName(appName);
         newLogRecordDTO.setTime(time);
         return newLogRecordDTO;
     }

@@ -49,6 +49,10 @@ public class LogRecordDTO implements Serializable {
      * 租户
      */
     private String tenant;
+    /**
+     * 应用名
+     */
+    private String appName;
 
     /**
      * 业务key
@@ -166,6 +170,6 @@ public class LogRecordDTO implements Serializable {
 
     /**
      * 是否是批量操作
-     * */
+     */
     private Boolean batch;
 }

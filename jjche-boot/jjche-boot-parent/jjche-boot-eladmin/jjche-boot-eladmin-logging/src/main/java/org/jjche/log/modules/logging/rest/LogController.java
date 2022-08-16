@@ -126,6 +126,19 @@ public class LogController extends BaseController {
     }
 
     /**
+     * <p>listModule.</p>
+     *
+     * @return a {@link R} object.
+     */
+    @GetMapping("/appNames")
+    @ApiOperation("日志获取应用名")
+    @PreAuthorize("@el.check('log:list')")
+    @Cached(name = "logs:appNames", cacheType = CacheType.REMOTE, expire = 3600000)
+    public R<List<String>> listAppName() {
+        return R.ok(logService.listAppName());
+    }
+
+    /**
      * <p>listByBizKeyAndBizNo.</p>
      *
      * @param page   a {@link PageParam} object.
