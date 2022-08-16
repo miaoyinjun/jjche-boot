@@ -24,11 +24,11 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
                     converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
     <!-- 彩色日志格式 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %yellow(%tid) %boldMagenta(%logger{36}) - %msg%n"/>
+              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %yellow([%X{X-Request-Id}]) %boldMagenta(%logger{36}) - %msg%n"/>
 
     <!-- 文件日志格式 -->
     <property name="FILE_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%tid] %-5level %logger{50} - %msg%n"/>
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{X-Request-Id}] %-5level %logger{50} - %msg%n"/>
 
     <!-- 控制台输出 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -36,10 +36,10 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
         </filter>
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
-                <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-            </layout>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <!-- 设置字符集 -->
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
     <!-- INFO_FILE配置 -->
@@ -64,10 +64,9 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
-                <pattern>${FILE_LOG_PATTERN}</pattern>
-            </layout>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
     <!-- WARN_FILE配置 -->
@@ -92,10 +91,9 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
-                <pattern>${FILE_LOG_PATTERN}</pattern>
-            </layout>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
     <!-- ERROR_FILE配置-->
@@ -119,10 +117,9 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
-                <pattern>${FILE_LOG_PATTERN}</pattern>
-            </layout>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
     <!-- ALL_FILE配置-->
@@ -144,10 +141,9 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="org.apache.skywalking.apm.toolkit.log.logback.v1.x.TraceIdPatternLogbackLayout">
-                <pattern>${FILE_LOG_PATTERN}</pattern>
-            </layout>
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>UTF-8</charset>
         </encoder>
     </appender>
 

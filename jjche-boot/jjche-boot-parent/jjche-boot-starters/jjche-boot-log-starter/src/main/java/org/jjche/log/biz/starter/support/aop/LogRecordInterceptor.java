@@ -14,9 +14,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.FilterEncConstant;
+import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.context.LogRecordContext;
@@ -32,6 +32,7 @@ import org.jjche.core.util.SpringContextHolder;
 import org.jjche.log.biz.service.ILogRecordService;
 import org.jjche.log.biz.service.IOperatorGetService;
 import org.jjche.log.biz.starter.support.parse.LogRecordValueParser;
+import org.slf4j.MDC;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -159,7 +160,8 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             boolean success = methodExecuteResult.isSuccess();
             //执行前
             LogRecordDTO logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
-            logRecord.setRequestId(TraceContext.traceId());
+            String reqId = MDC.get(LogConstant.REQUEST_ID);
+            logRecord.setRequestId(reqId);
             Throwable throwable = methodExecuteResult.getThrowable();
             //异常数据
             if (throwable != null) {

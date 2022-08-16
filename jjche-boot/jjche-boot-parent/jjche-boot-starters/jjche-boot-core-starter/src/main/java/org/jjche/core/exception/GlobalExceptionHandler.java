@@ -4,8 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
-import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.jjche.common.api.CommonAPI;
+import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.dto.LogRecordDTO;
@@ -15,6 +15,7 @@ import org.jjche.common.wrapper.response.R;
 import org.jjche.core.util.LogUtil;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.core.util.SpringContextHolder;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -55,7 +56,6 @@ public class GlobalExceptionHandler {
      * </p>
      *
      * @param e       a {@link java.lang.Exception} object.
-     * @param request a {@link javax.servlet.ServletRequest} object.
      * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
@@ -68,6 +68,7 @@ public class GlobalExceptionHandler {
             //已经通过@LogRecord记录了日志，这里不在记录
             if (BooleanUtil.isFalse(ContextUtil.getLogSaved())) {
                 //记录到表
+                String reqId = MDC.get(LogConstant.REQUEST_ID);
                 String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
                 LogRecordDTO logRecord = new LogRecordDTO();
                 logRecord.setModule(String.valueOf(HttpStatusConstant.CODE_UNKNOWN_ERROR));
@@ -75,7 +76,7 @@ public class GlobalExceptionHandler {
                 logRecord.setSaveParams(true);
                 logRecord.setOperator(SecurityUtil.getUsernameOrDefaultUsername());
                 logRecord.setCreateTime(DateUtil.date().toTimestamp());
-                logRecord.setRequestId(TraceContext.traceId());
+                logRecord.setRequestId(reqId);
                 logRecord.setExceptionDetail(eStr.getBytes());
                 logRecord.setSuccess(false);
                 logRecord.setAppName(appName);
