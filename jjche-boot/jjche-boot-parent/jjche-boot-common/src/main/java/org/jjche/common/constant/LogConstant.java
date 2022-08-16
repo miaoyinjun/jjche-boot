@@ -13,4 +13,9 @@ public interface LogConstant {
      * 日志id {@value}
      */
     String REQUEST_ID = "X-Request-Id";
+
+    /**
+     * 是否保存了日志 {@value}
+     */
+    String LOG_SAVED = "log_saved";
 }

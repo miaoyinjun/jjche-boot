@@ -44,7 +44,7 @@ import java.util.stream.Stream;
  */
 public class HttpUtil extends cn.hutool.http.HttpUtil {
 
-    private static final String UNKNOWN = "unknown";
+    public static final String UNKNOWN = "unknown";
     private static final Supplier<Stream<String>> BROWSER = () -> Stream.of(
             "Chrome", "Firefox", "Microsoft Edge", "Safari", "Opera"
     );

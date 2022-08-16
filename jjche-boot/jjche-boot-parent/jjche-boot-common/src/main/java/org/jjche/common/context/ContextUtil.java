@@ -2,6 +2,7 @@ package org.jjche.common.context;
 
 import cn.hutool.core.convert.Convert;
 import com.alibaba.ttl.TransmittableThreadLocal;
+import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.util.StrUtil;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * <p>
  * 获取当前线程变量中的 用户信息
- * --参与lamp-util
+ * --参考lamp-util
  * </p>
  *
  * @author miaoyj
@@ -245,6 +246,30 @@ public final class ContextUtil {
      */
     public static void setDataScopeUserName(String val) {
         set(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME, val);
+    }
+
+
+    /**
+     * <p>
+     * 获取是否保存了日志
+     * </p>
+     *
+     * @return /
+     */
+    public static boolean getLogSaved() {
+        //全局异常时不
+        return get(LogConstant.LOG_SAVED, Boolean.class, false);
+    }
+
+    /**
+     * <p>
+     * 设置是否保存了日志
+     * </p>
+     *
+     * @param val 是否保存了日志
+     */
+    public static void setLogSaved(boolean val) {
+        set(LogConstant.LOG_SAVED, val);
     }
 
     public static void putAll(Map<String, String> map) {

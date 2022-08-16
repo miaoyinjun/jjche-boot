@@ -1,19 +1,20 @@
 package org.jjche.core.exception;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.http.useragent.UserAgent;
-import cn.hutool.http.useragent.UserAgentUtil;
-import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
-import org.apache.commons.lang3.StringUtils;
-import org.jjche.common.util.HttpUtil;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
+import org.jjche.common.api.CommonAPI;
+import org.jjche.common.context.ContextUtil;
+import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.util.ThrowableUtil;
+import org.jjche.common.wrapper.constant.HttpStatusConstant;
 import org.jjche.common.wrapper.response.R;
-import org.jjche.core.alarm.dd.AlarmDingTalkService;
+import org.jjche.core.util.LogUtil;
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.*;
@@ -26,12 +27,10 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.ServletRequest;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +47,7 @@ import java.util.Set;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @Autowired
-    private AlarmDingTalkService alarmDingTalkService;
+    private CommonAPI commonAPI;
 
     /**
      * <p>
@@ -64,23 +63,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R exception(Throwable e, ServletRequest request) {
-        BoxLog log = new BoxLog();
+        String eStr = ThrowableUtil.getStackTrace(e);
         try {
-            if (request != null && request instanceof ContentCachingRequestWrapper) {
-                ContentCachingRequestWrapper wrapper = (ContentCachingRequestWrapper) request;
-                String ua = wrapper.getHeader(HttpHeaders.USER_AGENT);
-                UserAgent userAgent = UserAgentUtil.parse(ua);
-                log.setBrowser(HttpUtil.getBrowser(userAgent));
-                log.setBrowser(HttpUtil.getOs(userAgent));
-                log.setRequestIp(ServletUtil.getClientIP(wrapper));
-                log.setRequestUri(wrapper.getRequestURI());
-                log.setRequestMethod(wrapper.getMethod());
-                log.setRequestParams(ServletUtil.getParamMap(wrapper));
-                if (!ServletUtil.isMultipart(wrapper)) {
-                    String bodyStr = StringUtils.toEncodedString(wrapper.getContentAsByteArray(), Charset.forName(wrapper.getCharacterEncoding()));
-                    log.setRequestBody(bodyStr);
-                }
-                log.setRequestHeaders(ServletUtil.getHeaderMap(wrapper));
+            //已经通过@LogRecord记录了日志，这里不在记录
+            if (BooleanUtil.isFalse(ContextUtil.getLogSaved())) {
+                //记录到表
+                LogRecordDTO logRecord = new LogRecordDTO();
+                logRecord.setModule(String.valueOf(HttpStatusConstant.CODE_UNKNOWN_ERROR));
+                logRecord.setDetail(HttpStatusConstant.MSG_UNKNOWN_ERROR);
+                logRecord.setSaveParams(true);
+                logRecord.setOperator(SecurityUtil.getUsernameOrDefaultUsername());
+                logRecord.setCreateTime(DateUtil.date().toTimestamp());
+                logRecord.setRequestId(TraceContext.traceId());
+                logRecord.setExceptionDetail(eStr.getBytes());
+                logRecord.setSuccess(false);
+                //获取请求客户端信息
+                LogUtil.setLogRecordHttpRequest(logRecord);
+                commonAPI.recordLog(logRecord);
             }
         } catch (Exception ex) {
 
@@ -88,9 +87,8 @@ public class GlobalExceptionHandler {
             if (SpringContextHolder.isDev()) {
                 e.printStackTrace();
             } else {
-                log.setExceptionStack(ThrowableUtil.getStackTrace(e));
-                StaticLog.error("全局异常信息 :{}", JSONUtil.toJsonPrettyStr(log));
-                alarmDingTalkService.sendAlarm("全局异常");
+                StaticLog.error("全局异常:{}", eStr);
+//                alarmDingTalkService.sendAlarm("全局异常");
             }
         }
         return R.error();
