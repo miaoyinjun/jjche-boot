@@ -38,6 +38,12 @@
             <groupId>org.apache.skywalking</groupId>
             <artifactId>apm-toolkit-trace</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/de.siegmar/logback-gelf -->
+        <dependency>
+            <groupId>de.siegmar</groupId>
+            <artifactId>logback-gelf</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
