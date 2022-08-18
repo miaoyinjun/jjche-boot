@@ -30,6 +30,20 @@
             <artifactId>java-object-diff</artifactId>
             <version>0.95</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-toolkit-logback-1.x</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-toolkit-trace</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/de.siegmar/logback-gelf -->
+        <dependency>
+            <groupId>de.siegmar</groupId>
+            <artifactId>logback-gelf</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

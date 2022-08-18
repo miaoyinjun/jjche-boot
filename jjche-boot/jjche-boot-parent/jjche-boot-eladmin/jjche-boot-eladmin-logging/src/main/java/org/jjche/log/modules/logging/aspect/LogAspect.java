@@ -205,7 +205,7 @@
 //                            //新增
 //                            if (logActionType == LogType.ADD) {
 //                                Map<String, String> paramsBodyDetailMap = CollUtil.newHashMap();
-//                                Map<String, String> paramsBodyApiModelPropertyMap = ClassCompareUtil.getApiModelPropertyValue(paramsBody);
+//                                Map<String, String> paramsBodyApiModelPropertyMap = ClassUtil.getApiModelPropertyValue(paramsBody);
 //                                Map<String, String> paramsBodyMap = Convert.convert(Map.class, paramsBody);
 //                                for (String key : paramsBodyApiModelPropertyMap.keySet()) {
 //                                    String value = MapUtil.getStr(paramsBodyMap, key);
@@ -241,7 +241,7 @@
 //                                    Object obj = ReflectionUtils.invokeMethod(mh, SpringUtil.getBean(serviceClass), keyVal);
 ////                                    log.setBeforeData(JSONUtil.toJsonPrettyStr(obj));
 //                                    //保存修改前后区别字段
-//                                    List<LogUpdateDetailDTO> logUpdateDetailDTOList = ClassCompareUtil.compareFieldsObject(obj, paramsBody);
+//                                    List<LogUpdateDetailDTO> logUpdateDetailDTOList = ClassUtil.compareFieldsObject(obj, paramsBody);
 //                                    if (CollUtil.isNotEmpty(logUpdateDetailDTOList)) {
 //                                        for (LogUpdateDetailDTO updateDetailDTO : logUpdateDetailDTOList) {
 //                                            detailSb.append("[");

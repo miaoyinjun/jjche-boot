@@ -3,7 +3,9 @@ package org.jjche.security.aop;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.*;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.TypeUtil;
 import cn.hutool.log.StaticLog;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -16,11 +18,13 @@ import org.jjche.common.annotation.QueryCriteria;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.context.ElPermissionContext;
 import org.jjche.common.dto.BaseQueryCriteriaDTO;
+import org.jjche.common.dto.PermissionDataResourceDTO;
 import org.jjche.common.dto.PermissionDataRuleDTO;
 import org.jjche.common.permission.DataPermissionFieldFilterable;
 import org.jjche.common.permission.DataPermissionFieldMetaSetter;
-import org.jjche.common.permission.IDataPermissionFieldUserAuthorityHelper;
 import org.jjche.common.pojo.DataScope;
+import org.jjche.common.util.ClassUtil;
+import org.jjche.common.util.StrUtil;
 import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.wrapper.response.R;
 import org.jjche.core.util.SecurityUtil;
@@ -54,8 +58,6 @@ public class PermissionDataAspect {
 
     @Autowired
     private CommonAPI commonAPI;
-    @Autowired(required = false)
-    private IDataPermissionFieldUserAuthorityHelper userAuthorityHelper;
 
     /**
      * <p>permissionDataCut.</p>
@@ -88,6 +90,12 @@ public class PermissionDataAspect {
         }
         BaseQueryCriteriaDTO paramQueryCriteriaDTO = null;
         boolean isNotAdmin = dataScope != null && !dataScope.isAll() && StrUtil.isNotBlank(permissionCode);
+
+        //传输对象
+        PermissionDataResourceDTO dto = new PermissionDataResourceDTO();
+        dto.setPermission(permissionCode);
+        dto.setFilter(isNotAdmin);
+
         //非管理员
         if (isNotAdmin) {
             permissionCode = StrUtil.sub(permissionCode, 0, StrUtil.indexOf(permissionCode, ':') + 1);
@@ -155,12 +163,13 @@ public class PermissionDataAspect {
         // 2层，如R<MyPage<StudentVO>>
         Type returnType = this.getTypeArgumentVO(method.getGenericReturnType());
         Class returnClass = TypeUtil.getClass(returnType);
-
         //场景：修改，单个对象列级，入参
         //如果字段没有修改权限，将字段置null，mybatis不会处理null值字段
         if (pd.fieldUpdate() && paramQueryCriteriaDTO != null) {
             returnClass = paramQueryCriteriaDTO.getClass();
-            this.doFilter(DataPermissionFieldResult.build(paramQueryCriteriaDTO), returnClass, permissionCode, isNotAdmin, true);
+            Map<String, String> voMap = ClassUtil.getApiModelPropertyValue(returnClass);
+            dto.setVoMap(voMap);
+            this.doFilter(DataPermissionFieldResult.build(paramQueryCriteriaDTO), dto, true);
         }
         object = point.proceed();
         //列级
@@ -181,7 +190,9 @@ public class PermissionDataAspect {
                     List<DataPermissionFieldResultVO> resources = null;
                     //行
                     if (newObject instanceof DataPermissionFieldFilterable) {
-                        resources = this.doFilter((DataPermissionFieldFilterable) newObject, returnClass, permissionCode, isNotAdmin, false);
+                        Map<String, String> voMap = ClassUtil.getApiModelPropertyValue(returnClass);
+                        dto.setVoMap(voMap);
+                        resources = this.doFilter((DataPermissionFieldFilterable) newObject, dto, false);
                     }
                     //列
                     if (newObject instanceof DataPermissionFieldMetaSetter) {
@@ -199,17 +210,15 @@ public class PermissionDataAspect {
     /**
      * 执行过滤操作
      *
-     * @param filterable  方法返回的对象
-     * @param returnClass 对象类
-     * @param isFilter    是否过滤
-     * @param permission  权限标识
+     * @param filterable 方法返回的对象
+     * @param dto        /
+     * @param editable   是否可编辑
      * @return 查询内容
      */
     private List<DataPermissionFieldResultVO> doFilter(DataPermissionFieldFilterable<?> filterable,
-                                                       Class returnClass,
-                                                       String permission, boolean isFilter,
+                                                       PermissionDataResourceDTO dto,
                                                        boolean editable) {
-        List<DataPermissionFieldResultVO> resources = this.getDataResources(permission, returnClass, isFilter);
+        List<DataPermissionFieldResultVO> resources = this.commonAPI.listPermissionDataResource(dto);
         if (CollUtil.isEmpty(resources)) {
             return null;
         }
@@ -236,18 +245,6 @@ public class PermissionDataAspect {
             return o;
         });
         return resources;
-    }
-
-    /**
-     * 根据方法名和用户ID获取用户的数据权限
-     *
-     * @param returnClass 对象类型
-     * @param permission  权限标识
-     * @param isFilter    是否过滤
-     * @return 用户的数据权限
-     */
-    private List<DataPermissionFieldResultVO> getDataResources(String permission, Class returnClass, boolean isFilter) {
-        return this.userAuthorityHelper.getDataResource(permission, returnClass, isFilter);
     }
 
     /**

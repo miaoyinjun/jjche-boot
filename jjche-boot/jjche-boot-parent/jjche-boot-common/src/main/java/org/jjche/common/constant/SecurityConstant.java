@@ -55,6 +55,10 @@ public interface SecurityConstant {
      */
     String JWT_KEY_PERMISSION = "permissions";
     /**
+     * 用户数据范围
+     */
+    String JWT_KEY_DATA_SCOPE = "data_scope";
+    /**
      * 用户数据范围-部门ids
      */
     String JWT_KEY_DATA_SCOPE_DEPT_IDS = "data_scope_dept_ids";
@@ -93,4 +97,9 @@ public interface SecurityConstant {
      * 灰度标识
      */
     String FEIGN_GRAY_TAG = "version";
+
+    /**
+     * 应用加密密钥
+     */
+    String APP_KEY_ENC_KEY = "app_key_enc_key";
 }

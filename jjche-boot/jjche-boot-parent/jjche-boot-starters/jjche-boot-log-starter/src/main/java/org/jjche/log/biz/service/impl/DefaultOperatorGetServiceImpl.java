@@ -1,6 +1,7 @@
 package org.jjche.log.biz.service.impl;
 
 
+import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.beans.Operator;
 import org.jjche.log.biz.service.IOperatorGetService;
 
@@ -21,7 +22,7 @@ public class DefaultOperatorGetServiceImpl implements IOperatorGetService {
     @Override
     public Operator getUser() {
         Operator operator = new Operator();
-        operator.setOperatorId("默认用户");
+        operator.setOperatorId(SecurityUtil.getUsernameOrDefaultUsername());
         return operator;
     }
 }

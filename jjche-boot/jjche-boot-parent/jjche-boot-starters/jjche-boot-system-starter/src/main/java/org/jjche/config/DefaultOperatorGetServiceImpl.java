@@ -4,6 +4,7 @@ package org.jjche.config;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.beans.Operator;
 import org.jjche.log.biz.service.IOperatorGetService;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * @since 2021-04-29
  */
 @Component
+@Configuration
 public class DefaultOperatorGetServiceImpl implements IOperatorGetService {
 
     /**

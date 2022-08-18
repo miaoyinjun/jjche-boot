@@ -228,29 +228,45 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      */
     @Transactional(rollbackFor = Exception.class)
     public void update(UserDTO resources) {
-        UserDO user = this.getById(resources.getId());
-        ValidationUtil.isNull(user.getId(), "UserDO", "id", resources.getId());
-        UserDO user1 = this.getByUsername(resources.getUsername());
-        UserDO user2 = this.getByEmail(resources.getEmail());
-        UserDO user3 = this.getByPhone(resources.getPhone());
+        Long userId = resources.getId();
+        String usernameNew = resources.getUsername();
+        String emailNew = resources.getEmail();
+        String phoneNew = resources.getPhone();
+
+        UserDO user = this.getById(userId);
+
+        String usernameOld = user.getUsername();
+        String emailOld = user.getEmail();
+        String phoneOld = user.getPhone();
+
+        Assert.notNull(user, "用户不存在");
+        UserDO user1 = this.getByUsername(usernameNew);
+        UserDO user2 = this.getByEmail(emailNew);
+        UserDO user3 = this.getByPhone(phoneNew);
 
         Boolean isUserEqual = user1 != null && !user.getId().equals(user1.getId());
-        Assert.isFalse(isUserEqual, resources.getUsername() + "已存在");
+        Assert.isFalse(isUserEqual, usernameNew + "已存在");
 
         isUserEqual = user2 != null && !user.getId().equals(user2.getId());
-        Assert.isFalse(isUserEqual, resources.getEmail() + "已存在");
+        Assert.isFalse(isUserEqual, emailNew + "已存在");
 
         isUserEqual = user3 != null && !user.getId().equals(user3.getId());
-        Assert.isFalse(isUserEqual, resources.getPhone() + "已存在");
+        Assert.isFalse(isUserEqual, phoneNew + "已存在");
 
-        // 如果用户被禁用，则清除用户登录信息
-        if (!resources.getEnabled()) {
-            sysBaseAPI.kickOutForUsername(resources.getUsername());
+        /**
+         * 如果用户被禁用
+         * 或用户名、手机号、邮箱被修改
+         * 则清除用户登录信息
+         */
+        boolean userUpdate = !StrUtil.equals(usernameOld, usernameNew)
+                || !StrUtil.equals(emailOld, emailNew) || !StrUtil.equals(phoneOld, phoneNew);
+        if (!resources.getEnabled() || userUpdate) {
+            sysBaseAPI.kickOutForUsername(usernameOld);
         }
-        user.setUsername(resources.getUsername());
-        user.setEmail(resources.getEmail());
+        user.setUsername(usernameNew);
+        user.setEmail(emailOld);
         user.setEnabled(resources.getEnabled());
-        user.setPhone(resources.getPhone());
+        user.setPhone(phoneOld);
         user.setNickName(resources.getNickName());
         user.setGender(resources.getGender());
         user.setDeptId(resources.getDept().getId());
@@ -258,9 +274,14 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
 
         updateUserAndJobAndRole(resources);
         // 清除缓存
-        flushCache(user.getUsername());
-        flushCache(user.getPhone());
-        flushCache(user.getEmail());
+        flushCache(usernameNew);
+        flushCache(emailNew);
+        flushCache(phoneNew);
+
+        //修改用户名等
+        flushCache(usernameOld);
+        flushCache(phoneOld);
+        flushCache(emailOld);
     }
 
     /**
@@ -296,7 +317,6 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
      * 用户自助修改资料
      *
      * @param resources a {@link UserDO} object.
-     * @param userName  /
      */
     @Transactional(rollbackFor = Exception.class)
     public void updateCenter(UserCenterDTO resources) {
@@ -732,8 +752,7 @@ public class UserService extends MyServiceImpl<UserMapper, UserDO> {
         }
         Assert.isTrue(smsCodeEqual, "手机验证码错误");
 
-        SmsCodeAuthenticationToken authenticationToken =
-                new SmsCodeAuthenticationToken(phone);
+        SmsCodeAuthenticationToken authenticationToken = new SmsCodeAuthenticationToken(phone);
 
         LoginVO loginVO = this.loginByAuthenticationToken(authenticationToken, UserTypeEnum.SMS);
         // 清除验证码
