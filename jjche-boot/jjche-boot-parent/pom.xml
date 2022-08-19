@@ -473,6 +473,11 @@
                 <artifactId>logback-gelf</artifactId>
                 <version>4.0.2</version>
             </dependency>
+            <dependency>
+                <groupId>com.yomahub</groupId>
+                <artifactId>tlog-all-spring-boot-starter</artifactId>
+                <version>1.4.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

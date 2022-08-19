@@ -1,7 +1,7 @@
 package org.jjche.filter;
 
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.yomahub.tlog.context.TLogContext;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SecurityConstant;
@@ -34,7 +34,7 @@ public class ContextInterceptor implements HandlerInterceptor {
         //日志请求id
         String traceId = TraceContext.traceId();
         if (StrUtil.isBlank(traceId)) {
-            traceId = IdUtil.randomUUID();
+            traceId = TLogContext.getTraceId();
         }
         MDC.put(LogConstant.REQUEST_ID, traceId);
         httpServletResponse.setHeader(LogConstant.REQUEST_ID, traceId);
