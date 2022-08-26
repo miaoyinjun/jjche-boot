@@ -28,6 +28,7 @@
         <module>jjche-boot-system-starter</module>
         <module>jjche-boot-userdetail-starter</module>
         <module>jjche-boot-cloud-gray-starter</module>
+        <module>jjche-boot-shardingsphere-starter</module>
     </modules>
 
 </project>

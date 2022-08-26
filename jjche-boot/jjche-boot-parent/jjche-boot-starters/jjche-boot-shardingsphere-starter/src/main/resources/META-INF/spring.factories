@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=org.jjche.shardingsphere.env.ShardingSphereEnvironmentPostProcessor
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.jjche.shardingsphere.ShardingSphereAutoConfiguration

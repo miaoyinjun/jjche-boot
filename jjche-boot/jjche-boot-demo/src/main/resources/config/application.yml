@@ -2,7 +2,35 @@ jjche.core.api.path.prefix: /demo
 spring:
   application:
     name: "@project.name@"
-
+  shardingsphere:
+    props:
+      sql-show: true
+    schema:
+      name: ${spring.liquibase.default-schema}
+    datasource:
+      names: write-ds-0,write-ds-0-read-0
+      write-ds-0:
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://127.0.0.1:3307/${spring.shardingsphere.schema.name}?autoReconnect=true&useUnicode=true&createDatabaseIfNotExist=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: '123456'
+        filters: stat
+      write-ds-0-read-0:
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        url: jdbc:mysql://127.0.0.1:3308/${spring.shardingsphere.schema.name}?autoReconnect=true&useUnicode=true&createDatabaseIfNotExist=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false
+        username: root
+        password: '123456'
+        filters: stat
+    rules:
+      readwrite-splitting:
+        data-sources:
+          ds-0:
+            props:
+              read-data-source-names: write-ds-0-read-0
+              write-data-source-name: write-ds-0
+            type: Static
 #获取maven属性在应用界面与细节/信息可获取到
 info:
   name: "@project.name@"
