@@ -122,9 +122,9 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
                     }
                 }
                 /** 防止Long精度丢失 */
-//                if(isLongType(writer)){
-//                    writer.assignSerializer(new ToStringSerializer());
-//                }
+                if (isLongType(writer)) {
+                    writer.assignSerializer(new ToStringSerializer());
+                }
             }
             return beanProperties;
         }
