@@ -1,12 +1,13 @@
 package org.jjche.demo.modules.student.function;
 
-import lombok.RequiredArgsConstructor;
 import org.jjche.common.context.LogRecordContext;
 import org.jjche.demo.modules.student.domain.StudentDO;
 import org.jjche.demo.modules.student.mapstruct.StudentMapStruct;
 import org.jjche.demo.modules.student.service.StudentService;
 import org.jjche.log.biz.service.IParseFunction;
 import org.jjche.log.biz.service.impl.DiffParseFunction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,10 +22,13 @@ import java.util.List;
  * @since 2021-04-29
  */
 @Component
-@RequiredArgsConstructor
 public class StudentDiffOldByIdParseFunction implements IParseFunction<Object> {
-    private final StudentService studentService;
-    private final StudentMapStruct studentMapStruct;
+    @Autowired
+    @Lazy
+    private StudentService studentService;
+    @Autowired
+    @Lazy
+    private StudentMapStruct studentMapStruct;
 
     /**
      * {@inheritDoc}

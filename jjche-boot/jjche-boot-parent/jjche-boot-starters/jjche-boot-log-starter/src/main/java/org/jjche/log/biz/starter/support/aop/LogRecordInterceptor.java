@@ -61,6 +61,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
     private ILogRecordService bizLogService;
     private IOperatorGetService operatorGetService;
     private CommonAPI commonAPI;
+
     /**
      * {@inheritDoc}
      */
@@ -373,28 +374,19 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * {@inheritDoc}
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
-        bizLogService = beanFactory.getBean(ILogRecordService.class);
+    public void afterPropertiesSet() {
         operatorGetService = beanFactory.getBean(IOperatorGetService.class);
         if (bizLogService == null) {
             StaticLog.error("bizLogService not null");
         }
-
-        commonAPI = beanFactory.getBean(CommonAPI.class);
-        if (commonAPI == null) {
-            StaticLog.error("commonAPI not null");
-        }
     }
 
-    /**
-     * <p>
-     * 获取操作人
-     * </p>
-     *
-     * @param operatorGetService 操作人
-     */
-    public void setOperatorGetService(IOperatorGetService operatorGetService) {
-        this.operatorGetService = operatorGetService;
+    public void setBizLogService(ILogRecordService bizLogService) {
+        this.bizLogService = bizLogService;
+    }
+
+    public void setCommonAPI(CommonAPI commonAPI) {
+        this.commonAPI = commonAPI;
     }
 
     @Data
