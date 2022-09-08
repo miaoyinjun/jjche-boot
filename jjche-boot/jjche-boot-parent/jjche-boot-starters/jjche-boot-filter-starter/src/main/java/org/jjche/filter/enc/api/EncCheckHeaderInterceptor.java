@@ -78,7 +78,10 @@ public class EncCheckHeaderInterceptor implements HandlerInterceptor {
             paramTimestamp = Long.valueOf(timestampValue);
         }
         long now = System.currentTimeMillis();
-        boolean isExpireTime = paramTimestamp == null || now - paramTimestamp > FilterEncConstant.EXPIRE_TIME || paramTimestamp - now > 0L;
+        //允许5分钟前后差值
+        boolean isExpireTime = paramTimestamp == null
+                || now - paramTimestamp > FilterEncConstant.EXPIRE_TIME
+                || paramTimestamp - now > FilterEncConstant.EXPIRE_TIME;
         if (isExpireTime) {
             throw new RequestTimeoutException();
         }
