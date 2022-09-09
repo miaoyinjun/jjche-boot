@@ -156,7 +156,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <springProfile name="qa,demo,prod">
+    <springProfile name="test,uat,prod">
         <root level="${level}">
             <appender-ref ref="INFO_FILE"/>
             <appender-ref ref="WARN_FILE"/>

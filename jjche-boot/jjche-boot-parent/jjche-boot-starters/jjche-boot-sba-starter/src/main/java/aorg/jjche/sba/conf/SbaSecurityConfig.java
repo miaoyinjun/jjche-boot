@@ -29,7 +29,7 @@ public class SbaSecurityConfig {
 
     /**
      * <p>
-     * qa,demo,prod 环境加载
+     * test,uat,prod 环境加载
      * cloud版本全部放开
      * </p>
      */

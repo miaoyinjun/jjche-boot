@@ -1,5 +1,5 @@
 JAVA_OPTS="-Dfile.encoding=utf-8"
-JAVA_WEB_SERVICE_OPTS="--spring.profiles.active=qa"
+JAVA_WEB_SERVICE_OPTS="--spring.profiles.active=test"
 
 #mysql
 export JJCHE_DB_HOST=""
