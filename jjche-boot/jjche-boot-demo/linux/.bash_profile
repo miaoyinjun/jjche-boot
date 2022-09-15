@@ -1,4 +1,4 @@
-JAVA_OPTS="-Dfile.encoding=utf-8"
+JAVA_OPTS="-Xmn2048m -Xms3072m -Xmx4096m -XX:+HeapDumpOnOutOfMemoryError, -XX:+ExitOnOutOfMemoryError, -XX:HeapDumpPath=./ -Dfile.encoding=utf-8"
 JAVA_WEB_SERVICE_OPTS="--spring.profiles.active=test"
 
 #mysql
