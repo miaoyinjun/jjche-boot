@@ -16,7 +16,7 @@ import de.codecentric.boot.admin.server.utils.jackson.RegistrationDeserializer;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.annotation.JacksonAllowNull;
 import org.jjche.common.enums.IBaseEnum;
-import org.jjche.common.json.BaseEnumSerializer;
+import org.jjche.common.serializer.baseenum.BaseEnumSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;

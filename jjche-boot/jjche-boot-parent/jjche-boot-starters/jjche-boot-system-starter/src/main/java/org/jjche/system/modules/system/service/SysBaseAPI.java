@@ -1,5 +1,6 @@
 package org.jjche.system.modules.system.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -30,6 +31,7 @@ import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.app.service.SecurityAppKeyService;
+import org.jjche.system.modules.system.api.dto.DictDetailDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,6 +64,7 @@ public class SysBaseAPI implements ISysBaseAPI {
     private final DataPermissionFieldService dataPermissionFieldService;
     private final LogRecordMapStruct logRecordMapper;
     private final SecurityAppKeyService appKeyService;
+    private final DictDetailService dictDetailService;
 
     /**
      * 保存在线用户信息
@@ -259,6 +262,27 @@ public class SysBaseAPI implements ISysBaseAPI {
     @Override
     public List<DataPermissionFieldResultVO> listPermissionDataResource(PermissionDataResourceDTO dto) {
         return dataPermissionFieldService.getDataResource(dto);
+    }
+
+    @Override
+    public DictParam getDictByNameValue(String name, String value) {
+        List<DictDetailDTO> list = dictDetailService.getDictByName(name);
+        if (CollUtil.isNotEmpty(list)) {
+            DictDetailDTO dictDetailDTO = null;
+            for (DictDetailDTO dict : list) {
+                if (StrUtil.equals(dict.getValue(), value)) {
+                    dictDetailDTO = dict;
+                    break;
+                }
+            }
+            if (dictDetailDTO != null) {
+                DictParam dictParam = new DictParam();
+                dictParam.setValue(dictDetailDTO.getValue());
+                dictParam.setLabel(dictDetailDTO.getLabel());
+                return dictParam;
+            }
+        }
+        return null;
     }
 
     /**

@@ -2,10 +2,7 @@ package org.jjche.common.system.api.fallback;
 
 import cn.hutool.log.StaticLog;
 import lombok.Setter;
-import org.jjche.common.dto.JwtUserDto;
-import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.dto.PermissionDataResourceDTO;
-import org.jjche.common.dto.PermissionDataRuleDTO;
+import org.jjche.common.dto.*;
 import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
@@ -66,6 +63,12 @@ public class SysBaseAPIFallback implements ISysBaseAPI {
     @Override
     public List<DataPermissionFieldResultVO> listPermissionDataResource(PermissionDataResourceDTO dto) {
         StaticLog.error("获取数据权限失败 dto:{}, {}", dto, cause);
+        return null;
+    }
+
+    @Override
+    public DictParam getDictByNameValue(String name, String value) {
+        StaticLog.error("获取根据字典名称 name:{}, value:{}, {}", name, value, cause);
         return null;
     }
 }
