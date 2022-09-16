@@ -3,10 +3,9 @@ package org.jjche.common.system.api;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.constant.ServiceNameConstant;
-import org.jjche.common.dto.JwtUserDto;
-import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.dto.PermissionDataRuleDTO;
+import org.jjche.common.dto.*;
 import org.jjche.common.system.api.factory.SysBaseAPIFallbackFactory;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -56,4 +55,12 @@ public interface ISysBaseAPI extends CommonAPI {
     @Override
     @GetMapping(URL_GET_KEY_BY_APP_ID)
     SecurityAppKeyBasicVO getKeyByAppId(@RequestParam("appId") String appId);
+
+    @Override
+    @PostMapping(URL_LIST_PERMISSION_DATA_RESOURCE)
+    List<DataPermissionFieldResultVO> listPermissionDataResource(@RequestBody PermissionDataResourceDTO dto);
+
+    @Override
+    @GetMapping(URL_GET_DICT_BY_NAME_VALUE)
+    DictParam getDictByNameValue(@RequestParam("name") String name, @RequestParam("value") String value);
 }

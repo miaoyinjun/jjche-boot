@@ -385,7 +385,7 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @return code =200,true;否则 false.
      */
-    public boolean success() {
+    public boolean getSuccess() {
         return RCodeEnum.SUCCESS.getCode() == this.code;
     }
 }

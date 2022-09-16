@@ -2,12 +2,13 @@ package org.jjche.core.alarm.dd;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.log.StaticLog;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.core.property.CoreAlarmDingTalkProperties;
 import org.jjche.core.property.CoreAlarmProperties;
 import org.jjche.core.property.CoreProperties;
 import org.jjche.core.util.SecurityUtil;
+import org.jjche.core.util.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AlarmDingTalkService {
 
-    @Value("${spring.application.name:}")
-    private String appName;
     @Autowired
     private CoreProperties coreProperties;
 //    @Autowired
@@ -47,6 +46,7 @@ public class AlarmDingTalkService {
             String accessToken = dingTalk.getAccessToken();
             if (StrUtil.isNotBlank(accessToken)) {
                 String userName = SecurityUtil.getUsernameOrDefaultUsername();
+                String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
                 String errorMsg = StrUtil.format("【{}】，业务告警，{}，操作人：{}", appName, content, userName);
                 DingTalkContentDTO text = new DingTalkContentDTO();
                 text.setContent(errorMsg);

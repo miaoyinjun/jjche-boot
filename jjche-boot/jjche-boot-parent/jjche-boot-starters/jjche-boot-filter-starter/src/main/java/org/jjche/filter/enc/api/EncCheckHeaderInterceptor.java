@@ -12,6 +12,7 @@ import org.jjche.cache.service.RedisService;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.CacheKey;
 import org.jjche.common.constant.FilterEncConstant;
+import org.jjche.common.context.ContextUtil;
 import org.jjche.common.enums.FilterEncEnum;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
@@ -39,7 +40,6 @@ import java.util.List;
  * @since 2020-08-14
  */
 public class EncCheckHeaderInterceptor implements HandlerInterceptor {
-
     private CommonAPI commonAPI;
     private RedisService redisService;
     private AntPathMatcher PATH_MATCHER = new AntPathMatcher();
@@ -78,7 +78,10 @@ public class EncCheckHeaderInterceptor implements HandlerInterceptor {
             paramTimestamp = Long.valueOf(timestampValue);
         }
         long now = System.currentTimeMillis();
-        boolean isExpireTime = paramTimestamp == null || now - paramTimestamp > FilterEncConstant.EXPIRE_TIME || paramTimestamp - now > 0L;
+        //允许5分钟前后差值
+        boolean isExpireTime = paramTimestamp == null
+                || now - paramTimestamp > FilterEncConstant.EXPIRE_TIME
+                || paramTimestamp - now > FilterEncConstant.EXPIRE_TIME;
         if (isExpireTime) {
             throw new RequestTimeoutException();
         }
@@ -98,6 +101,7 @@ public class EncCheckHeaderInterceptor implements HandlerInterceptor {
         if (ObjectUtil.notEqual(signValue, mySign)) {
             throw new SignException();
         }
+        String encKey = appSecretVO.getEncKey();
         String urls = appSecretVO.getUrls();
         String whiteIp = appSecretVO.getWhiteIp();
         Integer limitCount = appSecretVO.getLimitCount();
@@ -107,6 +111,8 @@ public class EncCheckHeaderInterceptor implements HandlerInterceptor {
         this.checkWhiteIp(whiteIp, request);
         /** 限速 */
         this.checkRequestLimit(limitCount, request.getRequestURI());
+        //设置加密key到变量
+        ContextUtil.setAppKeyEncKey(encKey);
         return true;
     }
 

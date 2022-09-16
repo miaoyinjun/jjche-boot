@@ -52,7 +52,7 @@ public class ProviderStudentStudentController extends BaseController implements 
                                       @RequestParam(required = false) ProviderCourseEnum course,
                                       @ApiParam(value = "姓名", example = "大")
                                       @RequestParam(required = false) String name) {
-        StaticLog.warn("name:{}", name);
+        StaticLog.warn("provider.name:{}", name);
         return R.ok(providerService.page(page, course, name));
     }
 

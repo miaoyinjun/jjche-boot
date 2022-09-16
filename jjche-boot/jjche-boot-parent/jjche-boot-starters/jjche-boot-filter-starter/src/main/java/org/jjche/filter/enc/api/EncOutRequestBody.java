@@ -5,12 +5,9 @@ import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.annotation.HttpBodyDecrypt;
-import org.jjche.common.api.CommonAPI;
-import org.jjche.common.enums.FilterEncEnum;
+import org.jjche.common.context.ContextUtil;
 import org.jjche.common.util.StrUtil;
-import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.core.annotation.controller.OutRestController;
-import org.jjche.core.util.RequestHolder;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
@@ -18,7 +15,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -35,7 +31,6 @@ import java.nio.charset.Charset;
 @RestControllerAdvice(annotations = OutRestController.class)
 @RequiredArgsConstructor
 public class EncOutRequestBody implements RequestBodyAdvice {
-    private final CommonAPI commonAPI;
 
     @Override
     public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
@@ -58,10 +53,7 @@ public class EncOutRequestBody implements RequestBodyAdvice {
         try {
             //解密
             String bodyStr = StrUtil.str(requestDataByte, Charset.defaultCharset());
-            HttpServletRequest request = RequestHolder.getHttpServletRequest();
-            String appIdValue = request.getHeader(FilterEncEnum.APP_ID.getKey());
-            SecurityAppKeyBasicVO appSecretVO = commonAPI.getKeyByAppId(appIdValue);
-            String encKey = appSecretVO.getEncKey();
+            String encKey = ContextUtil.getAppKeyEncKey();
             SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, encKey.getBytes());
 
             requestDataByteNew = aes.decryptStr(bodyStr);

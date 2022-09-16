@@ -17,11 +17,11 @@ public interface EnvConstant {
     /**
      * 测试 {@value}
      */
-    String QA = "qa";
+    String TEST = "test";
     /**
      * 预生产 {@value}
      */
-    String DEMO = "demo";
+    String UAT = "uat";
     /**
      * 生产 {@value}
      */

@@ -16,6 +16,7 @@ import java.util.List;
 public class StrUtil extends cn.hutool.core.util.StrUtil {
 
     private static final char SEPARATOR = '_';
+    public static final String ZERO = "0";
 
     /**
      * 驼峰命名法工具
@@ -128,7 +129,7 @@ public class StrUtil extends cn.hutool.core.util.StrUtil {
     public static String updateDiffByDoDto(Serializable eDO, Serializable eDTO) {
         StringBuilder detailSb = cn.hutool.core.util.StrUtil.builder();
         //保存修改前后区别字段
-        List<LogUpdateDetailDTO> logUpdateDetailDTOList = ClassCompareUtil.compareFieldsObject(eDO, eDTO);
+        List<LogUpdateDetailDTO> logUpdateDetailDTOList = ClassUtil.compareFieldsObject(eDO, eDTO);
         if (CollUtil.isNotEmpty(logUpdateDetailDTOList)) {
             for (LogUpdateDetailDTO updateDetailDTO : logUpdateDetailDTOList) {
                 detailSb.append("[");

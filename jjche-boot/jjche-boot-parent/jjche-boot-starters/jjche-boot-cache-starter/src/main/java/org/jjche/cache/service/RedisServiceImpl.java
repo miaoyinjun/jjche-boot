@@ -5,6 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -31,7 +32,7 @@ public class RedisServiceImpl implements RedisService {
     private RedisTemplate redisTemplate;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
-    @Value("${spring.application.name}")
+    @Value("${" + SpringPropertyConstant.APP_NAME + "}")
     private String appName;
 
     /**

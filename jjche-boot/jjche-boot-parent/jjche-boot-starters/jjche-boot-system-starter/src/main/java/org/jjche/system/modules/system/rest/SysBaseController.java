@@ -3,10 +3,9 @@ package org.jjche.system.modules.system.rest;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.jjche.common.api.CommonAPI;
-import org.jjche.common.dto.JwtUserDto;
-import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.dto.PermissionDataRuleDTO;
+import org.jjche.common.dto.*;
 import org.jjche.common.system.api.ISysBaseAPI;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
@@ -61,5 +60,15 @@ public class SysBaseController extends BaseController {
     @GetMapping(CommonAPI.URL_GET_KEY_BY_APP_ID)
     public SecurityAppKeyBasicVO getKeyByAppId(@RequestParam("appId") String appId) {
         return sysBaseAPI.getKeyByAppId(appId);
+    }
+
+    @PostMapping(CommonAPI.URL_LIST_PERMISSION_DATA_RESOURCE)
+    public List<DataPermissionFieldResultVO> listPermissionDataResource(@RequestBody PermissionDataResourceDTO dto) {
+        return sysBaseAPI.listPermissionDataResource(dto);
+    }
+
+    @GetMapping(CommonAPI.URL_GET_DICT_BY_NAME_VALUE)
+    public DictParam getDictByNameValue(String name, String value) {
+        return sysBaseAPI.getDictByNameValue(name, value);
     }
 }

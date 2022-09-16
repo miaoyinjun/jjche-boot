@@ -1,6 +1,7 @@
 package org.jjche.cloud.handler;
 
 import cn.hutool.log.StaticLog;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.constant.SwaggerConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ public class MySwaggerResourceProvider implements SwaggerResourcesProvider {
     /**
      * 网关应用名称
      */
-    @Value("${spring.application.name}")
+    @Value("${" + SpringPropertyConstant.APP_NAME + "}")
     private String self;
 
     @Autowired

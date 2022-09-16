@@ -5,11 +5,11 @@
 scan：当此属性设置为true时，配置文件如果发生改变，将会被重新加载，默认值为true。 scanPeriod：设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒当scan为true时，此属性生效。默认的时间间隔为1分钟。
 debug：当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。 -->
 <configuration debug="false" scan="true">
-    <!--    <springProperty scope="context" name="logName" source="spring.application.name"/>-->
+        <springProperty scope="context" name="appName" source="spring.application.name"/>
     <springProperty scope="context" name="logPath" source="logging.file.path" defaultValue="./logs"/>
     <springProperty scope="context" name="maxHistory" source="logging.file.max_history" defaultValue="90"/>
     <springProperty scope="context" name="level" source="logging.level.root" defaultValue="INFO"/>
-    <contextName>Logbackwebadmin</contextName>
+    <contextName>JJcheLogback</contextName>
     <!--特别注意!!!   定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
     <!--特别注意!!!   部署之前将log_level改为INFO-->
     <!--特别注意!!!   每个插件将日志的home和name更改为插件名!!!-->
@@ -24,7 +24,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
                     converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
     <!-- 彩色日志格式 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %boldMagenta(%logger{36}) - %msg%n"/>
+              value="%red(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread]) %highlight(%-5level) %yellow([%X{X-Request-Id}]) %boldMagenta(%logger{36}) - %msg%n"/>
 
     <!-- 文件日志格式 -->
     <property name="FILE_LOG_PATTERN"
@@ -156,7 +156,7 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
         <appender-ref ref="CONSOLE"/>
     </root>
 
-    <springProfile name="qa,demo,prod">
+    <springProfile name="test,uat,prod">
         <root level="${level}">
             <appender-ref ref="INFO_FILE"/>
             <appender-ref ref="WARN_FILE"/>

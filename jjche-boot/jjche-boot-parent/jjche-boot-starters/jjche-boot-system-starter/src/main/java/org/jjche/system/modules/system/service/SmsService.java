@@ -12,8 +12,8 @@ import com.aliyuncs.http.MethodType;
 import com.aliyuncs.http.ProtocolType;
 import com.aliyuncs.profile.DefaultProfile;
 import org.jjche.common.util.ThrowableUtil;
-import org.jjche.property.AdminProperties;
-import org.jjche.property.AliYunSmsCodeProperties;
+import org.jjche.system.property.AdminProperties;
+import org.jjche.system.property.AliYunSmsCodeProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

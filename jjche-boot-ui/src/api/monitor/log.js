@@ -20,4 +20,11 @@ export function getModules() {
     method: 'get'
   })
 }
-export default { getErrDetail, delAllInfo, getModules }
+
+export function getAppNames() {
+  return request({
+    url: 'sys/logs/appNames',
+    method: 'get'
+  })
+}
+export default { getErrDetail, delAllInfo, getModules, getAppNames }

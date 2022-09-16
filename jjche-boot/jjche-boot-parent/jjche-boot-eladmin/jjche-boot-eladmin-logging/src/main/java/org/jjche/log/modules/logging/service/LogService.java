@@ -221,6 +221,24 @@ public class LogService extends MyServiceImpl<LogMapper, LogDO> {
 
     /**
      * <p>
+     * 查询所有日志模块
+     * </p>
+     *
+     * @return 日志模块
+     */
+    public List<String> listAppName() {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.isNotNull("app_name");
+        queryWrapper.ne("app_name", "");
+        queryWrapper.select("DISTINCT app_name");
+        queryWrapper.orderByAsc("app_name");
+        return this.listObjs(queryWrapper, a -> {
+            return a.toString();
+        });
+    }
+
+    /**
+     * <p>
      * 查询业务标识与业务主键
      * </p>
      *

@@ -14,7 +14,7 @@
 
 1. **基础功能**：用户、角色、菜单、部门、岗位、数据字典、任务调度、版本
 
-2. **微服务（spring cloud）：**支持单体服务与微服务之间灵活切换
+2. **微服务（spring cloud）**：支持单体服务与微服务之间灵活切换
 
 3. **在线代码生成器**
 
@@ -40,7 +40,7 @@
 
 8. **文件服务**：集成本地存储、七牛云，可自动扩展
 
-9. **数据库**：目前只在MySQL上测试，理论上兼容其它数据库，如果需求可自行扩展
+9. **数据库**：支持读写分离、分库分表
 
 10. **接口定义**：统一restful风格，完整的出入参格式定义、集成knife4j在线接口文档，JWT token安全验证
 
@@ -126,6 +126,8 @@
 > > > > > jjche-boot-core-starter -- 核心
 > >
 > > > > > jjche-boot-filter-starter -- 安全过滤器
+> >
+> > > > > jjche-boot-shardingsphere-starter 分库分表
 > >
 > > > > > jjche-boot-jackson-starter -- jackson定义
 > >

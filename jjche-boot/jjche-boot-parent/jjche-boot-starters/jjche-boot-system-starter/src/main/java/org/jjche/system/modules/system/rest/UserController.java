@@ -19,8 +19,6 @@ import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.biz.starter.annotation.LogRecord;
-import org.jjche.property.AdminProperties;
-import org.jjche.property.PasswordProperties;
 import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.property.SecurityRsaProperties;
 import org.jjche.system.modules.system.api.dto.UserCenterDTO;
@@ -32,6 +30,8 @@ import org.jjche.system.modules.system.domain.UserDO;
 import org.jjche.system.modules.system.service.RoleService;
 import org.jjche.system.modules.system.service.UserService;
 import org.jjche.system.modules.system.service.VerifyService;
+import org.jjche.system.property.AdminProperties;
+import org.jjche.system.property.PasswordProperties;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -184,7 +184,7 @@ public class UserController extends BaseController {
     )
     @ApiOperation("修改密码")
     @PostMapping(value = "/updatePass")
-    public R updatePass(@RequestBody UserPassVO passVo) throws Exception {
+    public R updatePass(@RequestBody UserPassVO passVo) {
         SecurityRsaProperties rsaProperties = properties.getRsa();
         String oldPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getOldPass());
         String newPass = RsaUtils.decryptByPrivateKey(rsaProperties.getPrivateKey(), passVo.getNewPass());
@@ -219,8 +219,6 @@ public class UserController extends BaseController {
         userService.checkPwd(newPass);
         String username = passDTO.getUsername();
         userService.updatePass(username, passwordEncoder.encode(newPass));
-        //管理员重置密码后，用户登陆后必须修改密码
-        userService.updateUserMustResetPwd(username);
         return R.ok();
     }
 

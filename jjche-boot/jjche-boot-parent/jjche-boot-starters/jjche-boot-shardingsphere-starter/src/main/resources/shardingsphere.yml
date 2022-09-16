@@ -1,0 +1,32 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  shardingsphere:
+    schema:
+      name: ${spring.liquibase.default-schema}
+    datasource:
+      common:
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.alibaba.druid.pool.DruidDataSource
+        web-stat-filter:
+          enabled: true
+          profile-enable: true
+          exclusions: ${spring.boot.admin.context-path:/sba}/*
+        filters: stat
+        aop-patterns: org.jjche.*.modules.*.service.*
+        validation-query: SELECT 'X'
+        filter:
+          stat:
+            merge-sql: true
+        initial-size: 10
+        min-idle: 5
+        max-active: 200
+        test-on-borrow: false
+        test-on-return: false
+        test-while-idle: true
+        max-wait: 60000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        remove-abandoned: false
