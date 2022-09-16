@@ -1,4 +1,4 @@
-package org.jjche.config;
+package org.jjche.system.config;
 
 
 import org.jjche.core.util.SecurityUtil;

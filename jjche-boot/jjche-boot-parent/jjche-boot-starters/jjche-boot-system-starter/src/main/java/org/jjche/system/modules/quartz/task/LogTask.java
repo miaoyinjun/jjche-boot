@@ -2,6 +2,7 @@ package org.jjche.system.modules.quartz.task;
 
 import cn.hutool.core.util.NumberUtil;
 import org.jjche.log.modules.logging.service.LogService;
+import org.jjche.system.modules.quartz.service.QuartzJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ public class LogTask {
 
     @Autowired
     private LogService logService;
+    @Autowired
+    private QuartzJobService quartzJobService;
 
     /**
      * <p>
@@ -27,7 +30,9 @@ public class LogTask {
      * @param month 月
      */
     public void cleanLogs(String month) {
-        logService.delMonth(NumberUtil.parseInt(month));
+        Integer monthInt = NumberUtil.parseInt(month);
+        logService.delMonth(monthInt);
+        quartzJobService.delMonth(monthInt);
     }
 
 }

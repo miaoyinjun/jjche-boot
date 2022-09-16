@@ -55,7 +55,12 @@ public class LogUtil {
                     if (!ServletUtil.isMultipart(wrapper) && wrapper.getContentLength() > 0) {
                         String body = StrUtil.str(wrapper.getContentAsByteArray(), Charset.defaultCharset());
                         if (StrUtil.isNotBlank(body)) {
-                            paramMap.put("body", JSONUtil.parseObj(body));
+                            boolean isTypeJSON = JSONUtil.isTypeJSON(body);
+                            Object bodyJSON = body;
+                            if (isTypeJSON) {
+                                bodyJSON = JSONUtil.parseObj(body);
+                            }
+                            paramMap.put("body", bodyJSON);
                         }
                     }
                     paramMap.put("query", paramsQueryMap);

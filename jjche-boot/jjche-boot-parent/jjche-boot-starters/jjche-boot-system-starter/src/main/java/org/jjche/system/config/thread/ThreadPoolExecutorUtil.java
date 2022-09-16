@@ -1,8 +1,8 @@
-package org.jjche.config.thread;
+package org.jjche.system.config.thread;
 
 import org.jjche.core.util.SpringContextHolder;
-import org.jjche.property.AdminProperties;
-import org.jjche.property.AsyncTaskPoolProperties;
+import org.jjche.system.property.AdminProperties;
+import org.jjche.system.property.AsyncTaskPoolProperties;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;

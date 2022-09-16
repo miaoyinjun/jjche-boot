@@ -1,4 +1,4 @@
-package org.jjche.config.thread;
+package org.jjche.system.config.thread;
 
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class TheadFactoryName implements ThreadFactory {
      * <p>Constructor for TheadFactoryName.</p>
      */
     public TheadFactoryName() {
-        this("el-pool");
+        this("jjche-pool");
     }
 
     private TheadFactoryName(String name) {

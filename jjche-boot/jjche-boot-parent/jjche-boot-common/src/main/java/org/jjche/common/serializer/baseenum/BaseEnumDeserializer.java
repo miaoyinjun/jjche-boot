@@ -1,4 +1,4 @@
-package org.jjche.common.json;
+package org.jjche.common.serializer.baseenum;
 
 
 import cn.hutool.core.util.ClassUtil;
@@ -16,6 +16,14 @@ import org.springframework.beans.BeanUtils;
 
 import java.io.IOException;
 
+/**
+ * <p>
+ * 枚举反序列化
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-09-13
+ */
 public class BaseEnumDeserializer extends JsonDeserializer<IBaseEnum> {
 
 

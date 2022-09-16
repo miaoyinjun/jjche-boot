@@ -1,4 +1,4 @@
-package org.jjche.config;
+package org.jjche.system.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
