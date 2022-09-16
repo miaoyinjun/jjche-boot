@@ -129,4 +129,8 @@ public class LogVO implements Serializable {
      * 请求id
      */
     private String requestId;
+    /**
+     * 应用名
+     */
+    private String appName;
 }

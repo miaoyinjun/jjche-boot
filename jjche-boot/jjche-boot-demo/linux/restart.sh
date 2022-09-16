@@ -5,11 +5,14 @@ source ~/.bash_profile
 #mv -f jjche-boot-demo.jar  jjche-boot-demo.jar.bak
 #cp -rf ./tmp/*.jar ./
 
-ID=`ps -ef | grep jjche-boot-demo | grep -v "grep" | awk '{print $2}'`
+
+jar_name=jjche-boot-demo.jar
+
+ID=`ps -ef | grep $jar_name | grep -v "grep" | awk '{print $2}'`
 echo $ID
 for id in $ID
 do
 kill -9 $id
 done
 
-nohup java ${JAVA_OPTS} -jar jjche-boot-demo.jar ${JAVA_WEB_SERVICE_OPTS} &> /dev/null &
+nohup java ${JAVA_OPTS} -jar $jar_name ${JAVA_WEB_SERVICE_OPTS} &> /dev/null &

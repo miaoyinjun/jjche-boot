@@ -1,5 +1,6 @@
 package org.jjche.system.modules.system.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.extra.servlet.ServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -12,16 +13,14 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.constant.SecurityConstant;
-import org.jjche.common.dto.JwtUserDto;
-import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.dto.OnlineUserDTO;
-import org.jjche.common.dto.PermissionDataRuleDTO;
+import org.jjche.common.dto.*;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.system.api.ISysBaseAPI;
 import org.jjche.common.util.FileUtil;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.RsaUtils;
 import org.jjche.common.util.StrUtil;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.core.util.SecurityUtil;
 import org.jjche.log.modules.logging.domain.LogDO;
@@ -32,6 +31,7 @@ import org.jjche.security.property.SecurityProperties;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.app.service.SecurityAppKeyService;
+import org.jjche.system.modules.system.api.dto.DictDetailDTO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -61,8 +61,10 @@ public class SysBaseAPI implements ISysBaseAPI {
     private final TokenProvider tokenProvider;
     private final LogService logService;
     private final DataPermissionRuleService dataPermissionRuleService;
+    private final DataPermissionFieldService dataPermissionFieldService;
     private final LogRecordMapStruct logRecordMapper;
     private final SecurityAppKeyService appKeyService;
+    private final DictDetailService dictDetailService;
 
     /**
      * 保存在线用户信息
@@ -255,6 +257,32 @@ public class SysBaseAPI implements ISysBaseAPI {
     @Override
     public SecurityAppKeyBasicVO getKeyByAppId(String appId) {
         return appKeyService.getKeyByAppId(appId);
+    }
+
+    @Override
+    public List<DataPermissionFieldResultVO> listPermissionDataResource(PermissionDataResourceDTO dto) {
+        return dataPermissionFieldService.getDataResource(dto);
+    }
+
+    @Override
+    public DictParam getDictByNameValue(String name, String value) {
+        List<DictDetailDTO> list = dictDetailService.getDictByName(name);
+        if (CollUtil.isNotEmpty(list)) {
+            DictDetailDTO dictDetailDTO = null;
+            for (DictDetailDTO dict : list) {
+                if (StrUtil.equals(dict.getValue(), value)) {
+                    dictDetailDTO = dict;
+                    break;
+                }
+            }
+            if (dictDetailDTO != null) {
+                DictParam dictParam = new DictParam();
+                dictParam.setValue(dictDetailDTO.getValue());
+                dictParam.setLabel(dictDetailDTO.getLabel());
+                return dictParam;
+            }
+        }
+        return null;
     }
 
     /**

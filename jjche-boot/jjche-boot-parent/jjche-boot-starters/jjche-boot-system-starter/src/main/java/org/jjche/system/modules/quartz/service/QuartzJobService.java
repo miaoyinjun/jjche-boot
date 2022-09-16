@@ -1,5 +1,7 @@
 package org.jjche.system.modules.quartz.service;
 
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -276,5 +278,18 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
             list.add(map);
         }
         FileUtil.downloadExcel(list, response);
+    }
+
+    /**
+     * 删除N个月之前的日志数据
+     *
+     * @param month 月
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delMonth(Integer month) {
+        DateTime dateTime = DateUtil.offsetMonth(DateUtil.date(), month);
+        LambdaQueryWrapper<QuartzLogDO> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.le(QuartzLogDO::getGmtCreate, dateTime);
+        quartzLogMapper.delete(queryWrapper);
     }
 }

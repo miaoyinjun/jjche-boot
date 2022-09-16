@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 50727
  Source Host           : localhost:3306
- Source Schema         : boot-admin
+ Source Schema         : jjche-boot
 
  Target Server Type    : MySQL
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 27/12/2021 16:24:25
+ Date: 16/08/2022 10:51:30
 */
 
 SET NAMES utf8mb4;
@@ -20,6 +20,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Table structure for code_column_config
 -- ----------------------------
+DROP TABLE IF EXISTS `code_column_config`;
 CREATE TABLE `code_column_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `table_name` varchar(255) DEFAULT NULL,
@@ -48,6 +49,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for code_gen_config
 -- ----------------------------
+DROP TABLE IF EXISTS `code_gen_config`;
 CREATE TABLE `code_gen_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `table_name` varchar(255) DEFAULT NULL COMMENT '表名',
@@ -72,6 +74,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for mnt_app
 -- ----------------------------
+DROP TABLE IF EXISTS `mnt_app`;
 CREATE TABLE `mnt_app` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) DEFAULT NULL COMMENT '应用名称',
@@ -97,6 +100,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for mnt_database
 -- ----------------------------
+DROP TABLE IF EXISTS `mnt_database`;
 CREATE TABLE `mnt_database` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '名称',
@@ -119,6 +123,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for mnt_deploy
 -- ----------------------------
+DROP TABLE IF EXISTS `mnt_deploy`;
 CREATE TABLE `mnt_deploy` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `app_id` bigint(20) DEFAULT NULL COMMENT '应用编号',
@@ -138,6 +143,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for mnt_deploy_history
 -- ----------------------------
+DROP TABLE IF EXISTS `mnt_deploy_history`;
 CREATE TABLE `mnt_deploy_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `app_name` varchar(255) NOT NULL COMMENT '应用名称',
@@ -161,6 +167,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for mnt_deploy_server
 -- ----------------------------
+DROP TABLE IF EXISTS `mnt_deploy_server`;
 CREATE TABLE `mnt_deploy_server` (
   `deploy_id` bigint(20) NOT NULL COMMENT '部署ID',
   `server_id` bigint(20) NOT NULL COMMENT '服务ID',
@@ -176,6 +183,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for mnt_server
 -- ----------------------------
+DROP TABLE IF EXISTS `mnt_server`;
 CREATE TABLE `mnt_server` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `account` varchar(50) DEFAULT NULL COMMENT '账号',
@@ -197,8 +205,40 @@ BEGIN;
 COMMIT;
 
 -- ----------------------------
+-- Table structure for security_app_key
+-- ----------------------------
+DROP TABLE IF EXISTS `security_app_key`;
+CREATE TABLE `security_app_key` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `comment` varchar(255) DEFAULT NULL COMMENT '描述',
+  `app_id` varchar(255) NOT NULL COMMENT '应用id',
+  `app_secret` varchar(255) NOT NULL COMMENT '应用密钥',
+  `enc_key` varchar(255) NOT NULL COMMENT '加密密钥',
+  `enabled` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态：1启用、0禁用',
+  `urls` varchar(500) NOT NULL COMMENT '地址',
+  `white_ip` varchar(500) DEFAULT NULL COMMENT '白名单',
+  `limit_count` int(11) NOT NULL DEFAULT '0' COMMENT '限速（N/秒）0不限制',
+  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
+  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
+  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_name` (`name`),
+  UNIQUE KEY `uk_app_id` (`app_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='应用密钥';
+
+-- ----------------------------
+-- Records of security_app_key
+-- ----------------------------
+BEGIN;
+INSERT INTO `security_app_key` VALUES (1, '测试', NULL, 'default_app_id', 'default_app_secret', 'y5PtpclbYABqpF2x', b'1', '/api/demo/out/students/*', NULL, 0, 'System', 'System', '2022-08-11 08:40:11', '2022-08-11 08:40:11');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_data_permission_field
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_data_permission_field`;
 CREATE TABLE `sys_data_permission_field` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
@@ -211,17 +251,20 @@ CREATE TABLE `sys_data_permission_field` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单数据字段权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单数据字段权限表';
 
 -- ----------------------------
 -- Records of sys_data_permission_field
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_data_permission_field` VALUES (10, 133, '姓名', 'name', 999, 1, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_data_permission_field` VALUES (11, 133, '性别', 'age', 999, 1, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_data_permission_field_role
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_data_permission_field_role`;
 CREATE TABLE `sys_data_permission_field_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
@@ -234,17 +277,20 @@ CREATE TABLE `sys_data_permission_field_role` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单数据字段权限角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='菜单数据字段权限角色表';
 
 -- ----------------------------
 -- Records of sys_data_permission_field_role
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_data_permission_field_role` VALUES (7, 2, 133, 10, 1, 0, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_data_permission_field_role` VALUES (8, 2, 133, 11, 1, 1, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_data_permission_rule
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_data_permission_rule`;
 CREATE TABLE `sys_data_permission_rule` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
@@ -258,17 +304,19 @@ CREATE TABLE `sys_data_permission_rule` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='数据规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='数据规则表';
 
 -- ----------------------------
 -- Records of sys_data_permission_rule
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_data_permission_rule` VALUES (1, 133, '只看年龄等于3的', 'EQUAL', 'age', '3', 1, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_data_permission_rule_role
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_data_permission_rule_role`;
 CREATE TABLE `sys_data_permission_rule_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `role_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '角色ID',
@@ -279,17 +327,19 @@ CREATE TABLE `sys_data_permission_rule_role` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='菜单数据规则权限角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='菜单数据规则权限角色表';
 
 -- ----------------------------
 -- Records of sys_data_permission_rule_role
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_data_permission_rule_role` VALUES (1, 2, 133, 1, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `pid` bigint(20) DEFAULT NULL COMMENT '上级部门',
@@ -320,6 +370,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_dict
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '字典名称',
@@ -329,7 +380,7 @@ CREATE TABLE `sys_dict` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典';
 
 -- ----------------------------
 -- Records of sys_dict
@@ -339,11 +390,13 @@ INSERT INTO `sys_dict` VALUES (1, 'user_status', '用户状态', 'System', 'Syst
 INSERT INTO `sys_dict` VALUES (4, 'dept_status', '部门状态', 'System', 'System', '2019-10-27 20:31:36', '2021-09-10 16:55:06');
 INSERT INTO `sys_dict` VALUES (5, 'job_status', '岗位状态', 'System', 'System', '2019-10-27 20:31:36', '2021-09-10 16:55:06');
 INSERT INTO `sys_dict` VALUES (6, 'dataPermissionRule_condition', '数据规则-条件', 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict` VALUES (7, 'course_status', '课程状态', 'System', 'System', '2021-09-13 13:15:30', '2021-09-13 13:15:30');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_dict_detail
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_dict_detail`;
 CREATE TABLE `sys_dict_detail` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `dict_id` bigint(11) DEFAULT NULL COMMENT '字典id',
@@ -355,7 +408,7 @@ CREATE TABLE `sys_dict_detail` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典详情';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='数据字典详情';
 
 -- ----------------------------
 -- Records of sys_dict_detail
@@ -381,11 +434,16 @@ INSERT INTO `sys_dict_detail` VALUES (17, 6, '包含', 'IN', 11, 'System', 'Syst
 INSERT INTO `sys_dict_detail` VALUES (18, 6, '不为空', 'NOT_NULL', 12, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 INSERT INTO `sys_dict_detail` VALUES (19, 6, '为空', 'IS_NULL', 13, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
 INSERT INTO `sys_dict_detail` VALUES (20, 6, '自定义SQL片段', 'USE_SQL_RULES', 14, 'System', 'System', '2021-12-27 16:23:30', '2021-12-27 16:23:30');
+INSERT INTO `sys_dict_detail` VALUES (21, 7, '图文', '102', 1, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_dict_detail` VALUES (22, 7, '音频', '103', 2, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_dict_detail` VALUES (23, 7, '视频', '104', 3, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_dict_detail` VALUES (24, 7, '外链', '105', 4, 'System', 'System', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_job
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '岗位名称',
@@ -411,6 +469,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_log
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `description` varchar(255) DEFAULT NULL,
@@ -436,19 +495,15 @@ CREATE TABLE `sys_log` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `is_success` bit(1) NOT NULL DEFAULT b'0' COMMENT '是否成功：0:否, 1:是',
   `request_id` varchar(255) DEFAULT NULL COMMENT '请求id',
+  `app_name` varchar(50) DEFAULT NULL COMMENT '应用名',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `inx_log_type` (`log_type`(5)) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3537 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统日志';
-
--- ----------------------------
--- Records of sys_log
--- ----------------------------
-BEGIN;
-COMMIT;
+) ENGINE=InnoDB AUTO_INCREMENT=3540 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统日志';
 
 -- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `pid` bigint(20) DEFAULT NULL COMMENT '上级菜单ID',
@@ -469,7 +524,7 @@ CREATE TABLE `sys_menu` (
   `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='系统菜单';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -558,11 +613,16 @@ INSERT INTO `sys_menu` VALUES (129, 1, 3, 1, '密钥管理', 'SecurityAppKeyMenu
 INSERT INTO `sys_menu` VALUES (130, 129, 0, 2, '密钥新增', 'securityAppKey_add', '', 5, '', '', b'0', b'0', b'0', 'securityAppKey:add', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
 INSERT INTO `sys_menu` VALUES (131, 129, 0, 2, '密钥编辑', 'securityAppKey_edit', '', 5, '', '', b'0', b'0', b'0', 'securityAppKey:edit', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
 INSERT INTO `sys_menu` VALUES (132, 129, 0, 2, '密钥删除', 'securityAppKey_del', '', 5, '', '', b'0', b'0', b'0', 'securityAppKey:del', 'admin', 'admin', '2022-08-05 15:27:18', '2022-08-05 15:27:18');
+INSERT INTO `sys_menu` VALUES (133, 1, 1, 1, '代码生成-学生菜单', 'StudentMenu', 'system/student/index', 999, 'Steve-Jobs', 'student', b'0', b'0', b'0', 'student:list', 'admin', 'admin', '2020-11-10 14:08:10', '2021-09-10 16:55:06');
+INSERT INTO `sys_menu` VALUES (134, 133, 0, 2, '学生测试菜单新增', 'student_add', '', 5, '', '', b'0', b'0', b'0', 'student:add', 'admin', 'admin', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_menu` VALUES (135, 133, 0, 2, '学生测试菜单编辑', 'student_edit', '', 5, '', '', b'0', b'0', b'0', 'student:edit', 'admin', 'admin', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
+INSERT INTO `sys_menu` VALUES (136, 133, 0, 2, '学生测试菜单删除', 'student_del', '', 5, '', '', b'0', b'0', b'0', 'student:del', 'admin', 'admin', '2022-08-16 10:48:07', '2022-08-16 10:48:07');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_quartz_job
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_quartz_job`;
 CREATE TABLE `sys_quartz_job` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `bean_name` varchar(255) DEFAULT NULL COMMENT 'Spring Bean名称',
@@ -601,6 +661,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_quartz_log
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_quartz_log`;
 CREATE TABLE `sys_quartz_log` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `bean_name` varchar(255) DEFAULT NULL,
@@ -624,6 +685,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `name` varchar(255) NOT NULL COMMENT '名称',
@@ -650,6 +712,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_roles_depts
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_roles_depts`;
 CREATE TABLE `sys_roles_depts` (
   `role_id` bigint(20) NOT NULL,
   `dept_id` bigint(20) NOT NULL,
@@ -668,6 +731,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_roles_menus
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_roles_menus`;
 CREATE TABLE `sys_roles_menus` (
   `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
@@ -754,14 +818,24 @@ INSERT INTO `sys_roles_menus` VALUES (121, 1);
 INSERT INTO `sys_roles_menus` VALUES (121, 2);
 INSERT INTO `sys_roles_menus` VALUES (122, 2);
 INSERT INTO `sys_roles_menus` VALUES (129, 1);
+INSERT INTO `sys_roles_menus` VALUES (129, 2);
 INSERT INTO `sys_roles_menus` VALUES (130, 1);
 INSERT INTO `sys_roles_menus` VALUES (131, 1);
 INSERT INTO `sys_roles_menus` VALUES (132, 1);
+INSERT INTO `sys_roles_menus` VALUES (133, 1);
+INSERT INTO `sys_roles_menus` VALUES (133, 2);
+INSERT INTO `sys_roles_menus` VALUES (134, 1);
+INSERT INTO `sys_roles_menus` VALUES (134, 2);
+INSERT INTO `sys_roles_menus` VALUES (135, 1);
+INSERT INTO `sys_roles_menus` VALUES (135, 2);
+INSERT INTO `sys_roles_menus` VALUES (136, 1);
+INSERT INTO `sys_roles_menus` VALUES (136, 2);
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `dept_id` bigint(20) DEFAULT NULL COMMENT '部门名称',
@@ -796,12 +870,13 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES (1, 2, 'admin', '管理员', '男', '18888888888', 'qq@qq.com', NULL, NULL, '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', b'1', b'1', b'1', b'1', b'0', 0, b'0', '2020-05-03 16:38:31', '2018-08-23 09:11:56', 'admin', 'admin', '2020-09-05 10:43:31', '2020-09-05 10:43:31');
+INSERT INTO `sys_user` VALUES (1, 2, 'admin', '管理员', '男', '18888888888', 'qq@qq.com', NULL, NULL, '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', b'1', b'1', b'1', b'1', b'0', 0, b'0', '2020-05-03 16:38:31', '2022-08-16 10:49:37', 'admin', 'admin', '2020-09-05 10:43:31', '2020-09-05 10:43:31');
 COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_users_jobs
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_users_jobs`;
 CREATE TABLE `sys_users_jobs` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `job_id` bigint(20) NOT NULL COMMENT '岗位ID',
@@ -818,6 +893,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_users_roles
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_users_roles`;
 CREATE TABLE `sys_users_roles` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
@@ -834,6 +910,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for sys_version
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_version`;
 CREATE TABLE `sys_version` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(55) NOT NULL COMMENT '版本号名称',
@@ -857,6 +934,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for tool_alipay_config
 -- ----------------------------
+DROP TABLE IF EXISTS `tool_alipay_config`;
 CREATE TABLE `tool_alipay_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `app_id` varchar(255) DEFAULT NULL COMMENT '应用ID',
@@ -886,6 +964,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for tool_email_config
 -- ----------------------------
+DROP TABLE IF EXISTS `tool_email_config`;
 CREATE TABLE `tool_email_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `from_user` varchar(255) DEFAULT NULL COMMENT '收件人',
@@ -909,6 +988,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for tool_local_storage
 -- ----------------------------
+DROP TABLE IF EXISTS `tool_local_storage`;
 CREATE TABLE `tool_local_storage` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `real_name` varchar(255) DEFAULT NULL COMMENT '文件真实的名称',
@@ -933,6 +1013,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for tool_qiniu_config
 -- ----------------------------
+DROP TABLE IF EXISTS `tool_qiniu_config`;
 CREATE TABLE `tool_qiniu_config` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `access_key` text COMMENT 'accessKey',
@@ -957,6 +1038,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for tool_qiniu_content
 -- ----------------------------
+DROP TABLE IF EXISTS `tool_qiniu_content`;
 CREATE TABLE `tool_qiniu_content` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `bucket` varchar(255) DEFAULT NULL COMMENT 'Bucket 识别符',
@@ -976,32 +1058,6 @@ CREATE TABLE `tool_qiniu_content` (
 -- Records of tool_qiniu_content
 -- ----------------------------
 BEGIN;
-
-CREATE TABLE `security_app_key` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `comment` varchar(255) DEFAULT NULL COMMENT '描述',
-  `app_id` varchar(255) NOT NULL COMMENT '应用id',
-  `app_secret` varchar(255) NOT NULL COMMENT '应用密钥',
-  `enc_key` varchar(255) NOT NULL COMMENT '加密密钥',
-  `enabled` bit(1) NOT NULL DEFAULT b'1' COMMENT '状态：1启用、0禁用',
-  `urls` varchar(500) NOT NULL COMMENT '地址',
-  `white_ip` varchar(500) DEFAULT NULL COMMENT '白名单',
-  `limit_count` int(11) NOT NULL DEFAULT b'0' COMMENT '限速（N/秒）0不限制',
-  `created_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '创建者',
-  `updated_by` varchar(50) NOT NULL DEFAULT 'System' COMMENT '修改者',
-  `gmt_create` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `gmt_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `uk_name` (`name`),
-  UNIQUE KEY `uk_app_id` (`app_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用密钥';
-
-COMMIT;
-
-BEGIN;
-INSERT INTO `security_app_key` (`name`, `app_id`, `app_secret`, `urls`, `enc_key`, `enabled`)
-    VALUES ('测试', 'default_app_id', 'default_app_secret', '/api/demo/out/students/*','y5PtpclbYABqpF2x', 1);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

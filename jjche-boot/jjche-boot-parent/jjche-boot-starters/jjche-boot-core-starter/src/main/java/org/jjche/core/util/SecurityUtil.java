@@ -4,15 +4,14 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.log.StaticLog;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.constant.UserConstant;
+import org.jjche.common.context.ContextUtil;
 import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.wrapper.enums.RCodeEnum;
 import org.jjche.core.exception.AuthenticationTokenExpiredException;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 获取当前登录的用户
@@ -28,7 +27,11 @@ public class SecurityUtil {
      * @return 系统用户名称
      */
     public static String getUsername() {
-        return getHeaderByAuthException(SecurityConstant.JWT_KEY_USERNAME);
+        String value = ContextUtil.getUsername();
+        if (StrUtil.isNotBlank(value)) {
+            return value;
+        }
+        throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
     }
 
     /**
@@ -59,7 +62,11 @@ public class SecurityUtil {
      * @return 系统用户ID
      */
     public static Long getUserId() {
-        return getLongHeaderByAuthException(SecurityConstant.JWT_KEY_USER_ID);
+        Long value = ContextUtil.getUserId();
+        if (value != null && value > 0) {
+            return value;
+        }
+        throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
     }
 
     /**
@@ -69,27 +76,11 @@ public class SecurityUtil {
      */
     public static DataScope getUserDataScope() {
         DataScope dataScope = new DataScope();
-        Set<String> deptStrIds = RequestHolder.getHeaders(SecurityConstant.JWT_KEY_DATA_SCOPE_DEPT_IDS);
-        Set<Long> deptIds = new HashSet<>();
-        if (CollUtil.isNotEmpty(deptStrIds)) {
-            deptIds = deptStrIds.stream().map(o -> Long.parseLong(o)).collect(Collectors.toSet());
-        }
-        String isAllStr = getHeaderByAuthException(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_ALL);
-        Boolean isAll = false;
-        if (StrUtil.isNotBlank(isAllStr)) {
-            isAll = Boolean.parseBoolean(isAllStr);
-        }
-        String isSelfStr = getHeaderByAuthException(SecurityConstant.JWT_KEY_DATA_SCOPE_IS_SELF);
-        Boolean isSelf = false;
-        if (StrUtil.isNotBlank(isSelfStr)) {
-            isSelf = Boolean.parseBoolean(isSelfStr);
-        }
-        String userIdStr = RequestHolder.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERID);
-        Long userid = 0L;
-        if (StrUtil.isNotBlank(userIdStr)) {
-            userid = Long.parseLong(userIdStr);
-        }
-        String username = RequestHolder.getHeader(SecurityConstant.JWT_KEY_DATA_SCOPE_USERNAME);
+        Set<Long> deptIds = ContextUtil.getDataScopeDeptIds();
+        boolean isAll = ContextUtil.getDataScopeIsAll();
+        boolean isSelf = ContextUtil.getDataScopeIsSelf();
+        Long userid = ContextUtil.getDataScopeUserId();
+        String username = ContextUtil.getDataScopeUserName();
 
         dataScope.setDeptIds(deptIds);
         dataScope.setAll(isAll);
@@ -119,7 +110,11 @@ public class SecurityUtil {
      * @return /
      */
     public static Set<String> listPermission() {
-        return RequestHolder.getHeaders(SecurityConstant.JWT_KEY_PERMISSION);
+        Set<String> permissions = ContextUtil.getPermissions();
+        if (CollUtil.isEmpty(permissions)) {
+            throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
+        }
+        return permissions;
     }
 
     /**
@@ -131,7 +126,7 @@ public class SecurityUtil {
      * @since 2022-06-22
      */
     public static String getToken() {
-        String bearerToken = getHeaderByAuthException(SecurityConstant.HEADER_AUTH);
+        String bearerToken = ContextUtil.getToken();
         String tokenStartWith = SecurityConstant.TOKEN_START_WITH;
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(tokenStartWith)) {
             // 去掉令牌前缀
@@ -142,35 +137,4 @@ public class SecurityUtil {
         return null;
     }
 
-    /**
-     * <p>
-     * 获取header，验证用户信息抛出异常
-     * </p>
-     *
-     * @author miaoyj
-     * @since 2022-06-23
-     */
-    private static String getHeaderByAuthException(String headerName) {
-        String value = RequestHolder.getHeader(headerName);
-        if (StrUtil.isNotBlank(value)) {
-            return value;
-        }
-        throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
-    }
-
-    /**
-     * <p>
-     * 获取header，验证用户信息抛出异常
-     * </p>
-     *
-     * @author miaoyj
-     * @since 2022-06-23
-     */
-    private static Long getLongHeaderByAuthException(String headerName) {
-        Long value = RequestHolder.getHeaderLong(headerName);
-        if (value != null && value > 0) {
-            return value;
-        }
-        throw new AuthenticationTokenExpiredException(RCodeEnum.TOKEN_EXPIRED.getMsg());
-    }
 }

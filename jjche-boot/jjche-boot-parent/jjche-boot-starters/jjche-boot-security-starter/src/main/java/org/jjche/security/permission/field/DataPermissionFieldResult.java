@@ -12,7 +12,7 @@ import lombok.Setter;
 import org.jjche.common.constant.EnumConstant;
 import org.jjche.common.permission.DataPermissionFieldFilterable;
 import org.jjche.common.permission.DataPermissionFieldMetaSetter;
-import org.jjche.common.util.ClassCompareUtil;
+import org.jjche.common.util.ClassUtil;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.vo.DataPermissionFieldResultVO;
 
@@ -85,7 +85,7 @@ public class DataPermissionFieldResult<T> implements DataPermissionFieldFilterab
             List<DataPermissionFieldResultVO> meta = dataPermissionFieldResult.getMeta();
 
             if (CollUtil.isNotEmpty(dataList)) {
-                List<Field> fieldList = ClassCompareUtil.getAllFields(CollUtil.getFirst(dataList).getClass());
+                List<Field> fieldList = ClassUtil.getAllFields(CollUtil.getFirst(dataList).getClass());
                 for (Object o : dataList) {
                     Map<String, Object> map = new LinkedHashMap<>();
                     for (DataPermissionFieldResultVO fieldResultVO : meta) {

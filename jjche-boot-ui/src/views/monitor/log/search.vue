@@ -10,6 +10,21 @@
     />
     <date-range-picker v-model="query.gmtCreate" class="date-item" />
     <el-select
+      v-model="query.appName"
+      clearable
+      size="small"
+      placeholder="系统"
+      class="filter-item"
+      style="width: 90px"
+    >
+      <el-option
+        v-for="item in logAppNameOptions"
+        :key="item"
+        :label="item"
+        :value="item"
+      />
+    </el-select>
+    <el-select
       v-model="query.module"
       clearable
       size="small"
@@ -77,7 +92,7 @@
 import { header } from '@crud/crud'
 import rrOperation from '@crud/RR.operation'
 import DateRangePicker from '@/components/DateRangePicker'
-import { getModules } from '@/api/monitor/log'
+import { getModules, getAppNames } from '@/api/monitor/log'
 export default {
   components: { rrOperation, DateRangePicker },
   mixins: [header()],
@@ -98,17 +113,28 @@ export default {
         { key: 'OPERATING', display_name: '运营' },
         { key: 'OTHER', display_name: '其它' }
       ],
-      logModuleOptions: []
+      logModuleOptions: [],
+      logAppNameOptions: []
     }
   },
   mounted() {
     this.getModuleData()
+    this.getAppNameData()
   },
   methods: {
     getModuleData() {
       getModules()
         .then((res) => {
           this.logModuleOptions = res
+        })
+        .catch((err) => {
+          console.log(err.response.data.message)
+        })
+    },
+    getAppNameData() {
+      getAppNames()
+        .then((res) => {
+          this.logAppNameOptions = res
         })
         .catch((err) => {
           console.log(err.response.data.message)

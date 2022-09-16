@@ -27,6 +27,11 @@
       :row-class-name="tableRowClassName"
       @selection-change="crud.selectionChangeHandler"
     >
+      <el-table-column
+        prop="appName"
+        label="系统"
+        :show-overflow-tooltip="true"
+      />
       <el-table-column type="expand" label="参数">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">

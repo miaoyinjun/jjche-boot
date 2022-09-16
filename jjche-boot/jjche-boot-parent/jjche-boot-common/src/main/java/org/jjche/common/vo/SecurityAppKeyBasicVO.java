@@ -15,8 +15,6 @@ import java.io.Serializable;
  */
 @Data
 public class SecurityAppKeyBasicVO implements Serializable {
-    @ApiModelProperty(value = "应用id")
-    private String appId;
     @ApiModelProperty(value = "应用密钥")
     private String appSecret;
     @ApiModelProperty(value = "加密密钥")

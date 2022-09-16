@@ -1,11 +1,11 @@
 package org.jjche.system.modules.security.listener;
 
-import org.jjche.property.AdminProperties;
-import org.jjche.property.PasswordProperties;
 import org.jjche.security.service.JwtUserService;
 import org.jjche.system.modules.system.domain.UserDO;
 import org.jjche.system.modules.system.mapstruct.UserMapStruct;
 import org.jjche.system.modules.system.service.UserService;
+import org.jjche.system.property.AdminProperties;
+import org.jjche.system.property.PasswordProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;

@@ -8,10 +8,6 @@ import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.extra.servlet.ServletUtil;
-import cn.hutool.http.useragent.UserAgent;
-import cn.hutool.http.useragent.UserAgentUtil;
-import cn.hutool.json.JSONUtil;
 import cn.hutool.log.StaticLog;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +17,8 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.FilterEncConstant;
 import org.jjche.common.constant.LogConstant;
+import org.jjche.common.constant.SpringPropertyConstant;
+import org.jjche.common.context.ContextUtil;
 import org.jjche.common.context.LogRecordContext;
 import org.jjche.common.dto.LogRecordDTO;
 import org.jjche.common.pojo.AbstractR;
@@ -28,20 +26,21 @@ import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.annotation.controller.ApiRestController;
+import org.jjche.core.util.LogUtil;
 import org.jjche.core.util.RequestHolder;
+import org.jjche.core.util.SpringContextHolder;
 import org.jjche.log.biz.service.ILogRecordService;
 import org.jjche.log.biz.service.IOperatorGetService;
 import org.jjche.log.biz.starter.support.parse.LogRecordValueParser;
 import org.slf4j.MDC;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.util.ContentCachingRequestWrapper;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -89,7 +88,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         Object ret = null;
         MethodExecuteResult methodExecuteResult = new MethodExecuteResult(true, null, "");
         LogRecordContext.putEmptySpan();
-        //appKey单独处理不丢失
+        //appId单独处理不丢失
         String appId = RequestHolder.getHeader(FilterEncConstant.APP_ID);
         if (StrUtil.isNotBlank(appId)) {
             LogRecordContext.putVariable(FilterEncConstant.APP_ID, appId);
@@ -117,6 +116,8 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             StaticLog.error("log record parse exception:{}", ThrowableUtil.getStackTrace(t));
         } finally {
             LogRecordContext.clear();
+            //全局异常时不保存日志标记
+            ContextUtil.setLogSaved(true);
         }
         if (methodExecuteResult.throwable != null) {
             throw methodExecuteResult.throwable;
@@ -160,14 +161,15 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             boolean success = methodExecuteResult.isSuccess();
             //执行前
             LogRecordDTO logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
-            logRecord.setRequestId(MDC.get(LogConstant.REQUEST_ID));
+            String reqId = MDC.get(LogConstant.REQUEST_ID);
+            logRecord.setRequestId(reqId);
             Throwable throwable = methodExecuteResult.getThrowable();
             //异常数据
             if (throwable != null) {
                 logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(throwable).getBytes());
             }
             //获取请求客户端信息
-            setLogRecordHttpRequest(logRecord, args);
+            LogUtil.setLogRecordHttpRequest(logRecord);
 
             //获取需要解析的表达式
             List<String> spElTemplates = getSpElTemplates(logRecord);
@@ -184,7 +186,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             String detail = logRecord.getDetail();
             String value = logRecord.getValue();
             String methodName = targetClass.getName() + "." + method.getName() + "()";
-            String result = "unknown";
+            String result = HttpUtil.UNKNOWN;
             if (success) {
                 if (ObjectUtil.isNotNull(ret)) {
                     //是否控制器返回类型
@@ -233,6 +235,23 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         }
     }
 
+    /**
+     * <p>
+     * 设置日志字段
+     * </p>
+     *
+     * @param logRecord  /
+     * @param bizKey     /
+     * @param bizNo      /
+     * @param operatorId /
+     * @param value      /
+     * @param detail     /
+     * @param success    /
+     * @param methodName /
+     * @param result     /
+     * @param time       /
+     * @return /
+     */
     private LogRecordDTO setRecord(LogRecordDTO logRecord, String bizKey, String bizNo, String operatorId, String value
             , String detail, boolean success, String methodName, String result, Long time) {
         LogRecordDTO newLogRecordDTO = ObjectUtil.clone(logRecord);
@@ -251,6 +270,8 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         if (bizLogService == null) {
             StaticLog.error("bizLogService not init!!");
         }
+        String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
+        newLogRecordDTO.setAppName(appName);
         newLogRecordDTO.setTime(time);
         return newLogRecordDTO;
     }
@@ -353,68 +374,19 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * {@inheritDoc}
      */
     @Override
-    public void afterPropertiesSet() throws Exception {
-        bizLogService = beanFactory.getBean(ILogRecordService.class);
+    public void afterPropertiesSet() {
         operatorGetService = beanFactory.getBean(IOperatorGetService.class);
         if (bizLogService == null) {
             StaticLog.error("bizLogService not null");
         }
-
-        commonAPI = beanFactory.getBean(CommonAPI.class);
-        if (commonAPI == null) {
-            StaticLog.error("commonAPI not null");
-        }
     }
 
-    /**
-     * <p>
-     * 获取操作人
-     * </p>
-     *
-     * @param operatorGetService 操作人
-     */
-    public void setOperatorGetService(IOperatorGetService operatorGetService) {
-        this.operatorGetService = operatorGetService;
+    public void setBizLogService(ILogRecordService bizLogService) {
+        this.bizLogService = bizLogService;
     }
 
-    /**
-     * <p>
-     * 获取请求客户端信息
-     * </p>
-     *
-     * @param logRecord 日志
-     * @param args      an array of {@link java.lang.Object} objects.
-     */
-    public void setLogRecordHttpRequest(LogRecordDTO logRecord, Object[] args) {
-        try {
-            HttpServletRequest request = RequestHolder.getHttpServletRequest();
-            String ip = HttpUtil.getIp(request);
-            String ua = request.getHeader(HttpHeaders.USER_AGENT);
-            UserAgent userAgent = UserAgentUtil.parse(ua);
-            logRecord.setBrowser(HttpUtil.getBrowser(userAgent));
-            logRecord.setOs(HttpUtil.getOs(userAgent));
-            logRecord.setUserAgent(ua);
-            logRecord.setRequestIp(ip);
-
-            if (request instanceof ContentCachingRequestWrapper) {
-                ContentCachingRequestWrapper wrapper = (ContentCachingRequestWrapper) request;
-                logRecord.setUrl(wrapper.getRequestURI());
-                if (!ServletUtil.isMultipart(wrapper) && logRecord.getSaveParams()) {
-                    Map<String, Object> paramMap = new HashMap<>(2);
-                    Map<String, String> paramsQueryMap = ServletUtil.getParamMap(wrapper);
-                    //参数值
-                    List<Object> argValues = new ArrayList<>(Arrays.asList(args));
-                    if (CollUtil.isNotEmpty(argValues)) {
-                        paramMap.put("body", argValues.get(0));
-                    }
-                    paramMap.put("query", paramsQueryMap);
-                    String paramStr = JSONUtil.toJsonPrettyStr(paramMap);
-                    logRecord.setParams(paramStr);
-                }
-            }
-        } catch (Exception e) {
-            StaticLog.error("setLogRecordHttpRequest:{}", ThrowableUtil.getStackTrace(e));
-        }
+    public void setCommonAPI(CommonAPI commonAPI) {
+        this.commonAPI = commonAPI;
     }
 
     @Data

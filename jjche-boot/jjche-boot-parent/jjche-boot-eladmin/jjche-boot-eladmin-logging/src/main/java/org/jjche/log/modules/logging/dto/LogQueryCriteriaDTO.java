@@ -33,6 +33,9 @@ public class LogQueryCriteriaDTO extends BaseQueryCriteriaDTO {
     @QueryCriteria
     private String category;
 
+    @QueryCriteria
+    private String appName;
+
     @QueryCriteria(type = QueryCriteria.Type.BETWEEN)
     private List<String> gmtCreate;
 }

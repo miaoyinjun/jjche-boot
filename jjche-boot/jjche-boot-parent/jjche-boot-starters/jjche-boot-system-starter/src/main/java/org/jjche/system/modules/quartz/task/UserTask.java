@@ -1,9 +1,9 @@
 package org.jjche.system.modules.quartz.task;
 
 import cn.hutool.log.StaticLog;
-import org.jjche.property.AdminProperties;
-import org.jjche.property.PasswordProperties;
 import org.jjche.system.modules.system.service.UserService;
+import org.jjche.system.property.AdminProperties;
+import org.jjche.system.property.PasswordProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

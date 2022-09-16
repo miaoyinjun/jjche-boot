@@ -5,7 +5,7 @@
     <groupId>org.jjcheframework.boot</groupId>
     <artifactId>jjche-boot-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,6 +43,7 @@
         <nacos.version>2.0.3</nacos.version>
         <jetcache.version>2.6.5</jetcache.version>
         <druid.version>1.2.9</druid.version>
+        <skywalking.version>8.11.0</skywalking.version>
 
     </properties>
 
@@ -83,63 +84,63 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-local-api</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-cloud-api</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-core-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-sba-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-swagger-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-log-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-mybatis-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cache-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-filter-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-security-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.jjcheframework.boot</groupId>-->
@@ -149,49 +150,49 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-jackson-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-system-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-generator</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-tools</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-logging</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-userdetail-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <!-- cloud -->
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cloud-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cloud-gray-starter</artifactId>
-                <version>2.0.2</version>
+                <version>2.0.3</version>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <groupId>ma.glasnost.orika</groupId>-->
-            <!--                <artifactId>orika-core</artifactId>-->
-            <!--                <version>1.5.4</version>-->
-            <!--            </dependency>-->
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-shardingsphere-starter</artifactId>
+                <version>2.0.3</version>
+            </dependency>
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>
                 <artifactId>jetcache-starter-redis-lettuce</artifactId>
@@ -451,6 +452,36 @@
                 <groupId>com.anji-plus</groupId>
                 <artifactId>spring-boot-starter-captcha</artifactId>
                 <version>1.3.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>2.13.2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-trace</artifactId>
+                <version>${skywalking.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-logback-1.x</artifactId>
+                <version>${skywalking.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.siegmar</groupId>
+                <artifactId>logback-gelf</artifactId>
+                <version>4.0.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yomahub</groupId>
+                <artifactId>tlog-all-spring-boot-starter</artifactId>
+                <version>1.4.3</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere</groupId>
+                <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+                <version>5.1.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

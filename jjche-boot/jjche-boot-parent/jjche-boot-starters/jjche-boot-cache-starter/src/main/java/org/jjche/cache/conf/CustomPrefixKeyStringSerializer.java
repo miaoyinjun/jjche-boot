@@ -2,6 +2,7 @@ package org.jjche.cache.conf;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import org.jjche.common.constant.SpringPropertyConstant;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import java.nio.charset.Charset;
 public class CustomPrefixKeyStringSerializer implements RedisSerializer<String> {
 
     private final Charset charset;
-    @Value("${spring.application.name}")
+    @Value("${" + SpringPropertyConstant.APP_NAME + "}")
     private String appName;
 
     /**

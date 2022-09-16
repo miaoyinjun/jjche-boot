@@ -1,7 +1,9 @@
 package org.jjche.common.vo;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 /**
@@ -12,6 +14,8 @@ import lombok.experimental.SuperBuilder;
  */
 @Data
 @SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 public class DataPermissionFieldResultVO {
     /**
      * 排序

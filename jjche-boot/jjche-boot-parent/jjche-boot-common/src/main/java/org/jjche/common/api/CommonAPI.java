@@ -1,8 +1,7 @@
 package org.jjche.common.api;
 
-import org.jjche.common.dto.JwtUserDto;
-import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.dto.PermissionDataRuleDTO;
+import org.jjche.common.dto.*;
+import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
 
 import java.util.List;
@@ -33,6 +32,14 @@ public interface CommonAPI {
      * 根据应用id获取密钥 {@value}
      */
     String URL_GET_KEY_BY_APP_ID = "getKeyByAppId";
+    /**
+     * 获取数据权限 {@value}
+     */
+    String URL_LIST_PERMISSION_DATA_RESOURCE = "listPermissionDataResource";
+    /**
+     * 获取根据字典名称和值 {@value}
+     */
+    String URL_GET_DICT_BY_NAME_VALUE = "getDictByNameValue";
 
     /**
      * <p>
@@ -99,4 +106,25 @@ public interface CommonAPI {
      * @return /
      */
     SecurityAppKeyBasicVO getKeyByAppId(String appId);
+
+    /**
+     * <p>
+     * 执行过滤
+     * </p>
+     *
+     * @param dto /
+     * @return 结果
+     */
+    List<DataPermissionFieldResultVO> listPermissionDataResource(PermissionDataResourceDTO dto);
+
+    /**
+     * <p>
+     * 获取根据字典名称和值
+     * </p>
+     *
+     * @param name  字典名称
+     * @param value 字典值
+     * @return /
+     */
+    DictParam getDictByNameValue(String name, String value);
 }

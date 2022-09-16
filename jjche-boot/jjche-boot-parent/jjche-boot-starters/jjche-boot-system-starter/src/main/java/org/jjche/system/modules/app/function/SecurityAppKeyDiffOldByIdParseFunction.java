@@ -1,12 +1,13 @@
 package org.jjche.system.modules.app.function;
 
-import lombok.RequiredArgsConstructor;
 import org.jjche.common.context.LogRecordContext;
 import org.jjche.log.biz.service.IParseFunction;
 import org.jjche.log.biz.service.impl.DiffParseFunction;
 import org.jjche.system.modules.app.domain.SecurityAppKeyDO;
 import org.jjche.system.modules.app.mapstruct.SecurityAppKeyMapStruct;
 import org.jjche.system.modules.app.service.SecurityAppKeyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,10 +21,13 @@ import java.util.List;
  * @since 2022-08-05
  */
 @Component
-@RequiredArgsConstructor
 public class SecurityAppKeyDiffOldByIdParseFunction implements IParseFunction<Object> {
-    private final SecurityAppKeyService securityAppKeyService;
-    private final SecurityAppKeyMapStruct securityAppKeyMapStruct;
+    @Autowired
+    @Lazy
+    private SecurityAppKeyService securityAppKeyService;
+    @Autowired
+    @Lazy
+    private SecurityAppKeyMapStruct securityAppKeyMapStruct;
 
     /**
      * {@inheritDoc}
