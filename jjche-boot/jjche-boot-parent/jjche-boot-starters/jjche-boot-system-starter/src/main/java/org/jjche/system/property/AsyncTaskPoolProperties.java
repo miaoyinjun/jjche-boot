@@ -1,4 +1,4 @@
-package org.jjche.property;
+package org.jjche.system.property;
 
 import lombok.Data;
 

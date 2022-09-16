@@ -1,8 +1,8 @@
-package org.jjche.config.thread;
+package org.jjche.system.config.thread;
 
 import cn.hutool.log.StaticLog;
-import org.jjche.property.AdminProperties;
-import org.jjche.property.AsyncTaskPoolProperties;
+import org.jjche.system.property.AdminProperties;
+import org.jjche.system.property.AsyncTaskPoolProperties;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -51,7 +51,7 @@ public class AsyncTaskExecutePool implements AsyncConfigurer {
         //活跃时间
         executor.setKeepAliveSeconds(config.getKeepAliveSeconds());
         //线程名字前缀
-        executor.setThreadNamePrefix("el-async-");
+        executor.setThreadNamePrefix("jjche-async-");
         // setRejectedExecutionHandler：当pool已经达到max size的时候，如何处理新任务
         // CallerRunsPolicy：不在新线程中执行任务，而是由调用者所在的线程来执行
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
