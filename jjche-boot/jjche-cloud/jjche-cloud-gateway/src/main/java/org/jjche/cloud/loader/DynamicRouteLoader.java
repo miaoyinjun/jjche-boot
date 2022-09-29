@@ -1,5 +1,6 @@
 package org.jjche.cloud.loader;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -92,30 +93,51 @@ public class DynamicRouteLoader {
             if (StrUtil.isNotBlank(configInfo)) {
                 StaticLog.info("获取网关当前配置:\r\n{}", configInfo);
                 routes = JSONUtil.toList(configInfo, RouteDefinition.class);
+//                List<RouteDefinition> realRoutes = CollUtil.newArrayList();
+//                List<RouteDefinition> ruleOutRoutes = CollUtil.newArrayList();
+//                //单独处理的服务
+//                List<String> serviceNameList = CollUtil.newArrayList("JJCHE-CLOUD-GATEWAY", "JJCHE-CLOUD-MONITOR");
+//                for (RouteDefinition definition : routes) {
+//                    String id = definition.getId();
+//                    if (CollUtil.contains(serviceNameList, id)) {
+//                        ruleOutRoutes.add(definition);
+//                    } else {
+//                        realRoutes.add(definition);
+//                    }
+//                }
+//                routes = realRoutes;
+//                for (RouteDefinition definition : ruleOutRoutes) {
+//                    dynamicRouteService.add(definition);
+//                }
             }
         } catch (NacosException e) {
             StaticLog.error("初始化网关路由时发生错误", e);
             e.printStackTrace();
         }
         for (RouteDefinition definition : routes) {
-            //为匹配映射/api/**，增加/api前缀
-            List<PredicateDefinition> predicates = definition.getPredicates();
-            for (PredicateDefinition predicate : predicates) {
-                Map<String, String> args = predicate.getArgs();
-                for (String s : args.keySet()) {
-                    args.put(s, prefix + args.get(s));
-                }
-            }
-            //请求微服务时，删除/api前缀
-            List<FilterDefinition> filters = definition.getFilters();
-            FilterDefinition filter = new FilterDefinition();
-            //重新请求路径
-            filter.setName(NameUtils.normalizeFilterFactoryName(StripPrefixGatewayFilterFactory.class));
-            Map<String, String> map = MapUtil.newConcurrentHashMap();
-            map.put(StripPrefixGatewayFilterFactory.PARTS_KEY, "1");
-            filter.setArgs(map);
-            filters.add(filter);
-
+            /**
+             * 使用json配置文件，这里不做处理
+             */
+            /**
+             //为匹配映射/api/**，增加/api前缀
+             List<PredicateDefinition> predicates = definition.getPredicates();
+             for (PredicateDefinition predicate : predicates) {
+             Map<String, String> args = predicate.getArgs();
+             for (String s : args.keySet()) {
+             String value = args.get(s);
+             args.put(s, prefix + value);
+             }
+             }
+             //请求微服务时，删除/api前缀
+             List<FilterDefinition> filters = definition.getFilters();
+             FilterDefinition filter = new FilterDefinition();
+             //重新请求路径
+             filter.setName(NameUtils.normalizeFilterFactoryName(StripPrefixGatewayFilterFactory.class));
+             Map<String, String> map = MapUtil.newConcurrentHashMap();
+             map.put(StripPrefixGatewayFilterFactory.PARTS_KEY, "1");
+             filter.setArgs(map);
+             filters.add(filter);
+             */
             StaticLog.info("update route : {}", definition.toString());
             dynamicRouteService.add(definition);
         }

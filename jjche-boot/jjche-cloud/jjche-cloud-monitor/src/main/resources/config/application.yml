@@ -7,10 +7,8 @@ spring:
     name: "@project.artifactId@"
   boot:
     admin:
-      #server端的访问路径
-      context-path: /sba
-      client:
-        enabled: false
+      ui:
+        external-views:
   cloud:
     #配置Bus id(远程推送事件)
     bus:

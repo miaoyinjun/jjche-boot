@@ -47,7 +47,7 @@ import java.util.Set;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @Autowired
+    @Autowired(required = false)
     private CommonAPI commonAPI;
 
     /**
