@@ -28,7 +28,7 @@
       >
         <div class="avatar-wrapper">
           <img
-            :src="user.avatarName ? '/api/avatar/' + user.avatarName : Avatar"
+            :src="user.avatarName ? '/avatar/' + user.avatarName : Avatar"
             class="user-avatar"
           >
           <span

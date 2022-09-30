@@ -52,14 +52,6 @@ public class FileConfigureAdapter implements WebMvcConfigurer {
         String pathUtl = "file:" + path.getPath().replace("\\", "/");
         String avatarPathMatch = FileConstant.AVATAR_PATH_MATCH;
         String filePathMatch = FileConstant.FILE_PATH_MATCH;
-        //单体增加/api
-        if (BooleanUtil.isFalse(SpringContextHolder.isCloud())) {
-            CoreApiPathProperties coreApiPathProperties = coreProperties.getApi().getPath();
-            //获取url前缀
-            String prefix = coreApiPathProperties.getGlobalPrefix();
-            avatarPathMatch = prefix + avatarPathMatch;
-            filePathMatch = prefix + filePathMatch;
-        }
         registry.addResourceHandler(avatarPathMatch).addResourceLocations(avatarUtl).setCachePeriod(0);
         registry.addResourceHandler(filePathMatch).addResourceLocations(pathUtl).setCachePeriod(0);
     }

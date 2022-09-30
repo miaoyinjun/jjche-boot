@@ -17,7 +17,7 @@
             <div style="text-align: center">
               <div class="el-upload">
                 <img
-                  :src="user.avatarName ? '/api/avatar/' + user.avatarName : Avatar"
+                  :src="user.avatarName ? '/avatar/' + user.avatarName : Avatar"
                   title="点击上传头像"
                   class="avatar"
                   @click="toggleShow"
