@@ -64,13 +64,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R exception(Throwable e) {
         String eStr = ThrowableUtil.getStackTrace(e);
+        LogRecordDTO logRecord = new LogRecordDTO();
         try {
             //已经通过@LogRecord记录了日志，这里不在记录
             if (BooleanUtil.isFalse(ContextUtil.getLogSaved())) {
                 //记录到表
                 String reqId = MDC.get(LogConstant.REQUEST_ID);
                 String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
-                LogRecordDTO logRecord = new LogRecordDTO();
                 logRecord.setModule(String.valueOf(HttpStatusConstant.CODE_UNKNOWN_ERROR));
                 logRecord.setDetail(HttpStatusConstant.MSG_UNKNOWN_ERROR);
                 logRecord.setSaveParams(true);
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
             if (SpringContextHolder.isDev()) {
                 e.printStackTrace();
             } else {
-                StaticLog.error("全局异常:{}", eStr);
+                StaticLog.error("GlobalExceptionHandler:\n requestId:{}, \n{}", logRecord.getRequestId(), eStr);
 //                alarmDingTalkService.sendAlarm("全局异常");
             }
         }

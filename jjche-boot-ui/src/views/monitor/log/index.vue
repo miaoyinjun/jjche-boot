@@ -92,7 +92,12 @@
       <el-table-column prop="isSuccess" label="状态">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.isSuccess">成功</el-tag>
-          <el-tag v-else type="danger">失败</el-tag>
+          <el-button
+            v-if="scope.row.isSuccess == false"
+            size="mini"
+            type="text"
+            @click="info(scope.row.id)"
+          >异常详情</el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -132,20 +137,10 @@
           <span>{{ parseTime(scope.row.gmtCreate) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="异常详情" width="100px">
-        <template slot-scope="scope">
-          <el-button
-            v-if="scope.row.isSuccess == false"
-            size="mini"
-            type="text"
-            @click="info(scope.row.id)"
-          >查看详情</el-button>
-        </template>
-      </el-table-column>
     </el-table>
     <el-dialog
       :visible.sync="dialog"
-      title="异常详情"
+      title="详情"
       append-to-body
       top="30px"
       width="85%"
