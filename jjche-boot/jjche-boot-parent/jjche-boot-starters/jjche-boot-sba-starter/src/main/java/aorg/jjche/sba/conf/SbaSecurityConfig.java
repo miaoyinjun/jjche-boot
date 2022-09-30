@@ -85,12 +85,12 @@ public class SbaSecurityConfig {
                 /**解决与其它安全配置冲突问题*/
                 http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().authenticated();
             } else {
-                http.csrf().disable().headers().frameOptions().disable();
                 /**解决与其它安全配置冲突问题*/
                 http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().permitAll();
-                //解决api-gateway访问JjcheCloudMonitor跨域
-                http.cors().configurationSource(corsConfigurationSource());
             }
+            http.csrf().disable().headers().frameOptions().disable();
+            //解决api-gateway访问JjcheCloudMonitor跨域
+            http.cors().configurationSource(corsConfigurationSource());
         }
     }
 
