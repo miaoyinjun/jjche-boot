@@ -8,12 +8,12 @@
     <groupId>org.jjche.demo</groupId>
     <artifactId>jjche-boot-demo</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
 
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-boot-parent</artifactId>
-        <version>2.0.3</version>
+        <version>2.0.4</version>
         <relativePath />
     </parent>
 
@@ -29,10 +29,10 @@
             <artifactId>jjche-boot-system-starter</artifactId>
         </dependency>
         <!--spring-cloud-->
-        <!--                <dependency>-->
-        <!--                    <groupId>org.jjcheframework.boot</groupId>-->
-        <!--                    <artifactId>jjche-boot-cloud-starter</artifactId>-->
-        <!--                </dependency>-->
+        <!--                        <dependency>-->
+        <!--                            <groupId>org.jjcheframework.boot</groupId>-->
+        <!--                            <artifactId>jjche-boot-cloud-starter</artifactId>-->
+        <!--                        </dependency>-->
 
         <!--                <dependency>-->
         <!--                    <groupId>org.jjche.demo</groupId>-->

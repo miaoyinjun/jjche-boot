@@ -14,6 +14,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.time.Duration;
+import java.util.Collections;
 
 /**
  * <p>
@@ -79,13 +85,33 @@ public class SbaSecurityConfig {
                 /**解决与其它安全配置冲突问题*/
                 http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().authenticated();
             } else {
-                http.csrf().disable().headers().frameOptions().disable();
                 /**解决与其它安全配置冲突问题*/
                 http.antMatcher(adminContextPath + "/**").authorizeRequests().anyRequest().permitAll();
             }
+            http.csrf().disable().headers().frameOptions().disable();
+            //解决api-gateway访问JjcheCloudMonitor跨域
+            http.cors().configurationSource(corsConfigurationSource());
         }
     }
 
+    /**
+     * <p>
+     * 跨域
+     * </p>
+     *
+     * @return /
+     */
+    public static CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowCredentials(false);
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setMaxAge(Duration.ofHours(1));
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 /**
  * 解决 httpTrace失效
  *

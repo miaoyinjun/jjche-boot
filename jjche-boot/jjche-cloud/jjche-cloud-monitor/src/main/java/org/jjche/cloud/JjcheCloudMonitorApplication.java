@@ -1,5 +1,6 @@
-package org.jjche.sba;
+package org.jjche.cloud;
 
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -12,6 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @since 2020-06-18 9:16
  */
 @SpringBootApplication
+@EnableAdminServer
 @EnableDiscoveryClient
 public class JjcheCloudMonitorApplication {
     /**

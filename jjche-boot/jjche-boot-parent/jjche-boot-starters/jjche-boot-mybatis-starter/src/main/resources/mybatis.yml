@@ -26,7 +26,6 @@ spring:
           # 显示并标注慢sql 默认当超过3秒显示
           log-slow-sql: true
           slow-sql-millis: 3000
-          merge-sql: true
       initial-size: 10
       min-idle: 5
       max-active: 200

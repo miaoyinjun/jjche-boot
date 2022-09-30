@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @Data
 public class LogVO implements Serializable {
 
+    private Long id;
     /**
      * 操作用户
      */

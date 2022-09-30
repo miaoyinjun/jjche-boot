@@ -7,37 +7,27 @@
     <groupId>org.jjche.cloud</groupId>
     <artifactId>jjche-cloud-monitor</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.3</version>
+    <version>2.0.4</version>
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-cloud</artifactId>
-        <version>2.0.3</version>
+        <version>2.0.4</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-sba-starter</artifactId>
         </dependency>
+        <!--注册中心客户端-->
         <dependency>
-            <groupId>org.jjcheframework.boot</groupId>
-            <artifactId>jjche-boot-log-starter</artifactId>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!--注册中心客户端-->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
     </dependencies>
 

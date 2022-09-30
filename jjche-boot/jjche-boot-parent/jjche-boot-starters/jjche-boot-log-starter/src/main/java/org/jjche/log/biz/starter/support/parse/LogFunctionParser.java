@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
 import org.jjche.common.util.StrUtil;
 import org.jjche.log.biz.service.IFunctionService;
-import org.springframework.util.StringUtils;
 
 import java.util.Map;
 

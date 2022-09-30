@@ -5,6 +5,10 @@ spring:
     active: ${JJCHE_WEB_PROFILES_ACTIVE:dev}
   application:
     name: "@project.artifactId@"
+  boot:
+    admin:
+      ui:
+        external-views:
   cloud:
     #配置Bus id(远程推送事件)
     bus:
@@ -23,3 +27,7 @@ spring:
         group: DEFAULT_GROUP
         # 配置文件后缀
         file-extension: yml
+logging:
+  file:
+    path: ${JJCHE_LOG_PATH:./logs}
+    name: all.log

@@ -58,7 +58,7 @@ public class LogUtil {
                             boolean isTypeJSON = JSONUtil.isTypeJSON(body);
                             Object bodyJSON = body;
                             if (isTypeJSON) {
-                                bodyJSON = JSONUtil.parseObj(body);
+                                bodyJSON = JSONUtil.parse(body);
                             }
                             paramMap.put("body", bodyJSON);
                         }
