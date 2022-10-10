@@ -129,7 +129,7 @@
 > >
 > > > > > jjche-boot-shardingsphere-starter 分库分表
 > >
-> > > > > jjche-boot-jackson-starter -- jackson定义
+> > > > > jjche-boot-serialize-starter -- 序列化处理
 > >
 > > > > > jjche-boot-log-starter -- 日志
 > >
