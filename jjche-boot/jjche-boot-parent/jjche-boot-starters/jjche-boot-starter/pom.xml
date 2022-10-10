@@ -131,7 +131,7 @@
         </dependency>
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
-            <artifactId>jjche-boot-jackson-starter</artifactId>
+            <artifactId>jjche-boot-serialize-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>

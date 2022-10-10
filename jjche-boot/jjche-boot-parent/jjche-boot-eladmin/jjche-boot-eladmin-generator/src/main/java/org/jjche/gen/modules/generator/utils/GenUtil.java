@@ -89,13 +89,6 @@ public class GenUtil {
         return templateNames;
     }
 
-    /**
-     * <p>preview.</p>
-     *
-     * @param columns   a {@link java.util.List} object.
-     * @param genConfig a {@link GenConfigDO} object.
-     * @return a {@link java.util.List} object.
-     */
     public static List<Map<String, Object>> preview(List<ColumnInfoDO> columns, GenConfigDO genConfig, String apiPrefix) {
         Map<String, Object> genMap = getGenMap(columns, genConfig, apiPrefix);
         List<Map<String, Object>> genList = new ArrayList<>();

@@ -53,12 +53,6 @@ public class StudentController extends BaseController {
     private final StudentService studentService;
     private final Validator globalValidator;
 
-    /**
-     * <p>create.</p>
-     *
-     * @param dto a {@link StudentDTO} object.
-     * @return a {@link R} object.
-     */
     @PostMapping
     @ApiOperation(value = "学生-新增", tags = ApiVersion.VERSION_1_0_0)
     @ApiOperationSupport(ignoreParameters = {"id"})
@@ -68,12 +62,6 @@ public class StudentController extends BaseController {
         return R.ok(studentService.save(dto));
     }
 
-    /**
-     * <p>delete.</p>
-     *
-     * @param ids a {@link java.util.Set} object.
-     * @return a {@link R} object.
-     */
     @DeleteMapping
     @ApiOperation(value = "学生-删除", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:del')")
@@ -83,12 +71,6 @@ public class StudentController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>update.</p>
-     *
-     * @param dto a {@link StudentDTO} object.
-     * @return a {@link R} object.
-     */
     @PutMapping
     @ApiOperation(value = "学生-修改", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:edit')")
@@ -98,12 +80,6 @@ public class StudentController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>getById.</p>
-     *
-     * @param id a {@link java.lang.Long} object.
-     * @return a {@link R} object.
-     */
     @GetMapping("/{id}")
     @ApiOperation(value = "学生-查询单个", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
@@ -111,11 +87,6 @@ public class StudentController extends BaseController {
         return R.ok(this.studentService.getVoById(id));
     }
 
-    /**
-     * <p>download.</p>
-     *
-     * @param criteria a {@link StudentQueryCriteriaDTO} object.
-     */
     @GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ApiOperation(value = "学生-导出", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")
@@ -123,14 +94,6 @@ public class StudentController extends BaseController {
         studentService.download(criteria);
     }
 
-    /**
-     * <p>pageQuery.</p>
-     *
-     * @param page   a {@link PageParam} object.
-     * @param query  a {@link StudentQueryCriteriaDTO} object.
-     * @param course a {@link CourseEnum} object.
-     * @return a {@link R} object.
-     */
     @GetMapping
     @ApiOperation(value = "学生-列表", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:list')")

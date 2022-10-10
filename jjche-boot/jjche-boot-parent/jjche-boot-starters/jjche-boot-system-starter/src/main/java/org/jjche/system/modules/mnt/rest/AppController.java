@@ -37,13 +37,6 @@ public class AppController extends BaseController {
 
     private final AppService appService;
 
-    /**
-     * <p>download.</p>
-     *
-     * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link AppQueryCriteriaDTO} object.
-     * @throws java.io.IOException if any.
-     */
     @ApiOperation("导出应用数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('app:list')")
@@ -51,13 +44,6 @@ public class AppController extends BaseController {
         appService.download(appService.queryAll(criteria), response);
     }
 
-    /**
-     * <p>query.</p>
-     *
-     * @param criteria a {@link AppQueryCriteriaDTO} object.
-     * @param pageable /
-     * @return a {@link R} object.
-     */
     @ApiOperation(value = "查询应用")
     @GetMapping
     @PreAuthorize("@el.check('app:list')")
@@ -65,12 +51,6 @@ public class AppController extends BaseController {
         return R.ok(appService.queryAll(criteria, pageable));
     }
 
-    /**
-     * <p>create.</p>
-     *
-     * @param resources a {@link AppDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "应用"
@@ -83,12 +63,6 @@ public class AppController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>update.</p>
-     *
-     * @param resources a {@link AppDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "应用"
@@ -101,12 +75,6 @@ public class AppController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>delete.</p>
-     *
-     * @param ids a {@link java.util.Set} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "应用"

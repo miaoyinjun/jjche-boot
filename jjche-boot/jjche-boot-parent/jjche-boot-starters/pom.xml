@@ -21,7 +21,7 @@
         <module>jjche-boot-mybatis-starter</module>
         <module>jjche-boot-sba-starter</module>
         <module>jjche-boot-swagger-starter</module>
-        <module>jjche-boot-jackson-starter</module>
+        <module>jjche-boot-serialize-starter</module>
         <!--        <module>jjche-boot-xxl-job-client-starter</module>-->
         <module>jjche-boot-cloud-starter</module>
         <module>jjche-boot-starter</module>

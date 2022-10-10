@@ -1,4 +1,4 @@
-package org.jjche.jackson;
+package org.jjche.serialize;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -17,9 +17,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.annotation.JacksonAllowNull;
 import org.jjche.common.enums.IBaseEnum;
 import org.jjche.common.serializer.baseenum.BaseEnumSerializer;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -29,15 +29,15 @@ import java.util.TimeZone;
 
 /**
  * <p>
- * jackson转换消息
+ * 入口
  * </p>
  *
  * @author miaoyj
  * @version 1.0.0-SNAPSHOT
  * @since 2020-07-09
  */
-@Component
-public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConverter {
+@Configuration
+public class JacksonAutoConfiguration extends MappingJackson2HttpMessageConverter {
 
     /**
      * <p>
@@ -47,14 +47,13 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
      * @author miaoyj
      * @since 2020-09-09
      */
-    public JacksonHttpMessageConverter() {
+    public JacksonAutoConfiguration() {
         ObjectMapper objectMapper = getObjectMapper();
         // 日期格式化
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         // 时区设置
         objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        objectMapper.setSerializerFactory(objectMapper.getSerializerFactory()
-                .withSerializerModifier(new MyBeanSerializerModifier()));
+        objectMapper.setSerializerFactory(objectMapper.getSerializerFactory().withSerializerModifier(new MyBeanSerializerModifier()));
 
         //解决 /instances/%5Bobject%20Object%5D/actuator/metrics
         //https://github.com/codecentric/spring-boot-admin/issues/1517
