@@ -6,8 +6,6 @@
 
 ​			**登录**：账号：demo，密码：123456
 
-​			**应用监控/接口文档**：账号：admin，密码：123456
-
 ### 技术文档：https://miaoyinjun.gitee.io/jjche-boot-book/
 
 ### 项目介绍
