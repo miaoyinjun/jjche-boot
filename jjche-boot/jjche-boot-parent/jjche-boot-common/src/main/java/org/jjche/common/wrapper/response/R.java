@@ -82,7 +82,7 @@ public class R<T> extends AbstractR implements Serializable {
      * @param message  the message
      * @return the wrapper
      */
-    private static <E> R<E> wrap(RCodeEnum codeEnum, String message) {
+    public static <E> R<E> wrap(RCodeEnum codeEnum, String message) {
         return new R(codeEnum.getCode(), message);
     }
 
@@ -93,8 +93,16 @@ public class R<T> extends AbstractR implements Serializable {
      * @param codeEnum the codeEnum
      * @return the wrapper
      */
-    private static <E> R<E> wrap(RCodeEnum codeEnum) {
+    public static <E> R<E> wrap(RCodeEnum codeEnum) {
         return wrap(codeEnum, codeEnum.getMsg());
+    }
+
+    public static <E> R<E> wrap(int code, String message) {
+        return new R(code, message);
+    }
+
+    public static <E> R<E> wrap(int code) {
+        return wrap(code, null);
     }
 
     /**
