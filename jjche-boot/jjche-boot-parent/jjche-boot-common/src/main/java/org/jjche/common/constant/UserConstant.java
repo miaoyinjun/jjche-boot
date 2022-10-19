@@ -2,7 +2,7 @@ package org.jjche.common.constant;
 
 /**
  * <p>
- * 用户定义定义
+ * 用户定义
  * </p>
  *
  * @author miaoyj

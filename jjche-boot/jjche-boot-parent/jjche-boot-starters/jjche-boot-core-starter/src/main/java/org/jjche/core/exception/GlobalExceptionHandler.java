@@ -3,7 +3,7 @@ package org.jjche.core.exception;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
+import lombok.extern.log4j.Log4j2;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
@@ -46,6 +46,7 @@ import java.util.Set;
  * @since 2020-07-09
  */
 @RestControllerAdvice
+@Log4j2
 public class GlobalExceptionHandler {
     @Autowired(required = false)
     private CommonAPI commonAPI;
@@ -90,7 +91,8 @@ public class GlobalExceptionHandler {
             if (SpringContextHolder.isDev()) {
                 e.printStackTrace();
             } else {
-                StaticLog.error("GlobalExceptionHandler:\n requestId:{}, \n{}", logRecord.getRequestId(), eStr);
+                //e的位置为了支持CAT监控
+                log.error("GlobalExceptionHandler:\n requestId:{},", logRecord.getRequestId(), e);
 //                alarmDingTalkService.sendAlarm("全局异常");
             }
         }

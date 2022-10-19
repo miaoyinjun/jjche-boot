@@ -18,7 +18,7 @@ public interface SwaggerConstant {
     /**
      * 文档地址前缀
      */
-    String SWAGGER_2_URL_PREFIX = "/sba/api";
+    String SWAGGER_2_URL_PREFIX = SbaConstant.SBA_URL_PREFIX + "/api";
     /**
      * 文档地址后缀
      */
