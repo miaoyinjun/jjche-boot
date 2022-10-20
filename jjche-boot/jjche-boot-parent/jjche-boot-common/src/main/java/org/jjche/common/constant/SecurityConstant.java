@@ -102,4 +102,11 @@ public interface SecurityConstant {
      * 应用加密密钥
      */
     String APP_KEY_ENC_KEY = "app_key_enc_key";
+
+    /**
+     * 应用加密密钥
+     */
+    String FEIGN_SERVICE_NAME = "service-name";
+
+
 }
