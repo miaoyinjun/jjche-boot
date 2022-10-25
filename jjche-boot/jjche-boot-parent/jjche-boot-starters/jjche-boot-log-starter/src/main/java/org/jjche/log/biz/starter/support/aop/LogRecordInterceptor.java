@@ -3,7 +3,6 @@ package org.jjche.log.biz.starter.support.aop;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
@@ -264,7 +263,6 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         newLogRecordDTO.setMethod(methodName);
         newLogRecordDTO.setTenant(tenantId);
         newLogRecordDTO.setResult(result);
-        newLogRecordDTO.setCreateTime(DateUtil.date().toTimestamp());
 
         //save log 需要新开事务，失败日志不能因为事务回滚而丢失
         if (bizLogService == null) {

@@ -1,6 +1,5 @@
 package org.jjche.core.exception;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.log4j.Log4j2;
@@ -76,7 +75,6 @@ public class GlobalExceptionHandler {
                 logRecord.setDetail(HttpStatusConstant.MSG_UNKNOWN_ERROR);
                 logRecord.setSaveParams(true);
                 logRecord.setOperator(SecurityUtil.getUsernameOrDefaultUsername());
-                logRecord.setCreateTime(DateUtil.date().toTimestamp());
                 logRecord.setRequestId(reqId);
                 logRecord.setExceptionDetail(eStr.getBytes());
                 logRecord.setSuccess(false);

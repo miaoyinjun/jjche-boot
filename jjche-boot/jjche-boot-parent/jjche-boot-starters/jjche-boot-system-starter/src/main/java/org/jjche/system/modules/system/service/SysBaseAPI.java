@@ -239,6 +239,7 @@ public class SysBaseAPI implements ISysBaseAPI {
 
     @Override
     public void recordLog(LogRecordDTO logRecord) {
+        logRecord.setCreateTime(DateUtil.date().toTimestamp());
         LogDO log = logRecordMapper.toLog(logRecord);
         logService.saveLog(log);
     }
