@@ -1,4 +1,4 @@
 jjche:
   cat:
     enabled: true
-    servers: 127.0.0.1:8080:2080;
+    servers: ${JJCHE_CAT_SERVERS:127.0.0.1:8080:2080;}
