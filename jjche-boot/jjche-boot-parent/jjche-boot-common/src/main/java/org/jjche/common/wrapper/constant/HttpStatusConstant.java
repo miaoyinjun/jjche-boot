@@ -48,6 +48,16 @@ public interface HttpStatusConstant {
     String MSG_UNKNOWN_ERROR = "未知异常，请稍后重试";
 
     /**
+     * 服务不可用 {@value}
+     */
+    int CODE_UNAVAILABLE_ERROR = 5031;
+
+    /**
+     * 服务不可用 {@value}
+     */
+    String MSG_UNAVAILABLE_ERROR = "服务不可用，请稍后重试";
+
+    /**
      * 参数错误 {@value}
      */
     int CODE_PARAMETER_ERROR = 4001;
