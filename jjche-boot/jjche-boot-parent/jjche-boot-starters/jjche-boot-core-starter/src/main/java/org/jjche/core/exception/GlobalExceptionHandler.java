@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
                 logRecord.setAppName(appName);
                 //获取请求客户端信息
                 LogUtil.setLogRecordHttpRequest(logRecord);
-                commonAPI.recordLog(logRecord);
+//                commonAPI.recordLog(logRecord);
             }
         } catch (Exception ex) {
 
