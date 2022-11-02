@@ -18,23 +18,19 @@ import java.util.Map;
  */
 public class LogRecordEvaluationContext extends MethodBasedEvaluationContext {
 
-    /**
-     * <p>Constructor for LogRecordEvaluationContext.</p>
-     *
-     * @param rootObject              a {@link java.lang.Object} object.
-     * @param method                  a {@link java.lang.reflect.Method} object.
-     * @param arguments               an array of {@link java.lang.Object} objects.
-     * @param parameterNameDiscoverer a {@link org.springframework.core.ParameterNameDiscoverer} object.
-     * @param ret                     a {@link java.lang.Object} object.
-     * @param errorMsg                a {@link java.lang.String} object.
-     */
     public LogRecordEvaluationContext(Object rootObject, Method method, Object[] arguments,
                                       ParameterNameDiscoverer parameterNameDiscoverer, Object ret, String errorMsg) {
         super(rootObject, method, arguments, parameterNameDiscoverer);
         Map<String, Object> variables = LogRecordContext.getVariables();
-        if (variables != null && variables.size() > 0) {
-            for (Map.Entry<String, Object> entry : variables.entrySet()) {
-                setVariable(entry.getKey(), entry.getValue());
+        Map<String, Object> globalVariable = LogRecordContext.getGlobalVariableMap();
+        if (variables != null) {
+            setVariables(variables);
+        }
+        if (globalVariable != null && !globalVariable.isEmpty()) {
+            for (Map.Entry<String, Object> entry : globalVariable.entrySet()) {
+                if (lookupVariable(entry.getKey()) == null) {
+                    setVariable(entry.getKey(), entry.getValue());
+                }
             }
         }
         setVariable("_ret", ret);

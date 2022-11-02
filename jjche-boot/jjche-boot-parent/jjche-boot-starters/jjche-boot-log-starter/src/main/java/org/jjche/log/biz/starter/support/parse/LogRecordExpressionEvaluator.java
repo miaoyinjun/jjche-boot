@@ -24,22 +24,14 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LogRecordExpressionEvaluator extends CachedExpressionEvaluator {
 
     private final Map<AnnotatedElementKey, Method> targetMethodCache = new ConcurrentHashMap<>(64);
-    private Map<ExpressionKey, Expression> expressionCache = new ConcurrentHashMap<>(64);
+    private final Map<ExpressionKey, Expression> expressionCache = new ConcurrentHashMap<>(64);
 
-    /**
-     * <p>parseExpression.</p>
-     *
-     * @param conditionExpression a {@link java.lang.String} object.
-     * @param methodKey           a {@link org.springframework.context.expression.AnnotatedElementKey} object.
-     * @param evalContext         a {@link org.springframework.expression.EvaluationContext} object.
-     * @return a {@link java.lang.Object} object.
-     */
     public Object parseExpression(String conditionExpression, AnnotatedElementKey methodKey, EvaluationContext evalContext) {
         return getExpression(this.expressionCache, methodKey, conditionExpression).getValue(evalContext, Object.class);
     }
 
     /**
-     * Create an {@link org.springframework.expression.EvaluationContext}.
+     * Create an {@link EvaluationContext}.
      *
      * @param method      the method
      * @param args        the method arguments
@@ -62,11 +54,6 @@ public class LogRecordExpressionEvaluator extends CachedExpressionEvaluator {
 
     private Method getTargetMethod(Class<?> targetClass, Method method) {
         AnnotatedElementKey methodKey = new AnnotatedElementKey(method, targetClass);
-        Method targetMethod = this.targetMethodCache.get(methodKey);
-        if (targetMethod == null) {
-            targetMethod = AopUtils.getMostSpecificMethod(method, targetClass);
-            this.targetMethodCache.put(methodKey, targetMethod);
-        }
-        return targetMethod;
+        return targetMethodCache.computeIfAbsent(methodKey, k -> AopUtils.getMostSpecificMethod(method, targetClass));
     }
 }

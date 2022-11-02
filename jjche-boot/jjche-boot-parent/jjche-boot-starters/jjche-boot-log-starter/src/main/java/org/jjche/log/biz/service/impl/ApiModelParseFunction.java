@@ -9,6 +9,7 @@ import org.jjche.log.biz.service.IParseFunction;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Map;
  */
 @Component
 @RequiredArgsConstructor
-public class ApiModelParseFunction implements IParseFunction<Object> {
+public class ApiModelParseFunction implements IParseFunction {
     public static final String API_MODEL_OBJECT = "_apiModelObj";
 
     /**
@@ -46,6 +47,22 @@ public class ApiModelParseFunction implements IParseFunction<Object> {
     @Override
     public String apply(Object object) {
         StringBuilder result = StrUtil.builder();
+        if (Iterable.class.isAssignableFrom(object.getClass())) {
+            List list = Convert.toList(object);
+            for (Object o : list) {
+                String detail = this.getFieldDetail(o);
+                result.append(detail);
+            }
+        } else {
+            result.append(this.getFieldDetail(object));
+        }
+
+        //TODO:保存添加和删除的数据为ret，保存到detail，级别为管理员
+        return result.toString();
+    }
+
+    private String getFieldDetail(Object object) {
+        StringBuilder result = StrUtil.builder();
         if (object != null) {
             Map<String, Object> descMap = new HashMap<>();
             Map<String, String> apiModelMap = ClassUtil.getApiModelPropertyValue(object.getClass());
@@ -59,11 +76,12 @@ public class ApiModelParseFunction implements IParseFunction<Object> {
                 String fieldDesc = MapUtil.getStr(apiModelMap, fieldName);
                 if (StrUtil.isNotBlank(fieldDesc)) {
                     descMap.put(fieldDesc, fieldValue);
-                    result.append(StrUtil.format("【{}】为【{}】；", fieldDesc, fieldValue));
+                    result.append(StrUtil.format("[{}]是'{}'，", fieldDesc, fieldValue));
                 }
             }
+            result = StrUtil.builder(StrUtil.removeSuffix(result, "，"));
+            result.append("；");
         }
-        //TODO:保存添加和删除的数据为ret，保存到detail，级别为管理员
         return result.toString();
     }
 }

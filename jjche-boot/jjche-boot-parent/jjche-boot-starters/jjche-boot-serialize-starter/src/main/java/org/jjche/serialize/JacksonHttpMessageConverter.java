@@ -14,10 +14,10 @@ import de.codecentric.boot.admin.server.domain.values.Registration;
 import de.codecentric.boot.admin.server.utils.jackson.AdminServerModule;
 import de.codecentric.boot.admin.server.utils.jackson.InstanceIdMixin;
 import de.codecentric.boot.admin.server.utils.jackson.RegistrationDeserializer;
-import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.annotation.JacksonAllowNull;
 import org.jjche.common.enums.IBaseEnum;
 import org.jjche.common.serializer.baseenum.BaseEnumSerializer;
+import org.jjche.common.util.StrUtil;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
@@ -169,7 +169,7 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
     private class NullStringJsonSerializer extends JsonSerializer<Object> {
         @Override
         public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-            jsonGenerator.writeString(StringUtils.EMPTY);
+            jsonGenerator.writeString(StrUtil.EMPTY);
         }
     }
 

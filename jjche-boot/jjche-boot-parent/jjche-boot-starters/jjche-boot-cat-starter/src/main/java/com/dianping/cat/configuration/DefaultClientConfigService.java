@@ -30,7 +30,7 @@ import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.util.NetworkHelper;
 import com.dianping.cat.util.Properties;
 import com.dianping.cat.util.Splitters;
-import com.dianping.cat.util.StringUtils;
+import org.jjche.common.util.StrUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -54,7 +54,7 @@ public class DefaultClientConfigService implements ClientConfigService {
     private DefaultClientConfigService() {
         String config = System.getProperty(Cat.CLIENT_CONFIG);
 
-        if (StringUtils.isNotEmpty(config)) {
+        if (StrUtil.isNotEmpty(config)) {
             try {
                 this.config = com.dianping.cat.configuration.client.transform.DefaultSaxParser.parse(config);
                 LOGGER.info("setup cat with config:" + config);

@@ -26,7 +26,7 @@ import com.dianping.cat.log.CatLogger;
 import com.dianping.cat.util.Files;
 import com.dianping.cat.util.NetworkHelper;
 import com.dianping.cat.util.Splitters;
-import com.dianping.cat.util.StringUtils;
+import org.jjche.common.util.StrUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +56,7 @@ public class ApplicationEnvironment {
             pro.load(new FileInputStream(new File(file)));
             env = pro.getProperty("env");
 
-            if (StringUtils.isEmpty(env)) {
+            if (StrUtil.isEmpty(env)) {
                 env = pro.getProperty("deployenv");
             }
 

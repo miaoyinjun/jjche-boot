@@ -18,6 +18,7 @@ import org.springframework.context.annotation.FilterType;
  */
 @ComponentScan(excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {JacksonAutoConfiguration.class})})
 @MapperScan(PackageConstant.MAPPER_PATH_STAR)
-@EnableLogRecord(tenant = PackageConstant.BASE_PATH)
+@EnableLogRecord(tenant = PackageConstant.BASE_PATH, joinTransaction = true)
 @EnableFeignClients
-public class JjcheAutoConfiguration {}
+public class JjcheAutoConfiguration {
+}

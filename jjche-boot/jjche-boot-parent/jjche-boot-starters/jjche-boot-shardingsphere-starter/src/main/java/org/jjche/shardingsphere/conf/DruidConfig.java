@@ -28,7 +28,7 @@ public class DruidConfig {
      */
     @Bean
     public ServletRegistrationBean statViewServlet() {
-        String urlMappings = SpringUtil.getProperty("datasource.druid.stat-view-servlet.url-pattern");
+        String urlMappings = SpringUtil.getProperty("spring.datasource.druid.stat-view-servlet.url-pattern");
         ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), urlMappings);
         Map<String, String> initParams = new HashMap<>();
         bean.setInitParameters(initParams);

@@ -19,8 +19,8 @@
 package com.dianping.cat.status.datasource;
 
 import com.dianping.cat.Cat;
-import com.dianping.cat.util.StringUtils;
 import lombok.Data;
+import org.jjche.common.util.StrUtil;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -49,7 +49,7 @@ public class DatabaseParserHelper {
     public Database parseDatabase(String connection) {
         Database database = connections.get(String.valueOf(connection));
 
-        if (database == null && StringUtils.isNotEmpty(connection)) {
+        if (database == null && StrUtil.isNotEmpty(connection)) {
             try {
                 if (connection.contains("jdbc:mysql://")) {
                     String con = connection.split("jdbc:mysql://")[1];

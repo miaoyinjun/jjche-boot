@@ -26,12 +26,12 @@ import com.dianping.cat.log.CatLogger;
 import com.dianping.cat.message.internal.MessageIdFactory;
 import com.dianping.cat.util.Pair;
 import com.dianping.cat.util.Splitters;
-import com.dianping.cat.util.StringUtils;
 import com.dianping.cat.util.Threads;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.jjche.common.util.StrUtil;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -86,7 +86,7 @@ public class ChannelManager implements Threads.Task {
 
         String routerConfig = configService.getRouters();
 
-        if (StringUtils.isNotEmpty(routerConfig)) {
+        if (StrUtil.isNotEmpty(routerConfig)) {
             List<InetSocketAddress> configuredAddresses = parseSocketAddress(routerConfig);
             ChannelHolder holder = initChannel(configuredAddresses, routerConfig);
 
@@ -353,7 +353,7 @@ public class ChannelManager implements Threads.Task {
     private Pair<Boolean, String> routerConfigChanged() {
         String routerConfig = configService.getRouters();
 
-        if (!StringUtils.isEmpty(routerConfig) && !routerConfig.equals(activeChannelHolder.getActiveServerConfig())) {
+        if (!StrUtil.isEmpty(routerConfig) && !routerConfig.equals(activeChannelHolder.getActiveServerConfig())) {
             return new Pair<Boolean, String>(true, routerConfig);
         } else {
             return new Pair<Boolean, String>(false, routerConfig);

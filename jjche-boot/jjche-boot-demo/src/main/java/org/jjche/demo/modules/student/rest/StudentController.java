@@ -57,7 +57,7 @@ public class StudentController extends BaseController {
     @ApiOperation(value = "学生-新增", tags = ApiVersion.VERSION_1_0_0)
     @ApiOperationSupport(ignoreParameters = {"id"})
     @PreAuthorize("@el.check('student:add')")
-    @LogRecord(value = "创建了一个学生, 学生姓名：「{{#dto.name}}」", category = LogCategoryType.OPERATING, type = LogType.ADD, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#_ret.data}}")
+    @LogRecord(value = "创建了一个学生, 学生姓名：「{{#dto.name}}」", category = LogCategoryType.OPERATING, type = LogType.ADD, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#_ret}}")
     public R<Long> create(@Validated @Valid @RequestBody StudentDTO dto) {
         return R.ok(studentService.save(dto));
     }
@@ -65,7 +65,7 @@ public class StudentController extends BaseController {
     @DeleteMapping
     @ApiOperation(value = "学生-删除", tags = ApiVersion.VERSION_1_0_0)
     @PreAuthorize("@el.check('student:del')")
-    @LogRecord(batch = true, value = "删除", category = LogCategoryType.OPERATING, type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#ids}}", detail = "{API_MODEL{#_oldObj}} {STUDENT_DIFF_OLD_BY_ID{#ids}}")
+    @LogRecord(value = "删除", category = LogCategoryType.OPERATING, type = LogType.DELETE, module = ApiVersion.MODULE_STUDENT, bizNo = "{{#ids}}", detail = "{API_MODEL{#_oldObj}} {STUDENT_DIFF_OLD_BY_ID{#ids}}")
     public R delete(@RequestBody List<Long> ids) {
         studentService.delete(ids);
         return R.ok();

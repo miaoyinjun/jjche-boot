@@ -38,8 +38,8 @@ import com.dianping.cat.message.spi.MessageManager;
 import com.dianping.cat.message.spi.MessageTree;
 import com.dianping.cat.status.StatusUpdateTask;
 import com.dianping.cat.util.Properties;
-import com.dianping.cat.util.StringUtils;
 import com.dianping.cat.util.Threads;
+import org.jjche.common.util.StrUtil;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -178,7 +178,7 @@ public class Cat {
     private static String getCustomDomain() {
         String config = System.getProperty(Cat.CLIENT_CONFIG);
 
-        if (StringUtils.isNotEmpty(config)) {
+        if (StrUtil.isNotEmpty(config)) {
             try {
                 ClientConfig clientConfig = DefaultSaxParser.parse(config);
 

@@ -61,8 +61,7 @@ public class ${className}Controller extends BaseController{
     @DeleteMapping
     @ApiOperation(value = "${apiAlias}-删除", tags = ApiVersion.${apiVersionConstant})
     @PreAuthorize("@el.check('${tableName}:del')")
-    @LogRecord(
-            batch = true, value = "删除", category = LogCategoryType.OPERATING,
+    @LogRecord(value = "删除", category = LogCategoryType.OPERATING,
             type = LogType.DELETE, module = "${apiAlias}", bizNo = "{{#ids}}",
             detail = "{API_MODEL{#_oldObj}} {${diffOldFuncName}{#ids}}"
     )
