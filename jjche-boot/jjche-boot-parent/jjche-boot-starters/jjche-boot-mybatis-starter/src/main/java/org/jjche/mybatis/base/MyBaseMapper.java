@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -44,4 +45,12 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
      * @return 影响行数
      */
     int deleteBatchByIdsWithFill(@Param(Constants.ENTITY) T entity, @Param("coll") Collection<? extends Serializable> idList);
+
+    /**
+     * 全量插入,等价于insert
+     *
+     * @param entityList
+     * @return
+     */
+    int insertBatchSomeColumn(List<T> entityList);
 }

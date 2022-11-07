@@ -21,6 +21,10 @@ public enum RCodeEnum {
      */
     UNKNOWN_ERROR(HttpStatusConstant.CODE_UNKNOWN_ERROR, HttpStatusConstant.MSG_UNKNOWN_ERROR),
     /**
+     * 服务不可用
+     */
+    UNKNOWN_UNAVAILABLE_ERROR(HttpStatusConstant.CODE_UNAVAILABLE_ERROR, HttpStatusConstant.MSG_UNAVAILABLE_ERROR),
+    /**
      * 参数错误
      */
     PARAMETER_ERROR(HttpStatusConstant.CODE_PARAMETER_ERROR, HttpStatusConstant.MSG_PARAMETER_ERROR),

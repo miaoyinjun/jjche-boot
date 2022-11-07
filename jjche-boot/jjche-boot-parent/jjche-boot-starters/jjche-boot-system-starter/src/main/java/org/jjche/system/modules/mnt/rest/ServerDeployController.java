@@ -37,13 +37,6 @@ public class ServerDeployController extends BaseController {
 
     private final ServerDeployService serverDeployService;
 
-    /**
-     * <p>download.</p>
-     *
-     * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link ServerDeployQueryCriteriaDTO} object.
-     * @throws java.io.IOException if any.
-     */
     @ApiOperation("导出服务器数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('serverDeploy:list')")
@@ -51,13 +44,6 @@ public class ServerDeployController extends BaseController {
         serverDeployService.download(serverDeployService.queryAll(criteria), response);
     }
 
-    /**
-     * <p>query.</p>
-     *
-     * @param criteria a {@link ServerDeployQueryCriteriaDTO} object.
-     * @param pageable /
-     * @return a {@link R} object.
-     */
     @ApiOperation(value = "查询服务器")
     @GetMapping
     @PreAuthorize("@el.check('serverDeploy:list')")
@@ -66,12 +52,6 @@ public class ServerDeployController extends BaseController {
         return R.ok(serverDeployService.queryAll(criteria, pageable));
     }
 
-    /**
-     * <p>create.</p>
-     *
-     * @param resources a {@link ServerDeployDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "服务器"
@@ -84,12 +64,6 @@ public class ServerDeployController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>update.</p>
-     *
-     * @param resources a {@link ServerDeployDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "服务器"
@@ -102,12 +76,6 @@ public class ServerDeployController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>delete.</p>
-     *
-     * @param ids a {@link java.util.Set} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "服务器"
@@ -120,12 +88,6 @@ public class ServerDeployController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>testConnect.</p>
-     *
-     * @param resources a {@link ServerDeployDO} object.
-     * @return a {@link R} object.
-     */
     @ApiOperation(value = "测试连接服务器")
     @PostMapping("/testConnect")
     @PreAuthorize("@el.check('serverDeploy:add')")

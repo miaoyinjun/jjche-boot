@@ -3,15 +3,11 @@ package org.jjche.log.biz.starter.support.aop;
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.log.StaticLog;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.jjche.common.api.CommonAPI;
@@ -29,20 +25,25 @@ import org.jjche.core.annotation.controller.ApiRestController;
 import org.jjche.core.util.LogUtil;
 import org.jjche.core.util.RequestHolder;
 import org.jjche.core.util.SpringContextHolder;
+import org.jjche.log.biz.beans.MethodExecuteResult;
+import org.jjche.log.biz.service.IFunctionService;
 import org.jjche.log.biz.service.ILogRecordService;
 import org.jjche.log.biz.service.IOperatorGetService;
+import org.jjche.log.biz.service.impl.DiffParseFunction;
+import org.jjche.log.biz.starter.support.parse.LogFunctionParser;
 import org.jjche.log.biz.starter.support.parse.LogRecordValueParser;
 import org.slf4j.MDC;
 import org.springframework.aop.framework.AopProxyUtils;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * <p>
@@ -53,7 +54,8 @@ import java.util.stream.IntStream;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-04-30
  */
-public class LogRecordInterceptor extends LogRecordValueParser implements InitializingBean, MethodInterceptor, Serializable {
+public class LogRecordInterceptor extends LogRecordValueParser
+        implements MethodInterceptor, Serializable, SmartInitializingSingleton {
 
     ThreadLocal<Long> currentTime = new ThreadLocal<>();
     private LogRecordOperationSource logRecordOperationSource;
@@ -61,6 +63,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
     private ILogRecordService bizLogService;
     private IOperatorGetService operatorGetService;
     private CommonAPI commonAPI;
+    private boolean joinTransaction;
 
     /**
      * {@inheritDoc}
@@ -86,18 +89,19 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         currentTime.set(System.currentTimeMillis());
         Class<?> targetClass = getTargetClass(target);
         Object ret = null;
-        MethodExecuteResult methodExecuteResult = new MethodExecuteResult(true, null, "");
+        MethodExecuteResult methodExecuteResult = new MethodExecuteResult(method, args, targetClass);
         LogRecordContext.putEmptySpan();
         //appId单独处理不丢失
         String appId = RequestHolder.getHeader(FilterEncConstant.APP_ID);
         if (StrUtil.isNotBlank(appId)) {
             LogRecordContext.putVariable(FilterEncConstant.APP_ID, appId);
         }
+        Collection<LogRecordDTO> logRecords = new ArrayList<>();
         Map<String, String> functionNameAndReturnMap = MapUtil.newHashMap();
         //获取方法执行前的模板
         try {
-            LogRecordDTO logRecord = logRecordOperationSource.computeLogRecordOperation(method, targetClass);
-            List<String> spElTemplates = getBeforeExecuteFunctionTemplate(logRecord);
+            logRecords = logRecordOperationSource.computeLogRecordOperations(method, targetClass);
+            List<String> spElTemplates = getBeforeExecuteFunctionTemplate(logRecords);
             functionNameAndReturnMap = processBeforeExecuteFunctionTemplate(spElTemplates, targetClass, method, args);
         } catch (Exception e) {
             StaticLog.error("log record parse before function exception:{}", e);
@@ -106,11 +110,18 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         try {
             //执行后
             ret = invoker.proceed();
+            methodExecuteResult.setResult(ret);
+            methodExecuteResult.setSuccess(true);
         } catch (Exception e) {
-            methodExecuteResult = new MethodExecuteResult(false, e, e.getMessage());
+            methodExecuteResult.setSuccess(false);
+            methodExecuteResult.setThrowable(e);
+            methodExecuteResult.setErrorMsg(e.getMessage());
         }
         try {
-            recordExecute(ret, method, args, targetClass, methodExecuteResult, functionNameAndReturnMap);
+            if (!CollectionUtils.isEmpty(logRecords)) {
+                String methodName = targetClass.getName() + "." + method.getName() + "()";
+                recordExecute(ret, methodName, targetClass, methodExecuteResult, functionNameAndReturnMap, logRecords);
+            }
         } catch (Exception t) {
             //记录日志错误不要影响业务
             StaticLog.error("log record parse exception:{}", ThrowableUtil.getStackTrace(t));
@@ -119,8 +130,9 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
             //全局异常时不保存日志标记
             ContextUtil.setLogSaved(true);
         }
-        if (methodExecuteResult.throwable != null) {
-            throw methodExecuteResult.throwable;
+        Throwable throwable = methodExecuteResult.getThrowable();
+        if (throwable != null) {
+            throw throwable;
         }
         return ret;
     }
@@ -130,15 +142,17 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * 获取在方法之前运行的模板
      * </p>
      *
-     * @param logRecord /
+     * @param logRecords /
      * @return /
      */
-    private List<String> getBeforeExecuteFunctionTemplate(LogRecordDTO logRecord) {
+    private List<String> getBeforeExecuteFunctionTemplate(Collection<LogRecordDTO> logRecords) {
         List<String> spElTemplates = new ArrayList<>();
-        //执行之前的函数，失败模版不解析
-        List<String> templates = getSpElTemplates(logRecord);
-        if (CollUtil.isNotEmpty(templates)) {
-            spElTemplates.addAll(templates);
+        for (LogRecordDTO operation : logRecords) {
+            //执行之前的函数，失败模版不解析
+            List<String> templates = getSpElTemplates(operation);
+            if (!CollectionUtils.isEmpty(templates)) {
+                spElTemplates.addAll(templates);
+            }
         }
         return spElTemplates;
     }
@@ -149,90 +163,79 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * </p>
      *
      * @param ret                      结果
-     * @param method                   方法
-     * @param args                     参数
+     * @param methodName               方法
      * @param targetClass              目的类
      * @param methodExecuteResult      结果
      * @param functionNameAndReturnMap 方法名和返回
      */
-    private void recordExecute(Object ret, Method method, Object[] args, Class<?> targetClass, MethodExecuteResult methodExecuteResult, Map<String, String> functionNameAndReturnMap) {
-        try {
-            String errorMsg = methodExecuteResult.getErrorMsg();
-            boolean success = methodExecuteResult.isSuccess();
-            //执行前
-            LogRecordDTO logRecord = getLogRecordOperationSource().computeLogRecordOperation(method, targetClass);
-            String reqId = MDC.get(LogConstant.REQUEST_ID);
-            logRecord.setRequestId(reqId);
-            Throwable throwable = methodExecuteResult.getThrowable();
-            //异常数据
-            if (throwable != null) {
-                logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(throwable).getBytes());
-            }
-            //获取请求客户端信息
-            LogUtil.setLogRecordHttpRequest(logRecord);
+    private void recordExecute(Object ret, String methodName, Class<?> targetClass, MethodExecuteResult methodExecuteResult, Map<String, String> functionNameAndReturnMap, Collection<LogRecordDTO> operations) {
+        for (LogRecordDTO logRecord : operations) {
+            try {
+                //满足条件才记录
+                if (exitsCondition(methodExecuteResult, functionNameAndReturnMap, logRecord)) continue;
+                String errorMsg = methodExecuteResult.getErrorMsg();
+                boolean success = methodExecuteResult.isSuccess();
 
-            //获取需要解析的表达式
-            List<String> spElTemplates = getSpElTemplates(logRecord);
-            String operatorIdFromService = getOperatorIdFromServiceAndPutTemplate(logRecord, spElTemplates);
-            String bizNo = logRecord.getBizNo();
-            String condition = logRecord.getCondition();
-            String bizKey = logRecord.getBizKey();
-            if (StrUtil.isBlank(bizKey)) {
-                String[] restPrefixArray = AnnotationUtil.getAnnotationValue(targetClass, ApiRestController.class);
-                if (ArrayUtil.isNotEmpty(restPrefixArray)) {
-                    bizKey = ArrayUtil.get(restPrefixArray, 0);
+                String reqId = MDC.get(LogConstant.REQUEST_ID);
+                logRecord.setRequestId(reqId);
+                Throwable throwable = methodExecuteResult.getThrowable();
+                //异常数据
+                if (throwable != null) {
+                    logRecord.setExceptionDetail(ThrowableUtil.getStackTrace(throwable).getBytes());
                 }
-            }
-            String detail = logRecord.getDetail();
-            String value = logRecord.getValue();
-            String methodName = targetClass.getName() + "." + method.getName() + "()";
-            String result = HttpUtil.UNKNOWN;
-            if (success) {
-                if (ObjectUtil.isNotNull(ret)) {
-                    //是否控制器返回类型
-                    boolean isR = ClassUtil.isAssignable(AbstractR.class, ret.getClass());
-                    if (isR) {
-                        AbstractR iR = Convert.convert(AbstractR.class, ret);
-                        result = iR.getMessage();
-                    } else {
-                        result = StrUtil.toString(ret);
+                //获取需要解析的表达式
+                List<String> spElTemplates = getSpElTemplates(logRecord);
+                String operatorIdFromService = getOperatorIdFromServiceAndPutTemplate(logRecord, spElTemplates);
+                String bizNo = logRecord.getBizNo();
+                String bizKey = logRecord.getBizKey();
+                if (StrUtil.isBlank(bizKey)) {
+                    String[] restPrefixArray = AnnotationUtil.getAnnotationValue(targetClass, ApiRestController.class);
+                    if (ArrayUtil.isNotEmpty(restPrefixArray)) {
+                        bizKey = ArrayUtil.get(restPrefixArray, 0);
                     }
                 }
-            } else {
-                result = errorMsg;
-            }
-
-            //批量
-            if (logRecord.getBatch()) {
-                Map<String, List<String>> expressionValues = parseBatchTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap, bizNo);
-                String finalResult = result;
-                String finalBizKey = bizKey;
-                List<LogRecordDTO> records = IntStream.range(0, expressionValues.get(bizNo).size()).boxed().filter(x -> {
-                    return StrUtil.isBlank(condition) || StrUtil.endWithIgnoreCase(expressionValues.get(condition).get(x), "true");
-                }).map(x -> {
-                    String operator = StrUtil.isNotBlank(operatorIdFromService) ? operatorIdFromService : expressionValues.get(logRecord.getOperatorId()).get(x);
-                    long time = System.currentTimeMillis() - currentTime.get();
-                    return setRecord(logRecord, finalBizKey, expressionValues.get(bizNo).get(x),
-                            operator, expressionValues.get(value).get(x), expressionValues.get(detail).get(x),
-                            success, methodName, finalResult, time);
-                }).collect(Collectors.toList());
-                commonAPI.recordLogs(records);
-            } else {
-                Map<String, String> expressionValues = processTemplate(spElTemplates, ret, targetClass, method, args, errorMsg, functionNameAndReturnMap);
-                if (logConditionPassed(condition, expressionValues)) {
-                    Long time = System.currentTimeMillis() - currentTime.get();
-                    String operatorId = getRealOperatorId(logRecord, operatorIdFromService, expressionValues);
-                    LogRecordDTO newLogRecord = setRecord(logRecord, bizKey, expressionValues.get(bizNo),
-                            operatorId, expressionValues.get(value), expressionValues.get(detail),
-                            success, methodName, result, time);
-                    commonAPI.recordLog(newLogRecord);
+                String detail = logRecord.getDetail();
+                String value = logRecord.getValue();
+                String result = HttpUtil.UNKNOWN;
+                if (success) {
+                    if (ObjectUtil.isNotNull(ret)) {
+                        //是否控制器返回类型
+                        boolean isR = ClassUtil.isAssignable(AbstractR.class, ret.getClass());
+                        if (isR) {
+                            AbstractR iR = Convert.convert(AbstractR.class, ret);
+                            result = iR.getMessage();
+                        } else {
+                            result = StrUtil.toString(ret);
+                        }
+                    }
+                } else {
+                    result = errorMsg;
                 }
+
+                Long time = System.currentTimeMillis() - currentTime.get();
+                Map<String, String> expressionValues = processTemplate(spElTemplates, methodExecuteResult, functionNameAndReturnMap);
+
+                String operatorId = getRealOperatorId(logRecord, operatorIdFromService, expressionValues);
+                //获取请求客户端信息
+                LogUtil.setLogRecordHttpRequest(logRecord);
+
+                LogRecordDTO newLogRecord = setRecord(logRecord, bizKey, expressionValues.get(bizNo), operatorId, expressionValues.get(value), expressionValues.get(detail), success, methodName, result, time);
+                commonAPI.recordLog(newLogRecord);
+            } catch (Exception t) {
+                StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
+                if (joinTransaction) throw t;
+            } finally {
             }
-        } catch (Exception t) {
-            StaticLog.error("log record execute exception:{}", ThrowableUtil.getStackTrace(t));
-        } finally {
-            currentTime.remove();
         }
+        currentTime.remove();
+    }
+
+    private boolean exitsCondition(MethodExecuteResult methodExecuteResult, Map<String, String> functionNameAndReturnMap, LogRecordDTO operation) {
+        if (!StrUtil.isEmpty(operation.getCondition())) {
+            String condition = singleProcessTemplate(methodExecuteResult, operation.getCondition(), functionNameAndReturnMap);
+            if (StringUtils.endsWithIgnoreCase(condition, "false")) return true;
+        }
+        return false;
     }
 
     /**
@@ -252,8 +255,7 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
      * @param time       /
      * @return /
      */
-    private LogRecordDTO setRecord(LogRecordDTO logRecord, String bizKey, String bizNo, String operatorId, String value
-            , String detail, boolean success, String methodName, String result, Long time) {
+    private LogRecordDTO setRecord(LogRecordDTO logRecord, String bizKey, String bizNo, String operatorId, String value, String detail, boolean success, String methodName, String result, Long time) {
         LogRecordDTO newLogRecordDTO = ObjectUtil.clone(logRecord);
         newLogRecordDTO.setBizKey(bizKey);
         newLogRecordDTO.setBizNo(bizNo);
@@ -264,7 +266,6 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         newLogRecordDTO.setMethod(methodName);
         newLogRecordDTO.setTenant(tenantId);
         newLogRecordDTO.setResult(result);
-        newLogRecordDTO.setCreateTime(DateUtil.date().toTimestamp());
 
         //save log 需要新开事务，失败日志不能因为事务回滚而丢失
         if (bizLogService == null) {
@@ -370,17 +371,6 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         this.bizLogService = bizLogService;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void afterPropertiesSet() {
-        operatorGetService = beanFactory.getBean(IOperatorGetService.class);
-        if (bizLogService == null) {
-            StaticLog.error("bizLogService not null");
-        }
-    }
-
     public void setBizLogService(ILogRecordService bizLogService) {
         this.bizLogService = bizLogService;
     }
@@ -389,12 +379,15 @@ public class LogRecordInterceptor extends LogRecordValueParser implements Initia
         this.commonAPI = commonAPI;
     }
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    static class MethodExecuteResult {
-        private boolean success;
-        private Throwable throwable;
-        private String errorMsg;
+    public void setJoinTransaction(boolean joinTransaction) {
+        this.joinTransaction = joinTransaction;
+    }
+
+    @Override
+    public void afterSingletonsInstantiated() {
+        bizLogService = beanFactory.getBean(ILogRecordService.class);
+        operatorGetService = beanFactory.getBean(IOperatorGetService.class);
+        this.setLogFunctionParser(new LogFunctionParser(beanFactory.getBean(IFunctionService.class)));
+        this.setDiffParseFunction(beanFactory.getBean(DiffParseFunction.class));
     }
 }

@@ -121,9 +121,4 @@ public @interface LogRecord {
      * @return /
      */
     String condition() default "";
-
-    /**
-     * 是否是批量操作
-     */
-    boolean batch() default false;
 }

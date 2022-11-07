@@ -55,7 +55,7 @@ public class SecurityAppKeyController extends BaseController {
     @DeleteMapping
     @ApiOperation(value = "应用密钥-删除")
     @PreAuthorize("@el.check('securityAppKey:del')")
-    @LogRecord(batch = true, value = "删除", category = LogCategoryType.OPERATING, type = LogType.DELETE, module = "应用密钥", bizNo = "{{#ids}}", detail = "{API_MODEL{#_oldObj}} {SECURITY_APP_KEY_DIFF_OLD_BY_ID{#ids}}")
+    @LogRecord(value = "删除", category = LogCategoryType.OPERATING, type = LogType.DELETE, module = "应用密钥", bizNo = "{{#ids}}", detail = "{API_MODEL{#_oldObj}} {SECURITY_APP_KEY_DIFF_OLD_BY_ID{#ids}}")
     public R delete(@RequestBody List<Long> ids) {
         securityAppKeyService.delete(ids);
         return R.ok();

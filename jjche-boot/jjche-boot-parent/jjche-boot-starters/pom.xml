@@ -4,12 +4,12 @@
 
     <artifactId>jjche-boot-starters</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.4</version>
+    <version>2.0.5</version>
 
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-boot-parent</artifactId>
-        <version>2.0.4</version>
+        <version>2.0.5</version>
     </parent>
 
     <modules>
@@ -21,7 +21,7 @@
         <module>jjche-boot-mybatis-starter</module>
         <module>jjche-boot-sba-starter</module>
         <module>jjche-boot-swagger-starter</module>
-        <module>jjche-boot-jackson-starter</module>
+        <module>jjche-boot-serialize-starter</module>
         <!--        <module>jjche-boot-xxl-job-client-starter</module>-->
         <module>jjche-boot-cloud-starter</module>
         <module>jjche-boot-starter</module>
@@ -29,6 +29,7 @@
         <module>jjche-boot-userdetail-starter</module>
         <module>jjche-boot-cloud-gray-starter</module>
         <module>jjche-boot-shardingsphere-starter</module>
+        <module>jjche-boot-cat-starter</module>
     </modules>
 
 </project>

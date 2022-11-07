@@ -3,7 +3,7 @@ package org.jjche.security.property;
 import com.wf.captcha.*;
 import com.wf.captcha.base.Captcha;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
+import org.jjche.common.util.StrUtil;
 
 import java.awt.*;
 import java.util.Objects;
@@ -99,7 +99,7 @@ public class SecurityLoginProperties {
                     throw new IllegalArgumentException("验证码配置信息错误！正确配置查看 LoginCodeEnum ");
             }
         }
-        if (StringUtils.isNotBlank(loginCode.getFontName())) {
+        if (StrUtil.isNotBlank(loginCode.getFontName())) {
             captcha.setFont(new Font(loginCode.getFontName(), Font.PLAIN, loginCode.getFontSize()));
         }
         return captcha;

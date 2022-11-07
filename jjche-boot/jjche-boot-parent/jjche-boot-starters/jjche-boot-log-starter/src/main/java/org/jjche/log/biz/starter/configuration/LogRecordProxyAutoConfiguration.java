@@ -13,7 +13,6 @@ import org.jjche.log.biz.starter.diff.IDiffItemsToLogContentService;
 import org.jjche.log.biz.starter.support.aop.BeanFactoryLogRecordAdvisor;
 import org.jjche.log.biz.starter.support.aop.LogRecordInterceptor;
 import org.jjche.log.biz.starter.support.aop.LogRecordOperationSource;
-import org.jjche.log.biz.starter.support.parse.LogFunctionParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -36,6 +35,7 @@ import java.util.List;
 @Configuration
 @EnableConfigurationProperties({LogRecordProperties.class})
 public class LogRecordProxyAutoConfiguration implements ImportAware {
+
     private AnnotationAttributes enableLogRecord;
     @Autowired
     @Lazy
@@ -67,33 +67,36 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
         return new DefaultParseFunction();
     }
 
+
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public BeanFactoryLogRecordAdvisor logRecordAdvisor(IFunctionService functionService, DiffParseFunction diffParseFunction) {
+    public BeanFactoryLogRecordAdvisor logRecordAdvisor() {
         BeanFactoryLogRecordAdvisor advisor =
                 new BeanFactoryLogRecordAdvisor();
         advisor.setLogRecordOperationSource(logRecordOperationSource());
-        advisor.setAdvice(logRecordInterceptor(functionService, diffParseFunction));
+        advisor.setAdvice(logRecordInterceptor());
+        advisor.setOrder(enableLogRecord.getNumber("order"));
         return advisor;
     }
 
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public LogRecordInterceptor logRecordInterceptor(IFunctionService functionService, DiffParseFunction diffParseFunction) {
+    public LogRecordInterceptor logRecordInterceptor() {
         LogRecordInterceptor interceptor = new LogRecordInterceptor();
         interceptor.setLogRecordOperationSource(logRecordOperationSource());
         interceptor.setTenant(enableLogRecord.getString("tenant"));
-        interceptor.setLogFunctionParser(logFunctionParser(functionService));
-        interceptor.setDiffParseFunction(diffParseFunction);
+        interceptor.setJoinTransaction(enableLogRecord.getBoolean("joinTransaction"));
+        //interceptor.setLogFunctionParser(logFunctionParser(functionService));
+        //interceptor.setDiffParseFunction(diffParseFunction);
         interceptor.setCommonAPI(commonAPI);
         interceptor.setBizLogService(bizLogService);
         return interceptor;
     }
 
-    @Bean
-    public LogFunctionParser logFunctionParser(IFunctionService functionService) {
-        return new LogFunctionParser(functionService);
-    }
+//    @Bean
+//    public LogFunctionParser logFunctionParser(IFunctionService functionService) {
+//        return new LogFunctionParser(functionService);
+//    }
 
     @Bean
     public DiffParseFunction diffParseFunction(IDiffItemsToLogContentService diffItemsToLogContentService) {
@@ -105,8 +108,8 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
     @Bean
     @ConditionalOnMissingBean(IDiffItemsToLogContentService.class)
     @Role(BeanDefinition.ROLE_APPLICATION)
-    public IDiffItemsToLogContentService diffItemsToLogContentService(IFunctionService functionService, LogRecordProperties logRecordProperties) {
-        return new DefaultDiffItemsToLogContentService(functionService, logRecordProperties);
+    public IDiffItemsToLogContentService diffItemsToLogContentService(LogRecordProperties logRecordProperties) {
+        return new DefaultDiffItemsToLogContentService(logRecordProperties);
     }
 
     @Bean
@@ -128,7 +131,7 @@ public class LogRecordProxyAutoConfiguration implements ImportAware {
         this.enableLogRecord = AnnotationAttributes.fromMap(
                 importMetadata.getAnnotationAttributes(EnableLogRecord.class.getName(), false));
         if (this.enableLogRecord == null) {
-            StaticLog.info("@EnableCaching is not present on importing class");
+            StaticLog.info("EnableLogRecord is not present on importing class");
         }
     }
 }

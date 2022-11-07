@@ -1,16 +1,16 @@
 server:
-  port: 8848
+  port: ${JJCHE_NACOS_PORT:8848}
   tomcat:
     basedir: logs
 
 db:
   num: 1
-  password:
-    '0': ${JJCHE_DB_PASSWORD:}
   url:
     '0': jdbc:mysql://${JJCHE_DB_HOST:localhost}:${JJCHE_DB_PORT:3306}/jjche-boot-nacos?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
   user:
     '0': ${JJCHE_DB_UNAME:root}
+  password:
+    '0': ${JJCHE_DB_PASSWORD:}
 
 nacos:
   core:

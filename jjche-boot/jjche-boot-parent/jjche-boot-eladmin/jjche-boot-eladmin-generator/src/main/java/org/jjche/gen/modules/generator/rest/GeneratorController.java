@@ -37,13 +37,6 @@ public class GeneratorController extends BaseController {
     private final GeneratorService generatorService;
     private final GenConfigService genConfigService;
 
-    /**
-     * <p>queryTables.</p>
-     *
-     * @param name /
-     * @param page /
-     * @return a {@link R} object.
-     */
     @ApiOperation("查询数据库数据")
     @GetMapping(value = "/tables")
     @PreAuthorize("@el.check('generator:list')")

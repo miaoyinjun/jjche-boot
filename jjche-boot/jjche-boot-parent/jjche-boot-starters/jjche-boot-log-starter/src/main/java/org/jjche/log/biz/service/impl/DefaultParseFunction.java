@@ -12,7 +12,7 @@ import org.jjche.log.biz.service.IParseFunction;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-04-30
  */
-public class DefaultParseFunction implements IParseFunction<String> {
+public class DefaultParseFunction implements IParseFunction {
 
     /**
      * {@inheritDoc}
@@ -34,7 +34,7 @@ public class DefaultParseFunction implements IParseFunction<String> {
      * {@inheritDoc}
      */
     @Override
-    public String apply(String value) {
+    public String apply(Object value) {
         return null;
     }
 }

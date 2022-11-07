@@ -2,8 +2,8 @@ package org.jjche.system.modules.mnt.util;
 
 import cn.hutool.log.StaticLog;
 import com.alibaba.druid.pool.DruidDataSource;
-import com.alibaba.druid.util.StringUtils;
 import com.google.common.collect.Lists;
+import org.jjche.common.util.StrUtil;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -33,7 +33,7 @@ public class SqlUtils {
         } catch (SQLException e) {
             throw new RuntimeException("Get class name error: =" + jdbcUrl);
         }
-        if (StringUtils.isEmpty(className)) {
+        if (StrUtil.isEmpty(className)) {
             DataTypeEnum dataTypeEnum = DataTypeEnum.urlOf(jdbcUrl);
             if (null == dataTypeEnum) {
                 throw new RuntimeException("Not supported data type: jdbcUrl=" + jdbcUrl);

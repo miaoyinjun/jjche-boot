@@ -1,9 +1,8 @@
 package org.jjche.core.exception;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.log.StaticLog;
+import lombok.extern.log4j.Log4j2;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
@@ -46,6 +45,7 @@ import java.util.Set;
  * @since 2020-07-09
  */
 @RestControllerAdvice
+@Log4j2
 public class GlobalExceptionHandler {
     @Autowired(required = false)
     private CommonAPI commonAPI;
@@ -64,25 +64,24 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public R exception(Throwable e) {
         String eStr = ThrowableUtil.getStackTrace(e);
+        LogRecordDTO logRecord = new LogRecordDTO();
         try {
             //已经通过@LogRecord记录了日志，这里不在记录
             if (BooleanUtil.isFalse(ContextUtil.getLogSaved())) {
                 //记录到表
                 String reqId = MDC.get(LogConstant.REQUEST_ID);
                 String appName = SpringContextHolder.getProperties(SpringPropertyConstant.APP_NAME);
-                LogRecordDTO logRecord = new LogRecordDTO();
                 logRecord.setModule(String.valueOf(HttpStatusConstant.CODE_UNKNOWN_ERROR));
                 logRecord.setDetail(HttpStatusConstant.MSG_UNKNOWN_ERROR);
                 logRecord.setSaveParams(true);
                 logRecord.setOperator(SecurityUtil.getUsernameOrDefaultUsername());
-                logRecord.setCreateTime(DateUtil.date().toTimestamp());
                 logRecord.setRequestId(reqId);
                 logRecord.setExceptionDetail(eStr.getBytes());
                 logRecord.setSuccess(false);
                 logRecord.setAppName(appName);
                 //获取请求客户端信息
                 LogUtil.setLogRecordHttpRequest(logRecord);
-                commonAPI.recordLog(logRecord);
+//                commonAPI.recordLog(logRecord);
             }
         } catch (Exception ex) {
 
@@ -90,7 +89,8 @@ public class GlobalExceptionHandler {
             if (SpringContextHolder.isDev()) {
                 e.printStackTrace();
             } else {
-                StaticLog.error("全局异常:{}", eStr);
+                //e的位置为了支持CAT监控
+                log.error("GlobalExceptionHandler:\n requestId:{},", logRecord.getRequestId(), e);
 //                alarmDingTalkService.sendAlarm("全局异常");
             }
         }

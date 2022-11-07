@@ -9,9 +9,9 @@ package org.jjche.system.modules.security.rest;
 import com.anji.captcha.model.common.ResponseModel;
 import com.anji.captcha.model.vo.CaptchaVO;
 import com.anji.captcha.service.CaptchaService;
-import com.anji.captcha.util.StringUtils;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
+import org.jjche.common.util.StrUtil;
 import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.security.annotation.rest.AnonymousPostMapping;
@@ -38,16 +38,16 @@ public class AuthCaptchaController {
         String xfwd = request.getHeader("X-Forwarded-For");
         String ip = getRemoteIpFromXfwd(xfwd);
         String ua = request.getHeader("user-agent");
-        if (StringUtils.isNotBlank(ip)) {
+        if (StrUtil.isNotBlank(ip)) {
             return ip + ua;
         }
         return request.getRemoteAddr() + ua;
     }
 
     private static String getRemoteIpFromXfwd(String xfwd) {
-        if (StringUtils.isNotBlank(xfwd)) {
+        if (StrUtil.isNotBlank(xfwd)) {
             String[] ipList = xfwd.split(",");
-            return StringUtils.trim(ipList[0]);
+            return StrUtil.trim(ipList[0]);
         }
         return null;
     }

@@ -1,7 +1,9 @@
 package org.jjche.shardingsphere.conf;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import org.jjche.common.util.StrUtil;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +28,8 @@ public class DruidConfig {
      */
     @Bean
     public ServletRegistrationBean statViewServlet() {
-        ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), "/sba/druid/*");
+        String urlMappings = SpringUtil.getProperty("spring.datasource.druid.stat-view-servlet.url-pattern");
+        ServletRegistrationBean bean = new ServletRegistrationBean(new StatViewServlet(), urlMappings);
         Map<String, String> initParams = new HashMap<>();
         bean.setInitParameters(initParams);
         return bean;
@@ -37,13 +40,15 @@ public class DruidConfig {
      */
     @Bean
     public FilterRegistrationBean webStatFilter() {
+        String globalPrefix = SpringUtil.getProperty("jjche.core.api.path.global-prefix");
+        String prefix = SpringUtil.getProperty("jjche.core.api.path.prefix");
+        String urlPatterns = StrUtil.format("{}{}/*", globalPrefix, prefix);
+        urlPatterns = StrUtil.replace(urlPatterns, "//", "/");
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new WebStatFilter());
         Map<String, String> initParams = new HashMap<>();
-        //过滤掉需要监控的文件
-        initParams.put("exclusions", "/static/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/sba/*");
         bean.setInitParameters(initParams);
-        bean.setUrlPatterns(Arrays.asList("/*"));
+        bean.setUrlPatterns(Arrays.asList(urlPatterns));
         return bean;
     }
 }

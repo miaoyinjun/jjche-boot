@@ -1,8 +1,10 @@
 package org.jjche.mybatis.extension;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn;
 import com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill;
 import org.jjche.mybatis.extension.injector.LogicDeleteBatchByIdsWithFill;
 import org.jjche.mybatis.extension.injector.LogicDeleteBatchWithFill;
@@ -34,6 +36,8 @@ public class MySqlInjector extends DefaultSqlInjector {
         methodList.add(new LogicDeleteBatchByIdsWithFill());
         /**根据自定义条件，逻辑批量删除并自动填充*/
         methodList.add(new LogicDeleteBatchWithFill());
+        //更新时自动填充的字段，不用插入值
+        methodList.add(new InsertBatchSomeColumn(i -> i.getFieldFill() != FieldFill.UPDATE));
         return methodList;
     }
 }

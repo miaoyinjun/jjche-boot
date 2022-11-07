@@ -6,8 +6,6 @@
 
 ​			**登录**：账号：demo，密码：123456
 
-​			**应用监控/接口文档**：账号：admin，密码：123456
-
 ### 技术文档：https://miaoyinjun.gitee.io/jjche-boot-book/
 
 ### 项目介绍
@@ -129,7 +127,7 @@
 > >
 > > > > > jjche-boot-shardingsphere-starter 分库分表
 > >
-> > > > > jjche-boot-jackson-starter -- jackson定义
+> > > > > jjche-boot-serialize-starter -- 序列化处理
 > >
 > > > > > jjche-boot-log-starter -- 日志
 > >

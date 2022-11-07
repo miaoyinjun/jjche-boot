@@ -4,7 +4,6 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.jjche.common.annotation.EncryptField;
 import org.jjche.common.annotation.EncryptMethod;
 import org.jjche.common.enums.FileType;
@@ -107,7 +106,7 @@ public class LocalStorageService extends MyServiceImpl<LocalStorageMapper, Local
             File file = FileUtil.upload(multipartFile, properties.getPath().getPath() + type.getValue() + File.separator);
             Assert.notNull(file, "上传失败");
             try {
-                name = StringUtils.isBlank(name) ? FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()) : name;
+                name = org.jjche.common.util.StrUtil.isBlank(name) ? FileUtil.getFileNameNoEx(multipartFile.getOriginalFilename()) : name;
                 LocalStorageDO localStorage = new LocalStorageDO(
                         file.getName(),
                         name,

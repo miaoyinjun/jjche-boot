@@ -21,7 +21,7 @@ import java.util.List;
  * @since 2022-08-05
  */
 @Component
-public class SecurityAppKeyDiffOldByIdParseFunction implements IParseFunction<Object> {
+public class SecurityAppKeyDiffOldByIdParseFunction implements IParseFunction {
     @Autowired
     @Lazy
     private SecurityAppKeyService securityAppKeyService;

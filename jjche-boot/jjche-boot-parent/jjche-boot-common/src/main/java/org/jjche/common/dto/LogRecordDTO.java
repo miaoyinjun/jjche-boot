@@ -166,10 +166,4 @@ public class LogRecordDTO implements Serializable {
      * 子模块
      */
     private String subModule;
-
-
-    /**
-     * 是否是批量操作
-     */
-    private Boolean batch;
 }

@@ -29,12 +29,6 @@ public class GenConfigController extends BaseController {
 
     private final GenConfigService genConfigService;
 
-    /**
-     * <p>query.</p>
-     *
-     * @param tableName a {@link java.lang.String} object.
-     * @return a {@link R} object.
-     */
     @ApiOperation("查询")
     @GetMapping(value = "/{tableName}")
     @PreAuthorize("@el.check('generator:list')")

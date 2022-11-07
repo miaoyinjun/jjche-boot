@@ -12,7 +12,6 @@ services:
       # - ./nginx.conf:/etc/nginx/nginx.conf
     container_name: ${JJCHE_UI_NAME}
     env_file: .env
-    restart: always
     ports:
       - "80:80"
 

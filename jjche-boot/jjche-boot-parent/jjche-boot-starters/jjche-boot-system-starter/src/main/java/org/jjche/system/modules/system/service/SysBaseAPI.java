@@ -10,7 +10,6 @@ import cn.hutool.log.StaticLog;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.dto.*;
@@ -107,7 +106,7 @@ public class SysBaseAPI implements ISysBaseAPI {
         List<OnlineUserDTO> onlineUserDTOS = new ArrayList<>();
         for (String key : keys) {
             OnlineUserDTO onlineUserDto = redisService.objectGetObject(key, OnlineUserDTO.class);
-            if (StringUtils.isNotBlank(filter)) {
+            if (StrUtil.isNotBlank(filter)) {
                 if (onlineUserDto.toString().contains(filter)) {
                     onlineUserDTOS.add(onlineUserDto);
                 }
@@ -168,9 +167,9 @@ public class SysBaseAPI implements ISysBaseAPI {
                 try {
                     String privateKey = properties.getRsa().getPrivateKey();
                     String token = RsaUtils.decryptByPrivateKey(privateKey, onlineUserDto.getKey());
-                    if (StringUtils.isNotBlank(igoreToken) && !igoreToken.equals(token)) {
+                    if (StrUtil.isNotBlank(igoreToken) && !igoreToken.equals(token)) {
                         this.kickOut(token);
-                    } else if (StringUtils.isBlank(igoreToken)) {
+                    } else if (StrUtil.isBlank(igoreToken)) {
                         this.kickOut(token);
                     }
                 } catch (Exception e) {
@@ -239,6 +238,7 @@ public class SysBaseAPI implements ISysBaseAPI {
 
     @Override
     public void recordLog(LogRecordDTO logRecord) {
+        logRecord.setCreateTime(DateUtil.date().toTimestamp());
         LogDO log = logRecordMapper.toLog(logRecord);
         logService.saveLog(log);
     }

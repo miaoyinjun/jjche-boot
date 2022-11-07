@@ -82,7 +82,7 @@ public class R<T> extends AbstractR implements Serializable {
      * @param message  the message
      * @return the wrapper
      */
-    private static <E> R<E> wrap(RCodeEnum codeEnum, String message) {
+    public static <E> R<E> wrap(RCodeEnum codeEnum, String message) {
         return new R(codeEnum.getCode(), message);
     }
 
@@ -93,8 +93,16 @@ public class R<T> extends AbstractR implements Serializable {
      * @param codeEnum the codeEnum
      * @return the wrapper
      */
-    private static <E> R<E> wrap(RCodeEnum codeEnum) {
+    public static <E> R<E> wrap(RCodeEnum codeEnum) {
         return wrap(codeEnum, codeEnum.getMsg());
+    }
+
+    public static <E> R<E> wrap(int code, String message) {
+        return new R(code, message);
+    }
+
+    public static <E> R<E> wrap(int code) {
+        return wrap(code, null);
     }
 
     /**
@@ -104,11 +112,21 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详细
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> error() {
         return wrap(RCodeEnum.UNKNOWN_ERROR);
+    }
+
+    /**
+     * <p>
+     * 服务不可用
+     * </p>
+     *
+     * @param <E> a E object.
+     * @return 详细
+     */
+    public static <E> R<E> errorServiceUnAvailable() {
+        return wrap(RCodeEnum.UNKNOWN_UNAVAILABLE_ERROR);
     }
 
     /**
@@ -119,8 +137,6 @@ public class R<T> extends AbstractR implements Serializable {
      * @param msg 错误信息
      * @param <E> a E object.
      * @return 详细
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> validError(String msg) {
         return wrap(RCodeEnum.VALID_ERROR, msg);
@@ -134,8 +150,6 @@ public class R<T> extends AbstractR implements Serializable {
      * @param msg 错误信息
      * @param <E> a E object.
      * @return 详细
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> parameterError(String msg) {
         return wrap(RCodeEnum.PARAMETER_ERROR, msg);
@@ -148,8 +162,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> requestTimeout() {
         return wrap(RCodeEnum.REQUEST_TIMEOUT);
@@ -162,8 +174,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> signError() {
         return wrap(RCodeEnum.SIGN_ERROR);
@@ -176,8 +186,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> requestLimit() {
         return wrap(RCodeEnum.REQUEST_LIMIT);
@@ -190,8 +198,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> ok() {
         return new R<>();
@@ -205,8 +211,6 @@ public class R<T> extends AbstractR implements Serializable {
      * @param o   对象
      * @param <E> a E object.
      * @return 详细
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> ok(E o) {
         return new R<>(RCodeEnum.SUCCESS.getCode(), RCodeEnum.SUCCESS.getMsg(), o);
@@ -219,8 +223,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> userError() {
         return wrap(RCodeEnum.USERNAME_NOT_FOUND_OR_BAD_CREDENTIALS);
@@ -233,8 +235,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> userDisabledError() {
         return wrap(RCodeEnum.USER_DISABLED);
@@ -247,8 +247,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> userLockedError() {
         return wrap(RCodeEnum.USER_LOCKED);
@@ -261,8 +259,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> userNameExpiredError() {
         return wrap(RCodeEnum.USERNAME_EXPIRED);
@@ -275,8 +271,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> userCredentialsExpiredError() {
         return wrap(RCodeEnum.USER_CREDENTIALS_EXPIRED);
@@ -289,8 +283,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> tokenExpiredError() {
         return wrap(RCodeEnum.TOKEN_EXPIRED);
@@ -303,8 +295,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> tokenError() {
         return wrap(RCodeEnum.TOKEN_ERROR);
@@ -317,8 +307,6 @@ public class R<T> extends AbstractR implements Serializable {
      *
      * @param <E> a E object.
      * @return 详情
-     * @author miaoyj
-     * @since 2020-08-10
      */
     public static <E> R<E> userAccessDeniedError() {
         return wrap(RCodeEnum.USER_ACCESS_DENIED);

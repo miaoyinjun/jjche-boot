@@ -9,7 +9,7 @@ package org.jjche.log.biz.service;
  * @version 1.0.0-SNAPSHOT
  * @since 2021-04-30
  */
-public interface IParseFunction<T> {
+public interface IParseFunction {
 
     /**
      * <p>
@@ -39,5 +39,5 @@ public interface IParseFunction<T> {
      * @param value 参数
      * @return 结果
      */
-    String apply(T value);
+    String apply(Object value);
 }

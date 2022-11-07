@@ -45,7 +45,17 @@ public interface HttpStatusConstant {
     /**
      * 内部错误 {@value}
      */
-    String MSG_UNKNOWN_ERROR = "系统未知错误,请反馈给管理员";
+    String MSG_UNKNOWN_ERROR = "未知异常，请稍后重试";
+
+    /**
+     * 服务不可用 {@value}
+     */
+    int CODE_UNAVAILABLE_ERROR = 5031;
+
+    /**
+     * 服务不可用 {@value}
+     */
+    String MSG_UNAVAILABLE_ERROR = "服务不可用，请稍后重试";
 
     /**
      * 参数错误 {@value}

@@ -40,27 +40,27 @@ public class LogRecordProperties {
     /**
      * 字段从空改为有值的时候的日志内容模板
      */
-    private String addTemplate = "【" + FIELD_PLACEHOLDER + "】从【空】修改为【" + TARGET_VALUE_PLACEHOLDER + "】";
+    private String addTemplate = "[" + FIELD_PLACEHOLDER + "]从'空'修改为'" + TARGET_VALUE_PLACEHOLDER + "'";
     /**
      * 列表修改后只有添加项的时候的日志内容模板
      */
-    private String addTemplateForList = "【" + FIELD_PLACEHOLDER + "】添加了【" + LIST_ADD_VALUE_PLACEHOLDER + "】";
+    private String addTemplateForList = "[" + FIELD_PLACEHOLDER + "]添加了'" + LIST_ADD_VALUE_PLACEHOLDER + "'";
     /**
      * 列表修改后只有删除项的时候的日志内容模板
      */
-    private String deleteTemplateForList = "【" + FIELD_PLACEHOLDER + "】删除了【" + LIST_DEL_VALUE_PLACEHOLDER + "】";
+    private String deleteTemplateForList = "[" + FIELD_PLACEHOLDER + "]删除了'" + LIST_DEL_VALUE_PLACEHOLDER + "'";
     /**
      * 列表修改后既有有删除项又有添加项的时候的日志内容模板
      */
-    private String updateTemplateForList = "【" + FIELD_PLACEHOLDER + "】添加了【" + LIST_ADD_VALUE_PLACEHOLDER + "】删除了【" + LIST_DEL_VALUE_PLACEHOLDER + "】";
+    private String updateTemplateForList = "[" + FIELD_PLACEHOLDER + "]添加了'" + LIST_ADD_VALUE_PLACEHOLDER + "'删除了'" + LIST_DEL_VALUE_PLACEHOLDER + "'";
     /**
      * 字段更新后的日志内容模板
      */
-    private String updateTemplate = "【" + FIELD_PLACEHOLDER + "】从【" + SOURCE_VALUE_PLACEHOLDER + "】修改为【" + TARGET_VALUE_PLACEHOLDER + "】";
+    private String updateTemplate = "[" + FIELD_PLACEHOLDER + "]从'" + SOURCE_VALUE_PLACEHOLDER + "'修改为'" + TARGET_VALUE_PLACEHOLDER + "'";
     /**
      * 字段值被设置为null后的日志内容模板
      */
-    private String deleteTemplate = "删除了【" + FIELD_PLACEHOLDER + "】：【" + SOURCE_VALUE_PLACEHOLDER + "】";
+    private String deleteTemplate = "删除了[" + FIELD_PLACEHOLDER + "]：'" + SOURCE_VALUE_PLACEHOLDER + "'";
     /**
      * 多个字段的日志内容拼接一起的时候的分隔符
      */

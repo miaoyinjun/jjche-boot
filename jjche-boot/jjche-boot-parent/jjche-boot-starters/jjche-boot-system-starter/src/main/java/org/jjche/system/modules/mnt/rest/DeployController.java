@@ -44,14 +44,6 @@ public class DeployController extends BaseController {
     private final String fileSavePath = FileUtil.getTmpDirPath() + "/";
     private final DeployService deployService;
 
-
-    /**
-     * <p>download.</p>
-     *
-     * @param response a {@link javax.servlet.http.HttpServletResponse} object.
-     * @param criteria a {@link DeployQueryCriteriaDTO} object.
-     * @throws java.io.IOException if any.
-     */
     @ApiOperation("导出部署数据")
     @GetMapping(value = "/download")
     @PreAuthorize("@el.check('database:list')")
@@ -59,13 +51,6 @@ public class DeployController extends BaseController {
         deployService.download(deployService.queryAll(criteria), response);
     }
 
-    /**
-     * <p>query.</p>
-     *
-     * @param criteria a {@link DeployQueryCriteriaDTO} object.
-     * @param pageable /
-     * @return a {@link R} object.
-     */
     @ApiOperation(value = "查询部署")
     @GetMapping
     @PreAuthorize("@el.check('deploy:list')")
@@ -73,12 +58,6 @@ public class DeployController extends BaseController {
         return R.ok(deployService.queryAll(criteria, pageable));
     }
 
-    /**
-     * <p>create.</p>
-     *
-     * @param resources a {@link DeployDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "新增", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "部署"
@@ -91,12 +70,6 @@ public class DeployController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>update.</p>
-     *
-     * @param resources a {@link DeployDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "修改", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
@@ -109,12 +82,6 @@ public class DeployController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>delete.</p>
-     *
-     * @param ids a {@link java.util.Set} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "删除", category = LogCategoryType.MANAGER,
             type = LogType.DELETE, module = "部署"
@@ -127,14 +94,6 @@ public class DeployController extends BaseController {
         return R.ok();
     }
 
-    /**
-     * <p>upload.</p>
-     *
-     * @param file    a {@link org.springframework.web.multipart.MultipartFile} object.
-     * @param request a {@link javax.servlet.http.HttpServletRequest} object.
-     * @return a {@link R} object.
-     * @throws java.lang.Exception if any.
-     */
     @LogRecord(
             value = "上传文件", category = LogCategoryType.MANAGER,
             type = LogType.ADD, module = "部署"
@@ -158,12 +117,6 @@ public class DeployController extends BaseController {
         return R.ok(fileName);
     }
 
-    /**
-     * <p>serverReduction.</p>
-     *
-     * @param resources a {@link DeployHistoryDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "系统还原", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
@@ -176,12 +129,6 @@ public class DeployController extends BaseController {
         return R.ok(result);
     }
 
-    /**
-     * <p>serverStatus.</p>
-     *
-     * @param resources a {@link DeployDO} object.
-     * @return a {@link R} object.
-     */
     @ApiOperation(value = "服务运行状态")
     @PostMapping(value = "/serverStatus")
     @PreAuthorize("@el.check('deploy:edit')")
@@ -190,12 +137,6 @@ public class DeployController extends BaseController {
         return R.ok(result);
     }
 
-    /**
-     * <p>startServer.</p>
-     *
-     * @param resources a {@link DeployDO} object.
-     * @return a {@link R} object.
-     */
     @LogRecord(
             value = "启动服务", category = LogCategoryType.MANAGER,
             type = LogType.UPDATE, module = "部署"
