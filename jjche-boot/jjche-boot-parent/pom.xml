@@ -17,6 +17,9 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <build.plugins.plugin.version>3.0.0-M1</build.plugins.plugin.version>
 
+        <docker.registry>registry.cn-hangzhou.aliyuncs.com</docker.registry>
+        <docker.namespace>jjche-boot</docker.namespace>
+
         <spring.boot.starter.version>2.6.3</spring.boot.starter.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
@@ -819,6 +822,24 @@
                     <groupId>com.spotify</groupId>
                     <artifactId>dockerfile-maven-plugin</artifactId>
                     <version>${docker.maven.verion}</version>
+                    <!--                <executions>-->
+                    <!--                    <execution>-->
+                    <!--                        <id>default</id>-->
+                    <!--                        <phase>package</phase>-->
+                    <!--                        <goals>-->
+                    <!--                            <goal>build</goal>-->
+                    <!--                            &lt;!&ndash;                            <goal>push</goal>&ndash;&gt;-->
+                    <!--                        </goals>-->
+                    <!--                    </execution>-->
+                    <!--                </executions>-->
+                    <configuration>
+                        <repository>${docker.registry}/${docker.namespace}/${project.name}</repository>
+                        <tag>latest</tag>
+                        <buildArgs>
+                            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                        </buildArgs>
+                        <dockerfile>./docker/Dockerfile</dockerfile>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
