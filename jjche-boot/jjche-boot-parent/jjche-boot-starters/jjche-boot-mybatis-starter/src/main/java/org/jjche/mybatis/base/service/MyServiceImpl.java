@@ -29,7 +29,7 @@ public class MyServiceImpl<M extends MyBaseMapper<T>, T> extends ServiceImpl<M, 
      */
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public boolean saveBatch(Collection<T> entityList, int batchSize) {
+    public boolean fastSaveBatch(Collection<T> entityList, int batchSize) {
         try {
             int size = entityList.size();
             int idxLimit = Math.min(batchSize, size);

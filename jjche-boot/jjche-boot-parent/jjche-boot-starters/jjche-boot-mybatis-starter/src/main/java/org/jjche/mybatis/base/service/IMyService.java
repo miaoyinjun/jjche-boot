@@ -3,6 +3,7 @@ package org.jjche.mybatis.base.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.jjche.mybatis.base.MyBaseMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -47,6 +48,9 @@ public interface IMyService<T> extends IService<T> {
      * @param wrapper 条件构造器
      * @return 影响行数
      */
+    @Transactional(
+            rollbackFor = {Exception.class}
+    )
     default int removeBatchWithFill(T entity, Wrapper<T> wrapper) {
         return this.getBaseMapper().deleteBatchWithFill(entity, wrapper);
     }
@@ -58,8 +62,29 @@ public interface IMyService<T> extends IService<T> {
      * @param idList 主键
      * @return 影响行数
      */
+    @Transactional(
+            rollbackFor = {Exception.class}
+    )
     default int removeBatchByIdsWithFill(T entity, Collection<? extends Serializable> idList) {
         return this.getBaseMapper().deleteBatchByIdsWithFill(entity, idList);
     }
+
+    /**
+     * <p>
+     * 拼成一条insert sql
+     * 注意：sql中会有null插入进去，会使表字段not null default value不生效，要手动赋值
+     * </p>
+     *
+     * @param entityList
+     * @return /
+     */
+    @Transactional(
+            rollbackFor = {Exception.class}
+    )
+    default boolean fastSaveBatch(Collection<T> entityList) {
+        return this.fastSaveBatch(entityList, DEFAULT_BATCH_SIZE);
+    }
+
+    boolean fastSaveBatch(Collection<T> entityList, int batchSize);
 
 }
