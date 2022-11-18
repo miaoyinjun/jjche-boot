@@ -47,6 +47,8 @@
         <jetcache.version>2.6.5</jetcache.version>
         <druid.version>1.2.9</druid.version>
         <skywalking.version>8.11.0</skywalking.version>
+        <minio.version>8.4.5</minio.version>
+        <okhttp3.version>4.10.0</okhttp3.version>
 
     </properties>
 
@@ -199,6 +201,11 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-shardingsphere-starter</artifactId>
+                <version>2.0.6-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jjcheframework.boot</groupId>
+                <artifactId>jjche-boot-minio-starter</artifactId>
                 <version>2.0.6-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -495,6 +502,16 @@
                 <groupId>com.dianping.cat</groupId>
                 <artifactId>cat-client</artifactId>
                 <version>3.1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

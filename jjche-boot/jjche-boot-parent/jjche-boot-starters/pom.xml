@@ -30,6 +30,7 @@
         <module>jjche-boot-cloud-gray-starter</module>
         <module>jjche-boot-shardingsphere-starter</module>
         <module>jjche-boot-cat-starter</module>
+        <module>jjche-boot-minio-starter</module>
     </modules>
 
 </project>

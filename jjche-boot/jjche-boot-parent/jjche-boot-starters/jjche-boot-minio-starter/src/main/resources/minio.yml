@@ -1,0 +1,6 @@
+jjche:
+  minio:
+    endpoint: ${JJCHE_MINIO_HOST:http://127.0.0.1:5000} #Minio服务所在地址
+    bucketName: ${JJCHE_MINIO_BUCKET_NAME:tulaoda} #存储桶名称
+    accessKey: ${JJCHE_MINIO_ACCESS_KEY:minioadmin} #访问的key
+    secretKey: ${JJCHE_MINIO_SECRET_KEY:minioadmin} #访问的秘钥
