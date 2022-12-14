@@ -150,6 +150,8 @@
 > > > > jjche-cloud-demo-provider -- 演示基础服务
 > > > >
 > > > > jjche-cloud-gateway -- 网关
+> > > > 
+> > > > jjche-cloud-minio -- minio文件
 > > > >
 > > > > jjche-cloud-monitor -- 监控
 > > > >

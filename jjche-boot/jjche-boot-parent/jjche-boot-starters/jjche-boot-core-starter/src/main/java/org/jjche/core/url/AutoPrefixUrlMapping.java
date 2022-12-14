@@ -43,6 +43,8 @@ public class AutoPrefixUrlMapping extends RequestMappingHandlerMapping {
                 } else {
                     prefix += coreApiPathProperties.getPrefix();
                 }
+            } else {
+                prefix += coreApiPathProperties.getPrefix();
             }
             if (outRest) {
                 prefix += coreApiPathProperties.getOutPrefix();

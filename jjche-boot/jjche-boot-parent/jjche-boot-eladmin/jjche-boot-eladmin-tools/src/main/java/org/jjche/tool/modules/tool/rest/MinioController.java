@@ -1,0 +1,24 @@
+package org.jjche.tool.modules.tool.rest;
+
+import org.jjche.core.annotation.controller.SysRestController;
+import org.jjche.minio.rest.MinioBaseController;
+import org.jjche.minio.util.MinioUtil;
+
+
+/**
+ * <p>
+ * Minio 控制器
+ * </p>
+ *
+ * @author miaoyj
+ * @version 1.0.0-SNAPSHOT
+ * @since 2021-02-02
+ */
+@SysRestController("files")
+public class MinioController extends MinioBaseController {
+
+    public MinioController(MinioUtil minioUtil) {
+        super(minioUtil);
+    }
+
+}

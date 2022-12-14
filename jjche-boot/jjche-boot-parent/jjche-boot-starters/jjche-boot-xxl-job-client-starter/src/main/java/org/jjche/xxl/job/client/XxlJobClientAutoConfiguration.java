@@ -1,8 +1,8 @@
 package org.jjche.xxl.job.client;
 
 import cn.hutool.log.StaticLog;
-import org.jjche.xxl.job.client.config.XxlJobConfig;
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
+import org.jjche.xxl.job.client.config.XxlJobConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

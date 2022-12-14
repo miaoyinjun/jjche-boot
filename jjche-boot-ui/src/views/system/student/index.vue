@@ -1,8 +1,6 @@
 <template>
 
   <div class="app-container">
-   <iframe src="https://report-qa.wuxidiagnostics.com/api/spring/web/resource/report/pdf/download?id=88f98416-867e-4e74-a6e7-b6ed54988487"></iframe>
-
     <!--工具栏-->
     <div class="head-container">
       <div v-if="crud.props.searchToggle">

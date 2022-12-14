@@ -1,10 +1,7 @@
 package org.jjche.core.fileconf;
 
-import cn.hutool.core.util.BooleanUtil;
 import org.jjche.common.constant.FileConstant;
-import org.jjche.core.property.CoreApiPathProperties;
 import org.jjche.core.property.CoreProperties;
-import org.jjche.core.util.SpringContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;

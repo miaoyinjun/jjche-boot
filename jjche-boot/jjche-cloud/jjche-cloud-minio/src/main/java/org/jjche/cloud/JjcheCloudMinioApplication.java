@@ -1,10 +1,12 @@
 package org.jjche.cloud;
 
+import org.jjche.core.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * 入口
@@ -24,6 +26,7 @@ public class JjcheCloudMinioApplication {
      * @since 2020-07-09
      */
     public static void main(String[] args) {
-        SpringApplication.run(JjcheCloudMinioApplication.class, args);
+        ConfigurableApplicationContext application = SpringApplication.run(JjcheCloudMinioApplication.class, args);
+        SpringContextHolder.appLog(application);
     }
 }
