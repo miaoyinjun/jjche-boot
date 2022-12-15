@@ -3,6 +3,7 @@ package org.jjche.tool.modules.tool.rest;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.minio.rest.MinioBaseController;
 import org.jjche.minio.util.MinioUtil;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 
 
 /**
@@ -15,6 +16,7 @@ import org.jjche.minio.util.MinioUtil;
  * @since 2021-02-02
  */
 @SysRestController("files")
+@ConditionalOnClass({MinioBaseController.class})
 public class MinioController extends MinioBaseController {
 
     public MinioController(MinioUtil minioUtil) {

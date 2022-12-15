@@ -52,6 +52,8 @@ INSERT INTO `config_info` VALUES (4, 'jjche-cloud-system-dev.yml', 'DEFAULT_GROU
 INSERT INTO `config_info` VALUES (5, 'jjche-cloud-system-test.yml', 'DEFAULT_GROUP', 'server.port: 8802', 'fa5c2eb27b0a8599784c9678b72190f0', '2022-08-17 09:49:18', '2022-09-29 16:40:07', 'nacos', '0:0:0:0:0:0:0:1', '', '', '', '', '', 'yaml', '');
 INSERT INTO `config_info` VALUES (6, 'jjche-cloud-demo-provider-biz-dev.yml', 'DEFAULT_GROUP', 'server.port: 8804\nspring:\n  liquibase:\n    default-schema: ${JJCHE_DB_DATABASE:jjche-boot-student}', 'cea04144b12404a846c13147b53309ab', '2022-02-10 10:40:23', '2022-11-03 16:25:03', 'nacos', '0:0:0:0:0:0:0:1', '', '', '', '', '', 'yaml', '');
 INSERT INTO `config_info` VALUES (7, 'jjche-cloud-demo-provider-biz-test.yml', 'DEFAULT_GROUP', 'server.port: 8804\nspring:\n  liquibase:\n    default-schema: ${JJCHE_DB_DATABASE:jjche-boot-student}', 'cea04144b12404a846c13147b53309ab', '2022-06-27 13:06:38', '2022-11-03 16:25:18', 'nacos', '0:0:0:0:0:0:0:1', '', '', '', '', '', 'yaml', '');
+INSERT INTO `config_info` VALUES (8, 'jjche-cloud-minio-dev.yml', 'DEFAULT_GROUP', 'server.port: 8805', '402445a2a9a0cc7c212a92c68304e874', '2022-12-13 14:07:15', '2022-12-13 14:07:15', NULL, '0:0:0:0:0:0:0:1', '', '', NULL, NULL, NULL, 'text', NULL);
+INSERT INTO `config_info` VALUES (9, 'jjche-cloud-minio-test.yml', 'DEFAULT_GROUP', 'server.port: 8805', '402445a2a9a0cc7c212a92c68304e874', '2022-12-13 14:07:31', '2022-12-13 14:07:31', NULL, '0:0:0:0:0:0:0:1', '', '', NULL, NULL, NULL, 'text', NULL);
 
 -- ----------------------------
 -- Table structure for config_info_aggr
