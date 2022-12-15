@@ -64,12 +64,12 @@ public class MinioBaseController extends BaseController {
         return R.ok(names);
     }
 
-    @ApiOperation(value = "文件上传")
+    @ApiOperation(value = "文件上传", notes = "可选择存储桶名称和类型名称")
     @PostMapping
-    public R<String> upload(@RequestPart("file") MultipartFile file,
+    public R<String> upload(@RequestPart MultipartFile file,
                             @RequestParam(required = false) String bucketName,
-                            @RequestParam(required = false) String pathName) {
-        String objectName = minioUtil.upload(file, bucketName, pathName);
+                            @RequestParam(required = false) String typeName) {
+        String objectName = minioUtil.upload(file, bucketName, typeName);
         if (null != objectName) {
             return R.ok(objectName);
         }

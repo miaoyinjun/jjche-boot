@@ -1,4 +1,4 @@
-package org.jjche.core.rest;
+package org.jjche.core.resttemplate;
 
 import cn.hutool.log.StaticLog;
 import org.springframework.http.HttpRequest;

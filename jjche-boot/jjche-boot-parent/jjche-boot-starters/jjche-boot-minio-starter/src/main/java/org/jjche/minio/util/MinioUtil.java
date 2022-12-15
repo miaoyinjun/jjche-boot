@@ -94,12 +94,12 @@ public class MinioUtil {
      * @param file 文件
      * @return Boolean
      */
-    public String upload(MultipartFile file, String bucketName, String pathName) {
+    public String upload(MultipartFile file, String bucketName, String typeName) {
         if (StrUtil.isBlank(bucketName)) {
             bucketName = prop.getBucketName();
         }
-        if (StrUtil.isBlank(pathName)) {
-            pathName = "default";
+        if (StrUtil.isBlank(typeName)) {
+            typeName = "default";
         }
         String originalFilename = file.getOriginalFilename();
         if (StrUtil.isBlank(originalFilename)) {
@@ -107,7 +107,7 @@ public class MinioUtil {
         }
         String fileName = IdUtil.fastSimpleUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
         String date = DateUtil.formatDate(DateUtil.date());
-        String objectName = date + "/" + pathName + "/" + fileName;
+        String objectName = date + "/" + typeName + "/" + fileName;
         try {
             PutObjectArgs objectArgs = PutObjectArgs.builder().bucket(bucketName).object(objectName)
                     .stream(file.getInputStream(), file.getSize(), -1).contentType(file.getContentType()).build();

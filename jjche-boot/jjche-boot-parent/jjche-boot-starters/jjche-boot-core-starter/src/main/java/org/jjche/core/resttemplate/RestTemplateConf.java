@@ -1,4 +1,4 @@
-package org.jjche.core.rest;
+package org.jjche.core.resttemplate;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
