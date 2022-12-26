@@ -1,6 +1,7 @@
 package org.jjche.minio.util;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.img.ImgUtil;
 import cn.hutool.core.io.FastByteArrayOutputStream;
 import cn.hutool.core.util.IdUtil;
 import io.minio.*;
@@ -8,13 +9,17 @@ import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.AllArgsConstructor;
+import org.jjche.common.enums.FileType;
 import org.jjche.common.util.StrUtil;
+import org.jjche.core.util.FileUtil;
 import org.jjche.minio.config.MinioConfig;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,14 +110,55 @@ public class MinioUtil {
         if (StrUtil.isBlank(originalFilename)) {
             throw new RuntimeException();
         }
+
+        File fileTemp = FileUtil.toFile(file);
+
         String fileName = IdUtil.fastSimpleUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
         String date = DateUtil.formatDate(DateUtil.date());
         String objectName = date + "/" + typeName + "/" + fileName;
         try {
+            InputStream fileIs = FileUtil.getInputStream(fileTemp);
             PutObjectArgs objectArgs = PutObjectArgs.builder().bucket(bucketName).object(objectName)
-                    .stream(file.getInputStream(), file.getSize(), -1).contentType(file.getContentType()).build();
-            //文件名称相同会覆盖
+                    .stream(fileIs, file.getSize(), -1).contentType(file.getContentType()).build();
+
+            //原图上传
             minioClient.putObject(objectArgs);
+
+            //图片类型
+            Boolean isPic = FileType.IMAGE.equals(FileUtil.getFileType(FileUtil.getType(fileTemp)));
+            if (isPic) {
+                int fileSuffixIndex = objectName.lastIndexOf(".");
+                String fileSuffix = objectName.substring(fileSuffixIndex);
+                String objectThumbName = objectName.substring(0, fileSuffixIndex);
+                //缩略图上传
+                objectThumbName += "_thumb" + fileSuffix;
+                File fileThumb = FileUtil.newFile(fileTemp.getParentFile() + File.separator + objectThumbName);
+                FileUtil.copy(fileTemp, fileThumb, true);
+                ImgUtil.scale(fileTemp, fileThumb, 0.25f);
+                InputStream fileThumbIs = FileUtil.getInputStream(fileThumb);
+                long fileThumbSize = FileUtil.size(fileThumb);
+
+                objectArgs = PutObjectArgs.builder().bucket(bucketName).object(objectThumbName)
+                        .stream(fileThumbIs, fileThumbSize, -1).contentType(file.getContentType()).build();
+                minioClient.putObject(objectArgs);
+
+                /**
+                 //原图压缩
+                 String objectComName = objectName.substring(0, fileSuffixIndex);
+                 objectComName += "_com" + fileSuffix;
+                 File fileCom = FileUtil.newFile(fileTemp.getParentFile() + File.separator + objectComName);
+                 FileUtil.copy(fileTemp, fileCom, true);
+                 Img.from(fileTemp)
+                 .setQuality(0.4)//压缩比率
+                 .write(fileCom);
+                 InputStream fileComIs = FileUtil.getInputStream(fileCom);
+                 long fileComSize = FileUtil.size(fileCom);
+
+                 objectArgs = PutObjectArgs.builder().bucket(bucketName).object(objectComName)
+                 .stream(fileComIs, fileComSize, -1).contentType(file.getContentType()).build();
+                 minioClient.putObject(objectArgs);
+                 */
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;

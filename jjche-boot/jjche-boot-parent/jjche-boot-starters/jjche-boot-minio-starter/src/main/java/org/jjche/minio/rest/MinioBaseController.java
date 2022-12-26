@@ -64,7 +64,7 @@ public class MinioBaseController extends BaseController {
         return R.ok(names);
     }
 
-    @ApiOperation(value = "文件上传", notes = "可选择存储桶名称和类型名称")
+    @ApiOperation(value = "文件上传", notes = "可选择存储桶名称和分类名称，xx/xx_thumb.png，可访问缩略图")
     @PostMapping
     public R<String> upload(@RequestPart MultipartFile file,
                             @RequestParam(required = false) String bucketName,
