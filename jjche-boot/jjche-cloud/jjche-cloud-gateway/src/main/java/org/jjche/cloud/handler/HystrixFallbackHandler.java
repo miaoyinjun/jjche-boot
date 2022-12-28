@@ -1,6 +1,7 @@
 package org.jjche.cloud.handler;
 
 import cn.hutool.log.StaticLog;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -27,6 +28,6 @@ public class HystrixFallbackHandler implements HandlerFunction<ServerResponse> {
         originalUris.ifPresent(originalUri -> StaticLog.error("网关执行请求:{}失败,hystrix服务降级处理", originalUri));
 
         return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .header("Content-Type", "text/plain; charset=utf-8").body(BodyInserters.fromObject("访问超时,请稍后再试"));
+                .header(HttpHeaders.CONTENT_TYPE, "text/plain; charset=utf-8").body(BodyInserters.fromObject("访问超时,请稍后再试"));
     }
 }

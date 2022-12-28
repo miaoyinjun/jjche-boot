@@ -1,6 +1,17 @@
 server:
   port: 8801
 spring:
+  redis:
+    database: ${JJCHE_REDIS_DB:1}
+    host: ${JJCHE_REDIS_HOST:localhost}
+    port: ${JJCHE_REDIS_PORT:6379}
+    password: ${JJCHE_REDIS_PASSWORD:}
+    lettuce:
+      pool:
+        max-active: 30
+        max-wait: -1
+        max-idle: 8
+        min-idle: 1
   profiles:
     active: ${JJCHE_WEB_PROFILES_ACTIVE:dev}
   application:

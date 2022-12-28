@@ -13,6 +13,7 @@ import org.jjche.common.enums.FileType;
 import org.jjche.common.util.StrUtil;
 import org.jjche.core.util.FileUtil;
 import org.jjche.minio.config.MinioConfig;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -210,7 +211,7 @@ public class MinioUtil {
                 res.setCharacterEncoding("utf-8");
                 // 设置强制下载不打开
                 // res.setContentType("application/force-download");
-                res.addHeader("Content-Disposition", "attachment;fileName=" + fileName);
+                res.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;fileName=" + fileName);
                 try (ServletOutputStream stream = res.getOutputStream()) {
                     stream.write(bytes);
                     stream.flush();
