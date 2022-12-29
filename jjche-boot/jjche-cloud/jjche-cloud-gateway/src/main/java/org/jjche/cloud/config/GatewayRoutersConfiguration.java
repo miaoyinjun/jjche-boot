@@ -1,16 +1,11 @@
 package org.jjche.cloud.config;
 
-import org.jjche.cloud.handler.HystrixFallbackHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.server.RequestPredicates;
 import org.springframework.web.reactive.function.server.RouterFunction;
-import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-
-import javax.annotation.Resource;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -44,8 +39,6 @@ public class GatewayRoutersConfiguration {
      * 路由配置文件数据获取方式yml,nacos,database
      */
     public static String DATA_TYPE;
-    @Resource
-    private HystrixFallbackHandler hystrixFallbackHandler;
 
     @Value("${spring.cloud.nacos.discovery.server-addr}")
     public void setServerAddr(String serverAddr) {
@@ -78,18 +71,6 @@ public class GatewayRoutersConfiguration {
 
     public void setPassword(String password) {
         PASSWORD = password;
-    }
-
-    /**
-     * 路由断言
-     *
-     * @return
-     */
-    @Bean
-    public RouterFunction routerFunction() {
-        return RouterFunctions.route(
-                RequestPredicates.path("/globalFallback").and(RequestPredicates.accept(MediaType.TEXT_PLAIN)), hystrixFallbackHandler);
-
     }
 
     /**
