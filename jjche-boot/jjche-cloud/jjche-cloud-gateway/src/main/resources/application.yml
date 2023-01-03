@@ -29,13 +29,6 @@ spring:
           group: DEFAULT_GROUP
           #自定义路由配置 yml nacos database
           data-type: nacos
-    #Sentinel配置
-    sentinel:
-      web-context-unify: false
-      transport:
-        dashboard: localhost:8087
-      # 懒加载Sentinel Dashboard菜单
-      eager: false
     gateway:
       enabled: true
       api-prefix: /api
@@ -49,3 +42,13 @@ spring:
             allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
+    #Sentinel配置
+    sentinel:
+      transport:
+        dashboard: ${JJCHE_SENTINEL_HOST:127.0.0.1}:${JJCHE_SENTINEL_PORT:8900}
+      # 支持链路限流
+      web-context-unify: false
+      filter:
+        enabled: false
+      # 取消Sentinel控制台懒加载
+      eager: false

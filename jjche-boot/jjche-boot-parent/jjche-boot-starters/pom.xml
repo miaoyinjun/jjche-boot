@@ -31,6 +31,7 @@
         <module>jjche-boot-shardingsphere-starter</module>
         <module>jjche-boot-cat-starter</module>
         <module>jjche-boot-minio-starter</module>
+        <module>jjche-boot-sentinel-dashboard-starter</module>
     </modules>
 
 </project>

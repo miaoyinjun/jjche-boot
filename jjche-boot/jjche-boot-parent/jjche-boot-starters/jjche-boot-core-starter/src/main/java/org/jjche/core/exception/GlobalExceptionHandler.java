@@ -8,6 +8,7 @@ import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.dto.LogRecordDTO;
+import org.jjche.common.exception.FeignRException;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.common.wrapper.constant.HttpStatusConstant;
 import org.jjche.common.wrapper.response.R;
@@ -106,7 +107,7 @@ public class GlobalExceptionHandler {
      * @return 结果
      */
     @ExceptionHandler({FeignRException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
     public String feignRException(Exception e) {
         return e.getMessage();
     }

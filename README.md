@@ -12,7 +12,7 @@
 
 1. **基础功能**：用户、角色、菜单、部门、岗位、数据字典、任务调度、版本
 
-2. **微服务（spring cloud）**：支持单体服务与微服务之间灵活切换
+2. **微服务（spring cloud）**：支持单体服务与微服务之间灵活切换，流量控制、熔断降级
 
 3. **在线代码生成器**
 
@@ -150,12 +150,14 @@
 > > > > jjche-cloud-demo-provider -- 演示基础服务
 > > > >
 > > > > jjche-cloud-gateway -- 网关
-> > > > 
+> > > >
 > > > > jjche-cloud-minio -- minio文件
 > > > >
 > > > > jjche-cloud-monitor -- 监控
 > > > >
 > > > > jjche-cloud-nacos -- 注册中心
+> > > >
+> > > > jjche-cloud-sentinel -- Sentinel流控熔断
 > > > >
 > > > > jjche-cloud-system -- 系统服务
 

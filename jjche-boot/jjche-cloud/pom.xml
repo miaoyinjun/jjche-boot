@@ -20,6 +20,7 @@
         <module>jjche-cloud-monitor</module>
         <module>jjche-cloud-demo-provider</module>
         <module>jjche-cloud-minio</module>
+        <module>jjche-cloud-sentinel</module>
     </modules>
 
     <build>
