@@ -206,4 +206,64 @@ public interface HttpStatusConstant {
      * 密码过期 {@value}
      */
     String MSG_USER_CREDENTIALS_EXPIRED = "密码已过期，请联系管理员";
+
+    /**
+     * 流控异常 {@value}
+     */
+    int CODE_SENTINEL_FLOW = 4291;
+
+    /**
+     * 流控异常 {@value}
+     */
+    String MSG_SENTINEL_FLOW = "访问频繁，请稍候再试";
+
+    /**
+     * 热点参数异常 {@value}
+     */
+    int CODE_SENTINEL_PARAM_FLOW = 4292;
+
+    /**
+     * 热点参数异常 {@value}
+     */
+    String MSG_SENTINEL_PARAM_FLOW = "热点参数限流";
+
+    /**
+     * 系统规则限流或降级 {@value}
+     */
+    int CODE_SENTINEL_SYSTEM_BLOCK = 4293;
+
+    /**
+     * 系统规则限流或降级 {@value}
+     */
+    String MSG_SENTINEL_SYSTEM_BLOCK = "系统规则限流或降级";
+
+    /**
+     * 授权规则不通过 {@value}
+     */
+    int CODE_SENTINEL_AUTHORITY = 4294;
+
+    /**
+     * 授权规则不通过 {@value}
+     */
+    String MSG_SENTINEL_AUTHORITY = "授权规则不通过";
+
+    /**
+     * 服务降级 {@value}
+     */
+    int CODE_SENTINEL_DEGRADE = 4295;
+
+    /**
+     * 流控异常 {@value}
+     */
+    String MSG_SENTINEL_DEGRADE = "服务降级";
+
+    /**
+     * 未知异常 {@value}
+     */
+    int CODE_SENTINEL_UNKNOWN = 4296;
+
+    /**
+     * 流控异常 {@value}
+     */
+    String MSG_SENTINEL_UNKNOWN = "未知异常";
 }

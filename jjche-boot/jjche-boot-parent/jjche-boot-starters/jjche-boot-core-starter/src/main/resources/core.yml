@@ -51,6 +51,9 @@ jjche:
   # 文件存储路径
   tool:
     file:
+      # 文件大小 /M
+      maxSize: 100
+      avatarMaxSize: 5
       mac:
         path: ./file/
         avatar: ./avatar/
@@ -60,9 +63,6 @@ jjche:
       windows:
         path: C:\admin\file\
         avatar: C:\admin\avatar\
-      # 文件大小 /M
-      maxSize: 100
-      avatarMaxSize: 5
     #七牛云
     qiniu:
       # 文件大小 /M

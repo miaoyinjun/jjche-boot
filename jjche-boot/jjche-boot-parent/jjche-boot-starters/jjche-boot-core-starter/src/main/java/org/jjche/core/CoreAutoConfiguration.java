@@ -62,10 +62,10 @@ public class CoreAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrati
      *
      * @return a {@link SpringContextHolder} object.
      */
-    @Bean
-    public SpringContextHolder springContextHolder() {
-        return new SpringContextHolder();
-    }
+//    @Bean
+//    public SpringContextHolder springContextHolder() {
+//        return new SpringContextHolder();
+//    }
 
     @Override
     public RequestMappingHandlerMapping getRequestMappingHandlerMapping() {

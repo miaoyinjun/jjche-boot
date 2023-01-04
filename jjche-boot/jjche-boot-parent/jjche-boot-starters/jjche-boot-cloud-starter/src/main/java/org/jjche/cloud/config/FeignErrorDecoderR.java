@@ -3,7 +3,7 @@ package org.jjche.cloud.config;
 import feign.Response;
 import feign.Util;
 import feign.codec.ErrorDecoder;
-import org.jjche.core.exception.FeignRException;
+import org.jjche.common.exception.FeignRException;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.IOException;

@@ -141,15 +141,14 @@
 </template>
 
 <script>
-import crud${className} from '@/api/${tableName}/api'
-import CRUD, { crud, form, header, presenter } from '@crud/crud'
-import rrOperation from '@crud/RR.operation'
-import crudOperation from '@crud/CRUD.operation'
-import udOperation from '@crud/UD.operation'
-import pagination from '@crud/Pagination'
-import DateRangePicker from '@/components/DateRangePicker'
+    import CRUD, {crud, form, header, presenter} from '@crud/crud'
+    import rrOperation from '@crud/RR.operation'
+    import crudOperation from '@crud/CRUD.operation'
+    import udOperation from '@crud/UD.operation'
+    import pagination from '@crud/Pagination'
+    import DateRangePicker from '@/components/DateRangePicker'
 
-const defaultForm = {
+    const defaultForm = {
 <#if columns??>
     <#list columns as column>
         <#if column.formShow>

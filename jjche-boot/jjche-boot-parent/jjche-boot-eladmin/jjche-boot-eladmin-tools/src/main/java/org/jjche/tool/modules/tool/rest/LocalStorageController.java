@@ -82,7 +82,7 @@ public class LocalStorageController extends BaseController {
     @ApiOperation("上传文件")
     @PostMapping
     @PreAuthorize("@el.check('storage:add')")
-    public R<List<LocalStorageBaseVO>> create(@RequestParam String name, @RequestParam("file") MultipartFile[] file) {
+    public R<List<LocalStorageBaseVO>> create(@RequestParam String name, @RequestPart("file") MultipartFile[] file) {
         return R.ok(localStorageService.create(name, file));
     }
 

@@ -27,7 +27,7 @@ public class PageParam<T> extends MyPage<T> {
     @ApiModelProperty(value = "页码 (1..N)", required = true, example = PageConstant.DEFAULT_PAGE_INDEX)
     protected long pageIndex;
     @JsonIgnore
-    @ApiModelProperty(value = "每页显示的数目", required = true, example = PageConstant.DEFAULT_PAGE_SIZE)
+    @ApiModelProperty(value = "每页显示的数目（最大500）", required = true, example = PageConstant.DEFAULT_PAGE_SIZE)
     protected long pageSize;
 
     @ApiModelProperty(hidden = true)

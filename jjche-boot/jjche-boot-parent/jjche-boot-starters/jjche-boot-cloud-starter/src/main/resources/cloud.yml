@@ -24,6 +24,8 @@ spring:
 #          group: ${spring.cloud.nacos.config.group}
 #          refresh: true
 feign:
+  sentinel:
+    enabled: true
   compression:
     request:
       enabled: false

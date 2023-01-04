@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -25,6 +26,7 @@ import java.util.Optional;
  * @version 1.0.8-SNAPSHOT
  * @since 2019-01-07
  */
+@Component
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
 
     private static final List<CallBack> CALL_BACKS = new ArrayList<>();
@@ -98,8 +100,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
      * @return /
      */
     public static boolean isCloud() {
-        return getProperties("jjche.cloud.enabled", Boolean.FALSE, Boolean.class);
-    }
+        return getProperties("jjche.cloud.enabled", Boolean.FALSE, Boolean.class);}
 
     /**
      * <p>

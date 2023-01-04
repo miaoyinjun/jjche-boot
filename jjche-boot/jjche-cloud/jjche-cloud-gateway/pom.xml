@@ -7,11 +7,11 @@
     <groupId>org.jjche.cloud</groupId>
     <artifactId>jjche-cloud-gateway</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.5</version>
+    <version>2.0.6</version>
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-cloud</artifactId>
-        <version>2.0.5</version>
+        <version>2.0.6</version>
     </parent>
 
     <dependencies>
@@ -52,12 +52,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-
         <!-- 限流Redis实现 -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
         <!--springboot2.X默认使用lettuce连接池，需要引入commons-pool2-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -85,15 +84,31 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <!-- 服务降级 -->
+        <!--sentinel 限流熔点降级-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+        <!-- sentinel集成nacos作为数据源 -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-nacos</artifactId>
+        </dependency>
+        <!--- sentinel流控链路不生效 -->
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-web-servlet</artifactId>
         </dependency>
         <!-- LB 扩展 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-common</artifactId>
@@ -106,10 +121,5 @@
             <groupId>org.jjcheframework.boot</groupId>
             <artifactId>jjche-boot-cloud-gray-starter</artifactId>
         </dependency>
-        <!-- 熔断、降级 -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.cloud</groupId>-->
-        <!--            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>-->
-        <!--        </dependency>-->
     </dependencies>
 </project>

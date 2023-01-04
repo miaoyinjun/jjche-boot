@@ -16,6 +16,14 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+/**
+ * <p>
+ * 全局异常
+ * </p>
+ *
+ * @author miaoyj
+ * @since 2022-03-01
+ */
 @Order(-1)
 @RequiredArgsConstructor
 @Component

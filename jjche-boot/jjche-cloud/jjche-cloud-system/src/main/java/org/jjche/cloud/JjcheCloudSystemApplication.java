@@ -1,6 +1,7 @@
 package org.jjche.cloud;
 
 import org.jjche.core.util.SpringContextHolder;
+import org.jjche.tool.modules.tool.rest.MinioController;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -14,9 +15,9 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @version 1.0.8-SNAPSHOT
  * @since 2020-06-18 9:16
  */
-@SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
+@SpringBootApplication
 public class JjcheCloudSystemApplication {
     /**
      * 入口
