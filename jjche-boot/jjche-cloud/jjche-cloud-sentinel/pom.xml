@@ -8,7 +8,7 @@
     <groupId>org.jjche.cloud</groupId>
     <artifactId>jjche-cloud-sentinel</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.6-SNAPSHOT</version>
+    <version>1.8.3</version>
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-cloud</artifactId>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-datasource-nacos</artifactId>
-            <version>1.8.3</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>sentinel-core</artifactId>
@@ -55,12 +55,12 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-core</artifactId>
-            <version>1.8.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-web-servlet</artifactId>
-            <version>1.8.3</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>sentinel-core</artifactId>
@@ -71,12 +71,12 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-transport-simple-http</artifactId>
-            <version>1.8.3</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-parameter-flow-control</artifactId>
-            <version>1.8.3</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>sentinel-core</artifactId>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.alibaba.csp</groupId>
             <artifactId>sentinel-api-gateway-adapter-common</artifactId>
-            <version>1.8.3</version>
+            <version>${project.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>sentinel-parameter-flow-control</artifactId>

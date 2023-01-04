@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jjche-boot-starters</artifactId>
@@ -22,7 +23,7 @@
         <module>jjche-boot-sba-starter</module>
         <module>jjche-boot-swagger-starter</module>
         <module>jjche-boot-serialize-starter</module>
-        <!--        <module>jjche-boot-xxl-job-client-starter</module>-->
+        <module>jjche-boot-xxl-job-starter</module>
         <module>jjche-boot-cloud-starter</module>
         <module>jjche-boot-starter</module>
         <module>jjche-boot-system-starter</module>

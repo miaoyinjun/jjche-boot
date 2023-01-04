@@ -21,6 +21,7 @@
         <module>jjche-cloud-demo-provider</module>
         <module>jjche-cloud-minio</module>
         <module>jjche-cloud-sentinel</module>
+        <module>jjche-cloud-xxljob</module>
     </modules>
 
     <build>
