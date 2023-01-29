@@ -15,27 +15,27 @@ import lombok.Getter;
 public enum RequestMethodEnum {
 
     /**
-     * 搜寻 @AnonymousGetMapping
+     * 搜寻 @IgnoreGetMapping
      */
     GET("GET"),
 
     /**
-     * 搜寻 @AnonymousPostMapping
+     * 搜寻 @IgnorePostMapping
      */
     POST("POST"),
 
     /**
-     * 搜寻 @AnonymousPutMapping
+     * 搜寻 @IgnorePutMapping
      */
     PUT("PUT"),
 
     /**
-     * 搜寻 @AnonymousPatchMapping
+     * 搜寻 @IgnorePatchMapping
      */
     PATCH("PATCH"),
 
     /**
-     * 搜寻 @AnonymousDeleteMapping
+     * 搜寻 @IgnoreDeleteMapping
      */
     DELETE("DELETE"),
 

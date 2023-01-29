@@ -3,7 +3,7 @@ package org.jjche.security.annotation;
 import java.lang.annotation.*;
 
 /**
- * <p>AnonymousAccess class.</p>
+ * <p>IgnoreAccess class.</p>
  *
  * @author jacky
  * 用于标记匿名访问方法
@@ -13,6 +13,6 @@ import java.lang.annotation.*;
 @Documented
 @Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AnonymousAccess {
+public @interface IgnoreAccess {
 
 }

@@ -1,6 +1,6 @@
 package org.jjche.security.annotation.rest;
 
-import org.jjche.security.annotation.AnonymousAccess;
+import org.jjche.security.annotation.IgnoreAccess;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.lang.annotation.*;
 
 /**
- * Annotation for mapping HTTP {@code DELETE} requests onto specific handler
+ * Annotation for mapping HTTP {@code POST} requests onto specific handler
  * methods.
- * 支持匿名访问  DeleteMapping
+ * 支持匿名访问 PostMapping
  *
  * @author liaojinlong
  * @version 1.0.8-SNAPSHOT
  */
-@AnonymousAccess
+@IgnoreAccess
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@RequestMapping(method = RequestMethod.DELETE)
-public @interface AnonymousDeleteMapping {
+@RequestMapping(method = RequestMethod.POST)
+public @interface IgnorePostMapping {
     @AliasFor(annotation = RequestMapping.class)
     String name() default "";
 

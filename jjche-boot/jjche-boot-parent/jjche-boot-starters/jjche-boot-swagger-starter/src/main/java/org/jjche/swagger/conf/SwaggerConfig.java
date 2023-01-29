@@ -153,10 +153,10 @@ public class SwaggerConfig implements EnvironmentAware {
      */
     private SecurityContext securityContext() {
         //获取Spring Security里忽略的url
-        Set<String> anonymousUrls = SecurityConstant.ANONYMOUS_URLS;
-        //@AnonymousGetMapping("/{id}") 启动失败问题，但无法删除锁标记
-        anonymousUrls.removeIf(obj -> obj.contains("{") || obj.contains("}"));
-        String notPathRegex = StrUtil.join("|", anonymousUrls);
+        Set<String> ignoreUrls = SecurityConstant.IGNORE_URLS;
+        //@ignoreGetMapping("/{id}") 启动失败问题，但无法删除锁标记
+        ignoreUrls.removeIf(obj -> obj.contains("{") || obj.contains("}"));
+        String notPathRegex = StrUtil.join("|", ignoreUrls);
         //匹配替换正确的格式
         notPathRegex = notPathRegex.replaceAll("\\*\\*", "*");
         return SecurityContext.builder().securityReferences(defaultAuth()).forPaths(notRegex(notPathRegex)).build();

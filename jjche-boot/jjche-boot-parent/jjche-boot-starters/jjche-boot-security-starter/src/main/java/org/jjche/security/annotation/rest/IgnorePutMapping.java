@@ -1,6 +1,6 @@
 package org.jjche.security.annotation.rest;
 
-import org.jjche.security.annotation.AnonymousAccess;
+import org.jjche.security.annotation.IgnoreAccess;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -8,21 +8,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.lang.annotation.*;
 
 /**
- * Annotation for mapping HTTP {@code GET} requests onto specific handler
+ * Annotation for mapping HTTP {@code PUT} requests onto specific handler
  * methods.
- * <p>
- * 支持匿名访问   GetMapping
+ * * 支持匿名访问  PutMapping
  *
  * @author liaojinlong
  * @version 1.0.8-SNAPSHOT
- * @see RequestMapping
  */
-@AnonymousAccess
+@IgnoreAccess
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@RequestMapping(method = RequestMethod.GET)
-public @interface AnonymousGetMapping {
+@RequestMapping(method = RequestMethod.PUT)
+public @interface IgnorePutMapping {
     @AliasFor(annotation = RequestMapping.class)
     String name() default "";
 

@@ -9,7 +9,7 @@ import org.jjche.common.vo.DataPermissionFieldResultVO;
 import org.jjche.common.vo.SecurityAppKeyBasicVO;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.security.annotation.rest.AnonymousGetMapping;
+import org.jjche.security.annotation.rest.IgnoreGetMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +37,7 @@ public class SysBaseController extends BaseController {
         this.sysBaseAPI.logoutOnlineUser(token);
     }
 
-    @AnonymousGetMapping(CommonAPI.URL_GET_USER_DETAILS)
+    @IgnoreGetMapping(CommonAPI.URL_GET_USER_DETAILS)
     public JwtUserDto getUserDetails() {
         return this.sysBaseAPI.getUserDetails();
     }
