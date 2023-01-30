@@ -191,6 +191,32 @@ public class R<T> extends AbstractR implements Serializable {
         return wrap(RCodeEnum.REQUEST_LIMIT);
     }
 
+
+    /**
+     * <p>
+     * 找不到请求地址
+     * </p>
+     *
+     * @param <E> a E object.
+     * @return 详情
+     */
+    public static <E> R<E> notFound() {
+        return wrap(RCodeEnum.NOT_FOUND);
+    }
+
+
+    /**
+     * <p>
+     * 不允许的请求方法
+     * </p>
+     *
+     * @param <E> a E object.
+     * @return 详情
+     */
+    public static <E> R<E> methodNotAllowed() {
+        return wrap(RCodeEnum.METHOD_NOT_ALLOWED);
+    }
+
     /**
      * <p>
      * 成功

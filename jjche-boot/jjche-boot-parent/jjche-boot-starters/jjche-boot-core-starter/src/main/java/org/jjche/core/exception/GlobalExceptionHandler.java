@@ -24,11 +24,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -56,7 +58,7 @@ public class GlobalExceptionHandler {
      * 全局异常
      * </p>
      *
-     * @param e       a {@link java.lang.Exception} object.
+     * @param e a {@link java.lang.Exception} object.
      * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
@@ -96,6 +98,18 @@ public class GlobalExceptionHandler {
             }
         }
         return R.error();
+    }
+
+    @ExceptionHandler({NoHandlerFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public R notFoundException(Exception e) {
+        return R.notFound();
+    }
+
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public R methodNotAllowedException(Exception e) {
+        return R.methodNotAllowed();
     }
 
     /**
