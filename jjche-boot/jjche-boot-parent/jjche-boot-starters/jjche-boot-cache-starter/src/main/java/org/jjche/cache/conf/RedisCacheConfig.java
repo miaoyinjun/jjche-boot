@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.Cache;
@@ -17,7 +18,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -37,7 +37,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
     @Autowired
-    LettuceConnectionFactory lettuceConnectionFactory;
+    RedissonConnectionFactory redissonConnectionFactory;
     @Autowired
     private CustomPrefixKeyStringSerializer myStringSerializer;
 
@@ -74,28 +74,22 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
         StaticLog.info("init -> [{}]", "CacheManager RedisCacheManager Start");
         RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager
                 .RedisCacheManagerBuilder
-                .fromConnectionFactory(lettuceConnectionFactory);
+                .fromConnectionFactory(redissonConnectionFactory);
         return builder.build();
     }
 
-    /**
-     * <p>redisTemplate.</p>
-     *
-     * @param lettuceConnectionFactory a {@link org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory} object.
-     * @return a {@link org.springframework.data.redis.core.RedisTemplate} object.
-     */
     @Bean
-    public RedisTemplate redisTemplate(LettuceConnectionFactory lettuceConnectionFactory) {
+    public RedisTemplate redisTemplate(RedissonConnectionFactory redissonConnectionFactory) {
         // 配置redisTemplate
         RedisTemplate redisTemplate = new CustomRedisTemplate();
-        initRedisTemplate(redisTemplate, lettuceConnectionFactory, true);
+        initRedisTemplate(redisTemplate, redissonConnectionFactory, true);
         return redisTemplate;
     }
 
     private void initRedisTemplate(RedisTemplate redisTemplate,
-                                   LettuceConnectionFactory lettuceConnectionFactory,
+                                   RedissonConnectionFactory redissonConnectionFactory,
                                    boolean isEnableTransactionSupport) {
-        redisTemplate.setConnectionFactory(lettuceConnectionFactory);
+        redisTemplate.setConnectionFactory(redissonConnectionFactory);
 
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();

@@ -15,6 +15,7 @@ public class BusinessException extends RuntimeException {
     /**
      * <p>Constructor for SignException.</p>
      */
-    public BusinessException() {
+    public BusinessException(String msg) {
+        super(msg);
     }
 }
