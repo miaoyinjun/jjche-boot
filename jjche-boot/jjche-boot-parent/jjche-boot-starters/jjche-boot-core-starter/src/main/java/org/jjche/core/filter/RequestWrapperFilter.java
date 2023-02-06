@@ -1,4 +1,4 @@
-package org.jjche.core.exception;
+package org.jjche.core.filter;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

@@ -1,4 +1,4 @@
-package org.jjche.core.exception;
+package org.jjche.common.exception;
 
 import lombok.Getter;
 

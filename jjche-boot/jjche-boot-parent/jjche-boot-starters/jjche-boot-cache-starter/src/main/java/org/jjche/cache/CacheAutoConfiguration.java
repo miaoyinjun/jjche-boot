@@ -19,7 +19,8 @@ import org.springframework.context.annotation.Import;
  * @since 2020-07-17
  */
 @Configuration
-@Import({RedisCacheConfig.class, CustomPrefixKeyStringSerializer.class, RedisServiceImpl.class})
+@Import({RedisCacheConfig.class, CustomPrefixKeyStringSerializer.class,
+        RedisServiceImpl.class})
 @EnableCreateCacheAnnotation
 @EnableMethodCache(basePackages = {PackageConstant.BASE_PATH})
 public class CacheAutoConfiguration {

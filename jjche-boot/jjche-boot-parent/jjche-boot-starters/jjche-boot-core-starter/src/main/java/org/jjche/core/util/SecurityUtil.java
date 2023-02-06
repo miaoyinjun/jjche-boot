@@ -8,7 +8,7 @@ import org.jjche.common.context.ContextUtil;
 import org.jjche.common.pojo.DataScope;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.wrapper.enums.RCodeEnum;
-import org.jjche.core.exception.AuthenticationTokenExpiredException;
+import org.jjche.common.exception.AuthenticationTokenExpiredException;
 import org.springframework.util.StringUtils;
 
 import java.util.Set;

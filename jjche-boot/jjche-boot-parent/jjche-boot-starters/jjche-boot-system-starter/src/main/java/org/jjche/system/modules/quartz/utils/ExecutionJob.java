@@ -6,6 +6,7 @@ import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.StaticLog;
+import org.jjche.cache.lock.client.RedissonLockClient;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.util.SpringContextHolder;
@@ -16,8 +17,6 @@ import org.jjche.system.modules.quartz.service.QuartzJobService;
 import org.jjche.tool.modules.tool.service.EmailService;
 import org.jjche.tool.modules.tool.vo.EmailVO;
 import org.quartz.JobExecutionContext;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
@@ -48,29 +47,23 @@ public class ExecutionJob extends QuartzJobBean {
         // 获取任务
         QuartzJobDO quartzJob = (QuartzJobDO) context.getMergedJobDataMap().get(QuartzJobDO.JOB_KEY);
         QuartzManage quartzManage = SpringContextHolder.getBean(QuartzManage.class);
-        RedissonClient redissonClient = quartzManage.redissonClient;
+        RedissonLockClient redissonLockClient = quartzManage.redissonLockClient;
         Long id = quartzJob.getId();
         String uuid = quartzJob.getUuid();
         if (StrUtil.isBlank(uuid)) {
             uuid = String.valueOf(id);
         }
+        uuid = QuartzJobDO.JOB_KEY + ":" + uuid;
         //分布式锁
-        StaticLog.info("1");
-        RLock lock = redissonClient.getLock(uuid);
         try {
-            if (lock.tryLock()) {
-                StaticLog.info("2");
-                Thread.sleep(10 * 1000);
-//                executionJob(quartzJob, uuid);
+            if (redissonLockClient.tryLock(uuid)) {
+                executionJob(quartzJob, uuid);
             }
         } catch (Exception e) {
             StaticLog.error("executionJob:{},", e);
         } finally {
-            if (lock.isHeldByCurrentThread() && lock.isLocked()) {
-                lock.unlock();
-            }
+            redissonLockClient.tryLock(uuid);
         }
-        StaticLog.info("3");
     }
 
     private void executionJob(QuartzJobDO quartzJob, String uuid) {

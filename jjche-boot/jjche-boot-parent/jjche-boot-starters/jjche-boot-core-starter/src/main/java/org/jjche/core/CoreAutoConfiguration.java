@@ -2,13 +2,17 @@ package org.jjche.core;
 
 import org.jjche.core.alarm.dd.AlarmDingTalkService;
 import org.jjche.core.exception.GlobalExceptionHandler;
-import org.jjche.core.exception.RequestWrapperFilter;
+import org.jjche.core.filter.RequestWrapperFilter;
 import org.jjche.core.property.CoreProperties;
 import org.jjche.core.url.AutoPrefixUrlMapping;
 import org.jjche.core.util.SpringContextHolder;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
@@ -31,6 +35,7 @@ import javax.annotation.Resource;
 @ComponentScan(basePackages = {"cn.hutool.extra.spring"})
 @EnableAsync(proxyTargetClass = true)
 @EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
+@EnableScheduling
 public class CoreAutoConfiguration implements WebMvcConfigurer, WebMvcRegistrations {
 
     @Resource

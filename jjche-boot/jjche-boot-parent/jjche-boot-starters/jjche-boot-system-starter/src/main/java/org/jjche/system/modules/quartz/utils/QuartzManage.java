@@ -1,10 +1,10 @@
 package org.jjche.system.modules.quartz.utils;
 
 import cn.hutool.log.StaticLog;
+import org.jjche.cache.lock.client.RedissonLockClient;
 import org.jjche.system.modules.quartz.domain.QuartzJobDO;
 import org.quartz.*;
 import org.quartz.impl.triggers.CronTriggerImpl;
-import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,7 +24,7 @@ public class QuartzManage {
 
     private static final String JOB_NAME = "TASK_";
     @Resource
-    public RedissonClient redissonClient;
+    public RedissonLockClient redissonLockClient;
     @Resource
     private Scheduler scheduler;
 

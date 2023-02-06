@@ -8,7 +8,7 @@ import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.exception.FeignRException;
+import org.jjche.common.exception.*;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.common.wrapper.constant.HttpStatusConstant;
 import org.jjche.common.wrapper.response.R;
