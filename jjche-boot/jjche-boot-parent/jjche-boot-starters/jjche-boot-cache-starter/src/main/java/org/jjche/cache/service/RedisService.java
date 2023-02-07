@@ -546,4 +546,14 @@ public interface RedisService {
      * @return /
      */
     <T> T execute(RedisScript<T> script, List keys, Object... args);
+
+    /**
+     * <p>
+     * 发布订阅
+     * </p>
+     *
+     * @param channel /
+     * @param message /
+     */
+    void push(String channel, Object message);
 }

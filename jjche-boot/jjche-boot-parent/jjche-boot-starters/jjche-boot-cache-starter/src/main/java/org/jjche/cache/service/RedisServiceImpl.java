@@ -482,4 +482,9 @@ public class RedisServiceImpl implements RedisService {
     public <T> T execute(RedisScript<T> script, List keys, Object... args) {
         return (T) redisTemplate.execute(script, keys, args);
     }
+
+    @Override
+    public void push(String channel, Object message) {
+        redisTemplate.convertAndSend(channel, message);
+    }
 }

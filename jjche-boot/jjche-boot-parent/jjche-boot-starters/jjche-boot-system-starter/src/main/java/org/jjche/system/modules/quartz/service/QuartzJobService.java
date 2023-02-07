@@ -181,8 +181,8 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
     public void delete(Set<Long> ids) {
         for (Long id : ids) {
             QuartzJobDO quartzJob = findById(id);
-            quartzManage.deleteJob(quartzJob);
             this.removeByIdWithFill(quartzJob);
+            quartzManage.deleteJob(quartzJob);
         }
     }
 
