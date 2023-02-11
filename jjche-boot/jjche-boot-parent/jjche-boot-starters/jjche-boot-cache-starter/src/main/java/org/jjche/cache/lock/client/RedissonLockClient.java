@@ -94,6 +94,7 @@ public class RedissonLockClient {
     public boolean existKey(String key) {
         return redisTemplate.hasKey(key);
     }
+
     /**
      * 锁lockKey
      *
@@ -133,5 +134,31 @@ public class RedissonLockClient {
         }
     }
 
+    /**
+     * 是否锁定
+     *
+     * @param lockName 锁名称
+     */
+    public boolean isLocked(String lockName) {
+        try {
+            return redissonClient.getLock(lockName).isLocked();
+        } catch (Exception e) {
+            log.error("是否锁定异常，lockName=" + lockName, e);
+        }
+        return false;
+    }
 
+    /**
+     * 是否当前线程
+     *
+     * @param lockName 锁名称
+     */
+    public boolean isHeldByCurrentThread(String lockName) {
+        try {
+            return redissonClient.getLock(lockName).isHeldByCurrentThread();
+        } catch (Exception e) {
+            log.error("是否当前线程，lockName=" + lockName, e);
+        }
+        return false;
+    }
 }

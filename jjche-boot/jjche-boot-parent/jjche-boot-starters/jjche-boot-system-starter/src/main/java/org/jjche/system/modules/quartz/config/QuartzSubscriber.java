@@ -8,8 +8,8 @@ import org.jjche.common.enums.RedisTopicEnum;
 import org.jjche.system.modules.quartz.domain.QuartzJobDO;
 import org.jjche.system.modules.quartz.dto.QuartzRedisMessageDTO;
 import org.jjche.system.modules.quartz.enums.QuartzActionEnum;
+import org.jjche.system.modules.quartz.utils.QuartzManage;
 import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class QuartzSubscriber implements RedisSubscriber {
 
+    private final QuartzManage quartzManage;
     @Override
     public String getTopic() {
         return RedisTopicEnum.TOPIC_QUARTZ.getTopic();
@@ -32,11 +33,34 @@ public class QuartzSubscriber implements RedisSubscriber {
 
     @Override
     public void onMessage(Message message, byte[] pattern) {
-        String msg = message.getBody().toString();
-        StaticLog.info(">> 定时器接收消息：{}", msg);
+        String msg = message.toString();
+        StaticLog.debug(">> 定时器接收消息：{}", msg);
         QuartzRedisMessageDTO dto = JSONUtil.toBean(msg, QuartzRedisMessageDTO.class);
-        QuartzActionEnum actionl = dto.getAction();
+        QuartzActionEnum action = dto.getAction();
         QuartzJobDO quartzJob = dto.getQuartzJob();
+        switch (action) {
+            case ADD:
+                quartzManage.addJob(quartzJob);
+                break;
+            case UPDATE:
+                quartzManage.updateJobCron(quartzJob);
+                break;
+            case PAUSE:
+                if (quartzJob.getIsPause()) {
+                    quartzManage.resumeJob(quartzJob);
+                } else {
+                    quartzManage.pauseJob(quartzJob);
+                }
+                break;
+            case EXEC:
+                quartzManage.runJobNow(quartzJob);
+                break;
+            case DEL:
+                quartzManage.deleteJob(quartzJob);
+                break;
+            default:
+                break;
+        }
     }
 
 }

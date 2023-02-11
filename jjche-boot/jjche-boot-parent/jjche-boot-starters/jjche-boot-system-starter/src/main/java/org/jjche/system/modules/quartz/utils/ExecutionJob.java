@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 参考人人开源，https://gitee.com/renrenio/renren-security
@@ -53,16 +54,19 @@ public class ExecutionJob extends QuartzJobBean {
         if (StrUtil.isBlank(uuid)) {
             uuid = String.valueOf(id);
         }
-        uuid = QuartzJobDO.JOB_KEY + ":" + uuid;
+        uuid = QuartzJobDO.JOB_KEY + "_LOCK:" + uuid;
         //分布式锁
         try {
             if (redissonLockClient.tryLock(uuid)) {
+                TimeUnit.SECONDS.sleep(1);
                 executionJob(quartzJob, uuid);
             }
         } catch (Exception e) {
             StaticLog.error("executionJob:{},", e);
         } finally {
-            redissonLockClient.tryLock(uuid);
+            if (redissonLockClient.isLocked(uuid) && redissonLockClient.isHeldByCurrentThread(uuid)) {
+                redissonLockClient.unlock(uuid);
+            }
         }
     }
 
@@ -83,15 +87,11 @@ public class ExecutionJob extends QuartzJobBean {
         log.setCronExpression(quartzJob.getCronExpression());
         try {
             // 执行任务
-            QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(),
-                    quartzJob.getParams());
+            QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(), quartzJob.getParams());
             Future<?> future = executor.submit(task);
             future.get();
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
-            if (org.jjche.common.util.StrUtil.isNotBlank(uuid)) {
-                redisService.objectSetObject(uuid, true);
-            }
             // 任务状态
             log.setIsSuccess(true);
             StaticLog.info("任务执行成功，任务名称：" + quartzJob.getJobName() + ", 执行时间：" + times + "毫秒");
@@ -105,11 +105,7 @@ public class ExecutionJob extends QuartzJobBean {
                 }
             }
         } catch (Exception e) {
-            if (org.jjche.common.util.StrUtil.isNotBlank(uuid)) {
-                redisService.setAddSetObject(uuid, false);
-            }
             StaticLog.error("任务执行失败，任务名称：" + quartzJob.getJobName());
-            ;
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
             // 任务状态 0：成功 1：失败

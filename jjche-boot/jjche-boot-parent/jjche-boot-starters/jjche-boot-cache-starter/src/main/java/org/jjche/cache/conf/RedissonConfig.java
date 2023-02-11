@@ -3,7 +3,6 @@ package org.jjche.cache.conf;
 import cn.hutool.core.text.CharSequenceUtil;
 import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.util.StrUtil;
-import org.redisson.api.DefaultNameMapper;
 import org.redisson.api.NameMapper;
 import org.redisson.spring.starter.RedissonAutoConfigurationCustomizer;
 import org.springframework.beans.factory.annotation.Value;
