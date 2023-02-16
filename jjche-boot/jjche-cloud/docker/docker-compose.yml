@@ -67,7 +67,7 @@ services:
       - ${JJCHE_NACOS_PORT}:${JJCHE_NACOS_PORT}
     depends_on:
       - jjche-cloud-server-nacos-mysql
-    entrypoint: "sh /wait-for.sh jjche-cloud-server-nacos-mysql:3306 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-cloud-server-nacos-mysql:3306 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_NACOS_HOST}
@@ -81,7 +81,7 @@ services:
     env_file: ./.env
     ports:
       - ${JJCHE_MONITOR_PORT}:${JJCHE_MONITOR_PORT}
-    entrypoint: "sh /wait-for.sh jjche-boot-nacos:8848 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
 
@@ -91,7 +91,7 @@ services:
     env_file: ./.env
     ports:
       - ${JJCHE_GATEWAY_PORT}:${JJCHE_GATEWAY_PORT}
-    entrypoint: "sh /wait-for.sh jjche-boot-nacos:8848 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
 
@@ -104,7 +104,7 @@ services:
     depends_on:
       - jjche-cloud-server-system-mysql
       - jjche-cloud-server-redis
-    entrypoint: "sh /wait-for.sh jjche-boot-nacos:8848 -- sh /wait-for.sh jjche-cloud-server-system-mysql:3306 -- sh /wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- sh /app/wait-for.sh jjche-cloud-server-system-mysql:3306 -- sh /app/wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_SYSTEM_HOST}
@@ -122,7 +122,7 @@ services:
     depends_on:
       - jjche-cloud-server-demo-student-mysql
       - jjche-cloud-server-redis
-    entrypoint: "sh /wait-for.sh jjche-boot-nacos:8848 -- sh /wait-for.sh jjche-cloud-server-demo-student-mysql:3306 -- sh /wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- sh /app/wait-for.sh jjche-cloud-server-demo-student-mysql:3306 -- sh /app/wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_DEMO_STUDENT_HOST}
@@ -140,7 +140,7 @@ services:
     depends_on:
       - jjche-cloud-server-demo-student-mysql
       - jjche-cloud-server-redis
-    entrypoint: "sh /wait-for.sh jjche-boot-nacos:8848 -- sh /wait-for.sh jjche-cloud-server-demo-student-mysql:3306 -- sh /wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- sh /app/wait-for.sh jjche-cloud-server-demo-student-mysql:3306 -- sh /app/wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_DEMO_STUDENT_HOST}
