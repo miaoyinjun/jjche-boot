@@ -1,5 +1,5 @@
 server:
-  port: 8900
+  port: ${JJCHE_SENTINEL_PORT:8900}
   servlet:
     session:
       cookie:

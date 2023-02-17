@@ -29,28 +29,20 @@
             <artifactId>jjche-boot-system-starter</artifactId>
         </dependency>
         <!--spring-cloud-->
-        <!--                        <dependency>-->
-        <!--                            <groupId>org.jjcheframework.boot</groupId>-->
-        <!--                            <artifactId>jjche-boot-cloud-starter</artifactId>-->
-        <!--                        </dependency>-->
+<!--                                <dependency>-->
+<!--                                    <groupId>org.jjcheframework.boot</groupId>-->
+<!--                                    <artifactId>jjche-boot-cloud-starter</artifactId>-->
+<!--                                </dependency>-->
 
         <!--                <dependency>-->
         <!--                    <groupId>org.jjche.demo</groupId>-->
         <!--                    <artifactId>jjche-cloud-demo-provider-api</artifactId>-->
         <!--                    <version>2.0.3-SNAPSHOT</version>-->
         <!--                </dependency>-->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -5,13 +5,13 @@ networks:
 services:
 
   jjche-cloud-server-nacos-mysql:
-    image: mysql:5.7.16
+    image: ${MYSQL_VERSION}
     container_name: ${JJCHE_DB_NACOS_HOST}
     restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    command: ${MYSQL_COMMAND}
     volumes:
       #数据库还原目录 可将需要还原的sql文件放在这里
-      - ../jjche-cloud-nacos/src/main/resources/:/docker-entrypoint-initdb.d
+      - ../jjche-cloud-nacos/src/main/resources/sql:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: ${JJCHE_DB_NACOS_ROOT_PASSWORD}
       MYSQL_USER: ${JJCHE_DB_NACOS_UNAME}
@@ -21,11 +21,28 @@ services:
     ports:
       - ${JJCHE_DB_NACOS_PORT_OUT}:${JJCHE_DB_NACOS_PORT}
 
+  jjche-cloud-server-xxljob-mysql:
+    image: ${MYSQL_VERSION}
+    container_name: ${JJCHE_DB_XXLJOB_HOST}
+    restart: always
+    command: ${MYSQL_COMMAND}
+    volumes:
+      #数据库还原目录 可将需要还原的sql文件放在这里
+      - ../jjche-cloud-xxljob/src/main/resources/sql:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: ${JJCHE_DB_XXLJOB_ROOT_PASSWORD}
+      MYSQL_USER: ${JJCHE_DB_XXLJOB_UNAME}
+      MYSQL_PASSWORD: ${JJCHE_DB_XXLJOB_PASSWORD}
+      MYSQL_DATABASE: ${JJCHE_DB_XXLJOB_DATABASE}
+      TZ: ${TZ}
+    ports:
+      - ${JJCHE_DB_XXLJOB_PORT_OUT}:${JJCHE_DB_XXLJOB_PORT}
+
   jjche-cloud-server-system-mysql:
-    image: mysql:5.7.16
+    image: ${MYSQL_VERSION}
     container_name: ${JJCHE_DB_SYSTEM_HOST}
     restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    command: ${MYSQL_COMMAND}
     environment:
       MYSQL_ROOT_PASSWORD: ${JJCHE_DB_SYSTEM_ROOT_PASSWORD}
       MYSQL_USER: ${JJCHE_DB_SYSTEM_UNAME}
@@ -36,10 +53,10 @@ services:
       - ${JJCHE_DB_SYSTEM_PORT_OUT}:${JJCHE_DB_SYSTEM_PORT}
 
   jjche-cloud-server-demo-student-mysql:
-    image: mysql:5.7.16
+    image: ${MYSQL_VERSION}
     container_name: ${JJCHE_DB_DEMO_STUDENT_HOST}
     restart: always
-    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    command: ${MYSQL_COMMAND}
     environment:
       MYSQL_ROOT_PASSWORD: ${JJCHE_DB_DEMO_STUDENT_ROOT_PASSWORD}
       MYSQL_USER: ${JJCHE_DB_DEMO_STUDENT_UNAME}
@@ -62,12 +79,12 @@ services:
   jjche-boot-nacos:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_NACOS_HOST}:latest
     container_name: ${JJCHE_NACOS_HOST}
+    restart: always
     env_file: ./.env
     ports:
       - ${JJCHE_NACOS_PORT}:${JJCHE_NACOS_PORT}
     depends_on:
       - jjche-cloud-server-nacos-mysql
-    entrypoint: "sh /app/wait-for.sh jjche-cloud-server-nacos-mysql:3306 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_NACOS_HOST}
@@ -75,36 +92,68 @@ services:
       JJCHE_DB_UNAME: ${JJCHE_DB_NACOS_UNAME}
       JJCHE_DB_PASSWORD: ${JJCHE_DB_NACOS_PASSWORD}
 
+  jjche-boot-xxljob:
+    image: ${JJCHE_REGISTRY_URL}/${JJCHE_XXLJOB_HOST}:latest
+    container_name: ${JJCHE_XXLJOB_HOST}
+    restart: always
+    env_file: ./.env
+    ports:
+      - ${JJCHE_XXLJOB_PORT}:${JJCHE_XXLJOB_PORT}
+    depends_on:
+      - jjche-cloud-server-xxljob-mysql
+    environment:
+      TZ: ${TZ}
+      JJCHE_DB_HOST: ${JJCHE_DB_XXLJOB_HOST}
+      JJCHE_DB_PORT: ${JJCHE_DB_XXLJOB_PORT}
+      JJCHE_DB_UNAME: ${JJCHE_DB_XXLJOB_UNAME}
+      JJCHE_DB_PASSWORD: ${JJCHE_DB_XXLJOB_PASSWORD}
+
+  jjche-boot-sentinel:
+    image: ${JJCHE_REGISTRY_URL}/${JJCHE_SENTINEL_HOST}:latest
+    container_name: ${JJCHE_SENTINEL_HOST}
+    restart: always
+    env_file: ./.env
+    ports:
+      - ${JJCHE_SENTINEL_PORT}:${JJCHE_SENTINEL_PORT}
+    depends_on:
+      - jjche-boot-nacos
+    environment:
+      TZ: ${TZ}
+
   jjche-boot-monitor:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_MONITOR_NAME}:latest
     container_name: ${JJCHE_MONITOR_NAME}
+    restart: always
     env_file: ./.env
     ports:
       - ${JJCHE_MONITOR_PORT}:${JJCHE_MONITOR_PORT}
-    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
+    depends_on:
+      - jjche-boot-nacos
 
   jjche-boot-gateway:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_GATEWAY_NAME}:latest
     container_name: ${JJCHE_GATEWAY_NAME}
+    restart: always
     env_file: ./.env
     ports:
       - ${JJCHE_GATEWAY_PORT}:${JJCHE_GATEWAY_PORT}
-    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
+    depends_on:
+      - jjche-boot-nacos
 
   jjche-boot-system:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_SYSTEM_NAME}:latest
     container_name: ${JJCHE_SYSTEM_NAME}
+    restart: always
     env_file: ./.env
     ports:
       - ${JJCHE_SYSTEM_PORT}:${JJCHE_SYSTEM_PORT}
     depends_on:
       - jjche-cloud-server-system-mysql
       - jjche-cloud-server-redis
-    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- sh /app/wait-for.sh jjche-cloud-server-system-mysql:3306 -- sh /app/wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_SYSTEM_HOST}
@@ -116,13 +165,13 @@ services:
   jjche-boot-demo-provider:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_DEMO_PROVIDER_NAME}:latest
     container_name: ${JJCHE_DEMO_PROVIDER_NAME}
+    restart: always
     env_file: ./.env
     ports:
       - ${JJCHE_DEMO_PROVIDER_PORT}:${JJCHE_DEMO_PROVIDER_PORT}
     depends_on:
       - jjche-cloud-server-demo-student-mysql
       - jjche-cloud-server-redis
-    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- sh /app/wait-for.sh jjche-cloud-server-demo-student-mysql:3306 -- sh /app/wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_DEMO_STUDENT_HOST}
@@ -134,13 +183,13 @@ services:
   jjche-boot-demo-student:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_DEMO_STUDENT_NAME}:latest
     container_name: ${JJCHE_DEMO_STUDENT_NAME}
+    restart: always
     env_file: ./.env
     ports:
       - ${JJCHE_DEMO_STUDENT_PORT}:${JJCHE_DEMO_STUDENT_PORT}
     depends_on:
       - jjche-cloud-server-demo-student-mysql
       - jjche-cloud-server-redis
-    entrypoint: "sh /app/wait-for.sh jjche-boot-nacos:8848 -- sh /app/wait-for.sh jjche-cloud-server-demo-student-mysql:3306 -- sh /app/wait-for.sh jjche-cloud-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
       JJCHE_DB_HOST: ${JJCHE_DB_DEMO_STUDENT_HOST}

@@ -44,7 +44,7 @@ services:
     depends_on:
       - jjche-boot-server-mysql
       - jjche-boot-server-redis
-    #entrypoint: "sh /app/wait-for.sh jjche-boot-server-mysql:3306 -- sh /app/wait-for.sh jjche-boot-server-redis:6379 -- ${RUN_JAR}"
+    entrypoint: "sh /app/wait-for.sh jjche-boot-server-mysql:3306 -- sh /app/wait-for.sh jjche-boot-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
 
