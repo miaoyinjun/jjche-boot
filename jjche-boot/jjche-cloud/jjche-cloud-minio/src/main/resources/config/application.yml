@@ -1,4 +1,5 @@
 jjche.core.api.path.prefix: /files
+server.port: ${JJCHE_MINIO_PORT:8902}
 spring:
   application:
     name: "@project.name@"

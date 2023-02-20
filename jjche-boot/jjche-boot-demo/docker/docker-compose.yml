@@ -1,9 +1,13 @@
 version: '3'
+networks:
+  net:
+    driver: bridge
 services:
 
   jjche-boot-server-mysql:
     image: mysql:5.7.16
     container_name: ${JJCHE_DB_HOST}
+    env_file: ./.env
     restart: always
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     #    volumes:
@@ -23,6 +27,7 @@ services:
   jjche-boot-server-redis:
     image: redis:6.2.0-alpine
     container_name: ${JJCHE_REDIS_HOST}
+    env_file: ./.env
     restart: always
     command: --requirepass ${JJCHE_REDIS_PASSWORD}
     #    volumes:
@@ -37,8 +42,8 @@ services:
   jjche-boot-demo:
     image: ${JJCHE_REGISTRY_URL}/${JJCHE_WEB_NAME}:latest
     container_name: ${JJCHE_WEB_NAME}
-    #    restart: always
     env_file: ./.env
+    restart: "on-failure:3"
     ports:
       - ${JJCHE_WEB_PORT}:${JJCHE_WEB_PORT}
     depends_on:
@@ -47,7 +52,3 @@ services:
     entrypoint: "sh /app/wait-for.sh jjche-boot-server-mysql:3306 -- sh /app/wait-for.sh jjche-boot-server-redis:6379 -- ${RUN_JAR}"
     environment:
       TZ: ${TZ}
-
-networks:
-  net:
-    driver: bridge
