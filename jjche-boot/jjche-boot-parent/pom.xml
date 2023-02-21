@@ -893,11 +893,7 @@
                                         <JAVA_OPTS>-Djava.security.egd=file:/dev/./urandom -Duser.timezone=${TZ} -Dfile.encoding=UTF-8</JAVA_OPTS>
                                     </env>
                                     <runCmds>
-                                        <!-- 作者MAINTAINER Wu Jize <wujize188@163.com>#指定阿里镜象-->
-                                        <run>sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories</run>
-                                        <!-- 增加字体，解决验证码没有字体报空指针问题-->
-                                        <run>set -xe</run>
-                                        <run>apk --no-cache add ttf-dejavu fontconfig</run>
+                                        <run>apk add ttf-freefont</run>
                                         <run>apk add bash tzdata</run>
                                         <run>ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime</run>
                                         <run>echo ${TZ} > /etc/timezone</run>
