@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.util.StrUtil;
 import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
-import org.jjche.security.annotation.rest.AnonymousPostMapping;
+import org.jjche.security.annotation.rest.IgnorePostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,14 +52,14 @@ public class AuthCaptchaController {
         return null;
     }
 
-    @AnonymousPostMapping("/get")
+    @IgnorePostMapping("/get")
     public R<ResponseModel> get(@RequestBody CaptchaVO data, HttpServletRequest request) {
         assert request.getRemoteHost() != null;
         data.setBrowserInfo(getRemoteId(request));
         return R.ok(captchaService.get(data));
     }
 
-    @AnonymousPostMapping("/check")
+    @IgnorePostMapping("/check")
     public R<ResponseModel> check(@RequestBody CaptchaVO data, HttpServletRequest request) {
         data.setBrowserInfo(getRemoteId(request));
         return R.ok(captchaService.check(data));

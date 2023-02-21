@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.core.util.SpringContextHolder;
-import org.jjche.security.annotation.AnonymousAccess;
+import org.jjche.security.annotation.IgnoreAccess;
 import org.jjche.security.auth.sms.SmsCodeAuthenticationProvider;
 import org.jjche.security.handler.JwtAuthenticationAccessDeniedHandler;
 import org.jjche.security.handler.JwtAuthenticationEntryPoint;
@@ -87,26 +87,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         SecurityUrlProperties securityUrlProperties = properties.getUrl();
-        // 搜寻匿名标记 url： @AnonymousAccess
+        // 搜寻匿名标记 url： @IgnoreAccess
         Map<RequestMappingInfo, HandlerMethod> handlerMethodMap = ((RequestMappingHandlerMapping) applicationContext.getBean("requestMappingHandlerMapping")).getHandlerMethods();
         // 获取匿名标记，同时包括了配置文件里的忽略url
-        Map<String, Set<String>> anonymousUrls = getAnonymousUrl(handlerMethodMap, securityUrlProperties);
+        Map<String, Set<String>> ignoreUrls = getIgnoreUrl(handlerMethodMap, securityUrlProperties);
         web.ignoring()
                 // 放行OPTIONS请求
                 .antMatchers(HttpMethod.OPTIONS, "/**")
                 // 自定义匿名访问所有url放行：允许匿名和带Token访问，细腻化到每个 Request 类型
                 // GET
-                .antMatchers(HttpMethod.GET, anonymousUrls.get(RequestMethodEnum.GET.getType()).toArray(new String[0]))
+                .antMatchers(HttpMethod.GET, ignoreUrls.get(RequestMethodEnum.GET.getType()).toArray(new String[0]))
                 // POST
-                .antMatchers(HttpMethod.POST, anonymousUrls.get(RequestMethodEnum.POST.getType()).toArray(new String[0]))
+                .antMatchers(HttpMethod.POST, ignoreUrls.get(RequestMethodEnum.POST.getType()).toArray(new String[0]))
                 // PUT
-                .antMatchers(HttpMethod.PUT, anonymousUrls.get(RequestMethodEnum.PUT.getType()).toArray(new String[0]))
+                .antMatchers(HttpMethod.PUT, ignoreUrls.get(RequestMethodEnum.PUT.getType()).toArray(new String[0]))
                 // PATCH
-                .antMatchers(HttpMethod.PATCH, anonymousUrls.get(RequestMethodEnum.PATCH.getType()).toArray(new String[0]))
+                .antMatchers(HttpMethod.PATCH, ignoreUrls.get(RequestMethodEnum.PATCH.getType()).toArray(new String[0]))
                 // DELETE
-                .antMatchers(HttpMethod.DELETE, anonymousUrls.get(RequestMethodEnum.DELETE.getType()).toArray(new String[0]))
+                .antMatchers(HttpMethod.DELETE, ignoreUrls.get(RequestMethodEnum.DELETE.getType()).toArray(new String[0]))
                 // 所有类型的接口都放行
-                .antMatchers(anonymousUrls.get(RequestMethodEnum.ALL.getType()).toArray(new String[0]));
+                .antMatchers(ignoreUrls.get(RequestMethodEnum.ALL.getType()).toArray(new String[0]));
     }
 
     /**
@@ -211,8 +211,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return authorizeRequests;
     }
 
-    private Map<String, Set<String>> getAnonymousUrl(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, SecurityUrlProperties securityUrlProperties) {
-        Map<String, Set<String>> anonymousUrls = new HashMap<>(8);
+    private Map<String, Set<String>> getIgnoreUrl(Map<RequestMappingInfo, HandlerMethod> handlerMethodMap, SecurityUrlProperties securityUrlProperties) {
+        Map<String, Set<String>> ignoreUrls = new HashMap<>(8);
         Set<String> get = new HashSet<>();
         Set<String> post = new HashSet<>();
         Set<String> put = new HashSet<>();
@@ -221,8 +221,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         Set<String> all = new HashSet<>();
         for (Map.Entry<RequestMappingInfo, HandlerMethod> infoEntry : handlerMethodMap.entrySet()) {
             HandlerMethod handlerMethod = infoEntry.getValue();
-            AnonymousAccess anonymousAccess = handlerMethod.getMethodAnnotation(AnonymousAccess.class);
-            if (null != anonymousAccess) {
+            IgnoreAccess ignoreAccess = handlerMethod.getMethodAnnotation(IgnoreAccess.class);
+            if (null != ignoreAccess) {
                 List<RequestMethod> requestMethods = new ArrayList<>(infoEntry.getKey().getMethodsCondition().getMethods());
                 RequestMethodEnum request = RequestMethodEnum.find(requestMethods.size() == 0 ? RequestMethodEnum.ALL.getType() : requestMethods.get(0).name());
                 switch (Objects.requireNonNull(request)) {
@@ -266,21 +266,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }
             }
         }
-        anonymousUrls.put(RequestMethodEnum.GET.getType(), get);
-        anonymousUrls.put(RequestMethodEnum.POST.getType(), post);
-        anonymousUrls.put(RequestMethodEnum.PUT.getType(), put);
-        anonymousUrls.put(RequestMethodEnum.PATCH.getType(), patch);
-        anonymousUrls.put(RequestMethodEnum.DELETE.getType(), delete);
-        anonymousUrls.put(RequestMethodEnum.ALL.getType(), all);
+        ignoreUrls.put(RequestMethodEnum.GET.getType(), get);
+        ignoreUrls.put(RequestMethodEnum.POST.getType(), post);
+        ignoreUrls.put(RequestMethodEnum.PUT.getType(), put);
+        ignoreUrls.put(RequestMethodEnum.PATCH.getType(), patch);
+        ignoreUrls.put(RequestMethodEnum.DELETE.getType(), delete);
+        ignoreUrls.put(RequestMethodEnum.ALL.getType(), all);
 
         //将忽略的url设置到公用变量中，swagger会用到
-        SecurityConstant.ANONYMOUS_URLS.addAll(get);
-        SecurityConstant.ANONYMOUS_URLS.addAll(post);
-        SecurityConstant.ANONYMOUS_URLS.addAll(put);
-        SecurityConstant.ANONYMOUS_URLS.addAll(patch);
-        SecurityConstant.ANONYMOUS_URLS.addAll(delete);
-        SecurityConstant.ANONYMOUS_URLS.addAll(all);
-        return anonymousUrls;
+        SecurityConstant.IGNORE_URLS.addAll(get);
+        SecurityConstant.IGNORE_URLS.addAll(post);
+        SecurityConstant.IGNORE_URLS.addAll(put);
+        SecurityConstant.IGNORE_URLS.addAll(patch);
+        SecurityConstant.IGNORE_URLS.addAll(delete);
+        SecurityConstant.IGNORE_URLS.addAll(all);
+        return ignoreUrls;
     }
 
     private TokenConfigurer securityConfigurerAdapter() {

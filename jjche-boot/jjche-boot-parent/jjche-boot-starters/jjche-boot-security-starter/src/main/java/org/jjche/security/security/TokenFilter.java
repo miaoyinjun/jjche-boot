@@ -1,5 +1,6 @@
 package org.jjche.security.security;
 
+import cn.hutool.core.util.BooleanUtil;
 import org.jjche.common.api.CommonAPI;
 import org.jjche.common.constant.SecurityConstant;
 import org.jjche.common.context.ContextUtil;
@@ -7,19 +8,25 @@ import org.jjche.common.dto.JwtUserDto;
 import org.jjche.common.dto.UserVO;
 import org.jjche.common.enums.UserTypeEnum;
 import org.jjche.common.pojo.DataScope;
+import org.jjche.common.util.HttpUtil;
 import org.jjche.common.wrapper.HeaderMapRequestWrapper;
+import org.jjche.common.wrapper.response.R;
+import org.jjche.core.runner.RequestMappingRunner;
 import org.jjche.security.auth.sms.SmsCodeAuthenticationToken;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,6 +54,16 @@ public class TokenFilter extends GenericFilterBean {
      */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequest request = ((HttpServletRequest) servletRequest);
+        HttpServletResponse response = ((HttpServletResponse) servletResponse);
+        String uri = request.getRequestURI();
+        String method = request.getMethod();
+
+        //验证url和method是否存在
+        if (validUrl(response, uri, method)) {
+            return;
+        }
+
         HeaderMapRequestWrapper reqWrapper = new HeaderMapRequestWrapper((HttpServletRequest) servletRequest);
         //非cloud才会走这里
         JwtUserDto userDetails = commonAPI.getUserDetails();
@@ -69,6 +86,39 @@ public class TokenFilter extends GenericFilterBean {
             }
         }
         filterChain.doFilter(reqWrapper, servletResponse);
+    }
+
+    /**
+     * <p>
+     * 验证url和method是否存在
+     * </p>
+     *
+     * @param response /
+     * @param uri      /
+     * @param method   /
+     * @return /
+     */
+    private boolean validUrl(HttpServletResponse response, String uri, String method) {
+        boolean isMachUrl = false;
+        boolean isMachUrlMethod = false;
+        for (PatternsRequestCondition p : RequestMappingRunner.MAPPING_INFO_MAP.keySet()) {
+            if (p.getMatchingPatterns(uri).size() > 0) {
+                isMachUrl = true;
+                isMachUrlMethod = RequestMappingRunner.MAPPING_INFO_MAP.get(p).contains(method);
+                break;
+            }
+        }
+        if (BooleanUtil.isFalse(isMachUrl)) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
+            HttpUtil.printJson(response, R.notFound());
+            return true;
+        }
+        if (BooleanUtil.isTrue(isMachUrl) && BooleanUtil.isFalse(isMachUrlMethod)) {
+            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+            HttpUtil.printJson(response, R.methodNotAllowed());
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -111,5 +161,4 @@ public class TokenFilter extends GenericFilterBean {
             ContextUtil.setDataScopeUserName(dataScopeUsername);
         }
     }
-
 }

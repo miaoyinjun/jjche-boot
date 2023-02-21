@@ -7,6 +7,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.jjche.cache.service.RedisService;
+import org.jjche.common.enums.RedisTopicEnum;
 import org.jjche.common.param.MyPage;
 import org.jjche.common.param.PageParam;
 import org.jjche.common.util.StrUtil;
@@ -18,9 +19,10 @@ import org.jjche.mybatis.util.MybatisUtil;
 import org.jjche.system.modules.quartz.domain.QuartzJobDO;
 import org.jjche.system.modules.quartz.domain.QuartzLogDO;
 import org.jjche.system.modules.quartz.dto.JobQueryCriteriaDTO;
+import org.jjche.system.modules.quartz.dto.QuartzRedisMessageDTO;
+import org.jjche.system.modules.quartz.enums.QuartzActionEnum;
 import org.jjche.system.modules.quartz.mapper.QuartzJobMapper;
 import org.jjche.system.modules.quartz.mapper.QuartzLogMapper;
-import org.jjche.system.modules.quartz.utils.QuartzManage;
 import org.quartz.CronExpression;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,6 @@ import java.util.*;
 public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO> {
 
     private final QuartzLogMapper quartzLogMapper;
-    private final QuartzManage quartzManage;
     private final RedisService redisService;
 
 
@@ -126,7 +127,10 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
         Boolean isError = !CronExpression.isValidExpression(resources.getCronExpression());
         Assert.isFalse(isError, "cron表达式格式错误");
         this.save(resources);
-        quartzManage.addJob(resources);
+        QuartzRedisMessageDTO dto = new QuartzRedisMessageDTO();
+        dto.setQuartzJob(resources);
+        dto.setAction(QuartzActionEnum.ADD);
+        redisService.push(RedisTopicEnum.TOPIC_QUARTZ.getTopic(), dto);
     }
 
 
@@ -144,7 +148,10 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
             Assert.isFalse(tasks.contains(resources.getId().toString()), "子任务中不能添加当前任务ID");
         }
         this.updateById(resources);
-        quartzManage.updateJobCron(resources);
+        QuartzRedisMessageDTO dto = new QuartzRedisMessageDTO();
+        dto.setQuartzJob(resources);
+        dto.setAction(QuartzActionEnum.UPDATE);
+        redisService.push(RedisTopicEnum.TOPIC_QUARTZ.getTopic(), dto);
     }
 
     /**
@@ -154,13 +161,15 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
      */
     public void updateIsPause(QuartzJobDO quartzJob) {
         if (quartzJob.getIsPause()) {
-            quartzManage.resumeJob(quartzJob);
             quartzJob.setIsPause(false);
         } else {
-            quartzManage.pauseJob(quartzJob);
             quartzJob.setIsPause(true);
         }
         this.updateById(quartzJob);
+        QuartzRedisMessageDTO dto = new QuartzRedisMessageDTO();
+        dto.setQuartzJob(quartzJob);
+        dto.setAction(QuartzActionEnum.PAUSE);
+        redisService.push(RedisTopicEnum.TOPIC_QUARTZ.getTopic(), dto);
     }
 
     /**
@@ -169,7 +178,10 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
      * @param quartzJob /
      */
     public void execution(QuartzJobDO quartzJob) {
-        quartzManage.runJobNow(quartzJob);
+        QuartzRedisMessageDTO dto = new QuartzRedisMessageDTO();
+        dto.setQuartzJob(quartzJob);
+        dto.setAction(QuartzActionEnum.EXEC);
+        redisService.push(RedisTopicEnum.TOPIC_QUARTZ.getTopic(), dto);
     }
 
     /**
@@ -181,8 +193,11 @@ public class QuartzJobService extends MyServiceImpl<QuartzJobMapper, QuartzJobDO
     public void delete(Set<Long> ids) {
         for (Long id : ids) {
             QuartzJobDO quartzJob = findById(id);
-            quartzManage.deleteJob(quartzJob);
             this.removeByIdWithFill(quartzJob);
+            QuartzRedisMessageDTO dto = new QuartzRedisMessageDTO();
+            dto.setQuartzJob(quartzJob);
+            dto.setAction(QuartzActionEnum.DEL);
+            redisService.push(RedisTopicEnum.TOPIC_QUARTZ.getTopic(), dto);
         }
     }
 

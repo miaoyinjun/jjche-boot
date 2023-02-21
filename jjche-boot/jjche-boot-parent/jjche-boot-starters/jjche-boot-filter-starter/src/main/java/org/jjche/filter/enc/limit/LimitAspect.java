@@ -14,7 +14,7 @@ import org.jjche.common.constant.CacheKey;
 import org.jjche.common.enums.LimitType;
 import org.jjche.common.util.HttpUtil;
 import org.jjche.common.util.StrUtil;
-import org.jjche.core.exception.RequestLimitException;
+import org.jjche.common.exception.RequestLimitException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;

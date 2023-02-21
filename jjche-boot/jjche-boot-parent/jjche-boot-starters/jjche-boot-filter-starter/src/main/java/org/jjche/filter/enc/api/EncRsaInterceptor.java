@@ -10,7 +10,7 @@
 //import cn.hutool.crypto.asymmetric.SignAlgorithm;
 //import cn.hutool.log.StaticLog;
 //import org.jjche.common.enums.FilterEncEnum;
-//import org.jjche.core.exception.SignException;
+//import org.jjche.common.exception.SignException;
 //import org.jjche.filter.property.FilterEncApiProperties;
 //import org.jjche.filter.util.EncUtil;
 //import org.springframework.web.servlet.HandlerInterceptor;

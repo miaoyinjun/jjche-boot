@@ -25,9 +25,9 @@ import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
-import org.jjche.security.annotation.rest.AnonymousDeleteMapping;
-import org.jjche.security.annotation.rest.AnonymousGetMapping;
-import org.jjche.security.annotation.rest.AnonymousPostMapping;
+import org.jjche.security.annotation.rest.IgnoreDeleteMapping;
+import org.jjche.security.annotation.rest.IgnoreGetMapping;
+import org.jjche.security.annotation.rest.IgnorePostMapping;
 import org.jjche.security.property.*;
 import org.jjche.security.security.TokenProvider;
 import org.jjche.system.modules.security.vo.LoginCodeVO;
@@ -65,7 +65,7 @@ public class AuthorizationController extends BaseController {
      * @param authUser a {@link AuthUserDto} object.
      * @return a {@link R} object.
      */
-    @AnonymousPostMapping(value = "/login")
+    @IgnorePostMapping(value = "/login")
     @ApiOperation("密码登录授权")
     @LogRecord(value = "密码登录", category = LogCategoryType.MANAGER, type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#authUser.username}}", saveParams = false)
     public R<LoginVO> login(@Validated @RequestBody AuthUserDto authUser) {
@@ -103,7 +103,7 @@ public class AuthorizationController extends BaseController {
      * @param dto a {@link AuthUserSmsDto} object.
      * @return a {@link R} object.
      */
-    @AnonymousPostMapping(value = "/sms_login")
+    @IgnorePostMapping(value = "/sms_login")
     @ApiOperation("短信登录授权")
     @LogRecord(value = "短信登录", category = LogCategoryType.MANAGER, type = LogType.SELECT, module = LogModule.LOG_MODULE_LOGIN, operatorId = "{{#dto.phone}}", saveParams = false)
     public R<LoginVO> smsLogin(@Validated @RequestBody AuthUserSmsDto dto) {
@@ -117,7 +117,7 @@ public class AuthorizationController extends BaseController {
      * @return a {@link R} object.
      */
     @ApiOperation(value = "认证-获取手机验证码")
-    @AnonymousGetMapping(value = "/sms_code")
+    @IgnoreGetMapping(value = "/sms_code")
     public R<String> getSmsCode(@Valid SmsCodeDTO dto) {
         return R.ok(userService.getSmsCode(dto));
     }
@@ -139,7 +139,7 @@ public class AuthorizationController extends BaseController {
      * @return a {@link R} object.
      */
     @ApiOperation("获取验证码")
-    @AnonymousGetMapping(value = "/code")
+    @IgnoreGetMapping(value = "/code")
     public R<LoginCodeVO> getCode() {
         // 获取运算的结果
         SecurityLoginProperties loginProperties = properties.getLogin();
@@ -165,7 +165,7 @@ public class AuthorizationController extends BaseController {
      * @return a {@link R} object.
      */
     @ApiOperation("退出登录")
-    @AnonymousDeleteMapping(value = "/logout")
+    @IgnoreDeleteMapping(value = "/logout")
     public R logout() {
         commonAPI.logoutOnlineUser(tokenProvider.resolveToken());
         return R.ok();

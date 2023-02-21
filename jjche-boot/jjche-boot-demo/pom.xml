@@ -8,12 +8,12 @@
     <groupId>org.jjche.demo</groupId>
     <artifactId>jjche-boot-demo</artifactId>
     <packaging>jar</packaging>
-    <version>2.0.6</version>
+    <version>2.0.7</version>
 
     <parent>
         <groupId>org.jjcheframework.boot</groupId>
         <artifactId>jjche-boot-parent</artifactId>
-        <version>2.0.6</version>
+        <version>2.0.7</version>
         <relativePath />
     </parent>
 
@@ -29,28 +29,20 @@
             <artifactId>jjche-boot-system-starter</artifactId>
         </dependency>
         <!--spring-cloud-->
-        <!--                        <dependency>-->
-        <!--                            <groupId>org.jjcheframework.boot</groupId>-->
-        <!--                            <artifactId>jjche-boot-cloud-starter</artifactId>-->
-        <!--                        </dependency>-->
+<!--                                <dependency>-->
+<!--                                    <groupId>org.jjcheframework.boot</groupId>-->
+<!--                                    <artifactId>jjche-boot-cloud-starter</artifactId>-->
+<!--                                </dependency>-->
 
         <!--                <dependency>-->
         <!--                    <groupId>org.jjche.demo</groupId>-->
         <!--                    <artifactId>jjche-cloud-demo-provider-api</artifactId>-->
         <!--                    <version>2.0.3-SNAPSHOT</version>-->
         <!--                </dependency>-->
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
 
     <build>
-        <finalName>${project.name}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -63,29 +55,6 @@
             <plugin>
                 <groupId>pl.project13.maven</groupId>
                 <artifactId>git-commit-id-plugin</artifactId>
-            </plugin>
-            <!-- docker的maven插件 -->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <!--                <executions>-->
-                <!--                    <execution>-->
-                <!--                        <id>default</id>-->
-                <!--                        <phase>package</phase>-->
-                <!--                        <goals>-->
-                <!--                            <goal>build</goal>-->
-                <!--                            &lt;!&ndash;                            <goal>push</goal>&ndash;&gt;-->
-                <!--                        </goals>-->
-                <!--                    </execution>-->
-                <!--                </executions>-->
-                <configuration>
-                    <repository>${docker.registry}/${docker.namespace}/${project.name}</repository>
-                    <tag>latest</tag>
-                    <buildArgs>
-                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                    <dockerfile>./docker/Dockerfile</dockerfile>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

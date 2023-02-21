@@ -26,7 +26,7 @@ public class TestTask {
      * @param str a {@link java.lang.String} object.
      */
     public void run1(String str) {
-        StaticLog.info("run1 执行成功，参数为： {}" + str);
+        StaticLog.info("run1 执行成功，参数为： {}",str);
     }
 
     /**

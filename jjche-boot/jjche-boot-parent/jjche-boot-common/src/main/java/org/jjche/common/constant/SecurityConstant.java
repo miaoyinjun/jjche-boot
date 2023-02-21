@@ -21,7 +21,7 @@ public interface SecurityConstant {
     /**
      * 匿名访问的地址
      */
-    Set<String> ANONYMOUS_URLS = new HashSet<>();
+    Set<String> IGNORE_URLS = new HashSet<>();
 
     /**
      * 超级管理员权限标识

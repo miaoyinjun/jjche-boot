@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.jjche.common.annotation.Limit;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
-import org.jjche.security.annotation.rest.AnonymousGetMapping;
+import org.jjche.security.annotation.rest.IgnoreGetMapping;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +27,7 @@ public class LimitController extends BaseController {
      *
      * @return a int.
      */
-    @AnonymousGetMapping
+    @IgnoreGetMapping
     @ApiOperation("测试")
     @Limit(key = "test", period = 60, count = 10, name = "testLimit", prefix = "limit")
     public int test() {

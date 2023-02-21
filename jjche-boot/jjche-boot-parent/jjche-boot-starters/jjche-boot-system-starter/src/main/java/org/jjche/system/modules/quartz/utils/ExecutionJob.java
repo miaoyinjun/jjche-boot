@@ -6,7 +6,7 @@ import cn.hutool.extra.template.TemplateConfig;
 import cn.hutool.extra.template.TemplateEngine;
 import cn.hutool.extra.template.TemplateUtil;
 import cn.hutool.log.StaticLog;
-import com.alicp.jetcache.Cache;
+import org.jjche.cache.lock.client.RedissonLockClient;
 import org.jjche.cache.service.RedisService;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.core.util.SpringContextHolder;
@@ -48,12 +48,26 @@ public class ExecutionJob extends QuartzJobBean {
         // 获取任务
         QuartzJobDO quartzJob = (QuartzJobDO) context.getMergedJobDataMap().get(QuartzJobDO.JOB_KEY);
         QuartzManage quartzManage = SpringContextHolder.getBean(QuartzManage.class);
-        Cache quartzCache = quartzManage.quartzCache;
+        RedissonLockClient redissonLockClient = quartzManage.redissonLockClient;
         Long id = quartzJob.getId();
         String uuid = quartzJob.getUuid();
-        //分布式锁，30分钟
-        quartzCache.tryLockAndRun(id,
-                30, TimeUnit.MINUTES, () -> executionJob(quartzJob, uuid));
+        if (StrUtil.isBlank(uuid)) {
+            uuid = String.valueOf(id);
+        }
+        uuid = QuartzJobDO.JOB_KEY + "_LOCK:" + uuid;
+        //分布式锁
+        try {
+            if (redissonLockClient.tryLock(uuid)) {
+                TimeUnit.SECONDS.sleep(1);
+                executionJob(quartzJob, uuid);
+            }
+        } catch (Exception e) {
+            StaticLog.error("executionJob:{},", e);
+        } finally {
+            if (redissonLockClient.isLocked(uuid) && redissonLockClient.isHeldByCurrentThread(uuid)) {
+                redissonLockClient.unlock(uuid);
+            }
+        }
     }
 
     private void executionJob(QuartzJobDO quartzJob, String uuid) {
@@ -73,15 +87,11 @@ public class ExecutionJob extends QuartzJobBean {
         log.setCronExpression(quartzJob.getCronExpression());
         try {
             // 执行任务
-            QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(),
-                    quartzJob.getParams());
+            QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(), quartzJob.getParams());
             Future<?> future = executor.submit(task);
             future.get();
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
-            if (org.jjche.common.util.StrUtil.isNotBlank(uuid)) {
-                redisService.objectSetObject(uuid, true);
-            }
             // 任务状态
             log.setIsSuccess(true);
             StaticLog.info("任务执行成功，任务名称：" + quartzJob.getJobName() + ", 执行时间：" + times + "毫秒");
@@ -95,11 +105,7 @@ public class ExecutionJob extends QuartzJobBean {
                 }
             }
         } catch (Exception e) {
-            if (org.jjche.common.util.StrUtil.isNotBlank(uuid)) {
-                redisService.setAddSetObject(uuid, false);
-            }
             StaticLog.error("任务执行失败，任务名称：" + quartzJob.getJobName());
-            ;
             long times = System.currentTimeMillis() - startTime;
             log.setTime(times);
             // 任务状态 0：成功 1：失败

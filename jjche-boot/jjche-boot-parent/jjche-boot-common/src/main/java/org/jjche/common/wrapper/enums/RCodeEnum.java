@@ -45,6 +45,14 @@ public enum RCodeEnum {
      */
     REQUEST_LIMIT(HttpStatusConstant.CODE_REQUEST_LIMIT, HttpStatusConstant.MSG_REQUEST_LIMIT),
     /**
+     * 找不到请求地址
+     */
+    NOT_FOUND(HttpStatusConstant.CODE_NOT_FOUND, HttpStatusConstant.MSG_NOT_FOUND),
+    /**
+     * 不允许的请求方法
+     */
+    METHOD_NOT_ALLOWED(HttpStatusConstant.CODE_METHOD_NOT_ALLOWED, HttpStatusConstant.MSG_METHOD_NOT_ALLOWED),
+    /**
      * 未授权
      */
     TOKEN_ERROR(HttpStatusConstant.CODE_TOKEN_ERROR, HttpStatusConstant.MSG_TOKEN_ERROR),

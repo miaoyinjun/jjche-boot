@@ -7,8 +7,8 @@
 
     <parent>
         <groupId>org.jjche.demo</groupId>
-        <artifactId>jjche-cloud-demo-provider</artifactId>
-        <version>2.0.6</version>
+        <artifactId>jjche-cloud-demo-provider-parent</artifactId>
+        <version>2.0.7</version>
     </parent>
 
     <dependencies>

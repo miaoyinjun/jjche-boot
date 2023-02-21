@@ -107,6 +107,27 @@ public interface HttpStatusConstant {
      */
     String MSG_REQUEST_LIMIT = "请不要频繁操作";
 
+
+    /**
+     * 404 {@value}
+     */
+    int CODE_NOT_FOUND = 4041;
+
+    /**
+     * 404 {@value}
+     */
+    String MSG_NOT_FOUND = "找不到请求地址";
+
+    /**
+     * 405 {@value}
+     */
+    int CODE_METHOD_NOT_ALLOWED = 4051;
+
+    /**
+     * 405 {@value}
+     */
+    String MSG_METHOD_NOT_ALLOWED = "不允许的请求方法";
+
     /**
      * 未授权 {@value}
      */

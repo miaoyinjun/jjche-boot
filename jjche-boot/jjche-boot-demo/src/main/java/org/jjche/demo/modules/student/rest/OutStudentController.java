@@ -18,7 +18,7 @@ import org.jjche.demo.constant.ApiVersion;
 import org.jjche.demo.modules.student.api.dto.StudentDTO;
 import org.jjche.demo.modules.student.service.StudentService;
 import org.jjche.log.biz.starter.annotation.LogRecord;
-import org.jjche.security.annotation.rest.AnonymousPostMapping;
+import org.jjche.security.annotation.rest.IgnorePostMapping;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -41,7 +41,7 @@ public class OutStudentController extends BaseController {
 
     private final StudentService studentService;
 
-    @AnonymousPostMapping(value = "add")
+    @IgnorePostMapping(value = "add")
     @ApiOperation(value = "添加-出参加密，入参解密")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = FilterEncConstant.PARAM_TYPE_HEADER, name = FilterEncConstant.APP_ID, value = FilterEncConstant.APP_ID_DESC, example = FilterEncConstant.DEFAULT_APP_ID, dataTypeClass = String.class, required = true),

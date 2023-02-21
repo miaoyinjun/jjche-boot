@@ -5,7 +5,7 @@
     <groupId>org.jjcheframework.boot</groupId>
     <artifactId>jjche-boot-parent</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.6</version>
+    <version>2.0.7</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,7 +28,7 @@
         <screw.version>1.0.4</screw.version>
         <mysql.version>8.0.21</mysql.version>
         <!-- docker -->
-        <docker.maven.verion>1.4.13</docker.maven.verion>
+        <docker.maven.verion>0.41.0</docker.maven.verion>
 
         <hutool.version>5.8.3</hutool.version>
         <mybatis.plus.version>3.5.1</mybatis.plus.version>
@@ -44,11 +44,12 @@
         <qiniu.version>7.8.0</qiniu.version>
         <alipay.version>4.9.153.ALL</alipay.version>
         <nacos.version>2.0.3</nacos.version>
-        <jetcache.version>2.6.5</jetcache.version>
+        <jetcache.version>2.7.3</jetcache.version>
         <druid.version>1.2.9</druid.version>
         <skywalking.version>8.11.0</skywalking.version>
         <minio.version>8.4.5</minio.version>
         <okhttp3.version>4.10.0</okhttp3.version>
+        <redission.version>3.18.0</redission.version>
 
     </properties>
 
@@ -89,68 +90,68 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-common</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-local-api</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-system-cloud-api</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-core-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
 
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-sba-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-swagger-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-log-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cat-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-mybatis-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cache-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-filter-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-security-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <!--            <dependency>-->
             <!--                <groupId>org.jjcheframework.boot</groupId>-->
@@ -160,53 +161,53 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-serialize-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-system-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-generator</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-tools</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-eladmin-logging</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-userdetail-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <!-- cloud -->
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cloud-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-cloud-gray-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-shardingsphere-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-minio-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
@@ -216,11 +217,11 @@
             <dependency>
                 <groupId>org.jjcheframework.boot</groupId>
                 <artifactId>jjche-boot-xxl-job-starter</artifactId>
-                <version>2.0.6</version>
+                <version>2.0.7</version>
             </dependency>
             <dependency>
                 <groupId>com.alicp.jetcache</groupId>
-                <artifactId>jetcache-starter-redis-lettuce</artifactId>
+                <artifactId>jetcache-starter-redisson</artifactId>
                 <version>${jetcache.version}</version>
             </dependency>
             <dependency>
@@ -523,6 +524,11 @@
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redission.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -564,6 +570,11 @@
             <plugin>
                 <groupId>external.atlassian.jgitflow</groupId>
                 <artifactId>jgitflow-maven-plugin</artifactId>
+            </plugin>
+            <!-- docker的maven插件 -->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
             </plugin>
         </plugins>
 
@@ -846,26 +857,54 @@
                     <version>1.6.0</version>
                 </plugin>
                 <plugin>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>dockerfile-maven-plugin</artifactId>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
                     <version>${docker.maven.verion}</version>
-                    <!--                <executions>-->
-                    <!--                    <execution>-->
-                    <!--                        <id>default</id>-->
-                    <!--                        <phase>package</phase>-->
-                    <!--                        <goals>-->
-                    <!--                            <goal>build</goal>-->
-                    <!--                            &lt;!&ndash;                            <goal>push</goal>&ndash;&gt;-->
-                    <!--                        </goals>-->
-                    <!--                    </execution>-->
-                    <!--                </executions>-->
                     <configuration>
-                        <repository>${docker.registry}/${docker.namespace}/${project.name}</repository>
-                        <tag>latest</tag>
-                        <buildArgs>
-                            <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
-                        </buildArgs>
-                        <dockerfile>./docker/Dockerfile</dockerfile>
+                        <images>
+                            <image>
+                                <alias>service</alias>
+                                <name>${docker.registry}/${docker.namespace}/${project.artifactId}:latest</name>
+
+                                <build>
+                                    <from>openjdk:8-jre-alpine</from>
+                                    <tags>
+                                        <tag>latest</tag>
+                                        <tag>${project.version}</tag>
+                                    </tags>
+                                    <assembly>
+                                        <name>files</name>
+                                        <inline>
+                                            <id>copy-files</id>
+                                            <files>
+                                                <file>
+                                                    <source>target/${project.artifactId}.jar</source>
+                                                    <destName>app.jar</destName>
+                                                    <!--<targetDir>/app</targetDir>-->
+                                                </file>
+                                            </files>
+                                        </inline>
+                                        <targetDir>/app</targetDir>
+                                    </assembly>
+                                    <env>
+                                        <LANG>C.UTF-8</LANG>
+                                        <LC_ALL>C.UTF-8</LC_ALL>
+                                        <TZ>Asia/Shanghai</TZ>
+                                        <JAVA_OPTS>-Djava.security.egd=file:/dev/./urandom -Duser.timezone=${TZ} -Dfile.encoding=UTF-8</JAVA_OPTS>
+                                    </env>
+                                    <runCmds>
+                                        <run>apk add ttf-freefont</run>
+                                        <run>apk add bash tzdata</run>
+                                        <run>ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime</run>
+                                        <run>echo ${TZ} &gt; /etc/timezone</run>
+                                        <run>rm -rf /var/cache/apk/*</run>
+                                    </runCmds>
+                                    <entryPoint>
+                                        <shell>java ${JAVA_OPTS} -jar /app/app.jar ${JAVA_WEB_SERVICE_OPTS}</shell>
+                                    </entryPoint>
+                                </build>
+                            </image>
+                        </images>
                     </configuration>
                 </plugin>
             </plugins>

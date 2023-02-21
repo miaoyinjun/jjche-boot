@@ -13,7 +13,7 @@ import org.jjche.common.wrapper.response.R;
 import org.jjche.core.annotation.controller.SysRestController;
 import org.jjche.core.base.BaseController;
 import org.jjche.log.biz.starter.annotation.LogRecord;
-import org.jjche.security.annotation.rest.AnonymousGetMapping;
+import org.jjche.security.annotation.rest.IgnoreGetMapping;
 import org.jjche.system.modules.version.dto.VersionDTO;
 import org.jjche.system.modules.version.dto.VersionQueryCriteriaDTO;
 import org.jjche.system.modules.version.service.VersionService;
@@ -121,7 +121,7 @@ public class VersionController extends BaseController {
      *
      * @return a {@link R} object.
      */
-    @AnonymousGetMapping("/latest")
+    @IgnoreGetMapping("/latest")
     @Cached(name = "versions:", key = "'latest'", cacheType = CacheType.REMOTE)
     public R<String> versionLatest() {
         return R.ok(versionService.versionLatest());

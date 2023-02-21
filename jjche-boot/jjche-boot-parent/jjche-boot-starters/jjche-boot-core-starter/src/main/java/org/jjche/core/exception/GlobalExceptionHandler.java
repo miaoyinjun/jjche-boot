@@ -8,7 +8,7 @@ import org.jjche.common.constant.LogConstant;
 import org.jjche.common.constant.SpringPropertyConstant;
 import org.jjche.common.context.ContextUtil;
 import org.jjche.common.dto.LogRecordDTO;
-import org.jjche.common.exception.FeignRException;
+import org.jjche.common.exception.*;
 import org.jjche.common.util.ThrowableUtil;
 import org.jjche.common.wrapper.constant.HttpStatusConstant;
 import org.jjche.common.wrapper.response.R;
@@ -24,11 +24,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -56,7 +58,7 @@ public class GlobalExceptionHandler {
      * 全局异常
      * </p>
      *
-     * @param e       a {@link java.lang.Exception} object.
+     * @param e a {@link java.lang.Exception} object.
      * @return a {@link R} object.
      * @author miaoyj
      * @since 2020-07-09
@@ -98,6 +100,18 @@ public class GlobalExceptionHandler {
         return R.error();
     }
 
+    @ExceptionHandler({NoHandlerFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public R notFoundException(Exception e) {
+        return R.notFound();
+    }
+
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public R methodNotAllowedException(Exception e) {
+        return R.methodNotAllowed();
+    }
+
     /**
      * <p>
      * Feign调用R异常
@@ -114,7 +128,7 @@ public class GlobalExceptionHandler {
 
     /**
      * <p>
-     * 断言验证异常
+     * 断言验证/业务异常
      * </p>
      *
      * @param e a {@link java.lang.Exception} object.
@@ -122,7 +136,7 @@ public class GlobalExceptionHandler {
      * @author miaoyj
      * @since 2020-07-09
      */
-    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class, BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public R allException(Exception e) {
         return R.validError(e.getMessage());
